@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750">
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#bfdbfe"/>
+      <stop offset=".72" stop-color="#f8fafc"/>
+    </linearGradient>
+    <linearGradient id="lawn" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#86efac"/>
+      <stop offset="1" stop-color="#15803d"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="750" fill="url(#sky)"/>
+  <circle cx="1020" cy="115" r="58" fill="#fde68a"/>
+  <path d="M0 505 C190 470 310 535 500 505 C690 475 870 465 1200 520 L1200 750 L0 750Z" fill="url(#lawn)"/>
+  <path d="M170 460 L590 220 L1010 460 L1010 650 L170 650Z" fill="#f8fafc"/>
+  <path d="M125 470 L590 190 L1055 470 L996 494 L590 253 L184 494Z" fill="#1e3a8a"/>
+  <rect x="250" y="475" width="160" height="120" rx="8" fill="#dbeafe"/>
+  <rect x="485" y="455" width="220" height="195" rx="10" fill="#e0f2fe"/>
+  <rect x="780" y="475" width="160" height="120" rx="8" fill="#dbeafe"/>
+  <rect x="530" y="520" width="90" height="130" rx="6" fill="#334155"/>
+  <path d="M482 650 C560 590 690 590 765 650" fill="none" stroke="#e2e8f0" stroke-width="42"/>
+  <g fill="#14532d">
+    <circle cx="95" cy="520" r="70"/><circle cx="1125" cy="505" r="82"/>
+    <circle cx="165" cy="335" r="52"/><circle cx="1030" cy="335" r="48"/>
+  </g>
+  <text x="70" y="710" font-family="Arial" font-size="30" font-weight="700" fill="#f8fafc">Demo property hero image</text>
+</svg>

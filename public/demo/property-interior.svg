@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750">
+  <rect width="1200" height="750" fill="#f8fafc"/>
+  <rect x="0" y="0" width="1200" height="285" fill="#dbeafe"/>
+  <rect x="120" y="150" width="310" height="260" rx="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="8"/>
+  <rect x="770" y="150" width="310" height="260" rx="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="8"/>
+  <rect x="90" y="500" width="1020" height="90" rx="45" fill="#e2e8f0"/>
+  <rect x="300" y="410" width="600" height="72" rx="18" fill="#0f172a"/>
+  <circle cx="410" cy="622" r="54" fill="#bfdbfe"/>
+  <circle cx="790" cy="622" r="54" fill="#bfdbfe"/>
+  <text x="74" y="710" font-family="Arial" font-size="30" font-weight="700" fill="#334155">Demo lifestyle interior image</text>
+</svg>
