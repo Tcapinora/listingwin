@@ -50,21 +50,25 @@ function Logo({ src, agencyName }: { src: string; agencyName: string }) {
   );
 }
 
-function PhoneFrame({ children }: { children: React.ReactNode }) {
+function PhoneFrame({
+  children,
+  tone = "dark",
+}: {
+  children: React.ReactNode;
+  tone?: "dark" | "light";
+}) {
   return (
-    <div className="relative mx-auto aspect-[9/16] w-full max-w-[430px] overflow-hidden rounded-[2.5rem] bg-black shadow-2xl">
-      <Image
-        src="/assets/iphone-frame.png"
-        alt="iPhone frame"
-        fill
-        className="object-cover"
-        style={{ objectPosition: "center" }}
-        unoptimized
-      />
-      <div className="absolute left-[29%] top-[10.5%] h-[80.5%] w-[42.5%] overflow-hidden rounded-[2rem] bg-black">
-        <div className="h-full w-full scale-[0.58] origin-top-left">
-          <div className="w-[390px]">{children}</div>
+    <div className="relative mx-auto aspect-[9/19.5] w-full max-w-[355px] rounded-[3.1rem] bg-gradient-to-br from-[#1c1c1f] via-black to-[#2b201b] p-[10px] shadow-2xl ring-1 ring-black/40">
+      <div className="absolute inset-[3px] rounded-[2.95rem] border border-[#c47b52]/55 pointer-events-none" />
+      <div
+        className={`relative h-full overflow-hidden rounded-[2.55rem] ${
+          tone === "dark" ? "bg-[#070c11] text-white" : "bg-white text-slate-950"
+        }`}
+      >
+        <div className="absolute left-1/2 top-2 z-20 h-7 w-24 -translate-x-1/2 rounded-full bg-black shadow-inner">
+          <span className="absolute right-3 top-1/2 h-3 w-3 -translate-y-1/2 rounded-full bg-slate-900 ring-1 ring-slate-700" />
         </div>
+        {children}
       </div>
     </div>
   );
@@ -124,10 +128,10 @@ function CampaignCreative({
             </div>
           </div>
           <div className="absolute bottom-[6%] left-[7%] right-[7%] rounded-[4%] bg-white/94 p-[4%] text-slate-950 shadow-card backdrop-blur">
-            <p className="text-[clamp(.9rem,2.4vw,1.35rem)] font-semibold leading-tight">
+            <p className="text-base font-semibold leading-tight">
               {lineOne}
             </p>
-            <p className="mt-[1%] text-[clamp(.7rem,1.8vw,1rem)] text-slate-600">
+            <p className="mt-1 text-xs leading-5 text-slate-600">
               {suburb} · {agentName} · {phone}
             </p>
           </div>
@@ -140,7 +144,7 @@ function CampaignCreative({
     <div className="p-[5.5%] text-white" style={{ backgroundColor: brandColor }}>
       <div className="mb-[4%] flex items-center justify-between gap-[4%]">
         <div className="flex min-w-0 items-center gap-[3%]">
-          <span className="grid h-[clamp(2.4rem,7vw,3.6rem)] w-[clamp(2.4rem,7vw,3.6rem)] shrink-0 place-items-center overflow-hidden rounded-full bg-white p-[2%]">
+          <span className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-full bg-white p-1.5">
             {logo ? (
               <Image
                 src={logo}
@@ -151,21 +155,21 @@ function CampaignCreative({
                 unoptimized
               />
             ) : (
-              <span className="text-[clamp(.75rem,2vw,1.1rem)] font-bold text-slate-950">
+              <span className="text-sm font-bold text-slate-950">
                 {agencyName.slice(0, 1)}
               </span>
             )}
           </span>
           <div className="min-w-0">
-            <p className="truncate text-[clamp(.75rem,2.1vw,1.05rem)] font-semibold">
+            <p className="truncate text-sm font-semibold">
               {agencyName}
             </p>
-            <p className="text-[clamp(.58rem,1.5vw,.78rem)] text-white/70">
+            <p className="text-[11px] text-white/70">
               Campaign mockup
             </p>
           </div>
         </div>
-        <span className="rounded-full bg-white/15 px-[4%] py-[1.5%] text-[clamp(.55rem,1.45vw,.8rem)] font-semibold">
+        <span className="rounded-full bg-white/15 px-3 py-1 text-[11px] font-semibold">
           Seller preview
         </span>
       </div>
@@ -179,7 +183,7 @@ function CampaignCreative({
             unoptimized
           />
         ) : null}
-        <div className="absolute right-[5%] top-[6%] grid h-[31%] w-[31%] place-items-center rounded-full bg-[#bcc6ff] text-center font-serif text-[clamp(1rem,3.3vw,2.4rem)] leading-tight text-black">
+        <div className="absolute right-[5%] top-[6%] grid h-[31%] w-[31%] place-items-center rounded-full bg-[#bcc6ff] text-center font-serif text-2xl leading-tight text-black">
           <span>
             Just
             <br />
@@ -190,13 +194,13 @@ function CampaignCreative({
 
       <div className="mt-[4.5%] grid grid-cols-[1fr_1.1fr] gap-[5%]">
         <div>
-          <p className="text-[clamp(.9rem,2.8vw,1.7rem)] leading-tight">
+          <p className="text-lg leading-tight">
             {lineOne}
           </p>
-          <p className="mt-[3%] text-[clamp(.9rem,2.8vw,1.7rem)] leading-tight">
+          <p className="mt-1 text-lg leading-tight">
             {suburb}
           </p>
-          <div className="mt-[9%] flex items-center gap-[7%] text-[clamp(.6rem,1.6vw,.9rem)] text-gray-200">
+          <div className="mt-4 flex items-center gap-2 text-[11px] text-gray-200">
             <span>4</span>
             <span>bed</span>
             <span>2</span>
@@ -206,10 +210,10 @@ function CampaignCreative({
           </div>
         </div>
         <div>
-          <p className="text-[clamp(.85rem,2.4vw,1.5rem)] leading-tight text-[#c2c9ff]">
+          <p className="text-base leading-tight text-[#c2c9ff]">
             Auction 2nd May 10am
           </p>
-          <div className="mt-[14%] space-y-[4%] text-[clamp(.55rem,1.45vw,.85rem)] text-[#c2c9ff]">
+          <div className="mt-7 space-y-1 text-[11px] text-[#c2c9ff]">
             <p>
               {agentName} {phone}
             </p>
@@ -219,7 +223,7 @@ function CampaignCreative({
       </div>
 
       {variant === "instagram" ? (
-        <div className="mt-[4%] text-[clamp(.6rem,1.55vw,.9rem)] text-[#6f91ff]">
+        <div className="mt-3 text-xs text-[#6f91ff]">
           830 · View insights
         </div>
       ) : null}
@@ -951,168 +955,180 @@ export function SocialPreview({
 
   if (type === "Instagram") {
     return (
-      <PhoneFrame>
-      <div className="overflow-hidden rounded-[1.7rem] border border-gray-900 bg-[#070c11] text-white shadow-card">
-        <div className="h-1.5" style={{ backgroundColor: brandColor }} />
-        <div className="flex items-center justify-between px-5 py-3 text-sm font-semibold">
-          <span>12:55</span>
-          <span className="rounded-full bg-white px-2 py-0.5 text-xs text-black">
-            81
-          </span>
-        </div>
-        <div className="flex items-center justify-between border-b border-white/10 px-4 pb-3">
-          <span className="text-3xl leading-none">‹</span>
-          <div className="text-center">
-            <p className="text-base font-semibold">Posts</p>
-            <p className="text-sm text-gray-300">{agentHandle}</p>
-          </div>
-          <span className="w-7" />
-        </div>
-        <div className="flex items-center gap-3 px-4 py-3">
-          <div
-            className="grid h-10 w-10 place-items-center overflow-hidden rounded-full bg-white"
-            style={{ boxShadow: `0 0 0 2px ${brandColor}` }}
-          >
-            {logo ? (
-              <Image
-                src={logo}
-                alt={`${agencyName} social avatar`}
-                width={44}
-                height={44}
-                className="h-full w-full object-contain p-1"
-                unoptimized
-              />
-            ) : (
-              <span className="text-xs font-bold text-gray-950">
-                {(agentName || "A").slice(0, 1)}
+      <PhoneFrame tone="dark">
+        <div className="flex h-full flex-col bg-[#070c11] text-white">
+          <div className="h-1.5 shrink-0" style={{ backgroundColor: brandColor }} />
+          <div className="flex shrink-0 items-center justify-between px-6 pb-2 pt-11 text-sm font-semibold">
+            <span>12:55</span>
+            <div className="flex items-end gap-1">
+              <span className="h-2.5 w-1.5 rounded-sm bg-white/55" />
+              <span className="h-3.5 w-1.5 rounded-sm bg-white/75" />
+              <span className="h-5 w-1.5 rounded-sm bg-white" />
+              <span className="ml-2 rounded-full bg-white px-2 py-0.5 text-xs text-black">
+                81
               </span>
-            )}
+            </div>
           </div>
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-semibold">
-              {agentHandle}{" "}
-              <span className="font-normal text-gray-300">and {agencyHandle}</span>
+          <div className="flex shrink-0 items-center justify-between border-b border-white/10 px-4 pb-3">
+            <span className="text-4xl font-light leading-none">‹</span>
+            <div className="text-center">
+              <p className="text-base font-semibold leading-tight">Posts</p>
+              <p className="text-sm leading-tight text-gray-300">{agentHandle}</p>
+            </div>
+            <span className="w-8" />
+          </div>
+          <div className="flex shrink-0 items-center gap-3 px-4 py-3">
+            <div
+              className="grid h-11 w-11 place-items-center overflow-hidden rounded-full bg-white"
+              style={{ boxShadow: `0 0 0 2px ${brandColor}` }}
+            >
+              {logo ? (
+                <Image
+                  src={logo}
+                  alt={`${agencyName} social avatar`}
+                  width={48}
+                  height={48}
+                  className="h-full w-full object-contain p-1.5"
+                  unoptimized
+                />
+              ) : (
+                <span className="text-xs font-bold text-gray-950">
+                  {(agentName || "A").slice(0, 1)}
+                </span>
+              )}
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-semibold">
+                {agentHandle}{" "}
+                <span className="font-normal text-gray-300">and {agencyHandle}</span>
+              </p>
+              <p className="text-xs text-gray-400">7 April</p>
+            </div>
+            <MoreHorizontal size={22} />
+          </div>
+          <div className="mx-3 shrink-0 overflow-hidden rounded-[1.45rem]">
+            <CampaignCreative listing={listing} variant="instagram" />
+          </div>
+          <div className="mt-2 flex shrink-0 items-center justify-between px-4 py-2">
+            <div className="flex items-center gap-4">
+              <Heart size={24} />
+              <MessageCircle size={24} />
+              <Send size={24} />
+            </div>
+            <Bookmark size={24} />
+          </div>
+          <div className="min-h-0 flex-1 space-y-1 px-4 pb-4 text-xs leading-5">
+            <p className="text-gray-500">Mockup image for seller preview.</p>
+            <p>
+              Liked by <span className="font-semibold">{agencyHandle.replace("@", "")}</span>{" "}
+              and others
             </p>
-            <p className="text-xs text-gray-300">7 April</p>
+            <p>
+              <span className="font-semibold">{agentHandle}</span> NEW LISTING
+            </p>
+            <p className="truncate text-gray-300">
+              {(details.address || "PROPERTY ADDRESS").toUpperCase()} · premium
+              campaign preview
+            </p>
           </div>
-          <MoreHorizontal size={22} />
         </div>
-        <CampaignCreative listing={listing} variant="instagram" />
-        <div className="flex items-center justify-between border-y border-white/10 px-4 py-3">
-          <div className="flex items-center gap-4">
-            <Heart size={24} />
-            <MessageCircle size={24} />
-            <Send size={24} />
-          </div>
-          <Bookmark size={24} />
-        </div>
-        <div className="space-y-1.5 px-4 pb-5 pt-3 text-xs">
-          <p className="text-gray-400">
-            Mockup image for seller preview.
-          </p>
-          <p>
-            Liked by <span className="font-semibold">plum_property</span> and
-            others
-          </p>
-          <p>
-            <span className="font-semibold">{agentHandle}</span> NEW LISTING
-          </p>
-          <p className="text-gray-300">
-            {(details.address || "PROPERTY ADDRESS").toUpperCase()}... more
-          </p>
-        </div>
-      </div>
       </PhoneFrame>
     );
   }
 
   return (
-    <PhoneFrame>
-    <div className="relative overflow-hidden rounded-[1.7rem] border border-gray-200 bg-white text-gray-950 shadow-card">
-      <div className="flex items-center justify-between px-5 py-3 text-sm font-semibold">
-        <span
-          className="absolute left-0 top-0 h-1.5 w-full"
-          style={{ backgroundColor: brandColor }}
-        />
-        <span>12:56</span>
-        <span className="rounded-full bg-black px-2 py-0.5 text-xs text-white">
-          80
-        </span>
-      </div>
-      <div className="flex items-center gap-3 px-4 pb-3">
-        <span className="text-3xl leading-none">‹</span>
-        <p className="flex-1 text-lg font-bold">{agentName}</p>
-        <MoreHorizontal size={24} />
-        <Search size={28} />
-      </div>
-      <div className="flex gap-5 px-4 pb-3 text-sm font-semibold">
-        <span className="rounded-full bg-blue-50 px-4 py-2 text-blue-600">
-          All
-        </span>
-        <span>Photos</span>
-        <span>Reels</span>
-        <span>Mentions</span>
-      </div>
-      <div className="flex items-center gap-3 px-4 pb-3">
-        <div className="grid h-10 w-10 place-items-center overflow-hidden rounded-full bg-gray-100">
-          {logo ? (
-            <Image
-              src={logo}
-              alt={`${agencyName} Facebook avatar`}
-              width={48}
-              height={48}
-              className="h-full w-full object-contain p-1"
-              unoptimized
-            />
-          ) : (
-            <span className="text-sm font-bold">{(agentName || "A").slice(0, 1)}</span>
-          )}
+    <PhoneFrame tone="light">
+      <div className="flex h-full flex-col bg-white text-gray-950">
+        <div className="h-1.5 shrink-0" style={{ backgroundColor: brandColor }} />
+        <div className="flex shrink-0 items-center justify-between px-6 pb-2 pt-11 text-sm font-semibold">
+          <span>12:56</span>
+          <div className="flex items-end gap-1">
+            <span className="h-2.5 w-1.5 rounded-sm bg-gray-400" />
+            <span className="h-3.5 w-1.5 rounded-sm bg-gray-500" />
+            <span className="h-5 w-1.5 rounded-sm bg-gray-900" />
+            <span className="ml-2 rounded-full bg-black px-2 py-0.5 text-xs text-white">
+              80
+            </span>
+          </div>
         </div>
-        <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-semibold">
-            {agentName}{" "}
-            <span className="font-normal">is with {agencyName || agencyHandle}</span>
-          </p>
-          <p className="text-xs text-gray-500">7 Apr · public</p>
+        <div className="flex shrink-0 items-center gap-3 px-4 pb-4">
+          <span className="text-4xl font-light leading-none">‹</span>
+          <p className="min-w-0 flex-1 truncate text-xl font-bold">{agentName}</p>
+          <MoreHorizontal size={24} />
+          <Search size={28} />
         </div>
-        <MoreHorizontal className="text-gray-500" size={22} />
-      </div>
-      <p className="px-4 pb-3 text-base">
-        NEW LISTING... <span className="font-semibold text-gray-500">See more</span>
-      </p>
-      <CampaignCreative listing={listing} variant="facebook" />
-      <div className="flex items-center justify-between border-b border-gray-200 px-4 py-3">
-        <div className="flex items-center gap-5">
-          <ThumbsUp className="text-blue-600" size={23} />
-          <MessageCircle className="text-gray-600" size={23} />
-          <Share2 className="text-gray-600" size={23} />
+        <div className="flex shrink-0 items-center gap-4 px-4 pb-3 text-sm font-semibold">
+          <span className="rounded-full bg-blue-50 px-4 py-2 text-blue-600">
+            All
+          </span>
+          <span>Photos</span>
+          <span>Reels</span>
+          <span className="hidden min-[350px]:inline">Mentions</span>
         </div>
-        <span className="text-sm text-gray-500">5 reactions</span>
+        <div className="flex shrink-0 items-center gap-3 px-4 pb-3">
+          <div className="grid h-11 w-11 place-items-center overflow-hidden rounded-full bg-gray-100 ring-1 ring-gray-200">
+            {logo ? (
+              <Image
+                src={logo}
+                alt={`${agencyName} Facebook avatar`}
+                width={52}
+                height={52}
+                className="h-full w-full object-contain p-1.5"
+                unoptimized
+              />
+            ) : (
+              <span className="text-sm font-bold">{(agentName || "A").slice(0, 1)}</span>
+            )}
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-semibold">
+              {agentName}{" "}
+              <span className="font-normal text-gray-600">
+                is with {agencyName || agencyHandle}
+              </span>
+            </p>
+            <p className="text-xs text-gray-500">7 Apr · public</p>
+          </div>
+          <MoreHorizontal className="text-gray-500" size={22} />
+        </div>
+        <p className="shrink-0 px-4 pb-3 text-base">
+          NEW LISTING... <span className="font-semibold text-gray-500">See more</span>
+        </p>
+        <div className="mx-3 shrink-0 overflow-hidden rounded-[1.45rem]">
+          <CampaignCreative listing={listing} variant="facebook" />
+        </div>
+        <div className="mt-2 flex shrink-0 items-center justify-between border-b border-gray-200 px-4 pb-3 pt-1">
+          <div className="flex items-center gap-5">
+            <ThumbsUp className="text-blue-600" size={23} />
+            <MessageCircle className="text-gray-600" size={23} />
+            <Share2 className="text-gray-600" size={23} />
+          </div>
+          <span className="text-sm text-gray-500">5 reactions</span>
+        </div>
+        <p className="shrink-0 px-4 pt-3 text-xs text-gray-400">
+          Mockup image for seller preview.
+        </p>
+        <div className="mt-auto grid shrink-0 grid-cols-6 gap-1 border-t border-gray-200 px-3 py-3 text-center text-[9px] font-semibold text-gray-900">
+          <span className="grid place-items-center gap-1 text-blue-600">
+            <Home size={22} /> Home
+          </span>
+          <span className="grid place-items-center gap-1">
+            <Video size={22} /> Reels
+          </span>
+          <span className="grid place-items-center gap-1">
+            <Users size={22} /> Friends
+          </span>
+          <span className="grid place-items-center gap-1">
+            <Store size={22} /> Market
+          </span>
+          <span className="grid place-items-center gap-1">
+            <Bell size={22} /> Alerts
+          </span>
+          <span className="grid place-items-center gap-1">
+            <Menu size={22} /> Menu
+          </span>
+        </div>
       </div>
-      <p className="px-4 pt-3 text-xs text-gray-400">
-        Mockup image for seller preview.
-      </p>
-      <div className="grid grid-cols-6 gap-1 px-4 py-3 text-center text-[10px] font-semibold text-gray-900">
-        <span className="grid place-items-center gap-1 text-blue-600">
-          <Home size={24} /> Home
-        </span>
-        <span className="grid place-items-center gap-1">
-          <Video size={24} /> Reels
-        </span>
-        <span className="grid place-items-center gap-1">
-          <Users size={24} /> Friends
-        </span>
-        <span className="grid place-items-center gap-1">
-          <Store size={24} /> Market
-        </span>
-        <span className="grid place-items-center gap-1">
-          <Bell size={24} /> Alerts
-        </span>
-        <span className="grid place-items-center gap-1">
-          <Menu size={24} /> Menu
-        </span>
-      </div>
-    </div>
     </PhoneFrame>
   );
 }
