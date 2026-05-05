@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronDown, Sparkles } from "lucide-react";
 import { FlowProgress } from "@/components/FlowProgress";
 import { useListing } from "@/components/ListingProvider";
 import type { ComparableProperty, ListingDetails } from "@/lib/types";
@@ -69,6 +69,17 @@ export default function PropertyDetailsPage() {
           <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
             Add the essentials we need to create a polished listing pack.
           </p>
+          <div className="mt-6 grid gap-3 rounded-[1.5rem] bg-blue-50/70 p-4 ring-1 ring-blue-100 sm:grid-cols-3">
+            {["Headline", "Property type", "Key features"].map((item) => (
+              <div
+                key={item}
+                className="flex items-center gap-2 text-sm font-semibold text-blue-950"
+              >
+                <Sparkles size={15} className="text-blue-700" />
+                {item}
+              </div>
+            ))}
+          </div>
 
           <div className="mt-8 grid gap-5">
             <label>
@@ -155,9 +166,18 @@ export default function PropertyDetailsPage() {
             </label>
           </div>
 
-          <details className="mt-6 rounded-[1.5rem] bg-blue-50/70 p-5 ring-1 ring-blue-100">
-            <summary className="cursor-pointer list-none text-sm font-semibold text-blue-900">
-              Add pricing context and market links
+          <details className="group mt-6 rounded-[1.5rem] bg-blue-50/70 p-5 ring-1 ring-blue-100">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-semibold text-blue-900">
+              <span>
+                Advanced: pricing context and market links
+                <span className="mt-1 block text-xs font-medium leading-5 text-blue-800/70">
+                  Optional, but useful before a real appraisal.
+                </span>
+              </span>
+              <ChevronDown
+                className="shrink-0 transition group-open:rotate-180"
+                size={18}
+              />
             </summary>
             <div className="mt-5 grid gap-5">
               <div className="grid gap-5 sm:grid-cols-2">
@@ -256,7 +276,7 @@ export default function PropertyDetailsPage() {
             type="submit"
             className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-700 px-6 py-4 text-base font-semibold text-white shadow-card transition hover:bg-blue-800 sm:w-auto"
           >
-            Continue
+            Save & Continue
             <ArrowRight size={18} />
           </button>
         </section>

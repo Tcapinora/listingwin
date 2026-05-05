@@ -2,7 +2,13 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, CheckCircle2, Loader2, WandSparkles } from "lucide-react";
+import {
+  ArrowRight,
+  CheckCircle2,
+  ChevronDown,
+  Loader2,
+  WandSparkles,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { FlowProgress } from "@/components/FlowProgress";
 import { clampOverlay, DraggableSignboard } from "@/components/DraggableSignboard";
@@ -112,6 +118,9 @@ export default function MockupsPage() {
   );
   const showStep = (step: BuilderStepId) =>
     activeStep === "all" || activeStep === step;
+  const detailsReady = Boolean(
+    listing.details.address || listing.details.headline || listing.details.keyFeatures,
+  );
 
   useEffect(() => {
     if (selectedSignboard) {
@@ -206,6 +215,21 @@ export default function MockupsPage() {
               We’ll generate everything you need for a polished listing
               presentation.
             </p>
+            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+              {[
+                detailsReady ? "Property story ready" : "Property story missing",
+                primaryPropertyPhoto ? "Media ready" : "Media optional",
+                "Visual tools included",
+              ].map((item, index) => (
+                <div
+                  key={item}
+                  className="rounded-2xl bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700 ring-1 ring-slate-100"
+                >
+                  <span className="mr-2 text-blue-700">{index + 1}</span>
+                  {item}
+                </div>
+              ))}
+            </div>
           </div>
           <div className="lg:text-right">
             <button
@@ -247,24 +271,44 @@ export default function MockupsPage() {
         </div>
       </section>
 
-      <section className="sticky top-[73px] z-20 mb-6 rounded-3xl border border-blue-100 bg-blue-50/90 p-4 shadow-sm backdrop-blur no-print">
-        <div className="flex flex-wrap gap-2">
-          {builderSteps.map((step) => (
-            <button
-              key={step.id}
-              type="button"
-              onClick={() => setActiveStep(step.id)}
-              className={`rounded-full px-4 py-2 text-xs font-semibold shadow-sm transition ${
-                activeStep === step.id
-                  ? "bg-blue-700 text-white"
-                  : "bg-white text-blue-900 hover:bg-blue-100"
-              }`}
-            >
-              {step.label}
-            </button>
-          ))}
-        </div>
-      </section>
+      <details
+        className="group rounded-[2rem] bg-white p-4 shadow-card ring-1 ring-blue-50 no-print sm:p-5"
+        open={generationState === "success" || hasAnySignboard}
+      >
+        <summary className="flex cursor-pointer list-none items-center justify-between gap-4 rounded-[1.5rem] bg-blue-50 px-4 py-4">
+          <span>
+            <span className="block text-sm font-semibold text-blue-950">
+              Fine-tune the visual mockups
+            </span>
+            <span className="mt-1 block text-xs leading-5 text-blue-800/70">
+              Optional controls for signboards, open home, brochure, portal,
+              and social previews.
+            </span>
+          </span>
+          <ChevronDown
+            className="shrink-0 text-blue-800 transition group-open:rotate-180"
+            size={19}
+          />
+        </summary>
+
+        <section className="sticky top-[73px] z-20 my-5 rounded-3xl border border-blue-100 bg-blue-50/90 p-4 shadow-sm backdrop-blur">
+          <div className="flex flex-wrap gap-2">
+            {builderSteps.map((step) => (
+              <button
+                key={step.id}
+                type="button"
+                onClick={() => setActiveStep(step.id)}
+                className={`rounded-full px-4 py-2 text-xs font-semibold shadow-sm transition ${
+                  activeStep === step.id
+                    ? "bg-blue-700 text-white"
+                    : "bg-white text-blue-900 hover:bg-blue-100"
+                }`}
+              >
+                {step.label}
+              </button>
+            ))}
+          </div>
+        </section>
 
       <section
         className={`rounded-3xl border border-gray-200 bg-white p-6 shadow-card lg:p-8 ${
@@ -640,6 +684,7 @@ export default function MockupsPage() {
         </MockupCard>
         </div>
       </section>
+      </details>
 
       <div className="mt-8 flex flex-wrap justify-between gap-3">
         <Link

@@ -27,6 +27,13 @@ export const demoListingState: ListingState = {
   details: {
     ...emptyListingState.details,
     address: "42 Seaview Avenue, Paddington",
+    headline: "Elevated character home with a premium family lifestyle",
+    propertyType: "House",
+    bedrooms: "4",
+    bathrooms: "2",
+    carSpaces: "2",
+    keyFeatures:
+      "renovated kitchen, leafy outlook, covered entertaining, strong street appeal, and family-friendly layout",
     agentName: demoAgentProfile.agentName,
     agencyName: demoAgentProfile.agencyName,
     agencyWebsite: demoAgentProfile.agencyWebsite,

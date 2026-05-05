@@ -6,10 +6,11 @@ import { PageHeader } from "@/components/PageHeader";
 import { PrimaryLink } from "@/components/Buttons";
 import { useListing } from "@/components/ListingProvider";
 import { useAgentProfile } from "@/components/AgentProfileProvider";
+import { demoAgentProfile, demoListingState } from "@/lib/demoData";
 
 export default function DashboardPage() {
-  const { listing } = useListing();
-  const { profile } = useAgentProfile();
+  const { listing, setListing } = useListing();
+  const { profile, replaceProfile } = useAgentProfile();
   const hasListing = Boolean(listing.details.address.trim());
   const hasImages = Boolean(
     listing.propertyPhotos.length || listing.assets.propertyPhoto,
@@ -34,13 +35,23 @@ export default function DashboardPage() {
               the address, add the media, generate the pack, then review and
               present.
             </p>
-            <div className="mt-8">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <PrimaryLink href="/create">
                 <span className="inline-flex items-center gap-2">
                   <Plus size={18} />
                   Create New Listing
                 </span>
               </PrimaryLink>
+              <button
+                type="button"
+                onClick={() => {
+                  replaceProfile(demoAgentProfile);
+                  setListing(demoListingState);
+                }}
+                className="inline-flex items-center justify-center rounded-full bg-white/10 px-5 py-3 text-sm font-semibold text-white ring-1 ring-white/20 transition hover:bg-white/15"
+              >
+                Load demo listing
+              </button>
             </div>
           </div>
 
@@ -137,7 +148,19 @@ export default function DashboardPage() {
               Create your first listing in under 60 seconds.
             </p>
             <div className="mt-7">
-              <PrimaryLink href="/create">Create New Listing</PrimaryLink>
+              <div className="flex flex-col justify-center gap-3 sm:flex-row">
+                <PrimaryLink href="/create">Create New Listing</PrimaryLink>
+                <button
+                  type="button"
+                  onClick={() => {
+                    replaceProfile(demoAgentProfile);
+                    setListing(demoListingState);
+                  }}
+                  className="inline-flex items-center justify-center rounded-full border border-blue-200 bg-white px-5 py-3 text-sm font-semibold text-blue-900 shadow-sm transition hover:border-blue-300"
+                >
+                  Load demo listing
+                </button>
+              </div>
             </div>
           </article>
         )}
