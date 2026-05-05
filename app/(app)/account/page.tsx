@@ -174,9 +174,9 @@ export default function AccountPage() {
               Account structure
             </p>
             <p className="mt-3 text-sm leading-6 text-gray-300">
-              This MVP stores account and presentation data locally. Later, this
-              maps cleanly to user login, agency workspaces, team members, and a
-              cloud presentation library.
+              Your agent profile, brand assets, and saved presentations live
+              here so each new vendor presentation starts with the essentials
+              already in place.
             </p>
           </div>
         </aside>

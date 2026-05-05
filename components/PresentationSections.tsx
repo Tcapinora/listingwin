@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { Smartphone } from "lucide-react";
 import { useState } from "react";
 import { useAgentProfile } from "@/components/AgentProfileProvider";
@@ -37,8 +36,8 @@ function PresentationChapter({
   children: React.ReactNode;
 }) {
   return (
-    <section className="mt-12">
-      <div className="mb-6 flex flex-col justify-between gap-4 border-t border-blue-100 pt-8 lg:flex-row lg:items-end">
+    <section className="mt-10">
+      <div className="mb-6 flex flex-col justify-between gap-4 border-t border-slate-200 pt-8 lg:flex-row lg:items-end">
         <div className="max-w-3xl">
           <p className="inline-flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
             <span className="grid h-8 w-8 place-items-center rounded-full bg-blue-700 text-[11px] text-white">
@@ -46,7 +45,7 @@ function PresentationChapter({
             </span>
             {eyebrow}
           </p>
-          <h2 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950">
+          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
             {title}
           </h2>
           {description ? (
@@ -71,19 +70,19 @@ export function PresentationFlowNav() {
   ];
 
   return (
-    <section className="no-print mt-8 rounded-3xl border border-blue-100 bg-white p-5 shadow-card">
+    <section className="no-print mt-8 rounded-3xl border border-slate-200 bg-white p-5 shadow-card">
       <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
-            Seller room flow
+            Vendor room flow
           </p>
           <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">
-            One clean seller-facing path.
+            One calm presentation path.
           </h2>
         </div>
         <p className="max-w-md text-sm leading-6 text-slate-500">
-          This is the presentation the owner sees. Strategy prompts and agent
-          notes stay out of the seller-facing deck.
+          This is the view the vendor sees. Agent prompts and working notes
+          stay in the Agent Workspace.
         </p>
       </div>
       <div className="mt-5 flex flex-wrap gap-2">
@@ -112,7 +111,7 @@ export function SellerMobilePreview({ listing }: { listing: ListingState }) {
       <div className="flex flex-col justify-center">
         <p className="inline-flex w-fit items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-gray-200">
           <Smartphone size={16} />
-          Mobile seller view
+          Mobile vendor view
         </p>
         <h2 className="mt-5 text-4xl font-semibold tracking-tight">
           Show the vendor the campaign in the format buyers will actually see.
@@ -120,7 +119,7 @@ export function SellerMobilePreview({ listing }: { listing: ListingState }) {
         <p className="mt-5 max-w-xl text-base leading-8 text-gray-300">
           Use this phone preview during the appraisal to make the campaign feel
           tangible: property creative, agent brand, social context, and direct
-          contact details in one seller-friendly view.
+          contact details in one clean view.
         </p>
       </div>
 
@@ -176,7 +175,7 @@ export function HeroPresentation({ listing }: { listing: ListingState }) {
 
   return (
     <section className="relative overflow-hidden rounded-3xl bg-gray-950 text-white shadow-soft">
-      <div className="relative aspect-[16/8] min-h-[460px]">
+      <div className="relative aspect-[16/8] min-h-[420px]">
         {propertyPhoto ? (
           <Image
             src={propertyPhoto}
@@ -198,17 +197,6 @@ export function HeroPresentation({ listing }: { listing: ListingState }) {
           <p className="mt-5 max-w-[34rem] text-base leading-7 text-gray-100 sm:max-w-[38rem] sm:text-lg sm:leading-8 lg:max-w-2xl">
             {generatePropertyWriteup(details)}
           </p>
-          <div className="no-print mt-6 flex flex-wrap items-center gap-3">
-            <Link
-              href="/create"
-              className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-gray-950 shadow-card"
-            >
-              Edit opening write-up
-            </Link>
-            <p className="text-sm text-gray-200">
-              This text uses the property address and short campaign notes.
-            </p>
-          </div>
         </div>
       </div>
     </section>
@@ -270,7 +258,7 @@ export function PresentationGrid({ listing }: { listing: ListingState }) {
         number="01"
         eyebrow="Price story"
         title="Separate the mathematical price from the emotional price."
-        description="Give the seller a clear distinction between evidence-based pricing and the emotional upside a strong campaign can create."
+        description="Give the vendor a clear distinction between evidence-based pricing and the emotional upside a strong campaign can create."
       >
         <PriceConfidenceSection listing={listing} />
       </PresentationChapter>
@@ -279,7 +267,7 @@ export function PresentationGrid({ listing }: { listing: ListingState }) {
         number="02"
         eyebrow="Current competition"
         title="Show the current competition."
-        description="Market proof helps the seller feel the agent has done the thinking before asking for the listing."
+        description="Market proof helps the vendor feel the agent has done the thinking before asking for the listing."
       >
         <MarketExpertSection listing={listing} />
       </PresentationChapter>
@@ -288,7 +276,7 @@ export function PresentationGrid({ listing }: { listing: ListingState }) {
         number="03"
         eyebrow="Visual previews"
         title="Show the first impression buyers will remember."
-        description="The seller can now see their home through the buyer’s eyes before the campaign exists."
+        description="The vendor can now see their home through the buyer’s eyes before the campaign exists."
       >
         <section className="rounded-3xl border border-blue-100 bg-white p-5 shadow-card lg:p-7">
           <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
@@ -326,7 +314,7 @@ export function PresentationGrid({ listing }: { listing: ListingState }) {
         number="04"
         eyebrow="Sale calendar"
         title="Show the campaign calendar."
-        description="A visible calendar helps the seller understand exactly what happens after they appoint the agent."
+        description="A visible calendar helps the vendor understand exactly what happens after they appoint the agent."
       >
         <CampaignTimelineSection listing={listing} />
       </PresentationChapter>

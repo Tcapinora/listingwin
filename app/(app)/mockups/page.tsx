@@ -324,7 +324,7 @@ export default function MockupsPage() {
         <StepHeader
           step="Visual setup"
           title="Upload signboard options"
-          description="Add one or two board designs. ListingWin removes the background as an MVP cutout, then each option keeps its own position and size on the property photo."
+          description="Add one or two board designs. ListingWin removes the background and keeps each option’s position and size separate on the property photo."
         />
         <div className="grid gap-5 lg:grid-cols-2">
           <UploadCard
@@ -440,9 +440,8 @@ export default function MockupsPage() {
               Demo-ready creative in one pass.
             </h2>
             <p className="mt-4 leading-7 text-gray-300">
-              The MVP keeps this fast and controllable. Production can add
-              property photo search, cleaner AI cutouts, automatic signboard
-              perspective matching, and PDF export from this screen.
+              Keep the creative fast and controllable. Adjust the board, then
+              show the vendor a clear preview of how the campaign will look.
             </p>
           </div>
           <WriteupPanel listing={listing} />
@@ -659,9 +658,8 @@ export default function MockupsPage() {
           />
         </div>
         <p className="mt-5 rounded-2xl bg-blue-50 p-4 text-sm leading-6 text-blue-900">
-          MVP note: screenshots are used as visual style references. For the
-          paid version, AI template detection can identify the image area and
-          replace it with higher precision.
+          Uploading style references keeps the social previews closer to the
+          agent’s real marketing without slowing down the preparation flow.
         </p>
       </section>
 
@@ -673,7 +671,7 @@ export default function MockupsPage() {
         <StepHeader
           step="Presentation preview set"
           title="Final vendor-facing previews"
-          description="Review the remaining seller-facing marketing pieces that have not already been shown in the builder above."
+          description="Review the remaining vendor-facing marketing pieces before opening presentation mode."
         />
         <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
         <MockupCard title="Brochure book preview">

@@ -679,8 +679,8 @@ export function SitePlanPreview({ listing }: { listing: ListingState }) {
               {address}
             </h4>
             <p className="mt-2 text-sm leading-6 text-gray-500">
-              MVP concept only. Production can add AI-assisted boundary tracing,
-              labels, scale, and editable shapes.
+              A clean concept plan for the presentation. Use it as a visual aid,
+              not as a survey or legal drawing.
             </p>
           </div>
         </div>

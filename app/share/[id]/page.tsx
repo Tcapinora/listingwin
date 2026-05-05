@@ -40,9 +40,8 @@ export default function SharedPresentationPage({
             Presentation not available
           </h1>
           <p className="mt-3 text-sm leading-6 text-gray-500">
-            This MVP share link reads from localStorage, so it works on the
-            same browser that created it. A production version would load this
-            from a hosted share token.
+            This presentation is not available in this browser. Open it from
+            the account that created the share link.
           </p>
           <Link
             href="/account"

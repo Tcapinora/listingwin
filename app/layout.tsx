@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "ListingWin",
-  description: "Premium real estate listing mockup prototype",
+  description: "Premium vendor presentation workspace for real estate agents",
 };
 
 export default function RootLayout({

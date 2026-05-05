@@ -236,7 +236,7 @@ export function DashboardValuePanel({ listing }: { listing: ListingState }) {
       <div className="rounded-3xl bg-blue-950 p-6 text-white shadow-soft lg:p-8">
         <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-gray-200">
           <Sparkles size={16} />
-          $39/mo command centre
+          Listing appointment system
         </p>
         <h2 className="mt-5 max-w-2xl text-4xl font-semibold tracking-tight">
           Give {agentName} the appraisal system they will not want to give up.
@@ -311,15 +311,14 @@ export function AppraisalCommandCentre({ listing }: { listing: ListingState }) {
         <div className="bg-blue-950 p-7 text-white lg:p-8">
           <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-blue-100">
             <Trophy size={16} />
-            Appraisal command centre
+            Listing readiness
           </p>
           <h2 className="mt-5 text-4xl font-semibold tracking-tight">
             {readyCount}/6 readiness checks complete
           </h2>
           <p className="mt-4 text-sm leading-6 text-blue-100">
-            A $39/month product should make the agent feel unusually prepared.
-            This turns ListingWin into the pre-listing operating system, not
-            just a design tool.
+            This gives the agent a calm pre-listing system, not just a design
+            tool.
           </p>
           <Link
             href="/presentation"
@@ -1045,10 +1044,8 @@ export function PriceConfidenceSection({ listing }: { listing: ListingState }) {
       </div>
 
       <p className="mt-5 rounded-2xl bg-slate-50 p-4 text-sm leading-6 text-slate-500">
-        Use this as an appraisal-room confidence indicator: it tells the seller
+        Use this as an appraisal-room confidence indicator: it tells the vendor
         how well-supported the price conversation is before the campaign begins.
-        Production can strengthen it with live on-market listings, sold results,
-        suburb trends, and property portal data.
       </p>
       <div className="mt-5 grid gap-4 lg:grid-cols-2">
         <div className="rounded-2xl bg-blue-50/70 p-5">
@@ -1114,8 +1111,7 @@ export function MarketExpertSection({ listing }: { listing: ListingState }) {
           </h2>
         </div>
         <p className="max-w-md text-sm leading-6 text-slate-600">
-          These links are saved as prepared market proof in the MVP. Production
-          can later read property data automatically, but the seller already sees
+          These links are saved as prepared market proof so the vendor can see
           that the agent has compared the right homes before the meeting.
         </p>
       </div>
@@ -1632,8 +1628,8 @@ export function FollowUpAutomationSection({
             Remind the agent when to follow up and what to say.
           </h2>
           <p className="mt-4 max-w-3xl text-sm leading-6 text-slate-600">
-            MVP reminders stay local. Production can connect this to CRM tasks,
-            calendar alerts, email/SMS templates, and AI-generated scripts.
+            Keep the next step visible so the agent knows who to call, when to
+            follow up, and what to say after the appointment.
           </p>
         </div>
         <div className="rounded-2xl bg-blue-700 px-5 py-4 text-white">
@@ -1856,10 +1852,10 @@ export function Form6PrototypeSection() {
             Explain the appointment before anyone signs.
           </h2>
           <p className="mt-4 max-w-3xl text-sm leading-6 text-slate-600">
-            ListingWin should not replace a signing system. Instead, it can help
-            the agent walk the seller through the agency’s Form 6 in plain
-            English: what each page means, why it matters, and the questions a
-            seller usually asks before appointing an agent.
+            ListingWin is not a signing system. It helps the agent walk the
+            vendor through the agency’s Form 6 in plain English: what each page
+            means, why it matters, and the questions a vendor usually asks
+            before appointing an agent.
           </p>
         </div>
         <label className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-blue-200 bg-white px-5 py-3 text-sm font-semibold text-blue-900 shadow-sm">
@@ -1995,7 +1991,7 @@ export function Form6PrototypeSection() {
               "The agent can answer common concerns without asking the seller to read dense legal wording during the appraisal.",
             ],
             [
-              "Production workflow",
+              "Agency workflow",
               "Once the seller is comfortable, the final Form 6 should be completed and signed through the agency’s approved compliance process.",
             ],
           ].map(([title, body]) => (

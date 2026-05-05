@@ -8,8 +8,10 @@ import {
   CheckCircle2,
   Copy,
   FileText,
+  Handshake,
   MonitorPlay,
   Share2,
+  Target,
   Users,
   type LucideIcon,
 } from "lucide-react";
@@ -71,6 +73,23 @@ export default function DraftPage() {
     ["Buyer Database", "#buyer-database", Users],
     ["Sale Calendar", "#sale-calendar", CalendarDays],
     ["Form 6 Explainer", "#form-6", FileText],
+  ];
+  const workspaceStages: Array<[string, string, string]> = [
+    [
+      "1",
+      "Next best action",
+      "Use follow-up, buyer demand, and the calendar to move the vendor forward.",
+    ],
+    [
+      "2",
+      "Decision support",
+      "Handle price, marketing, objections, and campaign confidence.",
+    ],
+    [
+      "3",
+      "Commitment",
+      "Prepare the agreement conversation and the final next step.",
+    ],
   ];
 
   return (
@@ -146,9 +165,9 @@ export default function DraftPage() {
 
         <div className="mt-8 grid gap-4 lg:grid-cols-3">
           {[
-            ["Listing Description", writeup],
-            ["Social Caption", socialCaption],
-            ["Key Features", keyFeatures],
+            ["Vendor follow-up copy", writeup],
+            ["Social caption", socialCaption],
+            ["Property strengths", keyFeatures],
           ].map(([title, content]) => (
             <article key={title} className="rounded-[1.5rem] bg-slate-50 p-5">
               <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-slate-950">
@@ -162,14 +181,14 @@ export default function DraftPage() {
 
         <div className="mt-8 rounded-[1.5rem] bg-blue-950 p-5 text-white">
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-200">
-            Seller presentation
+            Vendor presentation
           </p>
           <div className="mt-4 flex flex-col gap-3 sm:flex-row">
             <Link
               href="/presentation"
               className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-4 text-base font-semibold text-blue-950 shadow-card"
             >
-              Open presentation
+              Open Vendor Presentation
               <MonitorPlay size={18} />
             </Link>
             <button
@@ -209,10 +228,29 @@ export default function DraftPage() {
               className="inline-flex items-center justify-center gap-2 rounded-full bg-white/10 px-6 py-4 text-base font-semibold text-white ring-1 ring-white/15"
             >
               <Copy size={18} />
-              Copy Text
+              Copy Follow-Up
             </button>
           </div>
         </div>
+      </section>
+
+      <section className="mt-8 grid gap-4 lg:grid-cols-3">
+        {workspaceStages.map(([number, title, text]) => (
+          <article
+            key={title}
+            className="rounded-[1.75rem] bg-white p-5 shadow-card ring-1 ring-slate-200/70"
+          >
+            <div className="flex items-center gap-3">
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-blue-700 text-sm font-semibold text-white">
+                {number}
+              </span>
+              <h2 className="text-lg font-semibold tracking-tight text-slate-950">
+                {title}
+              </h2>
+            </div>
+            <p className="mt-3 text-sm leading-6 text-slate-500">{text}</p>
+          </article>
+        ))}
       </section>
 
       <section
@@ -232,6 +270,20 @@ export default function DraftPage() {
             reporting, objection handling, and appointment preparation.
           </p>
         </div>
+      </section>
+
+      <section className="mt-10 rounded-[2rem] bg-slate-950 p-6 text-white shadow-soft sm:p-8">
+        <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-blue-100">
+          <Target size={16} />
+          Next best action
+        </p>
+        <h2 className="mt-5 text-3xl font-semibold tracking-tight">
+          Who do we call, and what happens next?
+        </h2>
+        <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-300">
+          Start here after the presentation. The agent should leave the room
+          with a clear follow-up, buyer plan, and date-driven campaign rhythm.
+        </p>
       </section>
 
       <BuyerMatchEngineSection listing={listing} onUpdate={setListing} />
@@ -257,12 +309,42 @@ export default function DraftPage() {
         <SaleCalendar />
       </section>
 
+      <section className="mt-10 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-slate-200/70 sm:p-8">
+        <p className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
+          <Handshake size={16} />
+          Decision support
+        </p>
+        <h2 className="mt-5 text-3xl font-semibold tracking-tight text-slate-950">
+          Give the vendor confidence to move forward.
+        </h2>
+        <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
+          Use these sections to talk through buyer demand, campaign feedback,
+          fee confidence, and the seller’s next decision without overwhelming
+          the room.
+        </p>
+      </section>
+
       <VendorReportSection listing={listing} />
       <SellerFollowUpSection listing={listing} />
       <BuyerDemandSection listing={listing} />
       <CommissionDefenceSection />
       <AppraisalScriptSection listing={listing} />
       <AgentNotesSection listing={listing} />
+
+      <section className="mt-10 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-slate-200/70 sm:p-8">
+        <p className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
+          <FileText size={16} />
+          Commitment
+        </p>
+        <h2 className="mt-5 text-3xl font-semibold tracking-tight text-slate-950">
+          Make the agreement conversation easier.
+        </h2>
+        <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
+          Walk through the appointment documents in plain language so the
+          vendor feels informed before they proceed through the agency’s normal
+          signing process.
+        </p>
+      </section>
 
       <div id="form-6">
         <Form6PrototypeSection />
@@ -275,7 +357,7 @@ export default function DraftPage() {
               Final Preview
             </p>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight">
-              What the seller is about to see
+              What the vendor sees
             </h2>
           </div>
           <Link
@@ -306,7 +388,7 @@ export default function DraftPage() {
             href="/presentation"
             className="inline-flex items-center gap-2 rounded-full bg-blue-700 px-6 py-4 text-base font-semibold text-white shadow-card"
           >
-            Continue
+            Open Vendor Presentation
             <ArrowRight size={18} />
           </Link>
         </div>
