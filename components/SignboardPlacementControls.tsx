@@ -23,23 +23,15 @@ export function SignboardPlacementControls({
   overlay: OverlayState;
   onChange: (overlay: OverlayState) => void;
 }) {
-  const nudge = (change: Partial<OverlayState>) =>
-    onChange(
-      clampOverlay({
-        ...overlay,
-        ...change,
-      }),
-    );
-
   return (
-    <div className="mt-5 rounded-2xl border border-gray-200 bg-gray-50 p-4">
+    <div className="mt-5 rounded-2xl border border-blue-100 bg-blue-50/70 p-4">
       <div className="mb-4 flex items-center justify-between gap-4">
         <div>
-          <h3 className="text-sm font-semibold text-gray-950">
-            Board placement
+          <h3 className="text-sm font-semibold text-blue-950">
+            Signboard placement
           </h3>
-          <p className="mt-1 text-sm text-gray-500">
-            Drag the board on the photo, or fine tune its position and size here.
+          <p className="mt-1 text-sm text-blue-900/70">
+            Drag the board on the photo, or fine tune position and size here.
           </p>
         </div>
         <button
@@ -51,32 +43,12 @@ export function SignboardPlacementControls({
               width: 24,
             })
           }
-          className="grid h-9 w-9 place-items-center rounded-full border border-gray-200 bg-white text-gray-500 transition hover:border-gray-300 hover:text-gray-950"
+          className="grid h-9 w-9 place-items-center rounded-full border border-blue-100 bg-white text-blue-700 transition hover:border-blue-300"
           aria-label="Reset board placement"
           title="Reset board placement"
         >
           <RotateCcw size={15} />
         </button>
-      </div>
-
-      <div className="mb-4 flex flex-wrap gap-2">
-        {[
-          ["Left", { x: overlay.x - 2 }],
-          ["Right", { x: overlay.x + 2 }],
-          ["Up", { y: overlay.y - 2 }],
-          ["Down", { y: overlay.y + 2 }],
-          ["Smaller", { width: overlay.width - 3 }],
-          ["Larger", { width: overlay.width + 3 }],
-        ].map(([label, change]) => (
-          <button
-            key={label as string}
-            type="button"
-            onClick={() => nudge(change as Partial<OverlayState>)}
-            className="rounded-full border border-blue-100 bg-white px-3 py-2 text-xs font-semibold text-blue-900 transition hover:border-blue-200 hover:bg-blue-50"
-          >
-            {label as string}
-          </button>
-        ))}
       </div>
 
       <div className="grid gap-4 lg:grid-cols-3">
@@ -108,7 +80,7 @@ export function SignboardPlacementControls({
                   }),
                 )
               }
-              className="w-full accent-gray-950"
+              className="w-full accent-blue-700"
             />
           </label>
         ))}

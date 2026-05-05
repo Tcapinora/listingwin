@@ -75,26 +75,27 @@ export function UploadCard({
             <span className="text-xs text-gray-500">PNG, JPG, or WebP</span>
           </span>
         )}
+        <input
+          id={inputId}
+          type="file"
+          accept="image/*"
+          className="sr-only"
+          onChange={(event) => {
+            const file = event.target.files?.[0];
+
+            if (!file) {
+              return;
+            }
+
+            void fileToOptimizedDataUrl(
+              file,
+              assetKey === "agencyLogo" ? 800 : 1200,
+              0.86,
+            ).then((value) => onChange(assetKey, value));
+            event.currentTarget.value = "";
+          }}
+        />
       </label>
-      <input
-        id={inputId}
-        type="file"
-        accept="image/*"
-        className="sr-only"
-        onChange={(event) => {
-          const file = event.target.files?.[0];
-
-          if (!file) {
-            return;
-          }
-
-          void fileToOptimizedDataUrl(
-            file,
-            assetKey === "agencyLogo" ? 800 : 1200,
-            0.86,
-          ).then((value) => onChange(assetKey, value));
-        }}
-      />
     </div>
   );
 }

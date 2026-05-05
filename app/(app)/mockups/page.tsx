@@ -436,27 +436,6 @@ export default function MockupsPage() {
                 Option 2 are positioned separately.
               </p>
             </div>
-            <div className="inline-flex rounded-full border border-blue-100 bg-blue-50 p-1">
-              {(["signboard1", "signboard2"] as const).map((option, index) => (
-                <button
-                  key={option}
-                  type="button"
-                  onClick={() =>
-                    setListing((current) => ({
-                      ...current,
-                      activeSignboard: option,
-                    }))
-                  }
-                  className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-                    listing.activeSignboard === option
-                      ? "bg-blue-700 text-white"
-                      : "text-blue-900 hover:bg-white"
-                  }`}
-                >
-                  Option {index + 1}
-                </button>
-              ))}
-            </div>
           </div>
 
           <DraggableSignboard
@@ -491,6 +470,67 @@ export default function MockupsPage() {
         </div>
 
         <div className="space-y-6">
+          <div className="rounded-2xl border border-gray-200 bg-white p-5">
+            <h3 className="text-sm font-semibold text-gray-950">
+              Select signboard to move
+            </h3>
+            <p className="mt-1 text-sm leading-6 text-gray-500">
+              Choose option 1 or 2, then drag it on the image or resize it with
+              the corner handle. Each option keeps its own placement.
+            </p>
+            <div className="mt-4 grid gap-3">
+              {(["signboard1", "signboard2"] as const).map((option, index) => {
+                const signboard = listing.assets[option];
+                const active = listing.activeSignboard === option;
+
+                return (
+                  <button
+                    key={option}
+                    type="button"
+                    onClick={() =>
+                      setListing((current) => ({
+                        ...current,
+                        activeSignboard: option,
+                      }))
+                    }
+                    className={`flex items-center gap-4 rounded-2xl border p-3 text-left transition ${
+                      active
+                        ? "border-blue-700 bg-blue-50"
+                        : "border-gray-200 hover:border-blue-200"
+                    }`}
+                  >
+                    <span className="checkerboard relative grid h-20 w-24 shrink-0 place-items-center overflow-hidden rounded-xl bg-white">
+                      {signboard ? (
+                        <Image
+                          src={signboard}
+                          alt={`Signboard option ${index + 1}`}
+                          fill
+                          className="object-contain p-2"
+                          unoptimized
+                        />
+                      ) : (
+                        <span className="px-2 text-center text-xs font-semibold text-gray-500">
+                          Upload first
+                        </span>
+                      )}
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-sm font-semibold text-gray-950">
+                        Option {index + 1}
+                      </span>
+                      <span className="mt-1 block text-xs leading-5 text-gray-500">
+                        {signboard
+                          ? active
+                            ? "Selected for placement"
+                            : "Tap to move this option"
+                          : "Add artwork in the upload section"}
+                      </span>
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
           <div className="rounded-3xl bg-gray-950 p-7 text-white shadow-soft">
             <div className="mb-5 grid h-12 w-12 place-items-center rounded-2xl bg-white text-gray-950">
               <WandSparkles size={20} />
