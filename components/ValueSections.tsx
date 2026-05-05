@@ -699,6 +699,37 @@ export function CampaignTimelineSection({ listing }: { listing: ListingState }) 
   const events = [...listing.saleCalendarEvents].sort((a, b) =>
     a.date.localeCompare(b.date),
   );
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  const firstEventDate = events[0]?.date
+    ? new Date(`${events[0].date}T00:00:00`)
+    : new Date();
+  const year = firstEventDate.getFullYear();
+  const month = firstEventDate.getMonth();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const leadingEmptyDays = (new Date(year, month, 1).getDay() + 6) % 7;
+  const calendarCells = [
+    ...Array.from({ length: leadingEmptyDays }, () => null),
+    ...Array.from({ length: daysInMonth }, (_, index) => index + 1),
+  ];
+  const eventMap = events.reduce<Record<string, typeof events>>((map, event) => {
+    map[event.date] = [...(map[event.date] || []), event];
+    return map;
+  }, {});
+  const monthLabel = `${monthNames[month]} ${year}`;
 
   return (
     <section className="mt-10 rounded-3xl border border-blue-100 bg-white p-7 shadow-card">
@@ -725,20 +756,123 @@ export function CampaignTimelineSection({ listing }: { listing: ListingState }) 
       </div>
 
       {events.length ? (
-        <div className="mt-7 grid gap-4 lg:grid-cols-3">
-          {events.slice(0, 9).map((event) => (
-            <div key={event.id} className="rounded-2xl bg-blue-50/70 p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">
-                {event.type}
-              </p>
-              <p className="mt-3 text-2xl font-semibold tracking-tight text-slate-950">
-                {event.date}
-              </p>
-              <p className="mt-2 text-sm leading-6 text-slate-600">
-                {event.title}
+        <div className="mt-7 grid gap-6 xl:grid-cols-[1fr_340px]">
+          <div className="overflow-hidden rounded-3xl border border-blue-100 bg-slate-50">
+            <div className="flex flex-col justify-between gap-3 bg-blue-950 p-5 text-white sm:flex-row sm:items-end">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-200">
+                  Campaign month
+                </p>
+                <h3 className="mt-2 text-3xl font-semibold tracking-tight">
+                  {monthLabel}
+                </h3>
+              </div>
+              <p className="text-sm text-blue-100">
+                {events.length} planned milestone{events.length === 1 ? "" : "s"}
               </p>
             </div>
-          ))}
+            <div className="overflow-x-auto p-4">
+              <div className="grid min-w-[720px] grid-cols-7 gap-2">
+                {weekDays.map((day) => (
+                  <div
+                    key={day}
+                    className="px-3 py-2 text-center text-xs font-semibold uppercase tracking-[0.14em] text-slate-500"
+                  >
+                    {day}
+                  </div>
+                ))}
+                {calendarCells.map((day, index) => {
+                  if (!day) {
+                    return (
+                      <div
+                        key={`empty-${index}`}
+                        className="min-h-28 rounded-2xl bg-white/45"
+                      />
+                    );
+                  }
+
+                  const dateKey = `${year}-${String(month + 1).padStart(
+                    2,
+                    "0",
+                  )}-${String(day).padStart(2, "0")}`;
+                  const dayEvents = eventMap[dateKey] || [];
+                  const hasEvents = dayEvents.length > 0;
+
+                  return (
+                    <div
+                      key={dateKey}
+                      className={`min-h-28 rounded-2xl p-3 ring-1 ${
+                        hasEvents
+                          ? "bg-white shadow-card ring-blue-200"
+                          : "bg-white/75 ring-slate-100"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <span
+                          className={`grid h-8 w-8 place-items-center rounded-full text-sm font-semibold ${
+                            hasEvents
+                              ? "bg-blue-700 text-white"
+                              : "bg-slate-100 text-slate-500"
+                          }`}
+                        >
+                          {day}
+                        </span>
+                      </div>
+                      {hasEvents ? (
+                        <div className="mt-3 space-y-2">
+                          {dayEvents.slice(0, 2).map((event) => (
+                            <div
+                              key={event.id}
+                              className="rounded-xl bg-blue-50 px-3 py-2"
+                            >
+                              <p className="truncate text-[11px] font-semibold uppercase tracking-[0.12em] text-blue-700">
+                                {event.type}
+                              </p>
+                              <p className="mt-1 line-clamp-2 text-xs font-semibold leading-4 text-slate-700">
+                                {event.title}
+                              </p>
+                            </div>
+                          ))}
+                          {dayEvents.length > 2 ? (
+                            <p className="text-xs font-semibold text-blue-700">
+                              +{dayEvents.length - 2} more
+                            </p>
+                          ) : null}
+                        </div>
+                      ) : null}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          <aside className="rounded-3xl bg-blue-50/70 p-5 ring-1 ring-blue-100">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
+              Key campaign dates
+            </p>
+            <div className="mt-5 grid gap-3">
+              {events.slice(0, 8).map((event) => (
+                <div key={event.id} className="rounded-2xl bg-white p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-700">
+                    {event.type}
+                  </p>
+                  <p className="mt-2 text-lg font-semibold tracking-tight text-slate-950">
+                    {new Date(`${event.date}T00:00:00`).toLocaleDateString(
+                      "en-AU",
+                      {
+                        day: "numeric",
+                        month: "short",
+                      },
+                    )}
+                  </p>
+                  <p className="mt-1 text-sm leading-5 text-slate-600">
+                    {event.title}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </aside>
         </div>
       ) : (
         <div className="mt-7 rounded-2xl bg-blue-50/70 p-6">
