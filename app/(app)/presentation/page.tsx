@@ -55,21 +55,24 @@ export default function PresentationPage() {
     <>
       <section className="no-print sticky top-0 z-40 border-b border-blue-100 bg-white/92 px-4 py-3 shadow-sm backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
-              Seller presentation mode
-            </p>
-            <h1 className="mt-1 text-xl font-semibold tracking-tight text-slate-950">
+          <div className="flex flex-wrap items-center gap-3">
+            <a
+              href="#presentation-start"
+              className="inline-flex items-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card"
+            >
+              Presentation
+            </a>
+            <p className="text-sm font-semibold text-slate-600">
               Scroll through this with the seller.
-            </h1>
+            </p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Link
-              href="/mockups"
+              href="/details"
               className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2.5 text-sm font-semibold text-blue-900 shadow-sm"
             >
               <Pencil size={16} />
-              Edit
+              Edit setup
             </Link>
             <button
               type="button"
@@ -175,7 +178,10 @@ export default function PresentationPage() {
       ) : null}
 
       {readiness.isReady ? (
-      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-5 lg:px-8 lg:py-8">
+      <div
+        id="presentation-start"
+        className="mx-auto max-w-7xl px-4 py-6 sm:px-5 lg:px-8 lg:py-8"
+      >
         <section className="mb-6 rounded-[2rem] bg-white p-5 shadow-card ring-1 ring-blue-50 lg:p-7">
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
             Seller-facing presentation

@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import { ArrowRight, ChevronDown, Sparkles } from "lucide-react";
 import { FlowProgress } from "@/components/FlowProgress";
 import { useListing } from "@/components/ListingProvider";
+import { BuyerMatchEngineSection } from "@/components/ValueSections";
+import { SaleCalendar } from "@/components/SaleCalendar";
 import type { ComparableProperty, ListingDetails } from "@/lib/types";
 
 const propertyTypes = [
@@ -272,14 +274,44 @@ export default function PropertyDetailsPage() {
             </div>
           </details>
 
-          <button
-            type="submit"
-            className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-700 px-6 py-4 text-base font-semibold text-white shadow-card transition hover:bg-blue-800 sm:w-auto"
-          >
-            Save & Continue
-            <ArrowRight size={18} />
-          </button>
         </section>
+
+        <section className="mt-8 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-blue-50 sm:p-8 lg:p-10">
+          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
+            Buyer list
+          </p>
+          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
+            Add buyers you can show the owner.
+          </h2>
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
+            Add buyer names, notes, preferred suburbs, and price range. These
+            appear in the presentation so the seller can see who you could call
+            straight away for this property.
+          </p>
+          <BuyerMatchEngineSection listing={listing} onUpdate={setListing} />
+        </section>
+
+        <section className="mt-8 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-blue-50 sm:p-8 lg:p-10">
+          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
+            Sale calendar
+          </p>
+          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
+            Add the important campaign dates.
+          </h2>
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
+            Add photography, launch, open home, auction, and follow-up dates.
+            These become the seller-facing calendar in presentation mode.
+          </p>
+          <SaleCalendar />
+        </section>
+
+        <button
+          type="submit"
+          className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-700 px-6 py-4 text-base font-semibold text-white shadow-card transition hover:bg-blue-800 sm:w-auto"
+        >
+          Save & Continue
+          <ArrowRight size={18} />
+        </button>
       </form>
     </>
   );

@@ -716,7 +716,7 @@ export function CampaignTimelineSection({ listing }: { listing: ListingState }) 
           These dates come from the agent’s sale calendar. It turns the pitch
           into an organised launch plan instead of a vague promise.
           <Link
-            href="/dashboard"
+            href="/details"
             className="no-print ml-2 font-semibold text-blue-700 underline"
           >
             Edit calendar
@@ -1647,7 +1647,9 @@ export function VendorReportSection({ listing }: { listing: ListingState }) {
 export function Form6PrototypeSection() {
   const { profile } = useAgentProfile();
   const brandColor = profile.brandColor || "#1d4ed8";
-  const [formName, setFormName] = useState("Standard agency Form 6.pdf");
+  const [formName, setFormName] = useState("Blank Form 6 - VG.pdf");
+  const [documentUrl, setDocumentUrl] = useState("/templates/form-6-vg.pdf");
+  const [documentMime, setDocumentMime] = useState("application/pdf");
   const [activePage, setActivePage] = useState("Appointment");
   const formPages = [
     {
@@ -1737,6 +1739,8 @@ export function Form6PrototypeSection() {
               const file = event.target.files?.[0];
               if (file) {
                 setFormName(file.name);
+                setDocumentUrl(URL.createObjectURL(file));
+                setDocumentMime(file.type || "application/pdf");
               }
             }}
           />
@@ -1745,19 +1749,25 @@ export function Form6PrototypeSection() {
 
       <div className="mt-7 grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
         <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
-          <div className="relative min-h-[560px] overflow-hidden rounded-2xl bg-white p-6 shadow-inner">
+          <div className="overflow-hidden rounded-2xl bg-white shadow-inner">
             <div
-              className="absolute inset-x-0 top-0 h-3"
+              className="h-3"
               style={{ backgroundColor: brandColor }}
             />
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-              Uploaded document
-            </p>
-            <h3 className="mt-2 text-2xl font-semibold tracking-tight">
-              {formName}
-            </h3>
+            <div className="border-b border-slate-100 p-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+                Form 6 template
+              </p>
+              <h3 className="mt-2 text-2xl font-semibold tracking-tight">
+                {formName}
+              </h3>
+              <p className="mt-2 text-sm leading-6 text-slate-500">
+                This is shown as an explanation aid only. The final appointment
+                should still be completed through the agency’s approved process.
+              </p>
+            </div>
 
-            <div className="mt-6 flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 border-b border-slate-100 p-4">
               {formPages.map((page) => (
                 <button
                   key={page.title}
@@ -1779,34 +1789,27 @@ export function Form6PrototypeSection() {
               ))}
             </div>
 
-            <div className="mt-7 grid gap-4">
-              {[1, 2, 3, 4, 5].map((line) => (
-                <div
-                  key={line}
-                  className={`h-3 rounded-full bg-slate-200 ${
-                    line % 2 ? "w-5/6" : "w-3/4"
-                  }`}
-                />
-              ))}
+            <div className="h-[620px] bg-slate-100">
+              <object
+                data={documentUrl}
+                type={documentMime}
+                className="h-full w-full"
+                aria-label="Form 6 template preview"
+              >
+                <div className="flex h-full items-center justify-center p-8 text-center">
+                  <a
+                    href={documentUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white"
+                  >
+                    Open Form 6 template
+                  </a>
+                </div>
+              </object>
             </div>
 
-            {active.callouts.map(([label, text], index) => (
-              <div
-                key={label}
-                className="absolute max-w-[15rem] rounded-2xl border border-blue-200 bg-blue-50/95 p-3 shadow-card"
-                style={{
-                  left: index === 1 ? "52%" : "12%",
-                  top: `${36 + index * 16}%`,
-                }}
-              >
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-700">
-                  {label}
-                </p>
-                <p className="mt-1 text-xs leading-5 text-slate-600">{text}</p>
-              </div>
-            ))}
-
-            <div className="absolute bottom-6 left-6 right-6 rounded-2xl bg-slate-950 p-4 text-white">
+            <div className="m-5 rounded-2xl bg-slate-950 p-4 text-white">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-200">
                 Page purpose
               </p>
@@ -1828,6 +1831,24 @@ export function Form6PrototypeSection() {
             <p className="mt-4 text-sm leading-7 text-white/85">
               {active.agentAnswer}
             </p>
+          </div>
+
+          <div className="rounded-2xl border border-blue-100 bg-blue-50/70 p-5">
+            <h3 className="text-lg font-semibold tracking-tight">
+              What to point out on this page
+            </h3>
+            <div className="mt-4 grid gap-3">
+              {active.callouts.map(([label, text]) => (
+                <div key={label} className="rounded-2xl bg-white p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-700">
+                    {label}
+                  </p>
+                  <p className="mt-1 text-sm leading-6 text-slate-600">
+                    {text}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
 
           {[
