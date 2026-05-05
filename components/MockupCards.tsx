@@ -3,22 +3,15 @@
 import Image from "next/image";
 import { useState } from "react";
 import {
-  Bell,
   Bookmark,
   Download,
   Heart,
-  Home,
-  Menu,
   MessageCircle,
   MonitorPlay,
   MoreHorizontal,
-  Search,
   Send,
   Share2,
-  Store,
   ThumbsUp,
-  Users,
-  Video,
 } from "lucide-react";
 import { useAgentProfile } from "@/components/AgentProfileProvider";
 import { generatePropertyWriteup } from "@/lib/copy";
@@ -1075,34 +1068,26 @@ export function SocialPreview({
   return (
     <PhoneFrame tone="light">
       <div className="flex h-full flex-col bg-white text-gray-950">
-        <div className="h-1.5 shrink-0" style={{ backgroundColor: brandColor }} />
-        <div className="flex shrink-0 items-center justify-between px-6 pb-2 pt-11 text-sm font-semibold">
-          <span>12:56</span>
+        <div className="flex shrink-0 items-center justify-between px-6 pb-4 pt-11 text-sm font-semibold">
+          <span>7:23</span>
           <div className="flex items-end gap-1">
             <span className="h-2.5 w-1.5 rounded-sm bg-gray-400" />
             <span className="h-3.5 w-1.5 rounded-sm bg-gray-500" />
             <span className="h-5 w-1.5 rounded-sm bg-gray-900" />
             <span className="ml-2 rounded-full bg-black px-2 py-0.5 text-xs text-white">
-              80
+              100
             </span>
           </div>
         </div>
-        <div className="flex shrink-0 items-center gap-3 px-4 pb-4">
+        <div className="flex shrink-0 items-center gap-3 border-b border-gray-200 px-4 pb-4">
           <span className="text-4xl font-light leading-none">‹</span>
-          <p className="min-w-0 flex-1 truncate text-xl font-bold">{agentName}</p>
+          <p className="min-w-0 flex-1 truncate text-lg font-medium">
+            {agentName} - {agencyName}&apos;s post
+          </p>
           <MoreHorizontal size={24} />
-          <Search size={28} />
         </div>
-        <div className="flex shrink-0 items-center gap-4 px-4 pb-3 text-sm font-semibold">
-          <span className="rounded-full bg-blue-50 px-4 py-2 text-blue-600">
-            All
-          </span>
-          <span>Photos</span>
-          <span>Reels</span>
-          <span className="hidden min-[350px]:inline">Mentions</span>
-        </div>
-        <div className="flex shrink-0 items-center gap-3 px-4 pb-3">
-          <div className="grid h-11 w-11 place-items-center overflow-hidden rounded-full bg-gray-100 ring-1 ring-gray-200">
+        <div className="flex shrink-0 items-start gap-3 px-4 py-3">
+          <div className="grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-full bg-white p-1 ring-4 ring-blue-500">
             {logo ? (
               <Image
                 src={logo}
@@ -1117,52 +1102,94 @@ export function SocialPreview({
             )}
           </div>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-semibold">
+            <p className="text-[15px] font-semibold leading-5">
               {agentName}{" "}
-              <span className="font-normal text-gray-600">
-                is with {agencyName || agencyHandle}
+              <span className="font-normal">
+                is in {suburbLine}.
               </span>
+              <span className="font-semibold text-blue-600"> Follow</span>
             </p>
-            <p className="text-xs text-gray-500">7 Apr · public</p>
+            <p className="mt-1 text-xs text-gray-500">4 Mar · public</p>
           </div>
           <MoreHorizontal className="text-gray-500" size={22} />
         </div>
-        <p className="shrink-0 px-4 pb-3 text-base">
-          NEW LISTING... <span className="font-semibold text-gray-500">See more</span>
-        </p>
-        <div className="mx-3 shrink-0 overflow-hidden rounded-[1.45rem]">
-          <CampaignCreative listing={listing} variant="facebook" />
-        </div>
-        <div className="mt-2 flex shrink-0 items-center justify-between border-b border-gray-200 px-4 pb-3 pt-1">
-          <div className="flex items-center gap-5">
-            <ThumbsUp className="text-blue-600" size={23} />
-            <MessageCircle className="text-gray-600" size={23} />
-            <Share2 className="text-gray-600" size={23} />
+        <div className="relative shrink-0 border-y border-gray-100 bg-gray-100">
+          <div className="relative aspect-[4/3] w-full">
+            {propertyPhoto ? (
+              <Image
+                src={propertyPhoto}
+                alt="Facebook property post"
+                fill
+                className="object-cover"
+                unoptimized
+              />
+            ) : (
+              <div className="grid h-full place-items-center px-8 text-center text-sm font-semibold text-gray-500">
+                Upload a property photo to preview the Facebook post.
+              </div>
+            )}
           </div>
-          <span className="text-sm text-gray-500">5 reactions</span>
         </div>
-        <p className="shrink-0 px-4 pt-3 text-xs text-gray-400">
-          Mockup image for seller preview.
-        </p>
-        <div className="mt-auto grid shrink-0 grid-cols-6 gap-1 border-t border-gray-200 px-3 py-3 text-center text-[9px] font-semibold text-gray-900">
-          <span className="grid place-items-center gap-1 text-blue-600">
-            <Home size={22} /> Home
+        <div className="flex shrink-0 justify-center gap-2 py-3">
+          <span className="h-2 w-2 rounded-full bg-black" />
+          <span className="h-2 w-2 rounded-full bg-gray-300" />
+          <span className="h-2 w-2 rounded-full bg-gray-300" />
+          <span className="h-2 w-2 rounded-full bg-gray-300" />
+          <span className="h-2 w-2 rounded-full bg-gray-300" />
+        </div>
+        <div className="shrink-0 space-y-3 px-4 pb-3 text-[15px] leading-5">
+          <p>🏡 {addressLine}{suburbLine ? `, ${suburbLine}` : ""}</p>
+          <p>4 🛏️ 2 🛁 2 🚗</p>
+          <p className="line-clamp-2">
+            {listingSummary}{" "}
+            <span className="font-semibold text-gray-500">See more</span>
+          </p>
+        </div>
+        <div className="flex shrink-0 items-center justify-between border-y border-gray-200 px-4 py-2 text-gray-600">
+          <div className="flex items-center gap-3">
+            <ThumbsUp size={22} />
+            <span className="font-semibold">126</span>
+            <MessageCircle size={22} />
+            <span className="font-semibold">7</span>
+            <Share2 size={22} />
+            <span className="font-semibold">3</span>
+          </div>
+          <div className="flex -space-x-1">
+            <span className="grid h-6 w-6 place-items-center rounded-full bg-blue-500 text-xs text-white">
+              👍
+            </span>
+            <span className="grid h-6 w-6 place-items-center rounded-full bg-red-500 text-xs text-white">
+              ❤
+            </span>
+          </div>
+        </div>
+        <div className="min-h-0 flex-1 overflow-hidden px-4 py-3">
+          <p className="text-base font-semibold">Most relevant⌄</p>
+          <div className="mt-4 flex gap-3">
+            <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gray-200 text-sm font-semibold">
+              S
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-semibold">
+                Steve West <span className="text-blue-600">✓</span>{" "}
+                <span className="font-normal text-gray-500">· 7w</span>
+              </p>
+              <p className="mt-1 text-sm leading-5 text-gray-800">
+                The lighting in these shots really highlights the prep work.
+                Stunning result.
+              </p>
+              <p className="mt-2 text-xs font-semibold text-gray-500">Reply</p>
+            </div>
+          </div>
+          <p className="mt-4 text-xs text-gray-400">Mockup image for seller preview.</p>
+        </div>
+        <div className="mt-auto flex shrink-0 items-center gap-2 border-t border-gray-200 bg-white px-4 py-3">
+          <span className="grid h-8 w-8 place-items-center rounded-full border border-gray-300 text-gray-500">
+            ◎
           </span>
-          <span className="grid place-items-center gap-1">
-            <Video size={22} /> Reels
-          </span>
-          <span className="grid place-items-center gap-1">
-            <Users size={22} /> Friends
-          </span>
-          <span className="grid place-items-center gap-1">
-            <Store size={22} /> Market
-          </span>
-          <span className="grid place-items-center gap-1">
-            <Bell size={22} /> Alerts
-          </span>
-          <span className="grid place-items-center gap-1">
-            <Menu size={22} /> Menu
-          </span>
+          <div className="min-w-0 flex-1 rounded-full bg-gray-100 px-4 py-2 text-sm text-gray-500">
+            Comment as {agentName}
+          </div>
         </div>
       </div>
     </PhoneFrame>
