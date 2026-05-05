@@ -258,6 +258,38 @@ export default function PresentationPage() {
             </div>
           </div>
         </section>
+
+        <section className="no-print mt-8 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-blue-50 lg:p-8">
+          <div className="grid gap-6 lg:grid-cols-[1fr_0.55fr] lg:items-center">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
+                Presentation complete
+              </p>
+              <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
+                Finished with the seller?
+              </h2>
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
+                Once the seller-facing presentation is done, continue back to
+                the agent workspace for follow-up, Form 6 explanation, vendor
+                reporting, notes, and next-step information.
+              </p>
+            </div>
+            <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
+              <Link
+                href="/draft"
+                className="inline-flex items-center justify-center rounded-full bg-blue-700 px-6 py-4 text-sm font-semibold text-white shadow-card"
+              >
+                Continue to agent workspace
+              </Link>
+              <Link
+                href="/details"
+                className="inline-flex items-center justify-center rounded-full border border-blue-200 bg-white px-6 py-4 text-sm font-semibold text-blue-900 shadow-sm"
+              >
+                Edit setup
+              </Link>
+            </div>
+          </div>
+        </section>
       </div>
       ) : null}
     </>

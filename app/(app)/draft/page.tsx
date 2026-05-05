@@ -61,14 +61,15 @@ export default function DraftPage() {
         <div className="grid gap-8 lg:grid-cols-[1fr_0.6fr] lg:items-end">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
-              Review & Export
+              Agent workspace
             </p>
             <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-              Your listing is ready
+              Continue after the seller presentation
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-              Review the finished pack, make any last changes, then open the
-              seller-facing presentation.
+              Use this area after the seller-facing presentation for follow-up,
+              saved links, copy, and the extra working information the agent
+              needs next.
             </p>
           </div>
           <div className="rounded-[1.5rem] bg-blue-50 p-5 ring-1 ring-blue-100">
@@ -128,14 +129,14 @@ export default function DraftPage() {
 
         <div className="mt-8 rounded-[1.5rem] bg-blue-950 p-5 text-white">
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-200">
-            Export Listing Pack
+            Seller presentation
           </p>
           <div className="mt-4 flex flex-col gap-3 sm:flex-row">
             <Link
               href="/presentation"
               className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-4 text-base font-semibold text-blue-950 shadow-card"
             >
-              Export Listing Pack
+              Open presentation
               <MonitorPlay size={18} />
             </Link>
             <button
