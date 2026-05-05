@@ -13,6 +13,7 @@ const profileFields: Array<{
     AgentProfile,
     | "agencyLogo"
     | "agencyLogos"
+    | "agentTeamPhotos"
     | "brandColor"
     | "instagramTemplate"
     | "facebookTemplate"
@@ -159,6 +160,93 @@ export function AgentProfileModal({
               />
             </label>
           </div>
+        </div>
+
+        <div className="mt-6 rounded-3xl border border-gray-200 bg-white p-5">
+          <div className="mb-5">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">
+              Agent and team photos
+            </p>
+            <h3 className="mt-2 text-xl font-semibold tracking-tight">
+              Add personal trust photos
+            </h3>
+            <p className="mt-2 text-sm leading-6 text-gray-600">
+              Upload up to 2 photos of the agent or team. These are saved to
+              the Agent Profile and shown near the end of the vendor
+              presentation.
+            </p>
+          </div>
+
+          <label className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-blue-200 bg-blue-50/60 px-5 py-6 text-center transition hover:border-blue-400 hover:bg-blue-50">
+            <span className="text-sm font-semibold text-blue-950">
+              Upload agent / team photos
+            </span>
+            <span className="mt-1 text-xs text-blue-900/70">
+              Maximum 2 saved. Landscape or portrait photos both work.
+            </span>
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              className="sr-only"
+              onChange={(event) => {
+                const files = Array.from(event.target.files || []);
+
+                if (!files.length) {
+                  return;
+                }
+
+                void Promise.all(
+                  files.map((file) => fileToOptimizedDataUrl(file, 1200, 0.86)),
+                ).then((photos) => {
+                  updateProfile({
+                    agentTeamPhotos: [
+                      ...profile.agentTeamPhotos,
+                      ...photos.filter(
+                        (photo) => !profile.agentTeamPhotos.includes(photo),
+                      ),
+                    ].slice(0, 2),
+                  });
+                });
+
+                event.currentTarget.value = "";
+              }}
+            />
+          </label>
+
+          {profile.agentTeamPhotos.length ? (
+            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              {profile.agentTeamPhotos.map((photo, index) => (
+                <div
+                  key={`${photo.slice(0, 32)}-${index}`}
+                  className="rounded-2xl border border-gray-200 bg-white p-3"
+                >
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-gray-100">
+                    <Image
+                      src={photo}
+                      alt={`Agent or team photo ${index + 1}`}
+                      fill
+                      className="object-cover"
+                      unoptimized
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      updateProfile({
+                        agentTeamPhotos: profile.agentTeamPhotos.filter(
+                          (_, photoIndex) => photoIndex !== index,
+                        ),
+                      })
+                    }
+                    className="mt-3 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-semibold text-gray-600"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+            </div>
+          ) : null}
         </div>
 
         <div className="mt-6 rounded-3xl border border-gray-200 bg-white p-5">

@@ -207,6 +207,70 @@ export default function PresentationPage() {
         <HeroPresentation listing={presentationListing} />
         <PresentationGrid listing={presentationListing} />
 
+        <section className="mt-10 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-blue-50 lg:p-8">
+          <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
+                Agency advantage
+              </p>
+              <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
+                Why sellers choose {agencyName || "this agency"}.
+              </h2>
+              <p className="mt-3 text-sm leading-6 text-slate-600">
+                The final decision is not only about price. It is about
+                confidence, preparation, buyer reach, and whether the seller
+                believes their property will be launched with care.
+              </p>
+
+              {presentationProfile.agentTeamPhotos.length ? (
+                <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                  {presentationProfile.agentTeamPhotos.map((photo, index) => (
+                    <div
+                      key={`${photo.slice(0, 32)}-${index}`}
+                      className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-slate-100 shadow-sm"
+                    >
+                      <Image
+                        src={photo}
+                        alt={`Agent or team photo ${index + 1}`}
+                        fill
+                        className="object-cover"
+                        unoptimized
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+
+            <div className="grid gap-4">
+              {[
+                [
+                  "Our difference",
+                  "We arrive with the campaign already visualised, the buyer story prepared, and the next steps clear before the seller signs.",
+                ],
+                [
+                  "Agency information",
+                  `${agencyName || "The agency"} brings brand presence, database reach, local market proof, and a repeatable launch process to the appointment.`,
+                ],
+                [
+                  "Recent proof",
+                  "Use comparable results and previously sold examples here to connect the proposed strategy to real local trust.",
+                ],
+              ].map(([title, text]) => (
+                <article
+                  key={title}
+                  className="rounded-[1.5rem] bg-blue-50/60 p-5 ring-1 ring-blue-100"
+                >
+                  <h3 className="text-lg font-semibold tracking-tight text-slate-950">
+                    {title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">{text}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section className="mt-10 overflow-hidden rounded-3xl bg-blue-950 text-white shadow-soft">
           <div className="grid gap-0 lg:grid-cols-[0.8fr_1.2fr]">
             <div className="flex min-h-56 items-center justify-center bg-white p-8">

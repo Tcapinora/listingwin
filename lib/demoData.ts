@@ -15,6 +15,7 @@ export const demoAgentProfile: AgentProfile = {
   agencyFacebookUrl: "https://facebook.com/listingwinrealty",
   phone: "0412 345 678",
   email: "alex@listingwin.example",
+  agentTeamPhotos: [],
   agencyLogo: "",
   agencyLogos: [],
   brandColor: "#1d4ed8",

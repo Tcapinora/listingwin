@@ -95,6 +95,7 @@ function normalizeProfile(profile: AgentProfile): AgentProfile {
     ...profile,
     agencyLogos,
     agencyLogo: profile.agencyLogo || agencyLogos[0] || "",
+    agentTeamPhotos: (profile.agentTeamPhotos || []).slice(0, 2),
     photographyMorning: profile.photographyMorning || [],
     photographyAfternoon: profile.photographyAfternoon || [],
     photographyTwilight: profile.photographyTwilight || [],

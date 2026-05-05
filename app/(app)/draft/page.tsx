@@ -283,33 +283,6 @@ export default function DraftPage() {
       <BuyerMatchEngineSection listing={listing} onUpdate={setListing} />
       <FollowUpAutomationSection listing={listing} onUpdate={setListing} />
 
-      <section className="mt-10 grid gap-4 lg:grid-cols-3">
-        {[
-          [
-            "Our difference",
-            "Lead with preparation, buyer evidence, and clear campaign control rather than a generic appraisal pitch.",
-          ],
-          [
-            "About the agency",
-            `${profile.agencyName || listing.details.agencyName || "The agency"} brings brand presence, database reach, and a repeatable launch process to the appointment.`,
-          ],
-          [
-            "Previously sold",
-            "Use recent strong results here during the conversation to connect the strategy to proof and local trust.",
-          ],
-        ].map(([title, text]) => (
-          <article
-            key={title}
-            className="rounded-[1.75rem] bg-white p-6 shadow-card ring-1 ring-slate-200/70"
-          >
-            <h2 className="text-xl font-semibold tracking-tight text-slate-950">
-              {title}
-            </h2>
-            <p className="mt-3 text-sm leading-6 text-slate-600">{text}</p>
-          </article>
-        ))}
-      </section>
-
       <section className="mt-10 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-slate-200/70 sm:p-8">
         <p className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
           <Handshake size={16} />

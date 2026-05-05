@@ -116,6 +116,7 @@ export type AgentProfile = {
   agencyFacebookUrl: string;
   phone: string;
   email: string;
+  agentTeamPhotos: string[];
   agencyLogo: string;
   agencyLogos: string[];
   brandColor: string;
@@ -146,6 +147,7 @@ export const emptyAgentProfile: AgentProfile = {
   agencyFacebookUrl: "",
   phone: "",
   email: "",
+  agentTeamPhotos: [],
   agencyLogo: "",
   agencyLogos: [],
   brandColor: "#123f53",
