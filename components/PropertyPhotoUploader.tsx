@@ -40,7 +40,9 @@ export function PropertyPhotoUploader({
           <ImagePlus size={20} />
         </span>
         <span className="mt-3 text-sm font-semibold text-gray-800">
-          {remaining > 0 ? "Add property images" : "Maximum images added"}
+          {remaining > 0
+            ? "Drop images here or click to upload"
+            : "Maximum images added"}
         </span>
         <span className="mt-1 text-xs text-gray-500">
           PNG, JPG, or WebP · max 5

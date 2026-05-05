@@ -1,5 +1,11 @@
 export type ListingDetails = {
   address: string;
+  headline: string;
+  propertyType: string;
+  bedrooms: string;
+  bathrooms: string;
+  carSpaces: string;
+  keyFeatures: string;
   agentName: string;
   agencyName: string;
   agencyWebsite: string;
@@ -146,6 +152,12 @@ export const emptyAgentProfile: AgentProfile = {
 export const emptyListingState: ListingState = {
   details: {
     address: "",
+    headline: "",
+    propertyType: "",
+    bedrooms: "",
+    bathrooms: "",
+    carSpaces: "",
+    keyFeatures: "",
     agentName: "",
     agencyName: "",
     agencyWebsite: "",

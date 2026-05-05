@@ -24,19 +24,18 @@ const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/account", label: "Account", icon: UserCog },
   { href: "/create", label: "Create", icon: Building2 },
-  { href: "/upload", label: "Assets", icon: Images },
-  { href: "/mockups", label: "Mockups", icon: Sparkles },
-  { href: "/draft", label: "Draft", icon: FileCheck2 },
-  { href: "/presentation", label: "Preview", icon: MonitorPlay },
+  { href: "/details", label: "Details", icon: FileCheck2 },
+  { href: "/upload", label: "Media", icon: Images },
+  { href: "/mockups", label: "Generate", icon: Sparkles },
+  { href: "/draft", label: "Review", icon: MonitorPlay },
 ];
 
 const workflowItems = [
-  { href: "/account", label: "1. Account" },
-  { href: "/create", label: "2. Listing" },
-  { href: "/upload", label: "3. Images" },
-  { href: "/mockups", label: "4. Edit" },
-  { href: "/draft", label: "5. Draft" },
-  { href: "/presentation", label: "6. Present" },
+  { href: "/create", label: "1. Create" },
+  { href: "/details", label: "2. Details" },
+  { href: "/upload", label: "3. Media" },
+  { href: "/mockups", label: "4. Generate" },
+  { href: "/draft", label: "5. Review" },
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -91,7 +90,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   Review Draft
                 </Link>
                 <Link
-                  href="/account"
+                  href="/create"
                   className="inline-flex items-center gap-2 rounded-full bg-blue-700 px-4 py-2 text-sm font-semibold text-white shadow-card transition hover:bg-blue-800"
                 >
                   <Plus size={16} />

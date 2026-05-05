@@ -1,262 +1,147 @@
 "use client";
 
 import Link from "next/link";
-import {
-  ArrowRight,
-  BadgeCheck,
-  Building2,
-  Images,
-  MonitorPlay,
-  Plus,
-  Smartphone,
-  UserRound,
-} from "lucide-react";
+import { ArrowRight, Building2, Clock3, Plus, Sparkles } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
 import { PrimaryLink } from "@/components/Buttons";
 import { useListing } from "@/components/ListingProvider";
 import { useAgentProfile } from "@/components/AgentProfileProvider";
-import {
-  AppraisalCommandCentre,
-  BuyerMatchEngineSection,
-  DashboardValuePanel,
-  FollowUpAutomationSection,
-} from "@/components/ValueSections";
-import { SaleCalendar } from "@/components/SaleCalendar";
 
 export default function DashboardPage() {
-  const { listing, setListing } = useListing();
-  const { profile, isProfileComplete } = useAgentProfile();
-  const hasListing = Boolean(listing.details.address);
-  const agentName = profile.agentName || listing.details.agentName;
-  const agencyName =
-    profile.agencyName || listing.details.agencyName || "Plum Property";
+  const { listing } = useListing();
+  const { profile } = useAgentProfile();
+  const hasListing = Boolean(listing.details.address.trim());
   const hasImages = Boolean(
     listing.propertyPhotos.length || listing.assets.propertyPhoto,
   );
-  const nextHref = !isProfileComplete
-    ? "/account"
-    : !hasListing
-      ? "/create"
-      : !hasImages
-        ? "/upload"
-        : "/mockups";
-  const nextLabel = !isProfileComplete
-    ? "Create account"
-    : !hasListing
-      ? "Add listing"
-      : !hasImages
-        ? "Upload property photos"
-        : "Edit campaign visuals";
-
-  const onboardingSteps = [
-    {
-      title: "Set up your agent profile",
-      description: "Save your agency brand, contact details, and social links once.",
-      done: isProfileComplete,
-      icon: UserRound,
-    },
-    {
-      title: "Create a vendor pitch",
-      description: "Add the property address and campaign notes for the seller.",
-      done: hasListing,
-      icon: Building2,
-    },
-    {
-      title: "Show the marketing vision",
-      description: "Place signboards, social posts, brochures, flyers, and mobile previews.",
-      done: hasImages,
-      icon: Smartphone,
-    },
-  ];
+  const status = hasImages ? "Ready" : hasListing ? "Draft" : "New";
+  const lastEdited = "Saved in this browser";
+  const address = listing.details.address || "No listings yet";
 
   return (
     <>
-      <PageHeader
-        eyebrow="Agent Workspace"
-        title="Build the next appraisal presentation."
-        description="One clear path: account, listing details, property images, campaign visuals, draft, then seller presentation."
-        action={
-          <div className="flex flex-wrap gap-3">
-            <Link
-              href="/presentation?demo=1"
-              className="inline-flex items-center justify-center rounded-full border border-blue-200 bg-white px-5 py-3 text-sm font-semibold text-blue-900 shadow-sm transition hover:border-blue-300"
-            >
-              Open demo presentation
-            </Link>
-            <PrimaryLink href={nextHref}>
-              <span className="inline-flex items-center gap-2">
-                <Plus size={17} />
-                {nextLabel}
-              </span>
-            </PrimaryLink>
+      <section className="overflow-hidden rounded-[2.25rem] bg-gradient-to-br from-blue-950 via-blue-900 to-blue-700 p-7 text-white shadow-soft sm:p-10 lg:p-12">
+        <div className="grid gap-10 lg:grid-cols-[1.05fr_0.75fr] lg:items-end">
+          <div>
+            <p className="inline-flex rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-blue-50 ring-1 ring-white/15">
+              ListingWin workspace
+            </p>
+            <h1 className="mt-7 max-w-3xl text-4xl font-semibold tracking-tight sm:text-6xl">
+              Ready to win your next listing?
+            </h1>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-blue-100">
+              Build a premium seller presentation in a guided flow. Start with
+              the address, add the media, generate the pack, then review and
+              present.
+            </p>
+            <div className="mt-8">
+              <PrimaryLink href="/create">
+                <span className="inline-flex items-center gap-2">
+                  <Plus size={18} />
+                  Create New Listing
+                </span>
+              </PrimaryLink>
+            </div>
           </div>
+
+          <div className="rounded-[1.75rem] bg-white/10 p-5 ring-1 ring-white/15 backdrop-blur">
+            <div className="flex items-center gap-3">
+              <span className="grid h-11 w-11 place-items-center rounded-2xl bg-white text-blue-800">
+                <Sparkles size={19} />
+              </span>
+              <div>
+                <p className="text-sm font-semibold text-white">
+                  Simple agent flow
+                </p>
+                <p className="text-xs text-blue-100">1 screen = 1 decision</p>
+              </div>
+            </div>
+            <div className="mt-5 grid gap-2 text-sm text-blue-50">
+              {[
+                "Create listing",
+                "Add property details",
+                "Upload media",
+                "Generate content",
+                "Review and export",
+              ].map((item, index) => (
+                <div
+                  key={item}
+                  className="flex items-center justify-between rounded-2xl bg-white/8 px-4 py-3"
+                >
+                  <span>{item}</span>
+                  <span className="text-blue-200">{index + 1}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <PageHeader
+        eyebrow="Your Listings"
+        title="Pick up where you left off."
+        description={
+          hasListing
+            ? "Your current presentation is saved locally and ready to continue."
+            : "No listings yet. Create your first listing in under 60 seconds."
         }
       />
 
-      <section className="rounded-3xl border border-gray-200 bg-white p-6 shadow-card lg:p-8">
-        <div className="mb-6 flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-gray-500">
-              Start here
-            </p>
-            <h2 className="mt-2 text-3xl font-semibold tracking-tight">
-              Complete these three steps first.
-            </h2>
-          </div>
-          <Link
-            href={nextHref}
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card"
-          >
-            {nextLabel}
-            <ArrowRight size={16} />
-          </Link>
-        </div>
-        <div className="grid gap-4 lg:grid-cols-3">
-          {onboardingSteps.map((step, index) => {
-            const Icon = step.icon;
-            return (
-              <div
-                key={step.title}
-                className="rounded-2xl border border-gray-200 bg-gray-50 p-5"
+      <section className="grid gap-5 lg:grid-cols-2">
+        {hasListing ? (
+          <article className="rounded-[1.75rem] bg-white p-6 shadow-card ring-1 ring-blue-50">
+            <div className="flex items-start justify-between gap-4">
+              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-blue-50 text-blue-700">
+                <Building2 size={21} />
+              </div>
+              <span
+                className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                  status === "Ready"
+                    ? "bg-blue-700 text-white"
+                    : "bg-blue-50 text-blue-800"
+                }`}
               >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="grid h-11 w-11 place-items-center rounded-2xl bg-white text-gray-950 shadow-sm">
-                    <Icon size={18} />
-                  </div>
-                  <span
-                    className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold ${
-                      step.done
-                        ? "bg-gray-950 text-white"
-                        : "bg-white text-gray-500"
-                    }`}
-                  >
-                    {step.done ? <BadgeCheck size={13} /> : null}
-                    {step.done ? "Done" : `Step ${index + 1}`}
-                  </span>
-                </div>
-                <h3 className="mt-5 text-lg font-semibold tracking-tight">
-                  {step.title}
-                </h3>
-                <p className="mt-2 text-sm leading-6 text-gray-500">
-                  {step.description}
-                </p>
-              </div>
-            );
-          })}
-        </div>
+                {status}
+              </span>
+            </div>
+            <h2 className="mt-6 text-2xl font-semibold tracking-tight">
+              {address}
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-slate-500">
+              {profile.agencyName || listing.details.agencyName || "Agency"} ·{" "}
+              {profile.agentName || listing.details.agentName || "Agent"}
+            </p>
+            <p className="mt-5 inline-flex items-center gap-2 text-sm text-slate-500">
+              <Clock3 size={16} />
+              {lastEdited}
+            </p>
+            <div className="mt-7">
+              <Link
+                href={hasImages ? "/mockups" : "/upload"}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-700 px-5 py-3.5 text-sm font-semibold text-white shadow-card transition hover:bg-blue-800 sm:w-auto"
+              >
+                Continue
+                <ArrowRight size={16} />
+              </Link>
+            </div>
+          </article>
+        ) : (
+          <article className="rounded-[1.75rem] bg-white p-8 text-center shadow-card ring-1 ring-blue-50 lg:col-span-2">
+            <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-blue-50 text-blue-700">
+              <Building2 size={24} />
+            </div>
+            <h2 className="mt-5 text-2xl font-semibold tracking-tight">
+              No listings yet.
+            </h2>
+            <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
+              Create your first listing in under 60 seconds.
+            </p>
+            <div className="mt-7">
+              <PrimaryLink href="/create">Create New Listing</PrimaryLink>
+            </div>
+          </article>
+        )}
       </section>
-
-      <section className="mt-8 grid gap-6 lg:grid-cols-[1fr_0.85fr]">
-        <div className="rounded-3xl border border-gray-200 bg-white p-7 shadow-card">
-          <div className="mb-6 flex items-center gap-3">
-            <div className="grid h-12 w-12 place-items-center rounded-2xl bg-gray-950 text-white">
-              <Building2 size={20} />
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold">Current listing</h2>
-              <p className="text-sm text-gray-500">
-                Saved automatically in this browser
-              </p>
-            </div>
-          </div>
-
-          {hasListing ? (
-            <div className="space-y-5">
-              <div>
-                <p className="text-sm text-gray-500">Property</p>
-                <h3 className="mt-1 text-3xl font-semibold tracking-tight">
-                  {listing.details.address}
-                </h3>
-              </div>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="rounded-2xl bg-gray-50 p-4">
-                  <p className="text-sm text-gray-500">Agent</p>
-                  <p className="mt-1 font-semibold">
-                    {agentName || "Not added"}
-                  </p>
-                </div>
-                <div className="rounded-2xl bg-gray-50 p-4">
-                  <p className="text-sm text-gray-500">Agency</p>
-                  <p className="mt-1 font-semibold">
-                    {agencyName}
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-wrap gap-3">
-                <Link
-                  href="/mockups"
-                  className="inline-flex items-center gap-2 rounded-full bg-gray-950 px-5 py-3 text-sm font-semibold text-white"
-                >
-                  Continue mockups
-                  <ArrowRight size={16} />
-                </Link>
-                <Link
-                  href="/presentation"
-                  className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-5 py-3 text-sm font-semibold text-gray-800"
-                >
-                  <MonitorPlay size={16} />
-                  Presentation Mode
-                </Link>
-              </div>
-            </div>
-          ) : (
-            <div className="rounded-2xl bg-gray-50 p-8 text-center">
-              <Images className="mx-auto text-gray-400" size={36} />
-              <h3 className="mt-4 text-xl font-semibold">
-                No listing in progress
-              </h3>
-              <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-gray-500">
-                Click Create New Listing to add the property address, price
-                guide, and market proof, then upload photos and signboards.
-              </p>
-            </div>
-          )}
-        </div>
-
-        <div className="rounded-3xl border border-blue-100 bg-blue-50/70 p-7 shadow-card">
-          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-blue-700">
-            Presentation shortcut
-          </p>
-          <h2 className="mt-5 text-3xl font-semibold tracking-tight text-slate-950">
-            Ready to show the seller?
-          </h2>
-          <p className="mt-4 text-sm leading-6 text-slate-600">
-            Review the draft first, then open the clean seller-facing
-            presentation.
-          </p>
-          <div className="mt-6 grid gap-3">
-            <Link
-              href="/draft"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card"
-            >
-              Review draft
-              <ArrowRight size={16} />
-            </Link>
-            <Link
-              href="/presentation"
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-blue-200 bg-white px-5 py-3 text-sm font-semibold text-blue-900"
-            >
-              Open presentation
-              <MonitorPlay size={16} />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <details className="mt-8 rounded-3xl border border-blue-100 bg-white p-6 shadow-card">
-        <summary className="cursor-pointer list-none text-xl font-semibold tracking-tight text-slate-950">
-          Power tools: score, buyer match, follow-up, and calendar
-        </summary>
-        <p className="mt-2 text-sm leading-6 text-slate-500">
-          These are useful once the core presentation is set up. Keep them here
-          so the dashboard stays simple for first-time users.
-        </p>
-        <DashboardValuePanel listing={listing} />
-        <AppraisalCommandCentre listing={listing} />
-        <BuyerMatchEngineSection listing={listing} onUpdate={setListing} />
-        <FollowUpAutomationSection listing={listing} onUpdate={setListing} />
-        <SaleCalendar />
-      </details>
     </>
   );
 }

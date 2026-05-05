@@ -17,8 +17,13 @@ export function presentationReadiness(
     },
     {
       label: "Property story",
-      ready: Boolean(listing.details.address.trim() && listing.details.notes.trim()),
-      href: "/create",
+      ready: Boolean(
+        listing.details.address.trim() &&
+          (listing.details.headline.trim() ||
+            listing.details.keyFeatures.trim() ||
+            listing.details.notes.trim()),
+      ),
+      href: "/details",
     },
     {
       label: "Price evidence",
@@ -26,7 +31,7 @@ export function presentationReadiness(
         listing.details.sellerExpectedPrice.trim() &&
           listing.details.agentPriceGuide.trim(),
       ),
-      href: "/create",
+      href: "/details",
     },
     {
       label: "Property photos",

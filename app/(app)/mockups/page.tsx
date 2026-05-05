@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, WandSparkles } from "lucide-react";
+import { ArrowRight, CheckCircle2, Loader2, WandSparkles } from "lucide-react";
 import { useEffect, useState } from "react";
-import { PageHeader } from "@/components/PageHeader";
+import { FlowProgress } from "@/components/FlowProgress";
 import { clampOverlay, DraggableSignboard } from "@/components/DraggableSignboard";
 import {
   clampOpenHomeOverlay,
@@ -14,7 +14,6 @@ import { OpenHomePlacementControls } from "@/components/OpenHomePlacementControl
 import { SignboardPlacementControls } from "@/components/SignboardPlacementControls";
 import { AutoCutoutPreview } from "@/components/AutoCutoutPreview";
 import { UploadCard } from "@/components/UploadCard";
-import { PropertyPhotoUploader } from "@/components/PropertyPhotoUploader";
 import {
   BrochurePreview,
   BrochureBookPreview,
@@ -29,7 +28,7 @@ import { useListing } from "@/components/ListingProvider";
 import { useAgentProfile } from "@/components/AgentProfileProvider";
 import { ListingWinScoreCard } from "@/components/ValueSections";
 import { autoCutoutImage } from "@/lib/imageProcessing";
-import { getPrimaryPropertyPhoto, getPropertyPhotos } from "@/lib/listingImages";
+import { getPrimaryPropertyPhoto } from "@/lib/listingImages";
 import { openHomeOptions } from "@/lib/openHome";
 import type {
   AssetKey,
@@ -46,12 +45,11 @@ const brochureStatusOptions = [
 ] as const;
 
 const builderSteps = [
-  { id: "photos", label: "1. Property photos" },
-  { id: "signboards", label: "2. Signboards" },
-  { id: "street", label: "3. Street mockup" },
-  { id: "openHome", label: "4. Open home" },
-  { id: "brochurePortal", label: "5. Brochure and portal" },
-  { id: "social", label: "6. Social previews" },
+  { id: "signboards", label: "Signboards" },
+  { id: "street", label: "Street mockup" },
+  { id: "openHome", label: "Open home" },
+  { id: "brochurePortal", label: "Brochure and portal" },
+  { id: "social", label: "Social previews" },
   { id: "all", label: "Show all" },
 ] as const;
 
@@ -86,12 +84,14 @@ function StepHeader({
 export default function MockupsPage() {
   const { listing, setListing } = useListing();
   const { profile, updateProfile } = useAgentProfile();
-  const [activeStep, setActiveStep] = useState<BuilderStepId>("photos");
+  const [activeStep, setActiveStep] = useState<BuilderStepId>("signboards");
+  const [generationState, setGenerationState] = useState<
+    "idle" | "loading" | "success"
+  >("idle");
   const selectedSignboard = listing.assets[listing.activeSignboard];
   const selectedCrop = listing.signboardCrops[listing.activeSignboard];
   const selectedOverlay =
     listing.signboardOverlays[listing.activeSignboard] || listing.overlay;
-  const propertyPhotos = getPropertyPhotos(listing);
   const primaryPropertyPhoto = getPrimaryPropertyPhoto(listing);
   const openHomeOverlay =
     listing.openHomeOverlays[listing.activeOpenHomeOption]?.[0] || {
@@ -191,20 +191,61 @@ export default function MockupsPage() {
 
   return (
     <>
-      <PageHeader
-        eyebrow="Step 4"
-        title="Build the seller-facing campaign visuals."
-        description="Work from the main property photo through signboards, open-home energy, brochure wording, portal preview, and social templates. This is the visual proof the seller remembers."
-        action={
-          <Link
-            href="/draft"
-            className="inline-flex items-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card transition hover:bg-blue-800"
-          >
-            Next: Draft review
-            <ArrowRight size={16} />
-          </Link>
-        }
-      />
+      <FlowProgress currentStep={4} />
+
+      <section className="mb-8 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-blue-50 sm:p-8 lg:p-10">
+        <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
+          Generate Content
+        </p>
+        <div className="mt-4 grid gap-6 lg:grid-cols-[1fr_0.55fr] lg:items-end">
+          <div>
+            <h1 className="text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
+              Create your listing content
+            </h1>
+            <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
+              We’ll generate everything you need for a polished listing
+              presentation.
+            </p>
+          </div>
+          <div className="lg:text-right">
+            <button
+              type="button"
+              disabled={generationState === "loading"}
+              onClick={() => {
+                setGenerationState("loading");
+                window.setTimeout(() => setGenerationState("success"), 900);
+              }}
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-700 px-6 py-4 text-base font-semibold text-white shadow-card transition hover:bg-blue-800 disabled:cursor-wait disabled:bg-blue-500 sm:w-auto"
+            >
+              {generationState === "loading" ? (
+                <>
+                  <Loader2 className="animate-spin" size={18} />
+                  Creating your listing pack...
+                </>
+              ) : generationState === "success" ? (
+                <>
+                  <CheckCircle2 size={18} />
+                  Listing pack created.
+                </>
+              ) : (
+                <>
+                  <WandSparkles size={18} />
+                  Generate Listing Pack
+                </>
+              )}
+            </button>
+            {generationState === "success" ? (
+              <Link
+                href="/draft"
+                className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full border border-blue-200 bg-white px-6 py-3 text-sm font-semibold text-blue-900 shadow-sm sm:w-auto"
+              >
+                Continue
+                <ArrowRight size={16} />
+              </Link>
+            ) : null}
+          </div>
+        </div>
+      </section>
 
       <section className="sticky top-[73px] z-20 mb-6 rounded-3xl border border-blue-100 bg-blue-50/90 p-4 shadow-sm backdrop-blur no-print">
         <div className="flex flex-wrap gap-2">
@@ -227,38 +268,11 @@ export default function MockupsPage() {
 
       <section
         className={`rounded-3xl border border-gray-200 bg-white p-6 shadow-card lg:p-8 ${
-          showStep("photos") ? "" : "hidden"
-        }`}
-      >
-          <StepHeader
-          step="Step 1"
-          title="Upload up to 5 property photos"
-          description="Start with the best front photo. It becomes the main image for signboards, open home, portal, and social previews, while brochures and flyers can flick through the full image set."
-        />
-        <div className="max-w-xl">
-          <PropertyPhotoUploader
-            photos={propertyPhotos}
-            onChange={(photos) =>
-              setListing((current) => ({
-                ...current,
-                propertyPhotos: photos,
-                assets: {
-                  ...current.assets,
-                  propertyPhoto: photos[0] || "",
-                },
-              }))
-            }
-          />
-        </div>
-      </section>
-
-      <section
-        className={`mt-6 rounded-3xl border border-gray-200 bg-white p-6 shadow-card lg:p-8 ${
           showStep("signboards") ? "" : "hidden"
         }`}
       >
         <StepHeader
-          step="Step 2"
+          step="Visual setup"
           title="Upload signboard options"
           description="Add one or two board designs. ListingWin removes the background as an MVP cutout, then each option keeps its own position and size on the property photo."
         />
@@ -632,13 +646,13 @@ export default function MockupsPage() {
           href="/upload"
           className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white px-5 py-3 text-sm font-semibold text-blue-900 shadow-sm"
         >
-          Back to images
+          Edit Media
         </Link>
         <Link
           href="/draft"
           className="inline-flex items-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card"
         >
-          Continue to draft
+          Continue
           <ArrowRight size={16} />
         </Link>
       </div>
