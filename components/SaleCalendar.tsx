@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarDays, Plus, Trash2 } from "lucide-react";
+import { CalendarDays, GripVertical, Plus, Trash2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useListing } from "@/components/ListingProvider";
 
@@ -13,6 +13,16 @@ const eventTypes = [
   "Follow-up",
   "Other",
 ];
+
+const eventColours: Record<string, string> = {
+  Photography: "bg-violet-100 text-violet-800 ring-violet-200",
+  Signboard: "bg-slate-200 text-slate-800 ring-slate-300",
+  Launch: "bg-blue-100 text-blue-800 ring-blue-200",
+  "Open home": "bg-emerald-100 text-emerald-800 ring-emerald-200",
+  Auction: "bg-red-100 text-red-800 ring-red-200",
+  "Follow-up": "bg-amber-100 text-amber-800 ring-amber-200",
+  Other: "bg-gray-100 text-gray-700 ring-gray-200",
+};
 
 const monthNames = [
   "January",
@@ -86,6 +96,21 @@ export function SaleCalendar() {
     setTitle("");
   };
 
+  const addEventToDate = (date: string, eventType: string) => {
+    setListing((current) => ({
+      ...current,
+      saleCalendarEvents: [
+        ...current.saleCalendarEvents,
+        {
+          id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+          date,
+          title: eventType,
+          type: eventType,
+        },
+      ],
+    }));
+  };
+
   const removeEvent = (id: string) => {
     setListing((current) => ({
       ...current,
@@ -110,6 +135,27 @@ export function SaleCalendar() {
             Pick any month and year, then click a date to add photography,
             launch, open home, auction, or seller follow-up milestones.
           </p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {eventTypes.map((eventType) => (
+              <button
+                key={eventType}
+                type="button"
+                draggable
+                onDragStart={(event) =>
+                  event.dataTransfer.setData("text/plain", eventType)
+                }
+                onClick={() => {
+                  setType(eventType);
+                  setTitle(eventType);
+                }}
+                className={`inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-semibold ring-1 ${eventColours[eventType]}`}
+                title={`Drag ${eventType} onto a date`}
+              >
+                <GripVertical size={13} />
+                {eventType}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className="flex flex-wrap gap-3">
@@ -163,6 +209,16 @@ export function SaleCalendar() {
                   key={dateKey}
                   type="button"
                   onClick={() => setSelectedDate(dateKey)}
+                  onDragOver={(event) => event.preventDefault()}
+                  onDrop={(event) => {
+                    event.preventDefault();
+                    const eventType = event.dataTransfer.getData("text/plain");
+
+                    if (eventType) {
+                      setSelectedDate(dateKey);
+                      addEventToDate(dateKey, eventType);
+                    }
+                  }}
                   className={`min-h-20 rounded-2xl border p-2 text-left transition ${
                     selected
                       ? "border-blue-700 bg-blue-700 text-white shadow-card"
@@ -175,10 +231,10 @@ export function SaleCalendar() {
                       {dayEvents.slice(0, 2).map((event) => (
                         <div
                           key={event.id}
-                          className={`truncate rounded-full px-2 py-1 text-[11px] font-semibold ${
+                          className={`truncate rounded-full px-2 py-1 text-[11px] font-semibold ring-1 ${
                             selected
                               ? "bg-white/18 text-white"
-                              : "bg-white text-blue-800"
+                              : eventColours[event.type] || eventColours.Other
                           }`}
                         >
                           {event.type}

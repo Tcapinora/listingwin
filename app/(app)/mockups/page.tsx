@@ -33,6 +33,7 @@ import {
 import { useListing } from "@/components/ListingProvider";
 import { useAgentProfile } from "@/components/AgentProfileProvider";
 import { ListingWinScoreCard } from "@/components/ValueSections";
+import { fileToOptimizedDataUrl } from "@/lib/imageFiles";
 import { autoCutoutImage } from "@/lib/imageProcessing";
 import { getPrimaryPropertyPhoto } from "@/lib/listingImages";
 import { openHomeOptions } from "@/lib/openHome";
@@ -54,12 +55,69 @@ const builderSteps = [
   { id: "signboards", label: "Signboards" },
   { id: "street", label: "Street mockup" },
   { id: "openHome", label: "Open home" },
+  { id: "photography", label: "Photography" },
   { id: "brochurePortal", label: "Print and portal" },
   { id: "social", label: "Social" },
   { id: "all", label: "Show all" },
 ] as const;
 
 type BuilderStepId = (typeof builderSteps)[number]["id"];
+
+function PhotographyUploadGroup({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: string[];
+  onChange: (photos: string[]) => void;
+}) {
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+      <div className="flex items-center justify-between gap-4">
+        <div>
+          <h3 className="text-sm font-semibold text-slate-950">{label}</h3>
+          <p className="mt-1 text-xs text-slate-500">Upload up to 5 examples.</p>
+        </div>
+        <label className="cursor-pointer rounded-full bg-blue-700 px-4 py-2 text-xs font-semibold text-white">
+          Upload
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            className="sr-only"
+            onChange={(event) => {
+              const files = Array.from(event.target.files || []);
+
+              void Promise.all(
+                files.map((file) => fileToOptimizedDataUrl(file, 1200, 0.84)),
+              ).then((photos) => onChange([...value, ...photos].slice(0, 5)));
+              event.currentTarget.value = "";
+            }}
+          />
+        </label>
+      </div>
+      <div className="mt-4 grid grid-cols-5 gap-2">
+        {Array.from({ length: 5 }).map((_, index) => (
+          <div
+            key={index}
+            className="relative aspect-square overflow-hidden rounded-xl bg-white ring-1 ring-slate-200"
+          >
+            {value[index] ? (
+              <Image
+                src={value[index]}
+                alt={`${label} ${index + 1}`}
+                fill
+                className="object-cover"
+                unoptimized
+              />
+            ) : null}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 function StepHeader({
   step,
@@ -127,7 +185,7 @@ export default function MockupsPage() {
       return;
     }
 
-    if (listing.assets.signboard1) {
+    if (listing.activeSignboard === "signboard1" && listing.assets.signboard1) {
       setListing((current) => ({
         ...current,
         activeSignboard: "signboard1",
@@ -135,7 +193,7 @@ export default function MockupsPage() {
       return;
     }
 
-    if (listing.assets.signboard2) {
+    if (listing.activeSignboard === "signboard1" && listing.assets.signboard2) {
       setListing((current) => ({
         ...current,
         activeSignboard: "signboard2",
@@ -144,6 +202,7 @@ export default function MockupsPage() {
   }, [
     listing.assets.signboard1,
     listing.assets.signboard2,
+    listing.activeSignboard,
     selectedSignboard,
     setListing,
   ]);
@@ -336,7 +395,7 @@ export default function MockupsPage() {
           />
           <UploadCard
             label="Signboard option 2"
-            hint="Optional alternate board artwork"
+            hint="Optional alternate board artwork. It keeps its own placement."
             value={listing.assets.signboard2}
             assetKey="signboard2"
             onChange={updateAsset}
@@ -558,6 +617,37 @@ export default function MockupsPage() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section
+        className={`mt-6 rounded-3xl border border-blue-100 bg-white p-6 shadow-card lg:p-8 ${
+          showStep("photography") ? "" : "hidden"
+        }`}
+      >
+        <StepHeader
+          step="Photography direction"
+          title="Show photography at different times of day"
+          description="Upload stock examples for morning, afternoon, and twilight. These are saved to the agent profile and reused in future presentations."
+        />
+        <div className="grid gap-5 lg:grid-cols-3">
+          <PhotographyUploadGroup
+            label="Morning"
+            value={profile.photographyMorning}
+            onChange={(photos) => updateProfile({ photographyMorning: photos })}
+          />
+          <PhotographyUploadGroup
+            label="Afternoon"
+            value={profile.photographyAfternoon}
+            onChange={(photos) =>
+              updateProfile({ photographyAfternoon: photos })
+            }
+          />
+          <PhotographyUploadGroup
+            label="Twilight"
+            value={profile.photographyTwilight}
+            onChange={(photos) => updateProfile({ photographyTwilight: photos })}
+          />
         </div>
       </section>
 

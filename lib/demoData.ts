@@ -20,6 +20,9 @@ export const demoAgentProfile: AgentProfile = {
   brandColor: "#1d4ed8",
   instagramTemplate: "",
   facebookTemplate: "",
+  photographyMorning: [],
+  photographyAfternoon: [],
+  photographyTwilight: [],
 };
 
 export const demoListingState: ListingState = {

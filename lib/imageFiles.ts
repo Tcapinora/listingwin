@@ -27,7 +27,17 @@ export function fileToOptimizedDataUrl(
         canvas.width = width;
         canvas.height = height;
         context.drawImage(img, 0, 0, width, height);
-        resolve(canvas.toDataURL("image/jpeg", quality));
+
+        // Keep PNG transparency for logos/signboards. JPEG turns transparent
+        // pixels black, which makes agency marks look unprofessional.
+        const keepsTransparency =
+          file.type === "image/png" || file.type === "image/webp";
+
+        resolve(
+          keepsTransparency
+            ? canvas.toDataURL("image/png")
+            : canvas.toDataURL("image/jpeg", quality),
+        );
       };
       img.src = String(reader.result);
     };

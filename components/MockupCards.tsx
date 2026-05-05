@@ -50,6 +50,26 @@ function Logo({ src, agencyName }: { src: string; agencyName: string }) {
   );
 }
 
+function PhoneFrame({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="relative mx-auto aspect-[9/16] w-full max-w-[430px] overflow-hidden rounded-[2.5rem] bg-black shadow-2xl">
+      <Image
+        src="/assets/iphone-frame.png"
+        alt="iPhone frame"
+        fill
+        className="object-cover"
+        style={{ objectPosition: "center" }}
+        unoptimized
+      />
+      <div className="absolute left-[29%] top-[10.5%] h-[80.5%] w-[42.5%] overflow-hidden rounded-[2rem] bg-black">
+        <div className="h-full w-full scale-[0.58] origin-top-left">
+          <div className="w-[390px]">{children}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function CampaignCreative({
   listing,
   variant,
@@ -428,8 +448,8 @@ export function BrochureBookPreview({ listing }: { listing: ListingState }) {
         </div>
       </div>
 
-      <div className="relative mx-auto max-w-md overflow-hidden rounded-2xl bg-white shadow-soft">
-        <div className="relative h-64 bg-gray-100">
+      <div className="relative mx-auto max-w-xl overflow-hidden rounded-2xl bg-white shadow-soft">
+        <div className="relative h-80 bg-gray-100">
           {currentPage.image ? (
             <Image
               src={currentPage.image}
@@ -453,7 +473,7 @@ export function BrochureBookPreview({ listing }: { listing: ListingState }) {
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
             {currentPage.eyebrow}
           </p>
-          <h4 className="text-xl font-semibold leading-tight text-gray-950">
+          <h4 className="text-2xl font-semibold leading-tight text-gray-950">
             {currentPage.heading}
           </h4>
           <p className="text-sm leading-6 text-gray-600">{currentPage.body.slice(0, 210)}</p>
@@ -592,6 +612,71 @@ export function OpenHomePreview({ listing }: { listing: ListingState }) {
           Transparent buyer cutouts can be staged on any uploaded property
           image to make the campaign feel tangible before launch.
         </p>
+      </div>
+    </div>
+  );
+}
+
+export function PhotographyStylePreview() {
+  const { profile } = useAgentProfile();
+  const [style, setStyle] = useState<"morning" | "afternoon" | "twilight">(
+    "morning",
+  );
+  const options = {
+    morning: profile.photographyMorning,
+    afternoon: profile.photographyAfternoon,
+    twilight: profile.photographyTwilight,
+  };
+  const photos = options[style] || [];
+
+  return (
+    <div className="overflow-hidden rounded-xl border border-blue-100 bg-white">
+      <div className="border-b border-slate-100 p-5">
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
+          Photography style
+        </p>
+        <h4 className="mt-2 text-xl font-semibold tracking-tight">
+          Show the vendor the photography direction.
+        </h4>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {(["morning", "afternoon", "twilight"] as const).map((item) => (
+            <button
+              key={item}
+              type="button"
+              onClick={() => setStyle(item)}
+              className={`rounded-full px-4 py-2 text-xs font-semibold capitalize ${
+                style === item
+                  ? "bg-blue-700 text-white"
+                  : "bg-blue-50 text-blue-900"
+              }`}
+            >
+              {item}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="grid gap-3 p-5 sm:grid-cols-2 lg:grid-cols-3">
+        {photos.length ? (
+          photos.slice(0, 5).map((photo, index) => (
+            <div
+              key={`${style}-${index}`}
+              className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-slate-100"
+            >
+              <Image
+                src={photo}
+                alt={`${style} photography ${index + 1}`}
+                fill
+                className="object-cover"
+                unoptimized
+              />
+            </div>
+          ))
+        ) : (
+          <div className="rounded-2xl bg-blue-50 p-5 text-sm leading-6 text-blue-900 sm:col-span-2 lg:col-span-3">
+            Upload stock examples in the builder to show morning, afternoon,
+            and twilight photography styles.
+          </div>
+        )}
       </div>
     </div>
   );
@@ -866,7 +951,8 @@ export function SocialPreview({
 
   if (type === "Instagram") {
     return (
-      <div className="mx-auto max-w-[390px] overflow-hidden rounded-[1.7rem] border border-gray-900 bg-[#070c11] text-white shadow-card">
+      <PhoneFrame>
+      <div className="overflow-hidden rounded-[1.7rem] border border-gray-900 bg-[#070c11] text-white shadow-card">
         <div className="h-1.5" style={{ backgroundColor: brandColor }} />
         <div className="flex items-center justify-between px-5 py-3 text-sm font-semibold">
           <span>12:55</span>
@@ -936,11 +1022,13 @@ export function SocialPreview({
           </p>
         </div>
       </div>
+      </PhoneFrame>
     );
   }
 
   return (
-    <div className="relative mx-auto max-w-[390px] overflow-hidden rounded-[1.7rem] border border-gray-200 bg-white text-gray-950 shadow-card">
+    <PhoneFrame>
+    <div className="relative overflow-hidden rounded-[1.7rem] border border-gray-200 bg-white text-gray-950 shadow-card">
       <div className="flex items-center justify-between px-5 py-3 text-sm font-semibold">
         <span
           className="absolute left-0 top-0 h-1.5 w-full"
@@ -1025,6 +1113,7 @@ export function SocialPreview({
         </span>
       </div>
     </div>
+    </PhoneFrame>
   );
 }
 

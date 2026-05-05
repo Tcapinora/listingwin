@@ -42,7 +42,10 @@ export function readListingState(): ListingState {
         ? parsed.saleCalendarEvents
         : emptyListingState.saleCalendarEvents,
       buyerLeads: Array.isArray(parsed.buyerLeads)
-        ? parsed.buyerLeads
+        ? parsed.buyerLeads.map((buyer: Partial<ListingState["buyerLeads"][number]>) => ({
+            phone: "",
+            ...buyer,
+          }))
         : emptyListingState.buyerLeads,
       followUpReminders: Array.isArray(parsed.followUpReminders)
         ? parsed.followUpReminders

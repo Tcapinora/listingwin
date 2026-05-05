@@ -12,6 +12,7 @@ import {
   BrochureBookPreview,
   FlyerPreview,
   OpenHomePreview,
+  PhotographyStylePreview,
   PropertyPortalPreview,
   SocialPreview,
 } from "@/components/MockupCards";
@@ -233,9 +234,24 @@ export function PresentationGrid({ listing }: { listing: ListingState }) {
       label: "Social",
       title: "Instagram and Facebook",
       component: (
-        <div className="grid gap-6 lg:grid-cols-2">
-          <SocialPreview listing={listing} type="Instagram" />
-          <SocialPreview listing={listing} type="Facebook" />
+        <div className="space-y-6">
+          <div className="grid gap-6 lg:grid-cols-2">
+            <SocialPreview listing={listing} type="Instagram" />
+            <SocialPreview listing={listing} type="Facebook" />
+          </div>
+          <div className="rounded-3xl border border-blue-100 bg-white p-6 shadow-card">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
+              Ad sponsorship example
+            </p>
+            <h3 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
+              Small spend, stronger reach.
+            </h3>
+            <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
+              Example case study: a $100 sponsored listing video reached 8,400
+              local viewers, drove 312 link clicks, and added 19 qualified buyer
+              conversations before the first open home.
+            </p>
+          </div>
         </div>
       ),
     },
@@ -244,6 +260,12 @@ export function PresentationGrid({ listing }: { listing: ListingState }) {
       label: "Open home",
       title: "Open-home energy",
       component: <OpenHomePreview listing={listing} />,
+    },
+    {
+      id: "photography",
+      label: "Photography",
+      title: "Photography direction",
+      component: <PhotographyStylePreview />,
     },
   ];
   const [activeVisualId, setActiveVisualId] = useState(visualScenes[0].id);

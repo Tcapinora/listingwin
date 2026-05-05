@@ -276,10 +276,10 @@ export default function PresentationPage() {
             </div>
             <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
               <Link
-                href="/draft"
+                href="/finish"
                 className="inline-flex items-center justify-center rounded-full bg-blue-700 px-6 py-4 text-sm font-semibold text-white shadow-card"
               >
-                Open Agent Workspace
+                Finish presentation
               </Link>
               <Link
                 href="/details"

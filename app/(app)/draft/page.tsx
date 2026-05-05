@@ -4,12 +4,10 @@ import Link from "next/link";
 import {
   ArrowRight,
   BadgeCheck,
-  CalendarDays,
   CheckCircle2,
   Copy,
   FileText,
   Handshake,
-  MonitorPlay,
   Share2,
   Target,
   Users,
@@ -18,14 +16,6 @@ import {
 import { useState } from "react";
 import { useAgentProfile } from "@/components/AgentProfileProvider";
 import { useListing } from "@/components/ListingProvider";
-import { SaleCalendar } from "@/components/SaleCalendar";
-import {
-  BrochureBookPreview,
-  FlyerPreview,
-  MockupCard,
-  PropertyPortalPreview,
-  SocialPreview,
-} from "@/components/MockupCards";
 import {
   AgentNotesSection,
   AppraisalScriptSection,
@@ -69,16 +59,15 @@ export default function DraftPage() {
     ["Listing pack created", true],
   ];
   const quickActions: Array<[string, string, LucideIcon]> = [
-    ["Open Vendor Presentation", "/presentation", MonitorPlay],
     ["Buyer Database", "#buyer-database", Users],
-    ["Sale Calendar", "#sale-calendar", CalendarDays],
+    ["Follow-Up Actions", "#follow-up", Target],
     ["Form 6 Explainer", "#form-6", FileText],
   ];
   const workspaceStages: Array<[string, string, string]> = [
     [
       "1",
       "Next best action",
-      "Use follow-up, buyer demand, and the calendar to move the vendor forward.",
+      "Use follow-up and buyer demand to move the vendor forward.",
     ],
     [
       "2",
@@ -168,6 +157,11 @@ export default function DraftPage() {
             ["Vendor follow-up copy", writeup],
             ["Social caption", socialCaption],
             ["Property strengths", keyFeatures],
+            [
+              "Property weaknesses",
+              listing.details.priceNotes ||
+                "Add likely objections here: price sensitivity, presentation work, access, noise, renovation items, or stronger competing properties.",
+            ],
           ].map(([title, content]) => (
             <article key={title} className="rounded-[1.5rem] bg-slate-50 p-5">
               <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-slate-950">
@@ -185,11 +179,11 @@ export default function DraftPage() {
           </p>
           <div className="mt-4 flex flex-col gap-3 sm:flex-row">
             <Link
-              href="/presentation"
+              href="/finish"
               className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-4 text-base font-semibold text-blue-950 shadow-card"
             >
-              Open Vendor Presentation
-              <MonitorPlay size={18} />
+              Finish appraisal
+              <ArrowRight size={18} />
             </Link>
             <button
               type="button"
@@ -272,7 +266,7 @@ export default function DraftPage() {
         </div>
       </section>
 
-      <section className="mt-10 rounded-[2rem] bg-slate-950 p-6 text-white shadow-soft sm:p-8">
+      <section id="follow-up" className="mt-10 rounded-[2rem] bg-slate-950 p-6 text-white shadow-soft sm:p-8">
         <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-blue-100">
           <Target size={16} />
           Next best action
@@ -289,24 +283,31 @@ export default function DraftPage() {
       <BuyerMatchEngineSection listing={listing} onUpdate={setListing} />
       <FollowUpAutomationSection listing={listing} onUpdate={setListing} />
 
-      <section
-        id="sale-calendar"
-        className="mt-10 rounded-3xl border border-blue-100 bg-white p-7 shadow-card lg:p-8"
-      >
-        <div className="mb-6 max-w-3xl">
-          <p className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
-            <CalendarDays size={16} />
-            Agent sale calendar
-          </p>
-          <h2 className="mt-5 text-4xl font-semibold tracking-tight">
-            Keep the campaign dates ready.
-          </h2>
-          <p className="mt-4 text-sm leading-6 text-slate-600">
-            Use this editable calendar to plan photography, signboard install,
-            launch, open homes, follow-up calls, and seller check-ins.
-          </p>
-        </div>
-        <SaleCalendar />
+      <section className="mt-10 grid gap-4 lg:grid-cols-3">
+        {[
+          [
+            "Our difference",
+            "Lead with preparation, buyer evidence, and clear campaign control rather than a generic appraisal pitch.",
+          ],
+          [
+            "About the agency",
+            `${profile.agencyName || listing.details.agencyName || "The agency"} brings brand presence, database reach, and a repeatable launch process to the appointment.`,
+          ],
+          [
+            "Previously sold",
+            "Use recent strong results here during the conversation to connect the strategy to proof and local trust.",
+          ],
+        ].map(([title, text]) => (
+          <article
+            key={title}
+            className="rounded-[1.75rem] bg-white p-6 shadow-card ring-1 ring-slate-200/70"
+          >
+            <h2 className="text-xl font-semibold tracking-tight text-slate-950">
+              {title}
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-slate-600">{text}</p>
+          </article>
+        ))}
       </section>
 
       <section className="mt-10 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-slate-200/70 sm:p-8">
@@ -350,48 +351,20 @@ export default function DraftPage() {
         <Form6PrototypeSection />
       </div>
 
-      <section className="mt-8 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-blue-50 sm:p-8">
-        <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
-              Final Preview
-            </p>
-            <h2 className="mt-2 text-3xl font-semibold tracking-tight">
-              What the vendor sees
-            </h2>
-          </div>
-          <Link
-            href="/details"
-            className="inline-flex items-center justify-center rounded-full border border-blue-200 bg-white px-5 py-3 text-sm font-semibold text-blue-900 shadow-sm"
-          >
-            Edit Details
-          </Link>
-        </div>
-
-        <div className="grid gap-5 xl:grid-cols-2">
-          <MockupCard title="Property portal">
-            <PropertyPortalPreview listing={listing} />
-          </MockupCard>
-          <MockupCard title="Brochure book">
-            <BrochureBookPreview listing={listing} />
-          </MockupCard>
-          <MockupCard title="Campaign flyer">
-            <FlyerPreview listing={listing} />
-          </MockupCard>
-          <MockupCard title="Instagram post">
-            <SocialPreview listing={listing} type="Instagram" />
-          </MockupCard>
-        </div>
-
-        <div className="mt-8 flex justify-end">
-          <Link
-            href="/presentation"
-            className="inline-flex items-center gap-2 rounded-full bg-blue-700 px-6 py-4 text-base font-semibold text-white shadow-card"
-          >
-            Open Vendor Presentation
-            <ArrowRight size={18} />
-          </Link>
-        </div>
+      <section className="mt-10 rounded-[2rem] bg-blue-950 p-6 text-white shadow-soft sm:p-8">
+        <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-200">
+          Finish
+        </p>
+        <h2 className="mt-3 text-3xl font-semibold tracking-tight">
+          Finish the appraisal and return to the dashboard.
+        </h2>
+        <Link
+          href="/dashboard"
+          className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-6 py-4 text-sm font-semibold text-blue-950 shadow-card"
+        >
+          Finish appraisal
+          <ArrowRight size={18} />
+        </Link>
       </section>
     </>
   );

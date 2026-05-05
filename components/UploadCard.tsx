@@ -19,6 +19,10 @@ export function UploadCard({
   onChange: (assetKey: AssetKey, value: string) => void;
 }) {
   const inputId = `upload-${assetKey}`;
+  const shouldContain =
+    assetKey === "agencyLogo" ||
+    assetKey === "signboard1" ||
+    assetKey === "signboard2";
 
   return (
     <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-card">
@@ -42,7 +46,9 @@ export function UploadCard({
 
       <label
         htmlFor={inputId}
-        className="group relative flex aspect-[4/3] cursor-pointer items-center justify-center overflow-hidden rounded-xl border border-dashed border-gray-300 bg-gray-50 transition hover:border-gray-400"
+        className={`group relative flex aspect-[4/3] cursor-pointer items-center justify-center overflow-hidden rounded-xl border border-dashed border-gray-300 transition hover:border-gray-400 ${
+          shouldContain ? "checkerboard bg-white" : "bg-gray-50"
+        }`}
       >
         {value ? (
           <>
@@ -50,7 +56,7 @@ export function UploadCard({
               src={value}
               alt={`${label} preview`}
               fill
-              className="object-cover"
+              className={shouldContain ? "object-contain p-4" : "object-cover"}
               unoptimized
             />
             <span className="absolute inset-x-4 bottom-4 inline-flex items-center justify-center gap-2 rounded-full bg-white/92 px-4 py-2 text-sm font-semibold text-gray-900 shadow-card backdrop-blur">

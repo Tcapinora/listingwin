@@ -91,9 +91,13 @@ function normalizeProfile(profile: AgentProfile): AgentProfile {
       : [];
 
   return {
+    ...emptyAgentProfile,
     ...profile,
     agencyLogos,
     agencyLogo: profile.agencyLogo || agencyLogos[0] || "",
+    photographyMorning: profile.photographyMorning || [],
+    photographyAfternoon: profile.photographyAfternoon || [],
+    photographyTwilight: profile.photographyTwilight || [],
   };
 }
 

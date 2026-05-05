@@ -16,6 +16,9 @@ const profileFields: Array<{
     | "brandColor"
     | "instagramTemplate"
     | "facebookTemplate"
+    | "photographyMorning"
+    | "photographyAfternoon"
+    | "photographyTwilight"
   >;
   label: string;
   placeholder: string;
@@ -167,17 +170,18 @@ export function AgentProfileModal({
               Save logos for future use
             </h3>
             <p className="mt-2 text-sm leading-6 text-gray-600">
-              Upload multiple agency logos once, then choose the active logo
-              for presentations and portal/social previews.
+              Upload up to 2 agency logos or signboard brand marks once, then
+              choose the active logo for presentations and portal/social
+              previews.
             </p>
           </div>
 
           <label className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-blue-200 bg-blue-50/60 px-5 py-6 text-center transition hover:border-blue-400 hover:bg-blue-50">
             <span className="text-sm font-semibold text-blue-950">
-              Upload agency logos
+              Upload agency logos / signboard marks
             </span>
             <span className="mt-1 text-xs text-blue-900/70">
-              PNG, JPG, or WebP. You can add more later.
+              PNG recommended for transparent backgrounds. Maximum 2 saved.
             </span>
             <input
               type="file"
@@ -197,7 +201,7 @@ export function AgentProfileModal({
                   const nextLogos = [
                     ...profile.agencyLogos,
                     ...logos.filter((logo) => !profile.agencyLogos.includes(logo)),
-                  ].slice(0, 12);
+                  ].slice(0, 2);
 
                   updateProfile({
                     agencyLogos: nextLogos,
@@ -225,7 +229,7 @@ export function AgentProfileModal({
                     <button
                       type="button"
                       onClick={() => updateProfile({ agencyLogo: logo })}
-                      className="relative grid aspect-[4/3] w-full place-items-center overflow-hidden rounded-xl bg-gray-50 p-4"
+                      className="checkerboard relative grid aspect-[4/3] w-full place-items-center overflow-hidden rounded-xl bg-white p-4"
                     >
                       <Image
                         src={logo}

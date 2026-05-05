@@ -1411,6 +1411,7 @@ export function BuyerMatchEngineSection({
   const [draft, setDraft] = useState<BuyerLead>({
     id: "",
     name: "",
+    phone: "",
     status: "Warm",
     budgetMin: "",
     budgetMax: "",
@@ -1441,6 +1442,7 @@ export function BuyerMatchEngineSection({
       ...draft,
       id: "",
       name: "",
+      phone: "",
       budgetMin: "",
       budgetMax: "",
       suburbs: "",
@@ -1448,6 +1450,12 @@ export function BuyerMatchEngineSection({
       notes: "",
     });
   }
+
+  const statusStyles: Record<BuyerLead["status"], string> = {
+    Hot: "bg-red-50 text-red-700 ring-red-200",
+    Warm: "bg-amber-50 text-amber-700 ring-amber-200",
+    Cold: "bg-sky-50 text-sky-700 ring-sky-200",
+  };
 
   return (
     <section className="mt-10 overflow-hidden rounded-3xl border border-blue-100 bg-white shadow-card">
@@ -1458,7 +1466,7 @@ export function BuyerMatchEngineSection({
             Buyer match engine
           </p>
           <h2 className="mt-5 text-4xl font-semibold tracking-tight">
-            Show the seller who the agent can call straight away.
+            Show the vendor who the agent can call straight away.
           </h2>
           <p className="mt-4 text-sm leading-6 text-slate-300">
             Store buyer preferences, price ranges, suburb targets, and lead
@@ -1481,15 +1489,17 @@ export function BuyerMatchEngineSection({
         </div>
 
         <div className="grid gap-5 p-6 lg:p-8">
-          <div className="grid gap-4 lg:grid-cols-3">
-            {matches.slice(0, 3).map((buyer) => (
+          <div className="-mx-2 flex snap-x gap-4 overflow-x-auto px-2 pb-2">
+            {matches.map((buyer) => (
               <article
                 key={buyer.id}
-                className="rounded-2xl border border-slate-200 bg-slate-50 p-5"
+                className="min-w-[280px] snap-start rounded-2xl border border-slate-200 bg-slate-50 p-5 lg:min-w-[31%]"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                    <p
+                      className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] ring-1 ${statusStyles[buyer.status]}`}
+                    >
                       {buyer.status} lead
                     </p>
                     <h3 className="mt-2 text-xl font-semibold tracking-tight">
@@ -1504,6 +1514,7 @@ export function BuyerMatchEngineSection({
                   {buyer.notes}
                 </p>
                 <div className="mt-4 grid gap-2 text-xs font-semibold text-slate-600">
+                  <span>{buyer.phone || "No phone saved"}</span>
                   <span>{buyer.budgetMin}-{buyer.budgetMax}</span>
                   <span>{buyer.suburbs}</span>
                   <span>{buyer.beds || "Any"}+ beds</span>
@@ -1528,6 +1539,14 @@ export function BuyerMatchEngineSection({
                     setDraft({ ...draft, name: event.target.value })
                   }
                   placeholder="Buyer name"
+                  className="rounded-2xl border border-blue-100 bg-white px-4 py-3 text-sm outline-none focus:border-blue-400"
+                />
+                <input
+                  value={draft.phone}
+                  onChange={(event) =>
+                    setDraft({ ...draft, phone: event.target.value })
+                  }
+                  placeholder="Phone number"
                   className="rounded-2xl border border-blue-100 bg-white px-4 py-3 text-sm outline-none focus:border-blue-400"
                 />
                 <input
