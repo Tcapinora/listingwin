@@ -4,8 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   ArrowRight,
-  Building2,
-  Images,
   FileCheck2,
   LayoutDashboard,
   Menu,
@@ -22,12 +20,9 @@ import { AgentProfileModal } from "@/components/AgentProfileModal";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/account", label: "Account", icon: UserCog },
-  { href: "/create", label: "Create", icon: Building2 },
-  { href: "/details", label: "Details", icon: FileCheck2 },
-  { href: "/upload", label: "Media", icon: Images },
-  { href: "/mockups", label: "Generate", icon: Sparkles },
+  { href: "/mockups", label: "Presentations", icon: Sparkles },
   { href: "/draft", label: "Agent Workspace", icon: MonitorPlay },
+  { href: "/account", label: "Settings", icon: UserCog },
 ];
 
 const workflowItems = [
@@ -48,7 +43,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <ListingProvider>
         <div className="min-h-screen">
           {!isPresentationMode ? (
-          <header className="sticky top-0 z-30 border-b border-blue-100 bg-white/88 backdrop-blur-xl no-print">
+          <header className="sticky top-0 z-30 border-b border-slate-200/70 bg-white/90 backdrop-blur-xl no-print">
             <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:gap-6 sm:px-5 lg:px-8">
               <Link href="/dashboard" className="flex items-center gap-3">
                 <span className="grid h-10 w-10 place-items-center rounded-xl bg-blue-700 text-white shadow-card">
@@ -58,8 +53,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   <span className="block text-base font-semibold tracking-tight">
                     ListingWin
                   </span>
-                  <span className="hidden text-xs text-blue-700 sm:block">
-                    Listing-winning presentation studio
+                  <span className="hidden text-xs text-slate-500 sm:block">
+                    Prepare. Present. Close.
                   </span>
                 </span>
               </Link>
@@ -85,7 +80,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 </button>
                 <Link
                   href="/draft"
-                  className="hidden items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2 text-sm font-medium text-blue-900 shadow-sm transition hover:border-blue-300 sm:flex"
+                  className="hidden items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:border-blue-300 hover:text-blue-900 sm:flex"
                 >
                   <FileCheck2 size={16} />
                   Agent Workspace
@@ -93,10 +88,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 <Link
                   href="/create"
                   className="inline-flex items-center gap-2 rounded-full bg-blue-700 px-3 py-2 text-sm font-semibold text-white shadow-card transition hover:bg-blue-800 sm:px-4"
-                  aria-label="Create New Listing"
+                  aria-label="Start New Listing"
                 >
                   <Plus size={16} />
-                  <span className="hidden sm:inline">Create</span>
+                  <span className="hidden sm:inline">Start New Listing</span>
                   <ArrowRight className="hidden sm:block" size={15} />
                 </Link>
               </div>
@@ -104,7 +99,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <div className="hidden border-t border-blue-50 lg:block">
               <div className="mx-auto flex max-w-7xl items-center gap-2 px-8 py-2">
                 <span className="mr-2 text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
-                  Workflow
+                  Builder
                 </span>
                 {workflowItems.map((item) => {
                   const active = pathname === item.href;
@@ -115,7 +110,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                       className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
                         active
                           ? "bg-blue-700 text-white"
-                          : "bg-blue-50 text-blue-800 hover:bg-blue-100"
+                          : "bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-800"
                       }`}
                     >
                       {item.label}
@@ -160,7 +155,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                         ListingWin
                       </span>
                       <span className="text-xs text-gray-500">
-                        Agent workspace
+                        Prepare. Present. Close.
                       </span>
                     </span>
                   </Link>
@@ -198,18 +193,17 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 </nav>
 
                 <div className="absolute inset-x-5 bottom-5 rounded-3xl bg-blue-950 p-5 text-white">
-                  <p className="text-sm font-semibold">Vendor presentation</p>
+                  <p className="text-sm font-semibold">Listing workflow</p>
                   <p className="mt-2 text-xs leading-5 text-gray-300">
-                    Build the listing, then show the seller how their property
-                    will look across your marketing. After the presentation,
-                    continue into the agent workspace.
+                    Prepare the vendor presentation, present it with confidence,
+                    then move into the workspace to close.
                   </p>
                   <Link
                     href="/draft"
                     onClick={() => setMenuOpen(false)}
                     className="mt-4 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-gray-950"
                   >
-                    Agent workspace
+                    Open Agent Workspace
                     <ArrowRight size={15} />
                   </Link>
                 </div>

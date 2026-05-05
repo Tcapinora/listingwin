@@ -1,8 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Building2, Clock3, Plus, Sparkles } from "lucide-react";
-import { PageHeader } from "@/components/PageHeader";
+import {
+  ArrowRight,
+  Building2,
+  Clock3,
+  MonitorPlay,
+  Plus,
+  Sparkles,
+} from "lucide-react";
 import { PrimaryLink } from "@/components/Buttons";
 import { useListing } from "@/components/ListingProvider";
 import { useAgentProfile } from "@/components/AgentProfileProvider";
@@ -18,69 +24,92 @@ export default function DashboardPage() {
   const status = hasImages ? "Ready" : hasListing ? "Draft" : "New";
   const lastEdited = "Saved in this browser";
   const address = listing.details.address || "No listings yet";
+  const workflow = [
+    {
+      title: "Prepare",
+      text: "Build the vendor presentation in the office before the appointment.",
+    },
+    {
+      title: "Present",
+      text: "Show the vendor a polished, seller-facing story for their property.",
+    },
+    {
+      title: "Close",
+      text: "Move into the Agent Workspace for next steps, objections, and follow-up.",
+    },
+  ];
 
   return (
     <>
-      <section className="overflow-hidden rounded-[2.25rem] bg-gradient-to-br from-blue-950 via-blue-900 to-blue-700 p-7 text-white shadow-soft sm:p-10 lg:p-12">
-        <div className="grid gap-10 lg:grid-cols-[1.05fr_0.75fr] lg:items-end">
+      <section className="overflow-hidden rounded-[2.25rem] bg-white p-7 shadow-card ring-1 ring-slate-200/70 sm:p-10 lg:p-12">
+        <div className="grid gap-10 lg:grid-cols-[1.05fr_0.8fr] lg:items-end">
           <div>
-            <p className="inline-flex rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-blue-50 ring-1 ring-white/15">
-              ListingWin workspace
+            <p className="inline-flex rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
+              ListingWin for agents
             </p>
-            <h1 className="mt-7 max-w-3xl text-4xl font-semibold tracking-tight sm:text-6xl">
-              Ready to win your next listing?
+            <h1 className="mt-7 max-w-3xl text-4xl font-semibold tracking-tight text-slate-950 sm:text-6xl">
+              Prepare. Present. Close.
             </h1>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-blue-100">
-              Build a premium seller presentation in a guided flow. Start with
-              the address, add the media, generate the pack, then review and
-              present.
+            <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
+              Build the presentation, impress the vendor, then move straight
+              into the workspace that helps you win the listing.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <PrimaryLink href="/create">
                 <span className="inline-flex items-center gap-2">
                   <Plus size={18} />
-                  Create New Listing
+                  Create Vendor Presentation
                 </span>
               </PrimaryLink>
+              <Link
+                href="/draft"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-blue-300 hover:text-blue-900"
+              >
+                <MonitorPlay size={17} />
+                Open Agent Workspace
+              </Link>
               <button
                 type="button"
                 onClick={() => {
                   replaceProfile(demoAgentProfile);
                   setListing(demoListingState);
                 }}
-                className="inline-flex items-center justify-center rounded-full bg-white/10 px-5 py-3 text-sm font-semibold text-white ring-1 ring-white/20 transition hover:bg-white/15"
+                className="inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold text-slate-500 transition hover:text-blue-900"
               >
                 Load demo listing
               </button>
             </div>
           </div>
 
-          <div className="rounded-[1.75rem] bg-white/10 p-5 ring-1 ring-white/15 backdrop-blur">
+          <div className="rounded-[1.75rem] bg-slate-50 p-5 ring-1 ring-slate-200">
             <div className="flex items-center gap-3">
-              <span className="grid h-11 w-11 place-items-center rounded-2xl bg-white text-blue-800">
+              <span className="grid h-11 w-11 place-items-center rounded-2xl bg-white text-blue-800 shadow-sm">
                 <Sparkles size={19} />
               </span>
               <div>
-                <p className="text-sm font-semibold text-white">
-                  Simple agent flow
+                <p className="text-sm font-semibold text-slate-950">
+                  Listing appointment flow
                 </p>
-                <p className="text-xs text-blue-100">1 screen = 1 decision</p>
+                <p className="text-xs text-slate-500">Clear, calm, vendor-ready.</p>
               </div>
             </div>
-            <div className="mt-5 grid gap-2 text-sm text-blue-50">
-              {[
-                "Create listing",
-                "Add property details",
-                "Upload media",
-                "Generate content",
-                "Review and export",
-              ].map((item, index) => (
+            <div className="mt-5 grid gap-2 text-sm">
+              {workflow.map((item, index) => (
                 <div
-                  key={item}
-                  className="flex items-center justify-between rounded-2xl bg-white/8 px-4 py-3"
+                  key={item.title}
+                  className="rounded-2xl bg-white px-4 py-4 shadow-sm ring-1 ring-slate-100"
                 >
-                  <span>{item}</span>
-                  <span className="text-blue-200">{index + 1}</span>
+                  <div className="flex items-center gap-3">
+                    <span className="grid h-7 w-7 place-items-center rounded-full bg-blue-700 text-xs font-semibold text-white">
+                      {index + 1}
+                    </span>
+                    <span className="font-semibold text-slate-950">
+                      {item.title}
+                    </span>
+                  </div>
+                  <p className="mt-2 pl-10 text-sm leading-6 text-slate-500">
+                    {item.text}
+                  </p>
                 </div>
               ))}
             </div>
@@ -88,15 +117,21 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      <PageHeader
-        eyebrow="Your Listings"
-        title="Pick up where you left off."
-        description={
-          hasListing
-            ? "Your current presentation is saved locally and ready to continue."
-            : "No listings yet. Create your first listing in under 60 seconds."
-        }
-      />
+      <section className="mt-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
+            Your Presentations
+          </p>
+          <h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">
+            Pick up where you left off.
+          </h2>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
+            {hasListing
+              ? "Your current vendor presentation is saved locally and ready to continue."
+              : "No presentations yet. Create your first one in under 60 seconds."}
+          </p>
+        </div>
+      </section>
 
       <section className="grid gap-5 lg:grid-cols-2">
         {hasListing ? (
@@ -129,9 +164,9 @@ export default function DashboardPage() {
             <div className="mt-7">
               <Link
                 href={hasImages ? "/mockups" : "/upload"}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-700 px-5 py-3.5 text-sm font-semibold text-white shadow-card transition hover:bg-blue-800 sm:w-auto"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-700 px-5 py-3.5 text-sm font-semibold text-white shadow-card transition hover:bg-blue-800 sm:w-auto"
               >
-                Continue
+                Continue Presentation
                 <ArrowRight size={16} />
               </Link>
             </div>
@@ -142,14 +177,14 @@ export default function DashboardPage() {
               <Building2 size={24} />
             </div>
             <h2 className="mt-5 text-2xl font-semibold tracking-tight">
-              No listings yet.
+              No presentations yet.
             </h2>
             <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
-              Create your first listing in under 60 seconds.
+              Create your first vendor presentation in under 60 seconds.
             </p>
             <div className="mt-7">
               <div className="flex flex-col justify-center gap-3 sm:flex-row">
-                <PrimaryLink href="/create">Create New Listing</PrimaryLink>
+                <PrimaryLink href="/create">Create Vendor Presentation</PrimaryLink>
                 <button
                   type="button"
                   onClick={() => {

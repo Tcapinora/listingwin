@@ -325,7 +325,7 @@ export function AppraisalCommandCentre({ listing }: { listing: ListingState }) {
             href="/presentation"
             className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-blue-950"
           >
-            Open seller presentation
+            Open Vendor Presentation
             <ArrowRight size={16} />
           </Link>
         </div>

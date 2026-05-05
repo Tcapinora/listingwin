@@ -54,8 +54,8 @@ const builderSteps = [
   { id: "signboards", label: "Signboards" },
   { id: "street", label: "Street mockup" },
   { id: "openHome", label: "Open home" },
-  { id: "brochurePortal", label: "Brochure and portal" },
-  { id: "social", label: "Social previews" },
+  { id: "brochurePortal", label: "Print and portal" },
+  { id: "social", label: "Social" },
   { id: "all", label: "Show all" },
 ] as const;
 
@@ -210,16 +210,16 @@ export default function MockupsPage() {
 
       <section className="mb-8 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-blue-50 sm:p-8 lg:p-10">
         <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
-          Generate Content
+          Preview vendor presentation
         </p>
         <div className="mt-4 grid gap-6 lg:grid-cols-[1fr_0.55fr] lg:items-end">
           <div>
             <h1 className="text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-              Create your listing content
+              Create the vendor presentation pack
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-              We’ll generate everything you need for a polished listing
-              presentation.
+              Generate the seller-facing previews, then fine-tune the visual
+              mockups before the appointment.
             </p>
             <div className="mt-6 grid gap-3 sm:grid-cols-3">
               {[
@@ -250,17 +250,17 @@ export default function MockupsPage() {
               {generationState === "loading" ? (
                 <>
                   <Loader2 className="animate-spin" size={18} />
-                  Creating your listing pack...
+                  Creating your vendor presentation...
                 </>
               ) : generationState === "success" ? (
                 <>
                   <CheckCircle2 size={18} />
-                  Listing pack created.
+                  Vendor presentation ready.
                 </>
               ) : (
                 <>
                   <WandSparkles size={18} />
-                  Generate Listing Pack
+                  Generate Vendor Presentation
                 </>
               )}
             </button>
@@ -269,7 +269,7 @@ export default function MockupsPage() {
                 href="/draft"
                 className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full border border-blue-200 bg-white px-6 py-3 text-sm font-semibold text-blue-900 shadow-sm sm:w-auto"
               >
-                Continue
+                Preview Vendor Presentation
                 <ArrowRight size={16} />
               </Link>
             ) : null}
@@ -284,11 +284,11 @@ export default function MockupsPage() {
         <summary className="flex cursor-pointer list-none items-center justify-between gap-4 rounded-[1.5rem] bg-blue-50 px-4 py-4">
           <span>
             <span className="block text-sm font-semibold text-blue-950">
-              Fine-tune the visual mockups
+              Fine-tune the presentation visuals
             </span>
             <span className="mt-1 block text-xs leading-5 text-blue-800/70">
-              Upload signboards, then drag and resize them on the street mockup.
-              You can also adjust open home, brochure, portal, and social previews.
+              Adjust signboards, open-home scenes, print, portal, and social
+              previews before showing the vendor.
             </span>
           </span>
           <ChevronDown
@@ -366,7 +366,7 @@ export default function MockupsPage() {
           <div className="mb-5 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-gray-500">
-                Step 3
+                Street mockup
               </p>
               <h2 className="mt-2 text-2xl font-semibold tracking-tight">
                 Add the signboard to the property photo
@@ -456,7 +456,7 @@ export default function MockupsPage() {
         }`}
       >
         <StepHeader
-          step="Step 4"
+          step="Open-home preview"
           title="Open Home buyer preview"
           description="Use the main property photo and stage buyer groups together. The agent can move, resize, show, or remove each group so the scene still feels natural."
         />
@@ -568,7 +568,7 @@ export default function MockupsPage() {
         }`}
       >
         <StepHeader
-          step="Step 5"
+          step="Print assets"
           title="Brochure front cover options"
           description="Choose the wording that appears on the brochure cover: For sale, Auction, Price guide TBC, or a specific price."
         />
@@ -619,7 +619,7 @@ export default function MockupsPage() {
         }`}
       >
         <StepHeader
-          step="Step 6"
+          step="Portal preview"
           title="Property portal preview"
           description="Show the seller how their property could look on a major property portal, with one large hero image, three supporting images, and the agent’s brand colour."
         />
@@ -632,7 +632,7 @@ export default function MockupsPage() {
         }`}
       >
         <StepHeader
-          step="Step 7"
+          step="Social style"
           title="Add social marketing style references"
           description="Upload example Instagram and Facebook listing screenshots from the agent or agency. ListingWin uses them as style references and inserts the property photo into a seller preview."
         />
@@ -671,8 +671,8 @@ export default function MockupsPage() {
         }`}
       >
         <StepHeader
-          step="Final previews"
-          title="Campaign preview set"
+          step="Presentation preview set"
+          title="Final vendor-facing previews"
           description="Review the remaining seller-facing marketing pieces that have not already been shown in the builder above."
         />
         <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
@@ -703,7 +703,7 @@ export default function MockupsPage() {
           href="/draft"
           className="inline-flex items-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card"
         >
-          Continue
+          Preview Vendor Presentation
           <ArrowRight size={16} />
         </Link>
       </div>

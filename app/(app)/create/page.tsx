@@ -61,21 +61,22 @@ export default function CreatePage() {
           router.push("/details");
         }}
       >
-        <section className="rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-blue-50 sm:p-8 lg:p-10">
+        <section className="rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-slate-200/70 sm:p-8 lg:p-10">
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
-            Create Listing
+            Office preparation
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-            Let’s set up your listing
+            Create the vendor presentation
           </h1>
           <p className="mt-4 max-w-xl text-base leading-7 text-slate-600">
-            We’ll guide you through everything in under 2 minutes.
+            Start with the property and agency details. The rest of the flow
+            will guide you step by step before the listing appointment.
           </p>
 
           <div className="mt-8 grid gap-5">
             <label>
               <span className="text-sm font-semibold text-slate-800">
-                Property Address
+                Property address
               </span>
               <input
                 ref={addressRef}
@@ -88,7 +89,7 @@ export default function CreatePage() {
 
             <label>
               <span className="text-sm font-semibold text-slate-800">
-                Agency Name
+                Agency name
               </span>
               <input
                 value={listing.details.agencyName || profile.agencyName}
@@ -105,7 +106,7 @@ export default function CreatePage() {
             type="submit"
             className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-700 px-6 py-4 text-base font-semibold text-white shadow-card transition hover:bg-blue-800 sm:w-auto"
           >
-            Continue
+            Save & Continue
             <ArrowRight size={18} />
           </button>
         </section>

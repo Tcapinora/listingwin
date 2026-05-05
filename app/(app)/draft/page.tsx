@@ -67,27 +67,27 @@ export default function DraftPage() {
     ["Listing pack created", true],
   ];
   const quickActions: Array<[string, string, LucideIcon]> = [
-    ["Open seller presentation", "/presentation", MonitorPlay],
-    ["Update buyer database", "#buyer-database", Users],
-    ["Review sale calendar", "#sale-calendar", CalendarDays],
-    ["Prepare Form 6", "#form-6", FileText],
+    ["Open Vendor Presentation", "/presentation", MonitorPlay],
+    ["Buyer Database", "#buyer-database", Users],
+    ["Sale Calendar", "#sale-calendar", CalendarDays],
+    ["Form 6 Explainer", "#form-6", FileText],
   ];
 
   return (
     <>
-      <section className="rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-blue-50 sm:p-8 lg:p-10">
+      <section className="rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-slate-200/70 sm:p-8 lg:p-10">
         <div className="grid gap-8 lg:grid-cols-[1fr_0.6fr] lg:items-end">
           <div>
             <div className="inline-flex rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
               Agent workspace
             </div>
             <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-              Your seller presentation is complete
+              Close the listing
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-              This is where the agent works after the seller-facing
-              presentation: follow-up, buyer calls, campaign reporting, Form 6
-              explanation, scripts, notes, and next steps.
+              The vendor presentation is complete. Use this workspace to handle
+              follow-up, buyer calls, pricing discussion, Form 6 explanation,
+              agent notes, and the next best action.
             </p>
           </div>
           <div className="rounded-[1.5rem] bg-blue-50 p-5 ring-1 ring-blue-100">
@@ -221,14 +221,14 @@ export default function DraftPage() {
       >
         <div className="max-w-3xl">
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
-            Agent-only command centre
+            Closing tools
           </p>
           <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
-            The information the agent uses after the presentation
+            The practical tools to win the listing
           </h2>
           <p className="mt-3 text-sm leading-6 text-slate-600">
-            This material is intentionally not in the vendor presentation. It is
-            the agent’s working area for follow-up, buyer matching, vendor
+            This material stays out of the vendor presentation. It is the
+            agent’s working area for follow-up, buyer matching, vendor
             reporting, objection handling, and appointment preparation.
           </p>
         </div>

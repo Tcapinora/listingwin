@@ -53,17 +53,17 @@ export default function PresentationPage() {
 
   return (
     <>
-      <section className="no-print sticky top-0 z-40 border-b border-blue-100 bg-white/92 px-4 py-3 shadow-sm backdrop-blur-xl">
+      <section className="no-print sticky top-0 z-40 border-b border-slate-200/70 bg-white/94 px-4 py-3 shadow-sm backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex flex-wrap items-center gap-3">
             <a
               href="#presentation-start"
               className="inline-flex items-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card"
             >
-              Presentation
+              Vendor Presentation
             </a>
-            <p className="text-sm font-semibold text-slate-600">
-              Scroll through this with the seller.
+            <p className="text-sm font-medium text-slate-500">
+              Client-facing view. Keep it simple and scroll.
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -72,7 +72,7 @@ export default function PresentationPage() {
               className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2.5 text-sm font-semibold text-blue-900 shadow-sm"
             >
               <Pencil size={16} />
-              Edit setup
+              Edit Builder
             </Link>
             <button
               type="button"
@@ -115,7 +115,7 @@ export default function PresentationPage() {
               onClick={() => window.print()}
             >
               <Download size={16} />
-              PDF
+              Print / PDF
             </button>
           </div>
         </div>
@@ -184,7 +184,7 @@ export default function PresentationPage() {
       >
         <section className="mb-6 rounded-[2rem] bg-white p-5 shadow-card ring-1 ring-blue-50 lg:p-7">
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
-            Seller-facing presentation
+            Vendor presentation
           </p>
           <div className="mt-3 grid gap-4 lg:grid-cols-[1fr_0.55fr] lg:items-end">
             <div>
@@ -192,15 +192,14 @@ export default function PresentationPage() {
                 Guide the seller from uncertainty to confidence.
               </h2>
               <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">
-                Everything below is designed to be scrolled through in the
-                listing presentation: marketing, calendar, buyers, pricing,
-                next steps, and the agent’s plan.
+                Everything below is designed to be shown in the listing
+                appointment: price story, current competition, marketing
+                visuals, sale calendar, buyer database, and next steps.
               </p>
             </div>
             <div className="rounded-[1.5rem] bg-blue-50 p-4 text-sm leading-6 text-blue-900 ring-1 ring-blue-100">
               Agent-only follow-up, scripts, Form 6 explanation, and campaign
-              reporting live in the Agent Workspace after this seller
-              presentation.
+              reporting stay in the Agent Workspace after this presentation.
             </div>
           </div>
         </section>
@@ -264,15 +263,15 @@ export default function PresentationPage() {
           <div className="grid gap-6 lg:grid-cols-[1fr_0.55fr] lg:items-center">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
-                Presentation complete
+              Close the appointment
               </p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
-                Finished with the seller?
+                Ready to move into the Agent Workspace?
               </h2>
               <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
-                Once the seller-facing presentation is done, continue back to
-                the agent workspace for follow-up, Form 6 explanation, vendor
-                reporting, notes, and next-step information.
+                Once the presentation is finished, move straight into the
+                practical closing tools: follow-up, objections, Form 6
+                explanation, notes, and next steps.
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
@@ -280,7 +279,7 @@ export default function PresentationPage() {
                 href="/draft"
                 className="inline-flex items-center justify-center rounded-full bg-blue-700 px-6 py-4 text-sm font-semibold text-white shadow-card"
               >
-                Continue to agent workspace
+                Open Agent Workspace
               </Link>
               <Link
                 href="/details"

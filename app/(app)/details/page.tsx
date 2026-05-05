@@ -61,18 +61,19 @@ export default function PropertyDetailsPage() {
           router.push("/upload");
         }}
       >
-        <section className="rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-blue-50 sm:p-8 lg:p-10">
+        <section className="rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-slate-200/70 sm:p-8 lg:p-10">
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
-            Property Details
+            Vendor presentation builder
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-            Tell us about the property
+            Shape the listing story
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-            Add the essentials we need to create a polished listing pack.
+            Add the details that help the vendor understand the property,
+            pricing strategy, market position, and campaign plan.
           </p>
-          <div className="mt-6 grid gap-3 rounded-[1.5rem] bg-blue-50/70 p-4 ring-1 ring-blue-100 sm:grid-cols-3">
-            {["Headline", "Property type", "Key features"].map((item) => (
+          <div className="mt-6 grid gap-3 rounded-[1.5rem] bg-slate-50 p-4 ring-1 ring-slate-200 sm:grid-cols-3">
+            {["Property details", "Market positioning", "Agent notes"].map((item) => (
               <div
                 key={item}
                 className="flex items-center gap-2 text-sm font-semibold text-blue-950"
@@ -168,12 +169,12 @@ export default function PropertyDetailsPage() {
             </label>
           </div>
 
-          <details className="group mt-6 rounded-[1.5rem] bg-blue-50/70 p-5 ring-1 ring-blue-100">
+          <details className="group mt-6 rounded-[1.5rem] bg-slate-50 p-5 ring-1 ring-slate-200">
             <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-semibold text-blue-900">
               <span>
-                Advanced: pricing context and market links
+                Market positioning and pricing strategy
                 <span className="mt-1 block text-xs font-medium leading-5 text-blue-800/70">
-                  Optional, but useful before a real appraisal.
+                  Add the evidence that supports your pricing conversation.
                 </span>
               </span>
               <ChevronDown
@@ -278,14 +279,14 @@ export default function PropertyDetailsPage() {
 
         <section className="mt-8 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-blue-50 sm:p-8 lg:p-10">
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
-            Buyer list
+            Buyer database
           </p>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
-            Add buyers you can show the owner.
+            Add buyers you can show the vendor.
           </h2>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
             Add buyer names, notes, preferred suburbs, and price range. These
-            appear in the presentation so the seller can see who you could call
+            appear in the presentation so the vendor can see who you could call
             straight away for this property.
           </p>
           <BuyerMatchEngineSection listing={listing} onUpdate={setListing} />
@@ -293,10 +294,10 @@ export default function PropertyDetailsPage() {
 
         <section className="mt-8 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-blue-50 sm:p-8 lg:p-10">
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
-            Sale calendar
+            Campaign timeline
           </p>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
-            Add the important campaign dates.
+            Add the important sale dates.
           </h2>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
             Add photography, launch, open home, auction, and follow-up dates.
