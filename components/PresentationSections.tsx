@@ -2,16 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import {
-  BadgeCheck,
-  FileText,
-  HeartHandshake,
-  MessageSquareText,
-  ShieldCheck,
-  Smartphone,
-  Sparkles,
-  Timer,
-} from "lucide-react";
+import { Smartphone } from "lucide-react";
 import { useState } from "react";
 import { useAgentProfile } from "@/components/AgentProfileProvider";
 import { generatePropertyWriteup } from "@/lib/copy";
@@ -26,19 +17,10 @@ import {
   SocialPreview,
 } from "@/components/MockupCards";
 import {
-  BuyerDemandSection,
   BuyerMatchEngineSection,
-  CampaignPlanSection,
   CampaignTimelineSection,
-  FollowUpAutomationSection,
-  ListingWinScoreCard,
   MarketExpertSection,
   PriceConfidenceSection,
-  SellerFollowUpSection,
-  SellerValueSection,
-  SellerDecisionRoomSection,
-  VendorReportSection,
-  Form6PrototypeSection,
 } from "@/components/ValueSections";
 
 function PresentationChapter({
@@ -81,16 +63,11 @@ function PresentationChapter({
 
 export function PresentationFlowNav() {
   const items = [
-    "Recognition",
-    "Confidence",
-    "Belief",
-    "Urgency",
-    "Decision",
-    "Visual proof",
+    "Price story",
+    "Current competition",
+    "Visual previews",
     "Sale calendar",
-    "Follow-up",
-    "Vendor report",
-    "Form 6",
+    "Buyer database",
   ];
 
   return (
@@ -101,12 +78,12 @@ export function PresentationFlowNav() {
             Seller room flow
           </p>
           <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">
-            One clean path from doubt to decision.
+            One clean seller-facing path.
           </h2>
         </div>
         <p className="max-w-md text-sm leading-6 text-slate-500">
-          Use this order to help the seller feel understood, prepared, and
-          confident enough to move forward.
+          This is the presentation the owner sees. Strategy prompts and agent
+          notes stay out of the seller-facing deck.
         </p>
       </div>
       <div className="mt-5 flex flex-wrap gap-2">
@@ -119,67 +96,6 @@ export function PresentationFlowNav() {
           </span>
         ))}
       </div>
-    </section>
-  );
-}
-
-function SellerConfidenceArc({ listing }: { listing: ListingState }) {
-  const address = listing.details.address || "this property";
-  const arc = [
-    {
-      title: "Recognition",
-      text: `Show the seller that ${address} has been considered as a specific home, not treated like a generic appraisal.`,
-      icon: HeartHandshake,
-    },
-    {
-      title: "Confidence",
-      text: "Connect price, buyer demand, and campaign quality so the seller feels the advice is structured, not guessed.",
-      icon: ShieldCheck,
-    },
-    {
-      title: "Belief",
-      text: "Let the seller see how buyers will experience the home before it goes live.",
-      icon: Sparkles,
-    },
-    {
-      title: "Urgency",
-      text: "Make momentum visible: buyers to call, dates to hit, and marketing ready to move.",
-      icon: Timer,
-    },
-    {
-      title: "Decision",
-      text: "Bring the conversation back to one simple question: do they trust this agent to launch the home properly?",
-      icon: BadgeCheck,
-    },
-  ];
-
-  return (
-    <section className="grid gap-4 lg:grid-cols-5">
-      {arc.map((item, index) => {
-        const Icon = item.icon;
-
-        return (
-          <article
-            key={item.title}
-            className="rounded-3xl bg-white p-5 shadow-card ring-1 ring-blue-50"
-          >
-            <div className="flex items-center justify-between gap-4">
-              <div className="grid h-11 w-11 place-items-center rounded-2xl bg-blue-50 text-blue-700">
-                <Icon size={18} />
-              </div>
-              <span className="text-xs font-semibold text-blue-700">
-                {index + 1}
-              </span>
-            </div>
-            <h3 className="mt-5 text-lg font-semibold tracking-tight text-slate-950">
-              {item.title}
-            </h3>
-            <p className="mt-2 text-sm leading-6 text-slate-600">
-              {item.text}
-            </p>
-          </article>
-        );
-      })}
     </section>
   );
 }
@@ -349,20 +265,10 @@ export function PresentationGrid({ listing }: { listing: ListingState }) {
   return (
     <>
       <PresentationFlowNav />
-      <AgentOnlyTools listing={listing} />
 
       <PresentationChapter
         number="01"
-        eyebrow="Seller psychology"
-        title="Move the seller from uncertainty to confidence."
-        description="The presentation is designed to change the room: the seller should feel understood, prepared, and ready to choose the agent who has already started."
-      >
-        <SellerConfidenceArc listing={listing} />
-      </PresentationChapter>
-
-      <PresentationChapter
-        number="02"
-        eyebrow="Confidence"
+        eyebrow="Price story"
         title="Separate the mathematical price from the emotional price."
         description="Give the seller a clear distinction between evidence-based pricing and the emotional upside a strong campaign can create."
       >
@@ -370,35 +276,16 @@ export function PresentationGrid({ listing }: { listing: ListingState }) {
       </PresentationChapter>
 
       <PresentationChapter
-        number="03"
-        eyebrow="Recognition"
-        title="Show the seller this was prepared for their home."
+        number="02"
+        eyebrow="Current competition"
+        title="Show the current competition."
         description="Market proof helps the seller feel the agent has done the thinking before asking for the listing."
       >
         <MarketExpertSection listing={listing} />
       </PresentationChapter>
 
       <PresentationChapter
-        number="04"
-        eyebrow="Urgency"
-        title="Show there are buyers to call now."
-        description="This changes the seller’s mindset from waiting for the market to respond to believing momentum can start immediately."
-      >
-        <BuyerMatchEngineSection listing={listing} />
-      </PresentationChapter>
-
-      <PresentationChapter
-        number="05"
-        eyebrow="Belief"
-        title="Make the buyer journey feel real."
-        description="This is where the agent moves from selling services to showing how competition is created."
-      >
-        <BuyerDemandSection listing={listing} />
-        <CampaignPlanSection listing={listing} />
-      </PresentationChapter>
-
-      <PresentationChapter
-        number="06"
+        number="03"
         eyebrow="Visual previews"
         title="Show the first impression buyers will remember."
         description="The seller can now see their home through the buyer’s eyes before the campaign exists."
@@ -436,104 +323,22 @@ export function PresentationGrid({ listing }: { listing: ListingState }) {
       </PresentationChapter>
 
       <PresentationChapter
-        number="07"
-        eyebrow="Urgency"
-        title="Make the next steps feel immediate."
-        description="A visible timeline helps the seller feel that saying yes creates movement, not more waiting."
+        number="04"
+        eyebrow="Sale calendar"
+        title="Show the campaign calendar."
+        description="A visible calendar helps the seller understand exactly what happens after they appoint the agent."
       >
         <CampaignTimelineSection listing={listing} />
       </PresentationChapter>
 
       <PresentationChapter
-        number="08"
-        eyebrow="Decision"
-        title="Make choosing the agent feel like the safe move."
-        description="Bring the presentation back to trust: prepared campaign, clear process, buyer plan, and a simple next step."
+        number="05"
+        eyebrow="Buyer database"
+        title="Show who the agent can call for this property."
+        description="This gives the owner confidence that the agent is not waiting for the market to respond from zero."
       >
-        <ListingWinScoreCard listing={listing} />
-        <SellerDecisionRoomSection listing={listing} />
-        <SellerValueSection listing={listing} />
-      </PresentationChapter>
-
-      <PresentationChapter
-        number="09"
-        eyebrow="Next steps"
-        title="Keep the seller emotionally engaged after the appraisal."
-        description="The seller should leave with momentum, not a vague promise that the agent will send something later."
-      >
-        <FollowUpAutomationSection listing={listing} />
-        <SellerFollowUpSection listing={listing} />
-      </PresentationChapter>
-
-      <PresentationChapter
-        number="10"
-        eyebrow="Vendor report"
-        title="Show how the seller will be updated after launch."
-        description="This example report demonstrates inspection numbers, buyer feedback, price feedback, and the agent’s recommendation in the agency’s marketing colour."
-      >
-        <VendorReportSection listing={listing} />
-      </PresentationChapter>
-
-      <PresentationChapter
-        number="11"
-        eyebrow="Appointment"
-        title="Explain the Form 6 before the legal signing step."
-        description="This turns the agency appointment form into a clear seller conversation: what each page means, why it matters, and what questions the agent should answer."
-      >
-        <Form6PrototypeSection />
+        <BuyerMatchEngineSection listing={listing} />
       </PresentationChapter>
     </>
-  );
-}
-
-function AgentOnlyTools({ listing }: { listing: ListingState }) {
-  const [open, setOpen] = useState(false);
-  const notes = listing.details.notes.trim();
-  const priceNotes = listing.details.priceNotes.trim();
-
-  return (
-    <section className="no-print mt-8 rounded-3xl border border-dashed border-blue-200 bg-blue-50/60 p-5">
-      <button
-        type="button"
-        onClick={() => setOpen((value) => !value)}
-        className="inline-flex items-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card"
-      >
-        <FileText size={16} />
-        {open ? "Hide agent-only notes" : "Show agent-only notes"}
-      </button>
-      <p className="mt-3 text-sm leading-6 text-blue-900/70">
-        Private prompts for the agent. Use quickly if needed, then hide before
-        continuing with the seller.
-      </p>
-
-      {open ? (
-        <div className="mt-5 grid gap-4 lg:grid-cols-3">
-          <div className="rounded-2xl bg-white p-5">
-            <MessageSquareText className="text-blue-700" size={18} />
-            <h3 className="mt-3 font-semibold">Opening prompt</h3>
-            <p className="mt-2 text-sm leading-6 text-slate-600">
-              I prepared this specifically for this property so you can see the
-              campaign before deciding who to list with.
-            </p>
-          </div>
-          <div className="rounded-2xl bg-white p-5">
-            <ShieldCheck className="text-blue-700" size={18} />
-            <h3 className="mt-3 font-semibold">Fee/commission prompt</h3>
-            <p className="mt-2 text-sm leading-6 text-slate-600">
-              The fee is connected to buyer competition, negotiation, and the
-              quality of the campaign, not just putting the home online.
-            </p>
-          </div>
-          <div className="rounded-2xl bg-white p-5">
-            <FileText className="text-blue-700" size={18} />
-            <h3 className="mt-3 font-semibold">Notes</h3>
-            <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-600">
-              {[notes, priceNotes].filter(Boolean).join("\n\n") ||
-                "No private notes added yet."}
-            </p>
-          </div>
-        </div>
-      ) : null}
-    </section>
   );
 }

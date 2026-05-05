@@ -148,6 +148,12 @@ export default function MockupsPage() {
     setListing,
   ]);
 
+  useEffect(() => {
+    if (hasAnySignboard && activeStep === "signboards") {
+      setActiveStep("street");
+    }
+  }, [activeStep, hasAnySignboard]);
+
   const updateAsset = async (assetKey: AssetKey, value: string) => {
     const nextValue =
       value && (assetKey === "signboard1" || assetKey === "signboard2")
@@ -281,8 +287,8 @@ export default function MockupsPage() {
               Fine-tune the visual mockups
             </span>
             <span className="mt-1 block text-xs leading-5 text-blue-800/70">
-              Optional controls for signboards, open home, brochure, portal,
-              and social previews.
+              Upload signboards, then drag and resize them on the street mockup.
+              You can also adjust open home, brochure, portal, and social previews.
             </span>
           </span>
           <ChevronDown
