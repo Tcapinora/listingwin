@@ -56,8 +56,8 @@ export default function PresentationPage() {
     <>
       <PageHeader
         eyebrow="Seller Presentation"
-        title="Run the appraisal in a clean, premium order."
-        description="A guided seller presentation: price story, market proof, marketing vision, visual previews, sale calendar, and next steps."
+        title="Guide the seller from uncertainty to confidence."
+        description="A seller-confidence presentation: recognise the home, prove the market, show the buyer journey, create belief in the campaign, and make the next step feel easy."
         action={
           <div className="no-print flex flex-wrap gap-3">
             <Link

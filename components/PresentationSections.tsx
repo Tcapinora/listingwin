@@ -2,7 +2,16 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FileText, MessageSquareText, ShieldCheck, Smartphone } from "lucide-react";
+import {
+  BadgeCheck,
+  FileText,
+  HeartHandshake,
+  MessageSquareText,
+  ShieldCheck,
+  Smartphone,
+  Sparkles,
+  Timer,
+} from "lucide-react";
 import { useState } from "react";
 import { useAgentProfile } from "@/components/AgentProfileProvider";
 import { generatePropertyWriteup } from "@/lib/copy";
@@ -72,14 +81,14 @@ function PresentationChapter({
 
 export function PresentationFlowNav() {
   const items = [
-    "Price story",
-    "Market proof",
-    "Buyer match",
-    "Marketing vision",
-    "Visual previews",
+    "Recognition",
+    "Confidence",
+    "Belief",
+    "Urgency",
+    "Decision",
+    "Visual proof",
     "Sale calendar",
-    "Why this agent",
-    "Next steps",
+    "Follow-up",
     "Vendor report",
     "Form 6",
   ];
@@ -92,12 +101,12 @@ export function PresentationFlowNav() {
             Seller room flow
           </p>
           <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">
-            One clean path from price to appointment.
+            One clean path from doubt to decision.
           </h2>
         </div>
         <p className="max-w-md text-sm leading-6 text-slate-500">
-          Use this as the running order in the appraisal, then hide any private
-          agent prompts before continuing with the seller.
+          Use this order to help the seller feel understood, prepared, and
+          confident enough to move forward.
         </p>
       </div>
       <div className="mt-5 flex flex-wrap gap-2">
@@ -110,6 +119,67 @@ export function PresentationFlowNav() {
           </span>
         ))}
       </div>
+    </section>
+  );
+}
+
+function SellerConfidenceArc({ listing }: { listing: ListingState }) {
+  const address = listing.details.address || "this property";
+  const arc = [
+    {
+      title: "Recognition",
+      text: `Show the seller that ${address} has been considered as a specific home, not treated like a generic appraisal.`,
+      icon: HeartHandshake,
+    },
+    {
+      title: "Confidence",
+      text: "Connect price, buyer demand, and campaign quality so the seller feels the advice is structured, not guessed.",
+      icon: ShieldCheck,
+    },
+    {
+      title: "Belief",
+      text: "Let the seller see how buyers will experience the home before it goes live.",
+      icon: Sparkles,
+    },
+    {
+      title: "Urgency",
+      text: "Make momentum visible: buyers to call, dates to hit, and marketing ready to move.",
+      icon: Timer,
+    },
+    {
+      title: "Decision",
+      text: "Bring the conversation back to one simple question: do they trust this agent to launch the home properly?",
+      icon: BadgeCheck,
+    },
+  ];
+
+  return (
+    <section className="grid gap-4 lg:grid-cols-5">
+      {arc.map((item, index) => {
+        const Icon = item.icon;
+
+        return (
+          <article
+            key={item.title}
+            className="rounded-3xl bg-white p-5 shadow-card ring-1 ring-blue-50"
+          >
+            <div className="flex items-center justify-between gap-4">
+              <div className="grid h-11 w-11 place-items-center rounded-2xl bg-blue-50 text-blue-700">
+                <Icon size={18} />
+              </div>
+              <span className="text-xs font-semibold text-blue-700">
+                {index + 1}
+              </span>
+            </div>
+            <h3 className="mt-5 text-lg font-semibold tracking-tight text-slate-950">
+              {item.title}
+            </h3>
+            <p className="mt-2 text-sm leading-6 text-slate-600">
+              {item.text}
+            </p>
+          </article>
+        );
+      })}
     </section>
   );
 }
@@ -283,46 +353,55 @@ export function PresentationGrid({ listing }: { listing: ListingState }) {
 
       <PresentationChapter
         number="01"
-        eyebrow="Price story"
-        title="Start with the price conversation."
-        description="Give the seller a clear distinction between the evidence-based price and the emotional upside a strong campaign can create."
+        eyebrow="Seller psychology"
+        title="Move the seller from uncertainty to confidence."
+        description="The presentation is designed to change the room: the seller should feel understood, prepared, and ready to choose the agent who has already started."
+      >
+        <SellerConfidenceArc listing={listing} />
+      </PresentationChapter>
+
+      <PresentationChapter
+        number="02"
+        eyebrow="Confidence"
+        title="Separate the mathematical price from the emotional price."
+        description="Give the seller a clear distinction between evidence-based pricing and the emotional upside a strong campaign can create."
       >
         <PriceConfidenceSection listing={listing} />
       </PresentationChapter>
 
       <PresentationChapter
-        number="02"
-        eyebrow="Market proof"
-        title="Show the seller you know the current competition."
-        description="Use saved competing property links as visual proof that this presentation was prepared before the appraisal."
+        number="03"
+        eyebrow="Recognition"
+        title="Show the seller this was prepared for their home."
+        description="Market proof helps the seller feel the agent has done the thinking before asking for the listing."
       >
         <MarketExpertSection listing={listing} />
       </PresentationChapter>
 
       <PresentationChapter
-        number="03"
-        eyebrow="Buyer database"
-        title="Prove there are buyers to call now."
-        description="This gives the seller confidence that the agent is not starting from zero on launch day."
+        number="04"
+        eyebrow="Urgency"
+        title="Show there are buyers to call now."
+        description="This changes the seller’s mindset from waiting for the market to respond to believing momentum can start immediately."
       >
         <BuyerMatchEngineSection listing={listing} />
       </PresentationChapter>
 
       <PresentationChapter
-        number="04"
-        eyebrow="Marketing vision"
-        title="Explain how the campaign creates buyer demand."
-        description="This is where the agent moves from price to process: who the buyer is, how they will see the property, and what happens after launch."
+        number="05"
+        eyebrow="Belief"
+        title="Make the buyer journey feel real."
+        description="This is where the agent moves from selling services to showing how competition is created."
       >
         <BuyerDemandSection listing={listing} />
         <CampaignPlanSection listing={listing} />
       </PresentationChapter>
 
       <PresentationChapter
-        number="05"
+        number="06"
         eyebrow="Visual previews"
-        title="Let the seller see the campaign before it exists."
-        description="Keep this part focused. Click through each format instead of showing every mockup at once."
+        title="Show the first impression buyers will remember."
+        description="The seller can now see their home through the buyer’s eyes before the campaign exists."
       >
         <section className="rounded-3xl border border-blue-100 bg-white p-5 shadow-card lg:p-7">
           <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
@@ -357,19 +436,19 @@ export function PresentationGrid({ listing }: { listing: ListingState }) {
       </PresentationChapter>
 
       <PresentationChapter
-        number="06"
-        eyebrow="Sale calendar"
-        title="Make the next steps concrete."
-        description="A visible timeline helps the seller understand what will happen after they appoint the agent."
+        number="07"
+        eyebrow="Urgency"
+        title="Make the next steps feel immediate."
+        description="A visible timeline helps the seller feel that saying yes creates movement, not more waiting."
       >
         <CampaignTimelineSection listing={listing} />
       </PresentationChapter>
 
       <PresentationChapter
-        number="07"
-        eyebrow="Why this agent"
-        title="Finish with confidence and a clear decision path."
-        description="Bring the presentation back to the seller outcome: prepared campaign, clear process, and a simple next step."
+        number="08"
+        eyebrow="Decision"
+        title="Make choosing the agent feel like the safe move."
+        description="Bring the presentation back to trust: prepared campaign, clear process, buyer plan, and a simple next step."
       >
         <ListingWinScoreCard listing={listing} />
         <SellerDecisionRoomSection listing={listing} />
@@ -377,17 +456,17 @@ export function PresentationGrid({ listing }: { listing: ListingState }) {
       </PresentationChapter>
 
       <PresentationChapter
-        number="08"
+        number="09"
         eyebrow="Next steps"
-        title="Make the follow-up feel immediate."
-        description="The seller should leave with a clear decision path, not a vague promise that the agent will send something later."
+        title="Keep the seller emotionally engaged after the appraisal."
+        description="The seller should leave with momentum, not a vague promise that the agent will send something later."
       >
         <FollowUpAutomationSection listing={listing} />
         <SellerFollowUpSection listing={listing} />
       </PresentationChapter>
 
       <PresentationChapter
-        number="09"
+        number="10"
         eyebrow="Vendor report"
         title="Show how the seller will be updated after launch."
         description="This example report demonstrates inspection numbers, buyer feedback, price feedback, and the agent’s recommendation in the agency’s marketing colour."
@@ -396,7 +475,7 @@ export function PresentationGrid({ listing }: { listing: ListingState }) {
       </PresentationChapter>
 
       <PresentationChapter
-        number="10"
+        number="11"
         eyebrow="Appointment"
         title="Explain the Form 6 before the legal signing step."
         description="This turns the agency appointment form into a clear seller conversation: what each page means, why it matters, and what questions the agent should answer."

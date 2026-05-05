@@ -12,5 +12,5 @@ export function generatePropertyWriteup(details: ListingDetails) {
 
   // Future AI copy generation can be connected here with a provider request that uses
   // the address, agent notes, suburb context, and approved agency tone of voice.
-  return `${headline}${address} is positioned for a polished, high-impact market launch.${notes} With refined presentation, confident campaign visuals, and a clear lifestyle message, the property can be introduced to buyers with the premium first impression it deserves.`;
+  return `${headline}${address} is positioned for a campaign that helps sellers feel prepared before they choose an agent.${notes} The goal is to make the first buyer impression clear, create confidence around price, and show the seller that momentum can start the moment they say yes.`;
 }

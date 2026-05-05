@@ -17,6 +17,7 @@ import {
   ExternalLink,
   FileText,
   Handshake,
+  HeartHandshake,
   Link2,
   Megaphone,
   MessageSquareText,
@@ -38,30 +39,30 @@ import type { BuyerLead, ListingState } from "@/lib/types";
 
 const sellerBenefits = [
   {
-    title: "They see the campaign before signing",
+    title: "They feel understood before signing",
     description:
-      "Instead of promising premium marketing, the agent can show the seller their property already presented across signage, print, social, and mobile.",
-    icon: Eye,
+      "The seller sees a presentation built around their home, their buyer, and their decision, not a generic agency pitch.",
+    icon: HeartHandshake,
   },
   {
-    title: "They understand the buyer journey",
+    title: "They believe the buyer journey",
     description:
-      "The presentation connects the front-yard signboard, digital ads, social posts, and printed material into one clear launch plan.",
+      "The presentation turns signage, portals, social, print, open homes, and follow-up into one clear story the seller can picture.",
     icon: Target,
   },
   {
-    title: "They trust the agent is prepared",
+    title: "They trust momentum has already started",
     description:
-      "A tailored mockup makes the appraisal feel considered, polished, and property-specific from the first conversation.",
+      "A tailored listing preview makes the agent feel prepared, decisive, and ready to move the moment the seller says yes.",
     icon: ShieldCheck,
   },
 ];
 
 const agentWins = [
-  "Walk into the appraisal with a property-specific marketing story.",
-  "Show sellers exactly what buyers will see on mobile and social.",
-  "Turn generic marketing promises into visual proof.",
-  "Save every pitch so the agent can reuse, share, and improve presentations.",
+  "Walk into the appraisal with a property-specific seller confidence story.",
+  "Show sellers exactly how buyers will emotionally experience the home.",
+  "Turn generic marketing promises into visible campaign belief.",
+  "Leave the seller with momentum after the conversation ends.",
 ];
 
 const premiumWorkflow = [

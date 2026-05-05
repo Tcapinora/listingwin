@@ -13,16 +13,16 @@ import {
 } from "lucide-react";
 
 const outcomes = [
-  "Seller-ready pitch in minutes",
-  "Shareable presentation preview",
-  "ListingWin Score out of 100",
+  "Seller confidence in minutes",
+  "Campaign proof they can see",
+  "A clearer path to yes",
 ];
 
 const painPoints = [
-  "The seller asks why your marketing is different.",
-  "Price expectations need evidence, not guesswork.",
-  "Generic proposals look the same as every other agent.",
-  "Follow-up loses momentum after the appraisal.",
+  "The seller is comparing agents on fee instead of confidence.",
+  "Price expectations are emotional before they become logical.",
+  "Generic proposals make every agent sound the same.",
+  "Momentum fades when the seller cannot picture the campaign.",
 ];
 
 const workflow = [
@@ -35,13 +35,13 @@ const workflow = [
   {
     title: "Build the listing mockup",
     description:
-      "Upload photos, place signboards, stage open-home energy, and prepare pricing proof.",
+      "Show the seller how buyers will see the home before the campaign exists.",
     icon: Sparkles,
   },
   {
     title: "Win the appraisal conversation",
     description:
-      "Show the seller what buyers will see, then leave them with a link after the meeting.",
+      "Move the seller from uncertainty to confidence, then leave them with a link after the meeting.",
     icon: Trophy,
   },
 ];
@@ -89,13 +89,13 @@ export default function Home() {
             Built by real estate agents for real estate agents
           </p>
           <h1 className="mt-6 max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
-            Walk into every appraisal with the seller’s campaign already built.
+            Walk into every appraisal with the seller already believing.
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">
-            ListingWin helps agents turn property photos, signboards, agency
-            branding, and social previews into a polished seller-facing
-            presentation. It is designed around the real appraisal conversations
-            agents have every week.
+            ListingWin helps agents change the seller’s mindset before the
+            listing is won. Turn property photos, market proof, buyer demand,
+            and campaign visuals into a presentation that makes the seller feel
+            understood, prepared, and ready to move.
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -129,7 +129,7 @@ export default function Home() {
 
           <div className="mt-8 rounded-3xl border border-blue-100 bg-white/80 p-5 shadow-sm">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
-              Built for the hard part of listing
+              Built for the emotional part of listing
             </p>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               {painPoints.map((point) => (
@@ -183,7 +183,7 @@ export default function Home() {
                         42 Seaview Avenue
                       </p>
                       <h2 className="mt-3 text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl">
-                        Premium launch plan for a stronger listing conversation.
+                        A launch plan that makes the seller feel ready to say yes.
                       </h2>
                       <div className="mt-5 flex flex-wrap gap-2 text-xs font-semibold text-white">
                         <span className="rounded-full bg-white/15 px-3 py-2 backdrop-blur-md">
@@ -225,8 +225,8 @@ export default function Home() {
                     Seller recommendation
                   </p>
                   <p className="mt-3 text-sm leading-6 text-slate-600">
-                    Lead with the strongest front elevation, then use the next
-                    images to sell lifestyle and outdoor appeal.
+                    Start by recognising what matters about the home, then show
+                    how the campaign turns that into buyer belief.
                   </p>
                 </div>
 
