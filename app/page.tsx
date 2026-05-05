@@ -169,30 +169,33 @@ export default function Home() {
                     sizes="(min-width: 1024px) 46vw, 100vw"
                     className="absolute inset-0 h-full w-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/82 via-slate-950/18 to-slate-950/8" />
-                  <div className="absolute left-6 top-6 rounded-full border border-white/20 bg-white/15 px-4 py-2 text-xs font-semibold backdrop-blur-md">
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/92 via-slate-950/38 to-slate-950/18" />
+                  <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-slate-950 via-slate-950/72 to-transparent" />
+                  <div className="absolute left-6 top-6 rounded-full border border-white/25 bg-slate-950/55 px-4 py-2 text-xs font-semibold text-white shadow-card backdrop-blur-md">
                     Vendor presentation
                   </div>
                   <div className="absolute right-6 top-6 rounded-full bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-slate-950 shadow-card">
                     ListingWin
                   </div>
                   <div className="absolute bottom-6 left-6 right-6">
-                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-100">
-                      42 Seaview Avenue
-                    </p>
-                    <h2 className="mt-3 max-w-md text-4xl font-semibold tracking-tight">
-                      Premium launch plan for a stronger listing conversation.
-                    </h2>
-                    <div className="mt-5 flex flex-wrap gap-2 text-xs font-semibold text-white/90">
-                      <span className="rounded-full bg-white/15 px-3 py-2 backdrop-blur-md">
-                        Campaign preview
-                      </span>
-                      <span className="rounded-full bg-white/15 px-3 py-2 backdrop-blur-md">
-                        Pricing confidence
-                      </span>
-                      <span className="rounded-full bg-white/15 px-3 py-2 backdrop-blur-md">
-                        Seller follow-up
-                      </span>
+                    <div className="max-w-lg rounded-[1.5rem] border border-white/15 bg-slate-950/70 p-5 shadow-soft backdrop-blur-md">
+                      <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-100">
+                        42 Seaview Avenue
+                      </p>
+                      <h2 className="mt-3 text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl">
+                        Premium launch plan for a stronger listing conversation.
+                      </h2>
+                      <div className="mt-5 flex flex-wrap gap-2 text-xs font-semibold text-white">
+                        <span className="rounded-full bg-white/15 px-3 py-2 backdrop-blur-md">
+                          Campaign preview
+                        </span>
+                        <span className="rounded-full bg-white/15 px-3 py-2 backdrop-blur-md">
+                          Pricing confidence
+                        </span>
+                        <span className="rounded-full bg-white/15 px-3 py-2 backdrop-blur-md">
+                          Seller follow-up
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
