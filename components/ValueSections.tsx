@@ -1207,10 +1207,10 @@ export function BuyerDemandSection({ listing }: { listing: ListingState }) {
     <section className="mt-10 rounded-3xl bg-blue-950 p-7 text-white shadow-soft">
       <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-blue-100">
         <Users size={16} />
-        Buyer demand plan
+        Buyer demand strategy
       </p>
       <h2 className="mt-5 text-4xl font-semibold tracking-tight">
-        Show the seller who the campaign attracts.
+        Explain how the campaign will create competition.
       </h2>
       <div className="mt-7 grid gap-4 lg:grid-cols-3">
         {buyers.map((buyer) => (
@@ -1226,7 +1226,7 @@ export function BuyerDemandSection({ listing }: { listing: ListingState }) {
       </p>
       <div className="mt-6 rounded-3xl bg-white/10 p-5">
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-200">
-          What the agent will do
+          Agent actions after the appraisal
         </p>
         <div className="mt-4 grid gap-3 lg:grid-cols-3">
           {actions.map((action) => (
@@ -1251,10 +1251,10 @@ export function CommissionDefenceSection() {
     <section className="mt-10 rounded-3xl border border-blue-100 bg-white p-7 shadow-card">
       <p className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
         <ShieldCheck size={16} />
-        Commission defence
+        Fee and value confidence
       </p>
       <h2 className="mt-5 text-4xl font-semibold tracking-tight">
-        Make the fee feel connected to the result.
+        Connect the fee to buyer competition and negotiation.
       </h2>
       <div className="mt-7 grid gap-4 lg:grid-cols-3">
         {points.map((point) => (
@@ -1289,10 +1289,10 @@ export function AppraisalScriptSection({ listing }: { listing: ListingState }) {
     <section className="mt-10 rounded-3xl border border-blue-100 bg-white p-7 shadow-card">
       <p className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
         <MessageSquareText size={16} />
-        In-room script assistant
+        Conversation prompts
       </p>
       <h2 className="mt-5 text-4xl font-semibold tracking-tight">
-        Keep the appraisal conversation sharp.
+        Know what to say when the seller asks hard questions.
       </h2>
       <div className="mt-7 grid gap-4 lg:grid-cols-3">
         {scripts.map((script) => (
@@ -1322,10 +1322,10 @@ export function AgentNotesSection({ listing }: { listing: ListingState }) {
     <section className="mt-10 rounded-3xl border border-blue-100 bg-white p-7 shadow-card">
       <p className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
         <FileText size={16} />
-        Agent notes
+        Agent-only notes
       </p>
       <h2 className="mt-5 text-4xl font-semibold tracking-tight">
-        Notes for the listing conversation.
+        Keep the important private notes in one place.
       </h2>
       <div className="mt-7 grid gap-4 lg:grid-cols-2">
         {notes ? (
@@ -1361,10 +1361,10 @@ export function SellerFollowUpSection({ listing }: { listing: ListingState }) {
       <div className="rounded-3xl border border-blue-100 bg-white p-7 shadow-card">
         <p className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
           <FileText size={16} />
-          Seller follow-up message
+          Message to send after the appraisal
         </p>
         <h2 className="mt-5 text-3xl font-semibold tracking-tight">
-          Keep the seller engaged after the appraisal.
+          Send a confident follow-up while the meeting is still fresh.
         </h2>
         <p className="mt-5 rounded-2xl bg-blue-50/70 p-5 text-sm leading-7 text-slate-600">
           Thanks again for walking me through {address}. I’ve put together the
@@ -1378,10 +1378,10 @@ export function SellerFollowUpSection({ listing }: { listing: ListingState }) {
       <div className="rounded-3xl bg-blue-700 p-7 text-white shadow-soft">
         <p className="inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-semibold">
           <Megaphone size={16} />
-          Seller decision plan
+          Seller next-step plan
         </p>
         <h2 className="mt-5 text-3xl font-semibold tracking-tight">
-          Convert interest into action.
+          Turn interest into a clear decision.
         </h2>
         <div className="mt-6 grid gap-3 text-sm">
           {[
@@ -1463,10 +1463,10 @@ export function BuyerMatchEngineSection({
         <div className="bg-slate-950 p-7 text-white lg:p-8">
           <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-blue-100">
             <Users size={16} />
-            Buyer match engine
+            Buyer database
           </p>
           <h2 className="mt-5 text-4xl font-semibold tracking-tight">
-            Show the vendor who the agent can call straight away.
+            Show exactly who can be called for this property.
           </h2>
           <p className="mt-4 text-sm leading-6 text-slate-300">
             Store buyer preferences, price ranges, suburb targets, and lead
@@ -1475,7 +1475,7 @@ export function BuyerMatchEngineSection({
           </p>
           <div className="mt-6 rounded-2xl bg-white/10 p-5">
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-200">
-              Immediate alert
+                First call to make
             </p>
             <p className="mt-3 text-2xl font-semibold">
               {matches[0]?.alert || "Add buyers to start matching"}
@@ -1530,7 +1530,7 @@ export function BuyerMatchEngineSection({
           {onUpdate ? (
             <div className="rounded-2xl border border-blue-100 bg-blue-50/60 p-5">
               <h3 className="text-lg font-semibold tracking-tight">
-                Add buyer preference
+                Add a buyer to the database
               </h3>
               <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
                 <input
@@ -1641,10 +1641,10 @@ export function FollowUpAutomationSection({
         <div>
           <p className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
             <Timer size={16} />
-            Follow-up autopilot
+            Follow-up reminders
           </p>
           <h2 className="mt-5 max-w-3xl text-4xl font-semibold tracking-tight">
-            Remind the agent when to follow up and what to say.
+            Know when to follow up and what to say.
           </h2>
           <p className="mt-4 max-w-3xl text-sm leading-6 text-slate-600">
             Keep the next step visible so the agent knows who to call, when to
@@ -1736,10 +1736,10 @@ export function VendorReportSection({ listing }: { listing: ListingState }) {
       <div className="p-7 text-white lg:p-8" style={{ backgroundColor: brandColor }}>
         <p className="inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-semibold">
           <Users size={16} />
-          Vendor campaign report
+          Example vendor report
         </p>
         <h2 className="mt-5 max-w-3xl text-4xl font-semibold tracking-tight">
-          This is how the agent keeps the seller informed after launch.
+          Show the seller how they will be updated after launch.
         </h2>
         <p className="mt-4 max-w-3xl text-sm leading-6 text-white/80">
           Example report for {address}. In production, these numbers can connect
@@ -1780,7 +1780,7 @@ export function VendorReportSection({ listing }: { listing: ListingState }) {
 
         <div className="rounded-2xl bg-slate-950 p-5 text-white">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-200">
-            Agent recommendation
+            Recommended next move
           </p>
           <p className="mt-3 text-sm leading-7 text-slate-200">
             Keep the campaign live, follow up the strongest buyers within 24
@@ -1865,10 +1865,10 @@ export function Form6PrototypeSection() {
             style={{ backgroundColor: brandColor }}
           >
             <FileText size={16} />
-            Form 6 explainer concept
+            Form 6 explainer
           </p>
           <h2 className="mt-5 max-w-3xl text-4xl font-semibold tracking-tight">
-            Explain the appointment before anyone signs.
+            Walk the seller through the appointment form.
           </h2>
           <p className="mt-4 max-w-3xl text-sm leading-6 text-slate-600">
             ListingWin is not a signing system. It helps the agent walk the

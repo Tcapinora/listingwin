@@ -59,25 +59,25 @@ export default function DraftPage() {
     ["Listing pack created", true],
   ];
   const quickActions: Array<[string, string, LucideIcon]> = [
-    ["Buyer Database", "#buyer-database", Users],
-    ["Follow-Up Actions", "#follow-up", Target],
+    ["Call Matched Buyers", "#buyer-database", Users],
+    ["Plan Follow-Up", "#follow-up", Target],
     ["Form 6 Explainer", "#form-6", FileText],
   ];
   const workspaceStages: Array<[string, string, string]> = [
     [
       "1",
-      "Next best action",
-      "Use follow-up and buyer demand to move the vendor forward.",
+      "Call the right people",
+      "Use the buyer database and follow-up plan to create movement straight after the appraisal.",
     ],
     [
       "2",
-      "Decision support",
-      "Handle price, marketing, objections, and campaign confidence.",
+      "Handle the hard conversations",
+      "Use price, buyer demand, campaign reporting, and fee confidence to answer vendor concerns.",
     ],
     [
       "3",
-      "Commitment",
-      "Prepare the agreement conversation and the final next step.",
+      "Make the next step easy",
+      "Explain the Form 6, capture notes, and leave with a clear commitment path.",
     ],
   ];
 
@@ -175,7 +175,7 @@ export default function DraftPage() {
 
         <div className="mt-8 rounded-[1.5rem] bg-blue-950 p-5 text-white">
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-200">
-            Vendor presentation
+            Finish the appointment
           </p>
           <div className="mt-4 flex flex-col gap-3 sm:flex-row">
             <Link
@@ -253,15 +253,15 @@ export default function DraftPage() {
       >
         <div className="max-w-3xl">
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
-            Closing tools
+            Buyer and follow-up tools
           </p>
           <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
-            The practical tools to win the listing
+            Start with the people who can create momentum.
           </h2>
           <p className="mt-3 text-sm leading-6 text-slate-600">
-            This material stays out of the vendor presentation. It is the
-            agent’s working area for follow-up, buyer matching, vendor
-            reporting, objection handling, and appointment preparation.
+            After the seller presentation, use this area to show who you can
+            call, what to say next, and how quickly buyer interest can be
+            activated.
           </p>
         </div>
       </section>
@@ -269,14 +269,14 @@ export default function DraftPage() {
       <section id="follow-up" className="mt-10 rounded-[2rem] bg-slate-950 p-6 text-white shadow-soft sm:p-8">
         <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-blue-100">
           <Target size={16} />
-          Next best action
+          Follow-up plan
         </p>
         <h2 className="mt-5 text-3xl font-semibold tracking-tight">
-          Who do we call, and what happens next?
+          Decide who gets called first.
         </h2>
         <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-300">
-          Start here after the presentation. The agent should leave the room
-          with a clear follow-up, buyer plan, and date-driven campaign rhythm.
+          Use the buyer matches and reminders below to leave the appointment
+          with a simple call list, message, and next action.
         </p>
       </section>
 
@@ -286,15 +286,15 @@ export default function DraftPage() {
       <section className="mt-10 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-slate-200/70 sm:p-8">
         <p className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
           <Handshake size={16} />
-          Decision support
+          Vendor confidence tools
         </p>
         <h2 className="mt-5 text-3xl font-semibold tracking-tight text-slate-950">
-          Give the vendor confidence to move forward.
+          Handle price, marketing, and objections clearly.
         </h2>
         <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
-          Use these sections to talk through buyer demand, campaign feedback,
-          fee confidence, and the seller’s next decision without overwhelming
-          the room.
+          These tools help the agent explain the campaign, defend value, and
+          keep the vendor focused on the decision that moves the listing
+          forward.
         </p>
       </section>
 
@@ -308,10 +308,10 @@ export default function DraftPage() {
       <section className="mt-10 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-slate-200/70 sm:p-8">
         <p className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
           <FileText size={16} />
-          Commitment
+          Form 6 and agreement explanation
         </p>
         <h2 className="mt-5 text-3xl font-semibold tracking-tight text-slate-950">
-          Make the agreement conversation easier.
+          Explain the paperwork without making it feel heavy.
         </h2>
         <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
           Walk through the appointment documents in plain language so the
