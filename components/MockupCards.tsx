@@ -952,36 +952,43 @@ export function SocialPreview({
   const agentHandle = socialHandle(agentSocial, agentName);
   const agencyHandle = socialHandle(agencySocial, agencyName);
   const brandColor = profile.brandColor || "#123f53";
+  const propertyPhoto = getPrimaryPropertyPhoto(listing);
+  const instagramName = agentHandle.replace("@", "");
+  const agencyNameForCaption = agencyHandle.replace("@", "");
+  const [addressLine, ...addressRest] = (details.address || "Property address").split(",");
+  const suburbLine = addressRest.join(",").trim() || "Local market";
+  const listingSummary = generatePropertyWriteup(details);
 
   if (type === "Instagram") {
     return (
       <PhoneFrame tone="dark">
         <div className="flex h-full flex-col bg-[#070c11] text-white">
-          <div className="h-1.5 shrink-0" style={{ backgroundColor: brandColor }} />
-          <div className="flex shrink-0 items-center justify-between px-6 pb-2 pt-11 text-sm font-semibold">
-            <span>12:55</span>
+          <div className="flex shrink-0 items-center justify-between px-6 pb-4 pt-11 text-sm font-semibold">
+            <span>7:18</span>
             <div className="flex items-end gap-1">
               <span className="h-2.5 w-1.5 rounded-sm bg-white/55" />
               <span className="h-3.5 w-1.5 rounded-sm bg-white/75" />
               <span className="h-5 w-1.5 rounded-sm bg-white" />
               <span className="ml-2 rounded-full bg-white px-2 py-0.5 text-xs text-black">
-                81
+                100
               </span>
             </div>
           </div>
-          <div className="flex shrink-0 items-center justify-between border-b border-white/10 px-4 pb-3">
+          <div className="flex shrink-0 items-center justify-between border-b border-white/10 px-4 pb-4">
             <span className="text-4xl font-light leading-none">‹</span>
             <div className="text-center">
-              <p className="text-base font-semibold leading-tight">Posts</p>
-              <p className="text-sm leading-tight text-gray-300">{agentHandle}</p>
+              <p className="text-lg font-semibold leading-tight">Posts</p>
+              <p className="text-sm leading-tight text-gray-300">{instagramName}</p>
             </div>
-            <span className="w-8" />
-          </div>
-          <div className="flex shrink-0 items-center gap-3 px-4 py-3">
-            <div
-              className="grid h-11 w-11 place-items-center overflow-hidden rounded-full bg-white"
-              style={{ boxShadow: `0 0 0 2px ${brandColor}` }}
+            <button
+              type="button"
+              className="rounded-xl bg-white/15 px-4 py-2 text-sm font-semibold text-white"
             >
+              Follow
+            </button>
+          </div>
+          <div className="flex shrink-0 items-center gap-3 px-4 py-3.5">
+            <div className="grid h-10 w-10 place-items-center overflow-hidden rounded-full bg-white">
               {logo ? (
                 <Image
                   src={logo}
@@ -998,37 +1005,66 @@ export function SocialPreview({
               )}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-semibold">
-                {agentHandle}{" "}
-                <span className="font-normal text-gray-300">and {agencyHandle}</span>
+              <p className="truncate text-base font-semibold">
+                {instagramName}
+                <span className="mx-1 inline-grid h-4 w-4 place-items-center rounded-full bg-[#3797f0] text-[10px] leading-none text-white">
+                  ✓
+                </span>
+                <span className="font-normal text-gray-300">
+                  and {agencyNameForCaption}
+                </span>
               </p>
-              <p className="text-xs text-gray-400">7 April</p>
+              <p className="truncate text-sm text-gray-300">{suburbLine}</p>
             </div>
             <MoreHorizontal size={22} />
           </div>
-          <div className="mx-3 shrink-0 overflow-hidden rounded-[1.45rem]">
-            <CampaignCreative listing={listing} variant="instagram" />
+          <div className="relative shrink-0 bg-black">
+            <div className="relative aspect-[4/3] w-full bg-slate-900">
+              {propertyPhoto ? (
+                <Image
+                  src={propertyPhoto}
+                  alt="Instagram property post"
+                  fill
+                  className="object-cover"
+                  unoptimized
+                />
+              ) : (
+                <div className="grid h-full place-items-center px-8 text-center text-sm font-semibold text-slate-400">
+                  Upload a property photo to preview the Instagram post.
+                </div>
+              )}
+            </div>
           </div>
-          <div className="mt-2 flex shrink-0 items-center justify-between px-4 py-2">
+          <div className="flex shrink-0 justify-center gap-1.5 py-3">
+            <span className="h-2 w-2 rounded-full bg-[#4f7cff]" />
+            <span className="h-2 w-2 rounded-full bg-white/35" />
+            <span className="h-2 w-2 rounded-full bg-white/35" />
+            <span className="h-2 w-2 rounded-full bg-white/35" />
+          </div>
+          <div className="flex shrink-0 items-center justify-between px-4 pb-3">
             <div className="flex items-center gap-4">
               <Heart size={24} />
+              <span className="-ml-2 text-base font-semibold">43</span>
               <MessageCircle size={24} />
+              <span className="-ml-2 text-base font-semibold">2</span>
               <Send size={24} />
+              <span className="-ml-2 text-base font-semibold">7</span>
             </div>
             <Bookmark size={24} />
           </div>
-          <div className="min-h-0 flex-1 space-y-1 px-4 pb-4 text-xs leading-5">
-            <p className="text-gray-500">Mockup image for seller preview.</p>
+          <div className="min-h-0 flex-1 space-y-3 overflow-hidden px-4 pb-5 text-[15px] leading-5">
             <p>
-              Liked by <span className="font-semibold">{agencyHandle.replace("@", "")}</span>{" "}
-              and others
+              <span className="font-semibold">{instagramName}</span>{" "}
+              🏡 {addressLine}
             </p>
-            <p>
-              <span className="font-semibold">{agentHandle}</span> NEW LISTING
+            <p className="text-gray-100">
+              4 🛏️ 2 🛁 2 🚗
             </p>
-            <p className="truncate text-gray-300">
-              {(details.address || "PROPERTY ADDRESS").toUpperCase()} · premium
-              campaign preview
+            <p className="line-clamp-5 text-gray-200">
+              {listingSummary}
+            </p>
+            <p className="text-xs text-gray-500">
+              Mockup image for seller preview.
             </p>
           </div>
         </div>
