@@ -11,7 +11,6 @@ import {
   Share2,
 } from "lucide-react";
 import { useState } from "react";
-import { FlowProgress } from "@/components/FlowProgress";
 import { useAgentProfile } from "@/components/AgentProfileProvider";
 import { useListing } from "@/components/ListingProvider";
 import {
@@ -55,21 +54,19 @@ export default function DraftPage() {
 
   return (
     <>
-      <FlowProgress currentStep={5} />
-
       <section className="rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-blue-50 sm:p-8 lg:p-10">
         <div className="grid gap-8 lg:grid-cols-[1fr_0.6fr] lg:items-end">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
+            <div className="inline-flex rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
               Agent workspace
-            </p>
+            </div>
             <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-              Continue after the seller presentation
+              Your seller presentation is complete
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-              Use this area after the seller-facing presentation for follow-up,
-              saved links, copy, and the extra working information the agent
-              needs next.
+              This is the agent-only workspace for follow-up, saved links,
+              copy, and the working information you need once the presentation
+              has finished.
             </p>
           </div>
           <div className="rounded-[1.5rem] bg-blue-50 p-5 ring-1 ring-blue-100">

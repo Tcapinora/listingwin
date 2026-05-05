@@ -5,7 +5,6 @@ const flowSteps = [
   { href: "/details", label: "Property Details" },
   { href: "/upload", label: "Media Upload" },
   { href: "/mockups", label: "Generate Content" },
-  { href: "/draft", label: "Review & Export" },
 ];
 
 export function FlowProgress({ currentStep }: { currentStep: number }) {

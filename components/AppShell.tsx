@@ -27,7 +27,7 @@ const navItems = [
   { href: "/details", label: "Details", icon: FileCheck2 },
   { href: "/upload", label: "Media", icon: Images },
   { href: "/mockups", label: "Generate", icon: Sparkles },
-  { href: "/draft", label: "Review", icon: MonitorPlay },
+  { href: "/draft", label: "Agent Workspace", icon: MonitorPlay },
 ];
 
 const workflowItems = [
@@ -35,7 +35,6 @@ const workflowItems = [
   { href: "/details", label: "2. Details" },
   { href: "/upload", label: "3. Media" },
   { href: "/mockups", label: "4. Generate" },
-  { href: "/draft", label: "5. Review" },
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -89,7 +88,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   className="hidden items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2 text-sm font-medium text-blue-900 shadow-sm transition hover:border-blue-300 sm:flex"
                 >
                   <FileCheck2 size={16} />
-                  Review Draft
+                  Agent Workspace
                 </Link>
                 <Link
                   href="/create"
@@ -202,14 +201,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   <p className="text-sm font-semibold">Vendor presentation</p>
                   <p className="mt-2 text-xs leading-5 text-gray-300">
                     Build the listing, then show the seller how their property
-                    will look across your marketing.
+                    will look across your marketing. After the presentation,
+                    continue into the agent workspace.
                   </p>
                   <Link
                     href="/draft"
                     onClick={() => setMenuOpen(false)}
                     className="mt-4 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-gray-950"
                   >
-                    Review draft
+                    Agent workspace
                     <ArrowRight size={15} />
                   </Link>
                 </div>
