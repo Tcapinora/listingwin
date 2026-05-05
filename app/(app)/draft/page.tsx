@@ -4,15 +4,19 @@ import Link from "next/link";
 import {
   ArrowRight,
   BadgeCheck,
+  CalendarDays,
   CheckCircle2,
   Copy,
   FileText,
   MonitorPlay,
   Share2,
+  Users,
+  type LucideIcon,
 } from "lucide-react";
 import { useState } from "react";
 import { useAgentProfile } from "@/components/AgentProfileProvider";
 import { useListing } from "@/components/ListingProvider";
+import { SaleCalendar } from "@/components/SaleCalendar";
 import {
   BrochureBookPreview,
   FlyerPreview,
@@ -20,6 +24,17 @@ import {
   PropertyPortalPreview,
   SocialPreview,
 } from "@/components/MockupCards";
+import {
+  AgentNotesSection,
+  AppraisalScriptSection,
+  BuyerDemandSection,
+  BuyerMatchEngineSection,
+  CommissionDefenceSection,
+  FollowUpAutomationSection,
+  Form6PrototypeSection,
+  SellerFollowUpSection,
+  VendorReportSection,
+} from "@/components/ValueSections";
 import { generatePropertyWriteup } from "@/lib/copy";
 import { getListingWinInsight } from "@/lib/listingScore";
 import {
@@ -28,7 +43,7 @@ import {
 } from "@/lib/presentationHistory";
 
 export default function DraftPage() {
-  const { listing } = useListing();
+  const { listing, setListing } = useListing();
   const { profile, isProfileComplete } = useAgentProfile();
   const [shareStatus, setShareStatus] = useState("");
   const insight = getListingWinInsight(listing, profile);
@@ -51,6 +66,12 @@ export default function DraftPage() {
     ["Media uploaded", hasImages],
     ["Listing pack created", true],
   ];
+  const quickActions: Array<[string, string, LucideIcon]> = [
+    ["Open seller presentation", "/presentation", MonitorPlay],
+    ["Update buyer database", "#buyer-database", Users],
+    ["Review sale calendar", "#sale-calendar", CalendarDays],
+    ["Prepare Form 6", "#form-6", FileText],
+  ];
 
   return (
     <>
@@ -64,9 +85,9 @@ export default function DraftPage() {
               Your seller presentation is complete
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-              This is the agent-only workspace for follow-up, saved links,
-              copy, and the working information you need once the presentation
-              has finished.
+              This is where the agent works after the seller-facing
+              presentation: follow-up, buyer calls, campaign reporting, Form 6
+              explanation, scripts, notes, and next steps.
             </p>
           </div>
           <div className="rounded-[1.5rem] bg-blue-50 p-5 ring-1 ring-blue-100">
@@ -106,6 +127,21 @@ export default function DraftPage() {
               {label}
             </div>
           ))}
+        </div>
+
+        <div className="mt-8 grid gap-3 lg:grid-cols-4">
+          {quickActions.map(([label, href, ActionIcon]) => {
+            return (
+              <Link
+                key={label}
+                href={href}
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-blue-50 px-5 py-3 text-sm font-semibold text-blue-900 transition hover:bg-blue-100"
+              >
+                <ActionIcon size={16} />
+                {label}
+              </Link>
+            );
+          })}
         </div>
 
         <div className="mt-8 grid gap-4 lg:grid-cols-3">
@@ -178,6 +214,59 @@ export default function DraftPage() {
           </div>
         </div>
       </section>
+
+      <section
+        id="buyer-database"
+        className="mt-8 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-blue-50 sm:p-8"
+      >
+        <div className="max-w-3xl">
+          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
+            Agent-only command centre
+          </p>
+          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
+            The information the agent uses after the presentation
+          </h2>
+          <p className="mt-3 text-sm leading-6 text-slate-600">
+            This material is intentionally not in the vendor presentation. It is
+            the agent’s working area for follow-up, buyer matching, vendor
+            reporting, objection handling, and appointment preparation.
+          </p>
+        </div>
+      </section>
+
+      <BuyerMatchEngineSection listing={listing} onUpdate={setListing} />
+      <FollowUpAutomationSection listing={listing} onUpdate={setListing} />
+
+      <section
+        id="sale-calendar"
+        className="mt-10 rounded-3xl border border-blue-100 bg-white p-7 shadow-card lg:p-8"
+      >
+        <div className="mb-6 max-w-3xl">
+          <p className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
+            <CalendarDays size={16} />
+            Agent sale calendar
+          </p>
+          <h2 className="mt-5 text-4xl font-semibold tracking-tight">
+            Keep the campaign dates ready.
+          </h2>
+          <p className="mt-4 text-sm leading-6 text-slate-600">
+            Use this editable calendar to plan photography, signboard install,
+            launch, open homes, follow-up calls, and seller check-ins.
+          </p>
+        </div>
+        <SaleCalendar />
+      </section>
+
+      <VendorReportSection listing={listing} />
+      <SellerFollowUpSection listing={listing} />
+      <BuyerDemandSection listing={listing} />
+      <CommissionDefenceSection />
+      <AppraisalScriptSection listing={listing} />
+      <AgentNotesSection listing={listing} />
+
+      <div id="form-6">
+        <Form6PrototypeSection />
+      </div>
 
       <section className="mt-8 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-blue-50 sm:p-8">
         <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">

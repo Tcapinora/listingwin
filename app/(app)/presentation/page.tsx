@@ -198,8 +198,9 @@ export default function PresentationPage() {
               </p>
             </div>
             <div className="rounded-[1.5rem] bg-blue-50 p-4 text-sm leading-6 text-blue-900 ring-1 ring-blue-100">
-              Agent-only notes are hidden behind private buttons. Keep them
-              closed while showing the seller.
+              Agent-only follow-up, scripts, Form 6 explanation, and campaign
+              reporting live in the Agent Workspace after this seller
+              presentation.
             </div>
           </div>
         </section>
