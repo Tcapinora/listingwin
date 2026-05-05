@@ -13,7 +13,6 @@ import {
   Sparkles,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { PageHeader } from "@/components/PageHeader";
 import { useListing } from "@/components/ListingProvider";
 import { useAgentProfile } from "@/components/AgentProfileProvider";
 import {
@@ -54,22 +53,27 @@ export default function PresentationPage() {
 
   return (
     <>
-      <PageHeader
-        eyebrow="Seller Presentation"
-        title="Guide the seller from uncertainty to confidence."
-        description="A seller-confidence presentation: recognise the home, prove the market, show the buyer journey, create belief in the campaign, and make the next step feel easy."
-        action={
-          <div className="no-print flex flex-wrap gap-3">
+      <section className="no-print sticky top-0 z-40 border-b border-blue-100 bg-white/92 px-4 py-3 shadow-sm backdrop-blur-xl">
+        <div className="mx-auto flex max-w-7xl flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
+              Seller presentation mode
+            </p>
+            <h1 className="mt-1 text-xl font-semibold tracking-tight text-slate-950">
+              Scroll through this with the seller.
+            </h1>
+          </div>
+          <div className="flex flex-wrap gap-2">
             <Link
               href="/mockups"
-              className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-5 py-3 text-sm font-semibold text-blue-900 shadow-sm"
+              className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2.5 text-sm font-semibold text-blue-900 shadow-sm"
             >
               <Pencil size={16} />
-              Edit Mockups
+              Edit
             </Link>
             <button
               type="button"
-              className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-5 py-3 text-sm font-semibold text-blue-900 shadow-sm"
+              className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2.5 text-sm font-semibold text-blue-900 shadow-sm"
               onClick={() => {
                 savePresentationSnapshot(presentationListing, presentationProfile);
                 setSaved(true);
@@ -77,11 +81,11 @@ export default function PresentationPage() {
               }}
             >
               <Save size={16} />
-              {saved ? "Saved" : "Save to Account"}
+              {saved ? "Saved" : "Save"}
             </button>
             <button
               type="button"
-              className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-5 py-3 text-sm font-semibold text-blue-900 shadow-sm"
+              className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2.5 text-sm font-semibold text-blue-900 shadow-sm"
               onClick={async () => {
                 const presentation = savePresentationSnapshot(
                   presentationListing,
@@ -100,22 +104,22 @@ export default function PresentationPage() {
               }}
             >
               <Link2 size={16} />
-              {shareStatus || "Copy Share Link"}
+              {shareStatus || "Share"}
             </button>
             <button
               type="button"
-              className="inline-flex items-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card hover:bg-blue-800"
+              className="inline-flex items-center gap-2 rounded-full bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white shadow-card hover:bg-blue-800"
               onClick={() => window.print()}
             >
               <Download size={16} />
-              Print / PDF
+              PDF
             </button>
           </div>
-        }
-      />
+        </div>
+      </section>
 
       {!readiness.isReady ? (
-        <section className="mb-8 rounded-[2rem] border border-blue-100 bg-white p-6 shadow-card lg:p-8">
+        <section className="mx-auto my-8 max-w-6xl rounded-[2rem] border border-blue-100 bg-white p-6 shadow-card lg:p-8">
           <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
             <div>
               <p className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
@@ -171,7 +175,29 @@ export default function PresentationPage() {
       ) : null}
 
       {readiness.isReady ? (
-      <div className="rounded-[2rem] border border-blue-100 bg-white p-4 shadow-card lg:p-8">
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-5 lg:px-8 lg:py-8">
+        <section className="mb-6 rounded-[2rem] bg-white p-5 shadow-card ring-1 ring-blue-50 lg:p-7">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
+            Seller-facing presentation
+          </p>
+          <div className="mt-3 grid gap-4 lg:grid-cols-[1fr_0.55fr] lg:items-end">
+            <div>
+              <h2 className="text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
+                Guide the seller from uncertainty to confidence.
+              </h2>
+              <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">
+                Everything below is designed to be scrolled through in the
+                listing presentation: marketing, calendar, buyers, pricing,
+                next steps, and the agent’s plan.
+              </p>
+            </div>
+            <div className="rounded-[1.5rem] bg-blue-50 p-4 text-sm leading-6 text-blue-900 ring-1 ring-blue-100">
+              Agent-only notes are hidden behind private buttons. Keep them
+              closed while showing the seller.
+            </div>
+          </div>
+        </section>
+
         <HeroPresentation listing={presentationListing} />
         <PresentationGrid listing={presentationListing} />
 

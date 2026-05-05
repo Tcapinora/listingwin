@@ -42,11 +42,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [profileOpen, setProfileOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const isPresentationMode = pathname === "/presentation";
 
   return (
     <AgentProfileProvider>
       <ListingProvider>
         <div className="min-h-screen">
+          {!isPresentationMode ? (
           <header className="sticky top-0 z-30 border-b border-blue-100 bg-white/88 backdrop-blur-xl no-print">
             <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:gap-6 sm:px-5 lg:px-8">
               <Link href="/dashboard" className="flex items-center gap-3">
@@ -124,8 +126,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               </div>
             </div>
           </header>
+          ) : null}
 
-          <main className="mx-auto max-w-7xl px-4 py-7 sm:px-5 sm:py-8 lg:px-8 lg:py-10">
+          <main
+            className={
+              isPresentationMode
+                ? "min-h-screen bg-slate-100"
+                : "mx-auto max-w-7xl px-4 py-7 sm:px-5 sm:py-8 lg:px-8 lg:py-10"
+            }
+          >
             {children}
           </main>
 
