@@ -82,16 +82,16 @@ export default function Home() {
         </div>
       </header>
 
-      <section className="mx-auto grid max-w-7xl gap-10 px-5 py-12 lg:grid-cols-[0.9fr_1.1fr] lg:px-8 lg:py-16">
+      <section className="mx-auto grid max-w-7xl gap-10 px-5 py-10 sm:py-12 lg:grid-cols-[0.9fr_1.1fr] lg:px-8 lg:py-16">
         <div className="flex flex-col justify-center">
           <p className="inline-flex w-fit items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-blue-800 shadow-sm">
             <Sparkles size={16} />
             Built by real estate agents for real estate agents
           </p>
-          <h1 className="mt-6 max-w-4xl text-5xl font-semibold leading-tight tracking-tight text-slate-950 lg:text-6xl">
+          <h1 className="mt-6 max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
             Walk into every appraisal with the seller’s campaign already built.
           </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600">
+          <p className="mt-6 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">
             ListingWin helps agents turn property photos, signboards, agency
             branding, and social previews into a polished seller-facing
             presentation. It is designed around the real appraisal conversations
@@ -119,10 +119,10 @@ export default function Home() {
             {outcomes.map((outcome) => (
               <div
                 key={outcome}
-                className="flex items-center gap-2 rounded-2xl bg-white/80 p-4 text-sm font-semibold text-slate-700 shadow-sm"
+                className="flex items-center gap-3 rounded-2xl bg-white/85 p-4 text-sm font-semibold leading-5 text-slate-700 shadow-sm"
               >
-                <BadgeCheck className="text-blue-700" size={17} />
-                {outcome}
+                <BadgeCheck className="shrink-0 text-blue-700" size={17} />
+                <span>{outcome}</span>
               </div>
             ))}
           </div>

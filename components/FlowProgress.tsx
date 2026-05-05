@@ -12,7 +12,7 @@ export function FlowProgress({ currentStep }: { currentStep: number }) {
   const safeStep = Math.min(Math.max(currentStep, 1), flowSteps.length);
 
   return (
-    <div className="mb-8 rounded-[1.75rem] bg-white p-4 shadow-card ring-1 ring-blue-50">
+    <div className="mb-7 rounded-[1.75rem] bg-white p-4 shadow-card ring-1 ring-blue-50 sm:mb-8">
       <div className="flex items-center justify-between gap-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
@@ -45,6 +45,29 @@ export function FlowProgress({ currentStep }: { currentStep: number }) {
             );
           })}
         </div>
+      </div>
+      <div className="mt-4 flex gap-2 md:hidden">
+        {flowSteps.map((step, index) => {
+          const stepNumber = index + 1;
+          const active = stepNumber === safeStep;
+          const complete = stepNumber < safeStep;
+
+          return (
+            <Link
+              key={step.href}
+              href={step.href}
+              className={`h-1.5 flex-1 rounded-full transition ${
+                active
+                  ? "bg-blue-700"
+                  : complete
+                    ? "bg-blue-300"
+                    : "bg-slate-100"
+              }`}
+              aria-label={step.label}
+              title={step.label}
+            />
+          );
+        })}
       </div>
     </div>
   );

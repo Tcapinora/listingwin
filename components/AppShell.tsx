@@ -48,7 +48,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <ListingProvider>
         <div className="min-h-screen">
           <header className="sticky top-0 z-30 border-b border-blue-100 bg-white/88 backdrop-blur-xl no-print">
-            <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-4 lg:px-8">
+            <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:gap-6 sm:px-5 lg:px-8">
               <Link href="/dashboard" className="flex items-center gap-3">
                 <span className="grid h-10 w-10 place-items-center rounded-xl bg-blue-700 text-white shadow-card">
                   <Sparkles size={18} />
@@ -63,7 +63,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 </span>
               </Link>
 
-              <div className="flex items-center gap-2">
+              <div className="flex shrink-0 items-center gap-2">
                 <button
                   type="button"
                   onClick={() => setMenuOpen(true)}
@@ -91,11 +91,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 </Link>
                 <Link
                   href="/create"
-                  className="inline-flex items-center gap-2 rounded-full bg-blue-700 px-4 py-2 text-sm font-semibold text-white shadow-card transition hover:bg-blue-800"
+                  className="inline-flex items-center gap-2 rounded-full bg-blue-700 px-3 py-2 text-sm font-semibold text-white shadow-card transition hover:bg-blue-800 sm:px-4"
+                  aria-label="Create New Listing"
                 >
                   <Plus size={16} />
-                  Create
-                  <ArrowRight size={15} />
+                  <span className="hidden sm:inline">Create</span>
+                  <ArrowRight className="hidden sm:block" size={15} />
                 </Link>
               </div>
             </div>
@@ -124,7 +125,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </div>
           </header>
 
-          <main className="mx-auto max-w-7xl px-5 py-8 lg:px-8 lg:py-10">
+          <main className="mx-auto max-w-7xl px-4 py-7 sm:px-5 sm:py-8 lg:px-8 lg:py-10">
             {children}
           </main>
 
