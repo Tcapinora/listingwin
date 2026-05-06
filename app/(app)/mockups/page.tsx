@@ -17,7 +17,6 @@ import {
   DraggableOpenHome,
 } from "@/components/DraggableOpenHome";
 import { OpenHomePlacementControls } from "@/components/OpenHomePlacementControls";
-import { SignboardPlacementControls } from "@/components/SignboardPlacementControls";
 import { AutoCutoutPreview } from "@/components/AutoCutoutPreview";
 import { UploadCard } from "@/components/UploadCard";
 import {
@@ -77,7 +76,9 @@ function PhotographyUploadGroup({
       <div className="flex items-center justify-between gap-4">
         <div>
           <h3 className="text-sm font-semibold text-slate-950">{label}</h3>
-          <p className="mt-1 text-xs text-slate-500">Upload up to 5 examples.</p>
+          <p className="mt-1 text-xs text-slate-500">
+            Upload once. Saved for future listings.
+          </p>
         </div>
         <label className="cursor-pointer rounded-full bg-blue-700 px-4 py-2 text-xs font-semibold text-white">
           Upload
@@ -207,12 +208,6 @@ export default function MockupsPage() {
     setListing,
   ]);
 
-  useEffect(() => {
-    if (hasAnySignboard && activeStep === "signboards") {
-      setActiveStep("street");
-    }
-  }, [activeStep, hasAnySignboard]);
-
   const updateAsset = async (assetKey: AssetKey, value: string) => {
     const nextValue =
       value && (assetKey === "signboard1" || assetKey === "signboard2")
@@ -325,7 +320,7 @@ export default function MockupsPage() {
             </button>
             {generationState === "success" ? (
               <Link
-                href="/draft"
+                href="/finish"
                 className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full border border-blue-200 bg-white px-6 py-3 text-sm font-semibold text-blue-900 shadow-sm sm:w-auto"
               >
                 Preview Vendor Presentation
@@ -382,9 +377,19 @@ export default function MockupsPage() {
       >
         <StepHeader
           step="Visual setup"
-          title="Upload signboard options"
-          description="Add one or two board designs. ListingWin removes the background and keeps each option’s position and size separate on the property photo."
+          title="Upload signboard option 1 and option 2"
+          description="Upload option 1 on the left and option 2 on the right. Each board keeps its own size and position when you move it on the property photo."
         />
+        <div className="mb-5 rounded-3xl bg-blue-50 p-5 ring-1 ring-blue-100">
+          <p className="text-sm font-semibold text-blue-950">
+            Need a second signboard?
+          </p>
+          <p className="mt-2 text-sm leading-6 text-blue-900/75">
+            Use the upload box labelled <strong>Signboard option 2</strong>
+            below. After uploading, open <strong>Street mockup</strong>, select
+            option 2, and drag it into its own position.
+          </p>
+        </div>
         <div className="grid gap-5 lg:grid-cols-2">
           <UploadCard
             label="Signboard option 1"
@@ -395,7 +400,7 @@ export default function MockupsPage() {
           />
           <UploadCard
             label="Signboard option 2"
-            hint="Optional alternate board artwork. It keeps its own placement."
+            hint="Upload the second board here. It has separate drag and resize placement."
             value={listing.assets.signboard2}
             assetKey="signboard2"
             onChange={updateAsset}
@@ -432,29 +437,27 @@ export default function MockupsPage() {
               </h2>
               <p className="mt-1 text-sm text-gray-500">
                 Drag the selected board anywhere on the image and use the
-                controls below to make it larger or smaller. Option 1 and
-                Option 2 are positioned separately.
+                corner handle to make it larger or smaller. Option 1 and
+                option 2 are positioned separately.
               </p>
             </div>
           </div>
+
+          {!listing.assets.signboard2 ? (
+            <button
+              type="button"
+              onClick={() => setActiveStep("signboards")}
+              className="mb-5 w-full rounded-2xl bg-blue-50 px-4 py-3 text-left text-sm font-semibold text-blue-900 ring-1 ring-blue-100 transition hover:bg-blue-100"
+            >
+              Want option 2? Go back to Signboards and upload it in the second
+              upload box.
+            </button>
+          ) : null}
 
           <DraggableSignboard
             propertyPhoto={primaryPropertyPhoto}
             signboard={selectedSignboard}
             crop={selectedCrop}
-            overlay={selectedOverlay}
-            onChange={(overlay) =>
-              setListing((current) => ({
-                ...current,
-                overlay: clampOverlay(overlay),
-                signboardOverlays: {
-                  ...current.signboardOverlays,
-                  [current.activeSignboard]: clampOverlay(overlay),
-                },
-              }))
-            }
-          />
-          <SignboardPlacementControls
             overlay={selectedOverlay}
             onChange={(overlay) =>
               setListing((current) => ({
@@ -668,7 +671,7 @@ export default function MockupsPage() {
         <StepHeader
           step="Photography direction"
           title="Show photography at different times of day"
-          description="Upload stock examples for morning, afternoon, and twilight. These are saved to the agent profile and reused in future presentations."
+          description="Upload stock examples once for morning, afternoon, and twilight. These are saved to the Agent Profile and reused in future presentations so every seller can see the photography style."
         />
         <div className="grid gap-5 lg:grid-cols-3">
           <PhotographyUploadGroup
@@ -803,19 +806,19 @@ export default function MockupsPage() {
           title="Final vendor-facing previews"
           description="Review the remaining vendor-facing marketing pieces before opening presentation mode."
         />
-        <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
-        <MockupCard title="Brochure book preview">
-          <BrochureBookPreview listing={listing} />
-        </MockupCard>
-        <MockupCard title="Flyer preview">
-          <FlyerPreview listing={listing} />
-        </MockupCard>
-        <MockupCard title="Instagram post">
-          <SocialPreview listing={listing} type="Instagram" />
-        </MockupCard>
-        <MockupCard title="Facebook ad">
-          <SocialPreview listing={listing} type="Facebook" />
-        </MockupCard>
+        <div className="grid gap-6 lg:grid-cols-2">
+          <MockupCard title="Brochure book preview">
+            <BrochureBookPreview listing={listing} />
+          </MockupCard>
+          <MockupCard title="Flyer preview">
+            <FlyerPreview listing={listing} />
+          </MockupCard>
+          <MockupCard title="Instagram post">
+            <SocialPreview listing={listing} type="Instagram" />
+          </MockupCard>
+          <MockupCard title="Facebook ad">
+            <SocialPreview listing={listing} type="Facebook" />
+          </MockupCard>
         </div>
       </section>
       </details>
@@ -828,7 +831,7 @@ export default function MockupsPage() {
           Edit Media
         </Link>
         <Link
-          href="/draft"
+          href="/finish"
           className="inline-flex items-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card"
         >
           Preview Vendor Presentation

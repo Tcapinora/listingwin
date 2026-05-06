@@ -1520,21 +1520,23 @@ export function BuyerMatchEngineSection({
 
   return (
     <section className="mt-10 overflow-hidden rounded-3xl border border-blue-100 bg-white shadow-card">
-      <div className="grid gap-0 lg:grid-cols-[0.72fr_1.28fr]">
-        <div className="bg-slate-950 p-7 text-white lg:p-8">
-          <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-blue-100">
-            <Users size={16} />
-            Buyer database
-          </p>
-          <h2 className="mt-5 text-3xl font-semibold tracking-tight">
-            Show exactly who can be called for this property.
-          </h2>
-          <p className="mt-4 text-sm leading-6 text-slate-300">
-            Use this as proof that the agent has real buyer conversations to
-            start. In the workspace, it becomes the call list that creates
-            momentum after the appraisal.
-          </p>
-          <div className="mt-6 rounded-2xl bg-white/10 p-5">
+      <div className="bg-slate-950 p-7 text-white lg:p-8">
+        <div className="grid gap-6 lg:grid-cols-[1fr_0.55fr] lg:items-end">
+          <div>
+            <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-blue-100">
+              <Users size={16} />
+              Buyer database
+            </p>
+            <h2 className="mt-5 max-w-3xl text-3xl font-semibold tracking-tight lg:text-4xl">
+              Show exactly who can be called for this property.
+            </h2>
+            <p className="mt-4 max-w-3xl text-sm leading-6 text-slate-300">
+              Use this as proof that the agent has real buyer conversations to
+              start. In the workspace, it becomes the call list that creates
+              momentum after the appraisal.
+            </p>
+          </div>
+          <div className="rounded-2xl bg-white/10 p-5">
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-200">
               First call to make
             </p>
@@ -1548,13 +1550,14 @@ export function BuyerMatchEngineSection({
             </p>
           </div>
         </div>
+      </div>
 
-        <div className="grid gap-5 p-5 lg:p-7">
-          <div className="-mx-2 flex snap-x gap-4 overflow-x-auto px-2 pb-2">
+      <div className="grid gap-5 p-5 lg:p-7">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {matches.map((buyer) => (
               <article
                 key={buyer.id}
-                className="min-w-[300px] snap-start rounded-2xl border border-slate-200 bg-white p-4 shadow-sm lg:min-w-[32%]"
+                className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>
@@ -1588,10 +1591,10 @@ export function BuyerMatchEngineSection({
                 </p>
               </article>
             ))}
-          </div>
+        </div>
 
-          {onUpdate ? (
-            <div className="rounded-2xl border border-blue-100 bg-blue-50/60 p-5">
+        {onUpdate ? (
+          <div className="rounded-2xl border border-blue-100 bg-blue-50/60 p-5">
               <h3 className="text-lg font-semibold tracking-tight">
                 Add a buyer to the database
               </h3>
@@ -1668,9 +1671,8 @@ export function BuyerMatchEngineSection({
                   Add buyer
                 </button>
               </div>
-            </div>
-          ) : null}
-        </div>
+          </div>
+        ) : null}
       </div>
     </section>
   );
