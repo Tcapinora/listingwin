@@ -90,7 +90,7 @@ export default function DraftPage() {
               Agent workspace
             </div>
             <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-              Close the listing
+              Close while the seller feels momentum.
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
               The seller has seen the marketing vision. Use this workspace to
@@ -128,20 +128,20 @@ export default function DraftPage() {
           <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_auto] lg:items-center">
             <div>
               <h2 className="text-2xl font-semibold tracking-tight">
-                Move from marketing vision to seller confidence.
+                Turn attachment into a decision.
               </h2>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300">
-                Start with buyer proof, then use the deeper tools to answer the
-                seller’s real questions: “Can I trust the price?”, “Will buyers
-                care?”, “What happens after I sign?”, and “Am I making the right
-                decision?”
+                The seller has just seen their home in market. Now use the
+                workspace to answer the emotional questions underneath the
+                decision: “Can I trust this?”, “Will buyers care?”, “What
+                happens next?”, and “Am I safe choosing this agent?”
               </p>
             </div>
             <Link
               href="#buyer-database"
               className="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-blue-950 shadow-card"
             >
-              Start with buyer calls
+              Start closing with buyer proof
             </Link>
           </div>
         </div>
@@ -286,7 +286,7 @@ export default function DraftPage() {
             Buyer and follow-up tools
           </p>
           <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
-            Start with buyer proof, then keep the seller engaged.
+            Prove there is already demand, then keep the seller close.
           </h2>
           <p className="mt-3 text-sm leading-6 text-slate-600">
             This is where the agent turns the marketing presentation into a
@@ -306,7 +306,8 @@ export default function DraftPage() {
         </h2>
         <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-300">
           Use the buyer matches and reminders below to leave the appointment
-          with a simple call list, message, and next action.
+          with a call list, a message, and a reason for the seller to stay
+          emotionally engaged.
         </p>
       </section>
 

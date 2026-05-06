@@ -180,17 +180,17 @@ export default function PresentationPage() {
           <div className="mt-3 grid gap-4 lg:grid-cols-[1fr_0.55fr] lg:items-end">
             <div>
               <h2 className="text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
-                Show the seller what their property could become.
+                Make the seller picture choosing this campaign.
               </h2>
               <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">
-                This presentation is purely seller-facing. It shows the agent’s
-                marketing, the likely buyer journey, and how the property will
-                look if the vendor chooses this campaign.
+                This is the seller-facing emotional moment: show how their
+                property will look, how buyers will experience it, and why
+                momentum starts with this agent.
               </p>
             </div>
             <div className="rounded-[1.5rem] bg-blue-50 p-4 text-sm leading-6 text-blue-900 ring-1 ring-blue-100">
-              Closing tools, scripts, deeper objections, Form 6 explanation, and
-              the future vendor report stay in the Agent Workspace after this.
+              Keep this view clean. Deeper objections, Form 6, follow-up, and
+              decision-closing tools stay in the Agent Workspace.
             </div>
           </div>
         </section>
@@ -205,12 +205,12 @@ export default function PresentationPage() {
                 Agency advantage
               </p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
-                The marketing engine behind the launch.
+                The agent already feels invested in the result.
               </h2>
               <p className="mt-3 text-sm leading-6 text-slate-600">
-                This section reinforces why the seller should trust the agent’s
-                campaign: brand, reach, proof, preparation, and a clear plan for
-                how the property will be presented to buyers.
+                End the presentation by making the seller feel this agent has
+                already started working for them: brand, reach, proof,
+                preparation, and a clear launch plan.
               </p>
 
               {presentationProfile.agentTeamPhotos.length ? (
@@ -237,7 +237,7 @@ export default function PresentationPage() {
               {[
                 [
                   "Our difference",
-                  "We show the seller the campaign before it exists: portals, social, print, signboards, open homes, timing, and buyer demand.",
+                  "The seller can see the campaign before it exists: portals, social, brochures, flyers, signboards, open homes, timing, and buyer demand.",
                 ],
                 [
                   "Agency information",
@@ -245,7 +245,7 @@ export default function PresentationPage() {
                 ],
                 [
                   "Marketing proof",
-                  "Use previous campaigns, buyer reach, and strong local examples to make the seller believe their launch will feel premium from day one.",
+                  "Use previous campaigns, buyer reach, and strong local examples to make the seller feel they would lose momentum by choosing a weaker launch.",
                 ],
               ].map(([title, text]) => (
                 <article
@@ -324,9 +324,9 @@ export default function PresentationPage() {
                 Ready to move into the Agent Workspace?
               </h2>
               <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
-                Once the seller has seen the marketing vision, move into the
-                deeper closing tools: emotional blockers, buyer calls, price
-                confidence, follow-up, and the next decision.
+                Once the seller is attached to the marketing vision, move into
+                the closing workspace to handle emotion, price, trust, and the
+                next decision while momentum is fresh.
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
