@@ -69,9 +69,21 @@ export default function CreatePage() {
             Create the vendor presentation
           </h1>
           <p className="mt-4 max-w-xl text-base leading-7 text-slate-600">
-            Start with the property and agency details. The rest of the flow
-            will guide you step by step before the listing appointment.
+            This is the office preparation step. Build the seller-facing
+            presentation first, then use the Agent Workspace after the seller
+            has seen your marketing.
           </p>
+
+          <div className="mt-6 rounded-3xl bg-blue-50 p-5 ring-1 ring-blue-100">
+            <p className="text-sm font-semibold text-blue-950">
+              What happens next
+            </p>
+            <p className="mt-2 text-sm leading-6 text-blue-900/75">
+              Add the property details, upload the marketing media, generate
+              the Vendor Presentation, then present it to the seller. Once they
+              can picture the campaign, move into Agent Workspace to close.
+            </p>
+          </div>
 
           <div className="mt-8 grid gap-5">
             <label>

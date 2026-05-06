@@ -4,6 +4,7 @@ import Link from "next/link";
 import {
   ArrowRight,
   Building2,
+  CheckCircle2,
   Clock3,
   MonitorPlay,
   Plus,
@@ -26,16 +27,30 @@ export default function DashboardPage() {
   const address = listing.details.address || "No listings yet";
   const workflow = [
     {
-      title: "Create attachment",
-      text: "Build a seller-facing marketing vision around their property.",
+      title: "Build the vendor presentation",
+      text: "Prepare the marketing story in the office before the appraisal.",
     },
     {
-      title: "Show the campaign",
-      text: "Let the seller see social, portals, brochures, signboards, buyers, and timing before they sign.",
+      title: "Show the seller their campaign",
+      text: "Scroll through the presentation so they can picture their property with your marketing.",
     },
     {
-      title: "Close with momentum",
-      text: "Use the Agent Workspace to handle emotion, price, follow-up, and the next decision.",
+      title: "Open Agent Workspace",
+      text: "After presenting, use your closing tools for price, buyer proof, follow-up, and next steps.",
+    },
+  ];
+  const clarityCards = [
+    {
+      title: "What is ListingWin?",
+      text: "A pre-appraisal presentation tool that shows sellers what their property will look like with your marketing.",
+    },
+    {
+      title: "What does the seller see?",
+      text: "Only the premium Vendor Presentation: price story, competition, visuals, calendar, buyers, and agency advantage.",
+    },
+    {
+      title: "What does the agent use?",
+      text: "The Agent Workspace after the presentation, to handle emotions, objections, follow-up, and the close.",
     },
   ];
 
@@ -59,7 +74,7 @@ export default function DashboardPage() {
               <PrimaryLink href="/create">
                 <span className="inline-flex items-center gap-2">
                   <Plus size={18} />
-                  Create Vendor Presentation
+                  Start with the Vendor Presentation
                 </span>
               </PrimaryLink>
               <Link
@@ -77,9 +92,13 @@ export default function DashboardPage() {
                 }}
                 className="inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold text-slate-500 transition hover:text-blue-900"
               >
-                Load demo listing
+                  Load demo listing
               </button>
             </div>
+            <p className="mt-4 max-w-xl text-sm leading-6 text-slate-500">
+              First time here? Start with the Vendor Presentation. The Agent
+              Workspace comes after the seller has seen the marketing.
+            </p>
           </div>
 
           <div className="rounded-[1.75rem] bg-slate-50 p-5 ring-1 ring-slate-200">
@@ -118,6 +137,29 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
+      </section>
+
+      <section className="mt-6 grid gap-4 lg:grid-cols-3">
+        {clarityCards.map((card) => (
+          <article
+            key={card.title}
+            className="rounded-[1.5rem] bg-white p-5 shadow-sm ring-1 ring-blue-50"
+          >
+            <div className="flex items-start gap-3">
+              <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-blue-50 text-blue-700">
+                <CheckCircle2 size={17} />
+              </span>
+              <div>
+                <h2 className="text-base font-semibold tracking-tight text-slate-950">
+                  {card.title}
+                </h2>
+                <p className="mt-2 text-sm leading-6 text-slate-500">
+                  {card.text}
+                </p>
+              </div>
+            </div>
+          </article>
+        ))}
       </section>
 
       <section className="mt-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
