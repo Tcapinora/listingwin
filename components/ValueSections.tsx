@@ -698,6 +698,7 @@ export function CampaignTimelineSection({ listing }: { listing: ListingState }) 
   const events = [...listing.saleCalendarEvents].sort((a, b) =>
     a.date.localeCompare(b.date),
   );
+  const [selectedDate, setSelectedDate] = useState(events[0]?.date || "");
   const monthNames = [
     "January",
     "February",
@@ -729,6 +730,14 @@ export function CampaignTimelineSection({ listing }: { listing: ListingState }) 
     return map;
   }, {});
   const monthLabel = `${monthNames[month]} ${year}`;
+  const selectedEvents = selectedDate ? eventMap[selectedDate] || [] : [];
+  const selectedLabel = selectedDate
+    ? new Date(`${selectedDate}T00:00:00`).toLocaleDateString("en-AU", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+      })
+    : "Select a date";
 
   return (
     <section className="mt-10 rounded-3xl border border-blue-100 bg-white p-7 shadow-card">
@@ -798,19 +807,29 @@ export function CampaignTimelineSection({ listing }: { listing: ListingState }) 
                   const hasEvents = dayEvents.length > 0;
 
                   return (
-                    <div
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (hasEvents) {
+                          setSelectedDate(dateKey);
+                        }
+                      }}
                       key={dateKey}
-                      className={`min-h-28 rounded-2xl p-3 ring-1 ${
-                        hasEvents
-                          ? "bg-white shadow-card ring-blue-200"
-                          : "bg-white/75 ring-slate-100"
+                      className={`min-h-28 rounded-2xl p-3 text-left ring-1 transition ${
+                        selectedDate === dateKey
+                          ? "bg-blue-700 text-white shadow-card ring-blue-700"
+                          : hasEvents
+                            ? "bg-white shadow-card ring-blue-200 hover:-translate-y-0.5 hover:ring-blue-400"
+                            : "bg-white/75 ring-slate-100"
                       }`}
                     >
                       <div className="flex items-center justify-between gap-2">
                         <span
                           className={`grid h-8 w-8 place-items-center rounded-full text-sm font-semibold ${
                             hasEvents
-                              ? "bg-blue-700 text-white"
+                              ? selectedDate === dateKey
+                                ? "bg-white text-blue-700"
+                                : "bg-blue-700 text-white"
                               : "bg-slate-100 text-slate-500"
                           }`}
                         >
@@ -822,12 +841,28 @@ export function CampaignTimelineSection({ listing }: { listing: ListingState }) 
                           {dayEvents.slice(0, 2).map((event) => (
                             <div
                               key={event.id}
-                              className="rounded-xl bg-blue-50 px-3 py-2"
+                              className={`rounded-xl px-3 py-2 ${
+                                selectedDate === dateKey
+                                  ? "bg-white/15"
+                                  : "bg-blue-50"
+                              }`}
                             >
-                              <p className="truncate text-[11px] font-semibold uppercase tracking-[0.12em] text-blue-700">
+                              <p
+                                className={`truncate text-[11px] font-semibold uppercase tracking-[0.12em] ${
+                                  selectedDate === dateKey
+                                    ? "text-blue-100"
+                                    : "text-blue-700"
+                                }`}
+                              >
                                 {event.type}
                               </p>
-                              <p className="mt-1 line-clamp-2 text-xs font-semibold leading-4 text-slate-700">
+                              <p
+                                className={`mt-1 line-clamp-2 text-xs font-semibold leading-4 ${
+                                  selectedDate === dateKey
+                                    ? "text-white"
+                                    : "text-slate-700"
+                                }`}
+                              >
                                 {event.title}
                               </p>
                             </div>
@@ -839,7 +874,7 @@ export function CampaignTimelineSection({ listing }: { listing: ListingState }) 
                           ) : null}
                         </div>
                       ) : null}
-                    </div>
+                    </button>
                   );
                 })}
               </div>
@@ -848,7 +883,32 @@ export function CampaignTimelineSection({ listing }: { listing: ListingState }) 
 
           <aside className="rounded-3xl bg-blue-50/70 p-5 ring-1 ring-blue-100">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
-              Key campaign dates
+              Selected campaign date
+            </p>
+            <h3 className="mt-3 text-2xl font-semibold tracking-tight text-slate-950">
+              {selectedLabel}
+            </h3>
+            {selectedEvents.length ? (
+              <div className="mt-5 grid gap-3">
+                {selectedEvents.map((event) => (
+                  <div key={event.id} className="rounded-2xl bg-white p-4 shadow-sm">
+                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-700">
+                      {event.type}
+                    </p>
+                    <p className="mt-2 text-base font-semibold leading-6 text-slate-950">
+                      {event.title}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="mt-4 rounded-2xl bg-white p-4 text-sm leading-6 text-slate-600">
+                Click a highlighted date to discuss the campaign milestone with
+                the seller.
+              </p>
+            )}
+            <p className="mt-6 text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
+              Full campaign sequence
             </p>
             <div className="mt-5 grid gap-3">
               {events.slice(0, 8).map((event) => (
@@ -1459,13 +1519,13 @@ export function BuyerMatchEngineSection({
 
   return (
     <section className="mt-10 overflow-hidden rounded-3xl border border-blue-100 bg-white shadow-card">
-      <div className="grid gap-0 lg:grid-cols-[0.82fr_1.18fr]">
+      <div className="grid gap-0 lg:grid-cols-[0.72fr_1.28fr]">
         <div className="bg-slate-950 p-7 text-white lg:p-8">
           <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-blue-100">
             <Users size={16} />
             Buyer database
           </p>
-          <h2 className="mt-5 text-4xl font-semibold tracking-tight">
+          <h2 className="mt-5 text-3xl font-semibold tracking-tight">
             Show exactly who can be called for this property.
           </h2>
           <p className="mt-4 text-sm leading-6 text-slate-300">
@@ -1475,7 +1535,7 @@ export function BuyerMatchEngineSection({
           </p>
           <div className="mt-6 rounded-2xl bg-white/10 p-5">
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-200">
-                First call to make
+              First call to make
             </p>
             <p className="mt-3 text-2xl font-semibold">
               {matches[0]?.alert || "Add buyers to start matching"}
@@ -1488,12 +1548,12 @@ export function BuyerMatchEngineSection({
           </div>
         </div>
 
-        <div className="grid gap-5 p-6 lg:p-8">
+        <div className="grid gap-5 p-5 lg:p-7">
           <div className="-mx-2 flex snap-x gap-4 overflow-x-auto px-2 pb-2">
             {matches.map((buyer) => (
               <article
                 key={buyer.id}
-                className="min-w-[280px] snap-start rounded-2xl border border-slate-200 bg-slate-50 p-5 lg:min-w-[31%]"
+                className="min-w-[300px] snap-start rounded-2xl border border-slate-200 bg-white p-4 shadow-sm lg:min-w-[32%]"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>
@@ -1502,7 +1562,7 @@ export function BuyerMatchEngineSection({
                     >
                       {buyer.status} lead
                     </p>
-                    <h3 className="mt-2 text-xl font-semibold tracking-tight">
+                    <h3 className="mt-3 text-xl font-semibold tracking-tight">
                       {buyer.name}
                     </h3>
                   </div>
@@ -1510,18 +1570,20 @@ export function BuyerMatchEngineSection({
                     {buyer.score}/100
                   </span>
                 </div>
-                <p className="mt-4 text-sm leading-6 text-slate-600">
+                <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">
                   {buyer.notes}
                 </p>
-                <div className="mt-4 grid gap-2 text-xs font-semibold text-slate-600">
-                  <span>{buyer.phone || "No phone saved"}</span>
-                  <span>{buyer.budgetMin}-{buyer.budgetMax}</span>
-                  <span>{buyer.suburbs}</span>
+                <div className="mt-4 grid gap-2 rounded-2xl bg-slate-50 p-3 text-xs font-semibold text-slate-600">
+                  <span className="text-slate-950">{buyer.phone || "No phone saved"}</span>
+                  <span>
+                    {buyer.budgetMin}-{buyer.budgetMax}
+                  </span>
+                  <span className="truncate">{buyer.suburbs}</span>
                   <span>{buyer.beds || "Any"}+ beds</span>
                 </div>
-                <p className="mt-4 inline-flex items-center gap-2 rounded-full bg-white px-3 py-2 text-xs font-semibold text-blue-900">
+                <p className="mt-4 inline-flex max-w-full items-center gap-2 rounded-full bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-900">
                   <Flame size={14} />
-                  {buyer.alert}
+                  <span className="truncate">{buyer.alert}</span>
                 </p>
               </article>
             ))}

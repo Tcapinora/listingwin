@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   BadgeCheck,
-  Download,
   Link2,
   Mail,
   Pencil,
@@ -108,14 +107,6 @@ export default function PresentationPage() {
             >
               <Link2 size={16} />
               {shareStatus || "Share"}
-            </button>
-            <button
-              type="button"
-              className="inline-flex items-center gap-2 rounded-full bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white shadow-card hover:bg-blue-800"
-              onClick={() => window.print()}
-            >
-              <Download size={16} />
-              Print / PDF
             </button>
           </div>
         </div>

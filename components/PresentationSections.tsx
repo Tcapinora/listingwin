@@ -219,8 +219,8 @@ export function PresentationGrid({ listing }: { listing: ListingState }) {
       component: <BrochureBookPreview listing={listing} />,
     },
     {
-      id: "print",
-      label: "Print",
+      id: "brochure-flyer",
+      label: "Brochure",
       title: "Brochure and flyer",
       component: (
         <div className="grid gap-6 lg:grid-cols-2">

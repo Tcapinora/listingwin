@@ -121,7 +121,31 @@ export default function DraftPage() {
           </div>
         </div>
 
-        <div className="mt-8 grid gap-3 sm:grid-cols-4">
+        <div className="mt-8 rounded-[1.75rem] bg-slate-950 p-5 text-white">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-200">
+            Start here
+          </p>
+          <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_auto] lg:items-center">
+            <div>
+              <h2 className="text-2xl font-semibold tracking-tight">
+                Choose the next closing action.
+              </h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300">
+                Use the buttons below to jump to the tool you need. Most agents
+                will start with buyer calls, then follow-up, then Form 6 if the
+                seller is ready to move forward.
+              </p>
+            </div>
+            <Link
+              href="#buyer-database"
+              className="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-blue-950 shadow-card"
+            >
+              Start with buyer calls
+            </Link>
+          </div>
+        </div>
+
+        <div className="mt-6 grid gap-3 sm:grid-cols-4">
           {checks.map(([label, done]) => (
             <div
               key={String(label)}
@@ -137,7 +161,7 @@ export default function DraftPage() {
           ))}
         </div>
 
-        <div className="mt-8 grid gap-3 lg:grid-cols-4">
+        <div className="mt-6 grid gap-3 lg:grid-cols-3">
           {quickActions.map(([label, href, ActionIcon]) => {
             return (
               <Link
@@ -152,28 +176,33 @@ export default function DraftPage() {
           })}
         </div>
 
-        <div className="mt-8 grid gap-4 lg:grid-cols-3">
-          {[
-            ["Vendor follow-up copy", writeup],
-            ["Social caption", socialCaption],
-            ["Property strengths", keyFeatures],
-            [
-              "Property weaknesses",
-              listing.details.priceNotes ||
-                "Add likely objections here: price sensitivity, presentation work, access, noise, renovation items, or stronger competing properties.",
-            ],
-          ].map(([title, content]) => (
-            <article key={title} className="rounded-[1.5rem] bg-slate-50 p-5">
-              <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-slate-950">
-                <FileText size={16} />
-                {title}
-              </div>
-              <p className="text-sm leading-6 text-slate-600">{content}</p>
-            </article>
-          ))}
-        </div>
+        <details className="mt-6 rounded-[1.5rem] bg-slate-50 p-5">
+          <summary className="cursor-pointer text-sm font-semibold text-slate-950">
+            View prepared notes and copy
+          </summary>
+          <div className="mt-5 grid gap-4 lg:grid-cols-3">
+            {[
+              ["Vendor follow-up copy", writeup],
+              ["Social caption", socialCaption],
+              ["Property strengths", keyFeatures],
+              [
+                "Property weaknesses",
+                listing.details.priceNotes ||
+                  "Add likely objections here: price sensitivity, presentation work, access, noise, renovation items, or stronger competing properties.",
+              ],
+            ].map(([title, content]) => (
+              <article key={title} className="rounded-[1.5rem] bg-white p-5">
+                <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-slate-950">
+                  <FileText size={16} />
+                  {title}
+                </div>
+                <p className="text-sm leading-6 text-slate-600">{content}</p>
+              </article>
+            ))}
+          </div>
+        </details>
 
-        <div className="mt-8 rounded-[1.5rem] bg-blue-950 p-5 text-white">
+        <div className="mt-6 rounded-[1.5rem] bg-blue-950 p-5 text-white">
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-200">
             Finish the appointment
           </p>

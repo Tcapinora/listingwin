@@ -258,15 +258,15 @@ export function AgentProfileModal({
               Save logos for future use
             </h3>
             <p className="mt-2 text-sm leading-6 text-gray-600">
-              Upload up to 2 agency logos or signboard brand marks once, then
-              choose the active logo for presentations and portal/social
-              previews.
+              Upload up to 2 agency logo options once, then choose the active
+              logo for presentations and portal/social previews. Signboard
+              images are added later in the signboard step.
             </p>
           </div>
 
           <label className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-blue-200 bg-blue-50/60 px-5 py-6 text-center transition hover:border-blue-400 hover:bg-blue-50">
             <span className="text-sm font-semibold text-blue-950">
-              Upload agency logos / signboard marks
+              Upload agency logos
             </span>
             <span className="mt-1 text-xs text-blue-900/70">
               PNG recommended for transparent backgrounds. Maximum 2 saved.
