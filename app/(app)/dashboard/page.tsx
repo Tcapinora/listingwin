@@ -39,18 +39,21 @@ export default function DashboardPage() {
       text: "After presenting, use your closing tools for price, buyer proof, follow-up, and next steps.",
     },
   ];
-  const clarityCards = [
+  const firstRunGuide = [
     {
-      title: "What is ListingWin?",
-      text: "A pre-appraisal presentation tool that shows sellers what their property will look like with your marketing.",
+      title: "1. Build",
+      subtitle: "Prepare before the appraisal",
+      text: "Add the property, photos, signboards, buyers, sale calendar, and marketing previews in the Builder.",
     },
     {
-      title: "What does the seller see?",
-      text: "Only the premium Vendor Presentation: price story, competition, visuals, calendar, buyers, and agency advantage.",
+      title: "2. Present",
+      subtitle: "Show you are the marketing expert",
+      text: "Show the seller your agency marketing, how their property will look, and how you sell a property from launch to buyer demand.",
     },
     {
-      title: "What does the agent use?",
-      text: "The Agent Workspace after the presentation, to handle emotions, objections, follow-up, and the close.",
+      title: "3. Close",
+      subtitle: "Move into Agent Workspace",
+      text: "After the seller has seen the campaign, use the workspace for price, objections, buyer proof, follow-up, and next steps.",
     },
   ];
 
@@ -92,7 +95,7 @@ export default function DashboardPage() {
                 }}
                 className="inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold text-slate-500 transition hover:text-blue-900"
               >
-                  Load demo listing
+                Load demo listing
               </button>
             </div>
             <p className="mt-4 max-w-xl text-sm leading-6 text-slate-500">
@@ -139,10 +142,89 @@ export default function DashboardPage() {
         </div>
       </section>
 
+      <section className="mt-6 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-slate-200/70 sm:p-8">
+        <div className="grid gap-6 lg:grid-cols-[0.7fr_1.3fr] lg:items-start">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
+              First time using ListingWin?
+            </p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
+              Build the presentation, show the campaign, close the listing.
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-slate-600">
+              ListingWin is built for agents before a listing appraisal. It
+              helps the seller see your marketing before they choose an agent.
+            </p>
+          </div>
+
+          <div className="grid gap-4 lg:grid-cols-3">
+            {firstRunGuide.map((card) => (
+              <article
+                key={card.title}
+                className="rounded-[1.5rem] bg-slate-50 p-5 ring-1 ring-slate-200/70"
+              >
+                <span className="grid h-9 w-9 place-items-center rounded-full bg-blue-700 text-white">
+                  <CheckCircle2 size={17} />
+                </span>
+                <p className="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
+                  {card.subtitle}
+                </p>
+                <h3 className="mt-2 text-xl font-semibold tracking-tight text-slate-950">
+                  {card.title}
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-slate-500">
+                  {card.text}
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mt-6 rounded-[2rem] bg-blue-950 p-6 text-white shadow-card sm:p-8">
+        <div className="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-center">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-200">
+              The simple rule
+            </p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight">
+              The seller sees the presentation. The agent uses the workspace.
+            </h2>
+            <p className="mt-3 max-w-3xl text-sm leading-6 text-blue-100">
+              During the appointment, stay in the clean Vendor Presentation.
+              Once the seller understands the campaign, open Agent Workspace to
+              go deeper and close.
+            </p>
+          </div>
+          <Link
+            href="/create"
+            className="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-blue-950 shadow-card transition hover:bg-blue-50"
+          >
+            <span className="inline-flex items-center gap-2">
+              Start Builder
+              <ArrowRight size={16} />
+            </span>
+          </Link>
+        </div>
+      </section>
+
       <section className="mt-6 grid gap-4 lg:grid-cols-3">
-        {clarityCards.map((card) => (
+        {[
+          [
+            "What is ListingWin?",
+            "A pre-appraisal presentation tool that shows sellers what their property will look like with your marketing.",
+          ],
+          [
+            "What does the seller see?",
+            "Only the premium Vendor Presentation: price story, competition, visuals, calendar, buyers, and agency advantage.",
+          ],
+          [
+            "What does the agent use?",
+            "The Agent Workspace after the presentation, to handle emotions, objections, follow-up, and the close.",
+          ],
+        ].map(([title, text]) => (
           <article
-            key={card.title}
+            key={title}
             className="rounded-[1.5rem] bg-white p-5 shadow-sm ring-1 ring-slate-200/70"
           >
             <div className="flex items-start gap-3">
@@ -151,10 +233,10 @@ export default function DashboardPage() {
               </span>
               <div>
                 <h2 className="text-base font-semibold tracking-tight text-slate-950">
-                  {card.title}
+                  {title}
                 </h2>
                 <p className="mt-2 text-sm leading-6 text-slate-500">
-                  {card.text}
+                  {text}
                 </p>
               </div>
             </div>
