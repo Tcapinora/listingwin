@@ -26,16 +26,16 @@ export default function DashboardPage() {
   const address = listing.details.address || "No listings yet";
   const workflow = [
     {
-      title: "Prepare",
-      text: "Build the vendor presentation in the office before the appointment.",
+      title: "Create attachment",
+      text: "Build a seller-facing marketing vision around their property.",
     },
     {
-      title: "Present",
-      text: "Show the vendor a polished, seller-facing story for their property.",
+      title: "Show the campaign",
+      text: "Let the seller see social, portals, brochures, signboards, buyers, and timing before they sign.",
     },
     {
-      title: "Close",
-      text: "Move into the Agent Workspace for next steps, objections, and follow-up.",
+      title: "Close with momentum",
+      text: "Use the Agent Workspace to handle emotion, price, follow-up, and the next decision.",
     },
   ];
 
@@ -48,11 +48,12 @@ export default function DashboardPage() {
               ListingWin for agents
             </p>
             <h1 className="mt-7 max-w-3xl text-4xl font-semibold tracking-tight text-slate-950 sm:text-6xl">
-              Prepare. Present. Close.
+              Make the seller feel the campaign has already started.
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
-              Build the presentation, impress the vendor, then move straight
-              into the workspace that helps you win the listing.
+              Create the vendor presentation, show the seller their property
+              inside your marketing, then move into the workspace to close
+              while momentum is high.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <PrimaryLink href="/create">
@@ -88,9 +89,11 @@ export default function DashboardPage() {
               </span>
               <div>
                 <p className="text-sm font-semibold text-slate-950">
-                  Listing appointment flow
+                  Seller attachment flow
                 </p>
-                <p className="text-xs text-slate-500">Clear, calm, vendor-ready.</p>
+                <p className="text-xs text-slate-500">
+                  Marketing first. Closing second.
+                </p>
               </div>
             </div>
             <div className="mt-5 grid gap-2 text-sm">

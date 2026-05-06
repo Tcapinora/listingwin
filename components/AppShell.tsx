@@ -54,7 +54,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     ListingWin
                   </span>
                   <span className="hidden text-xs text-slate-500 sm:block">
-                    Prepare. Present. Close.
+                    Attach. Present. Close.
                   </span>
                 </span>
               </Link>
@@ -155,7 +155,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                         ListingWin
                       </span>
                       <span className="text-xs text-gray-500">
-                        Prepare. Present. Close.
+                        Attach. Present. Close.
                       </span>
                     </span>
                   </Link>
@@ -195,8 +195,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 <div className="absolute inset-x-5 bottom-5 rounded-3xl bg-blue-950 p-5 text-white">
                   <p className="text-sm font-semibold">Listing workflow</p>
                   <p className="mt-2 text-xs leading-5 text-gray-300">
-                    Prepare the vendor presentation, present it with confidence,
-                    then move into the workspace to close.
+                    Show the seller the campaign first, then move into the
+                    workspace to close the listing.
                   </p>
                   <Link
                     href="/draft"

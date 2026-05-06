@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 
 const outcomes = [
-  "Seller confidence in minutes",
+  "Seller attachment in minutes",
   "Campaign proof they can see",
   "A clearer path to yes",
 ];
@@ -27,19 +27,19 @@ const painPoints = [
 
 const workflow = [
   {
-    title: "Create your agent account",
+    title: "Save the agent brand",
     description:
       "Save brand, contact details, socials, agency colours, and logos once.",
     icon: Building2,
   },
   {
-    title: "Build the listing mockup",
+    title: "Make the seller see the campaign",
     description:
       "Show the seller how buyers will see the home before the campaign exists.",
     icon: Sparkles,
   },
   {
-    title: "Win the appraisal conversation",
+    title: "Close while momentum is high",
     description:
       "Move the seller from uncertainty to confidence, then leave them with a link after the meeting.",
     icon: Trophy,
@@ -89,13 +89,14 @@ export default function Home() {
             Built by real estate agents for real estate agents
           </p>
           <h1 className="mt-6 max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
-            Walk into every appraisal with the seller already believing.
+            Make sellers feel the campaign has already started.
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">
-            ListingWin helps agents change the seller’s mindset before the
-            listing is won. Turn property photos, market proof, buyer demand,
-            and campaign visuals into a presentation that makes the seller feel
-            understood, prepared, and ready to move.
+            ListingWin helps real estate agents win listings by making sellers
+            emotionally experience the marketing before they sign. Turn
+            property photos, market proof, buyer demand, and campaign visuals
+            into a presentation that makes the seller feel understood,
+            prepared, and ready to choose you.
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -183,7 +184,7 @@ export default function Home() {
                         42 Seaview Avenue
                       </p>
                       <h2 className="mt-3 text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl">
-                        A launch plan that makes the seller feel ready to say yes.
+                        A campaign vision the seller can already picture.
                       </h2>
                       <div className="mt-5 flex flex-wrap gap-2 text-xs font-semibold text-white">
                         <span className="rounded-full bg-white/15 px-3 py-2 backdrop-blur-md">
