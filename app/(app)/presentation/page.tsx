@@ -22,6 +22,7 @@ import {
   HeroPresentation,
   PresentationGrid,
 } from "@/components/PresentationSections";
+import { WorkflowPath } from "@/components/WorkflowPath";
 import { demoAgentProfile, demoListingState } from "@/lib/demoData";
 import { presentationReadiness } from "@/lib/readiness";
 
@@ -173,6 +174,10 @@ export default function PresentationPage() {
         id="presentation-start"
         className="mx-auto max-w-7xl px-4 py-6 sm:px-5 lg:px-8 lg:py-8"
       >
+        <div className="no-print mb-6">
+          <WorkflowPath active="presentation" />
+        </div>
+
         <section className="mb-6 rounded-[2rem] bg-white p-5 shadow-card ring-1 ring-blue-50 lg:p-7">
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
             Vendor presentation

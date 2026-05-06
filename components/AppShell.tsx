@@ -17,6 +17,7 @@ import { useState } from "react";
 import { ListingProvider } from "@/components/ListingProvider";
 import { AgentProfileProvider } from "@/components/AgentProfileProvider";
 import { AgentProfileModal } from "@/components/AgentProfileModal";
+import { WorkflowPath } from "@/components/WorkflowPath";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -129,6 +130,19 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 : "mx-auto max-w-7xl px-4 py-7 sm:px-5 sm:py-8 lg:px-8 lg:py-10"
             }
           >
+            {!isPresentationMode &&
+            ["/create", "/details", "/upload", "/mockups", "/finish"].includes(
+              pathname,
+            ) ? (
+              <div className="mb-7">
+                <WorkflowPath active="builder" />
+              </div>
+            ) : null}
+            {!isPresentationMode && pathname === "/draft" ? (
+              <div className="mb-7">
+                <WorkflowPath active="workspace" />
+              </div>
+            ) : null}
             {children}
           </main>
 
