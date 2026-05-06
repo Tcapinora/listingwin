@@ -59,7 +59,7 @@ export default function DashboardPage() {
       <section className="overflow-hidden rounded-[2.25rem] bg-white p-7 shadow-card ring-1 ring-slate-200/70 sm:p-10 lg:p-12">
         <div className="grid gap-10 lg:grid-cols-[1.05fr_0.8fr] lg:items-end">
           <div>
-            <p className="inline-flex rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
+            <p className="inline-flex rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800 ring-1 ring-blue-100">
               ListingWin for agents
             </p>
             <h1 className="mt-7 max-w-3xl text-4xl font-semibold tracking-tight text-slate-950 sm:text-6xl">
@@ -101,7 +101,7 @@ export default function DashboardPage() {
             </p>
           </div>
 
-          <div className="rounded-[1.75rem] bg-slate-50 p-5 ring-1 ring-slate-200">
+          <div className="rounded-[1.75rem] bg-slate-50/80 p-5 ring-1 ring-slate-200">
             <div className="flex items-center gap-3">
               <span className="grid h-11 w-11 place-items-center rounded-2xl bg-white text-blue-800 shadow-sm">
                 <Sparkles size={19} />
@@ -119,7 +119,7 @@ export default function DashboardPage() {
               {workflow.map((item, index) => (
                 <div
                   key={item.title}
-                  className="rounded-2xl bg-white px-4 py-4 shadow-sm ring-1 ring-slate-100"
+                  className="rounded-2xl bg-white px-4 py-4 shadow-sm ring-1 ring-slate-100 transition hover:-translate-y-0.5 hover:shadow-card"
                 >
                   <div className="flex items-center gap-3">
                     <span className="grid h-7 w-7 place-items-center rounded-full bg-blue-700 text-xs font-semibold text-white">
@@ -143,7 +143,7 @@ export default function DashboardPage() {
         {clarityCards.map((card) => (
           <article
             key={card.title}
-            className="rounded-[1.5rem] bg-white p-5 shadow-sm ring-1 ring-blue-50"
+            className="rounded-[1.5rem] bg-white p-5 shadow-sm ring-1 ring-slate-200/70"
           >
             <div className="flex items-start gap-3">
               <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-blue-50 text-blue-700">
@@ -162,7 +162,7 @@ export default function DashboardPage() {
         ))}
       </section>
 
-      <section className="mt-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+      <section className="mt-12 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
             Your Presentations
@@ -180,7 +180,9 @@ export default function DashboardPage() {
 
       <section className="grid gap-5 lg:grid-cols-2">
         {hasListing ? (
-          <article className="rounded-[1.75rem] bg-white p-6 shadow-card ring-1 ring-blue-50">
+          <article className="overflow-hidden rounded-[1.75rem] bg-white shadow-card ring-1 ring-blue-50">
+            <div className="h-2 bg-blue-700" />
+            <div className="p-6">
             <div className="flex items-start justify-between gap-4">
               <div className="grid h-12 w-12 place-items-center rounded-2xl bg-blue-50 text-blue-700">
                 <Building2 size={21} />
@@ -209,11 +211,12 @@ export default function DashboardPage() {
             <div className="mt-7">
               <Link
                 href={hasImages ? "/mockups" : "/upload"}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-700 px-5 py-3.5 text-sm font-semibold text-white shadow-card transition hover:bg-blue-800 sm:w-auto"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-700 px-5 py-3.5 text-sm font-semibold text-white shadow-card transition hover:bg-blue-800 sm:w-auto"
               >
                 Continue Presentation
                 <ArrowRight size={16} />
               </Link>
+            </div>
             </div>
           </article>
         ) : (

@@ -26,10 +26,10 @@ const navItems = [
 ];
 
 const workflowItems = [
-  { href: "/create", label: "1. Create" },
-  { href: "/details", label: "2. Details" },
+  { href: "/create", label: "1. Start" },
+  { href: "/details", label: "2. Story" },
   { href: "/upload", label: "3. Media" },
-  { href: "/mockups", label: "4. Generate" },
+  { href: "/mockups", label: "4. Present" },
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -43,7 +43,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <ListingProvider>
         <div className="min-h-screen">
           {!isPresentationMode ? (
-          <header className="sticky top-0 z-30 border-b border-slate-200/70 bg-white/90 backdrop-blur-xl no-print">
+          <header className="sticky top-0 z-30 border-b border-slate-200/70 bg-white/95 backdrop-blur-xl no-print">
             <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:gap-6 sm:px-5 lg:px-8">
               <Link href="/dashboard" className="flex items-center gap-3">
                 <span className="grid h-10 w-10 place-items-center rounded-xl bg-blue-700 text-white shadow-card">
@@ -91,7 +91,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   aria-label="Start New Listing"
                 >
                   <Plus size={16} />
-                  <span className="hidden sm:inline">Start New Listing</span>
+                  <span className="hidden sm:inline">Create Presentation</span>
                   <ArrowRight className="hidden sm:block" size={15} />
                 </Link>
               </div>
@@ -195,8 +195,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 <div className="absolute inset-x-5 bottom-5 rounded-3xl bg-blue-950 p-5 text-white">
                   <p className="text-sm font-semibold">Listing workflow</p>
                   <p className="mt-2 text-xs leading-5 text-gray-300">
-                    Show the seller the campaign first, then move into the
-                    workspace to close the listing.
+                    Build the seller-facing campaign vision first. Use the
+                    workspace after the presentation to close.
                   </p>
                   <Link
                     href="/draft"
