@@ -93,9 +93,9 @@ export default function DraftPage() {
               Close the listing
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-              The vendor presentation is complete. Use this workspace to handle
-              follow-up, buyer calls, pricing discussion, Form 6 explanation,
-              agent notes, and the next best action.
+              The seller has seen the marketing vision. Use this workspace to
+              go deeper: handle emotion, answer price concerns, show the future
+              vendor report, call buyers, and make the next decision feel easy.
             </p>
           </div>
           <div className="rounded-[1.5rem] bg-blue-50 p-5 ring-1 ring-blue-100">
@@ -128,12 +128,13 @@ export default function DraftPage() {
           <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_auto] lg:items-center">
             <div>
               <h2 className="text-2xl font-semibold tracking-tight">
-                Choose the next closing action.
+                Move from marketing vision to seller confidence.
               </h2>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300">
-                Use the buttons below to jump to the tool you need. Most agents
-                will start with buyer calls, then follow-up, then Form 6 if the
-                seller is ready to move forward.
+                Start with buyer proof, then use the deeper tools to answer the
+                seller’s real questions: “Can I trust the price?”, “Will buyers
+                care?”, “What happens after I sign?”, and “Am I making the right
+                decision?”
               </p>
             </div>
             <Link
@@ -285,12 +286,12 @@ export default function DraftPage() {
             Buyer and follow-up tools
           </p>
           <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
-            Start with the people who can create momentum.
+            Start with buyer proof, then keep the seller engaged.
           </h2>
           <p className="mt-3 text-sm leading-6 text-slate-600">
-            After the seller presentation, use this area to show who you can
-            call, what to say next, and how quickly buyer interest can be
-            activated.
+            This is where the agent turns the marketing presentation into a
+            real next step: who to call, what to say, and how to keep momentum
+            after the appraisal.
           </p>
         </div>
       </section>
@@ -318,12 +319,12 @@ export default function DraftPage() {
           Vendor confidence tools
         </p>
         <h2 className="mt-5 text-3xl font-semibold tracking-tight text-slate-950">
-          Handle price, marketing, and objections clearly.
+          Go deeper into the seller’s emotional decision.
         </h2>
         <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
-          These tools help the agent explain the campaign, defend value, and
-          keep the vendor focused on the decision that moves the listing
-          forward.
+          Use these tools after the marketing presentation to talk through
+          trust, fear, price, campaign confidence, fee value, and what the owner
+          needs to feel before saying yes.
         </p>
       </section>
 

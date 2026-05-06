@@ -180,17 +180,17 @@ export default function PresentationPage() {
           <div className="mt-3 grid gap-4 lg:grid-cols-[1fr_0.55fr] lg:items-end">
             <div>
               <h2 className="text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
-                Guide the seller from uncertainty to confidence.
+                Show the seller what their property could become.
               </h2>
               <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">
-                Everything below is designed to be shown in the listing
-                appointment: price story, current competition, marketing
-                visuals, sale calendar, buyer database, and next steps.
+                This presentation is purely seller-facing. It shows the agent’s
+                marketing, the likely buyer journey, and how the property will
+                look if the vendor chooses this campaign.
               </p>
             </div>
             <div className="rounded-[1.5rem] bg-blue-50 p-4 text-sm leading-6 text-blue-900 ring-1 ring-blue-100">
-              Agent-only follow-up, scripts, Form 6 explanation, and campaign
-              reporting stay in the Agent Workspace after this presentation.
+              Closing tools, scripts, deeper objections, Form 6 explanation, and
+              the future vendor report stay in the Agent Workspace after this.
             </div>
           </div>
         </section>
@@ -205,12 +205,12 @@ export default function PresentationPage() {
                 Agency advantage
               </p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
-                Why sellers choose {agencyName || "this agency"}.
+                The marketing engine behind the launch.
               </h2>
               <p className="mt-3 text-sm leading-6 text-slate-600">
-                The final decision is not only about price. It is about
-                confidence, preparation, buyer reach, and whether the seller
-                believes their property will be launched with care.
+                This section reinforces why the seller should trust the agent’s
+                campaign: brand, reach, proof, preparation, and a clear plan for
+                how the property will be presented to buyers.
               </p>
 
               {presentationProfile.agentTeamPhotos.length ? (
@@ -237,15 +237,15 @@ export default function PresentationPage() {
               {[
                 [
                   "Our difference",
-                  "We arrive with the campaign already visualised, the buyer story prepared, and the next steps clear before the seller signs.",
+                  "We show the seller the campaign before it exists: portals, social, print, signboards, open homes, timing, and buyer demand.",
                 ],
                 [
                   "Agency information",
-                  `${agencyName || "The agency"} brings brand presence, database reach, local market proof, and a repeatable launch process to the appointment.`,
+                  `${agencyName || "The agency"} brings brand presence, database reach, local market proof, and a repeatable launch process to the property.`,
                 ],
                 [
-                  "Recent proof",
-                  "Use comparable results and previously sold examples here to connect the proposed strategy to real local trust.",
+                  "Marketing proof",
+                  "Use previous campaigns, buyer reach, and strong local examples to make the seller believe their launch will feel premium from day one.",
                 ],
               ].map(([title, text]) => (
                 <article
@@ -324,9 +324,9 @@ export default function PresentationPage() {
                 Ready to move into the Agent Workspace?
               </h2>
               <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
-                Once the presentation is finished, move straight into the
-                practical closing tools: follow-up, objections, Form 6
-                explanation, notes, and next steps.
+                Once the seller has seen the marketing vision, move into the
+                deeper closing tools: emotional blockers, buyer calls, price
+                confidence, follow-up, and the next decision.
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">

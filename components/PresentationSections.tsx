@@ -63,11 +63,11 @@ function PresentationChapter({
 
 export function PresentationFlowNav() {
   const items = [
-    "Price story",
+    "Price context",
     "Current competition",
-    "Visual previews",
+    "Marketing previews",
     "Sale calendar",
-    "Buyer database",
+    "Buyer demand",
   ];
 
   return (
@@ -78,12 +78,12 @@ export function PresentationFlowNav() {
             Vendor room flow
           </p>
           <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">
-            One calm presentation path.
+            One simple marketing story.
           </h2>
         </div>
         <p className="max-w-md text-sm leading-6 text-slate-500">
-          This is the view the vendor sees. Agent prompts and working notes
-          stay in the Agent Workspace.
+          This view is for the seller: what their property looks like in market,
+          how the campaign launches, and why buyers will pay attention.
         </p>
       </div>
       <div className="mt-5 flex flex-wrap gap-2">
@@ -278,9 +278,9 @@ export function PresentationGrid({ listing }: { listing: ListingState }) {
 
       <PresentationChapter
         number="01"
-        eyebrow="Price story"
-        title="Separate the mathematical price from the emotional price."
-        description="Give the vendor a clear distinction between evidence-based pricing and the emotional upside a strong campaign can create."
+        eyebrow="Price context"
+        title="Frame the price before the marketing story."
+        description="Give the vendor enough market context to understand where the campaign starts, then show how better marketing can create emotional upside."
       >
         <PriceConfidenceSection listing={listing} />
       </PresentationChapter>
@@ -289,16 +289,16 @@ export function PresentationGrid({ listing }: { listing: ListingState }) {
         number="02"
         eyebrow="Current competition"
         title="Show the current competition."
-        description="Market proof helps the vendor feel the agent has done the thinking before asking for the listing."
+        description="This shows the vendor that the agent has reviewed the market and understands what their property will be compared against."
       >
         <MarketExpertSection listing={listing} />
       </PresentationChapter>
 
       <PresentationChapter
         number="03"
-        eyebrow="Visual previews"
-        title="Show the first impression buyers will remember."
-        description="The vendor can now see their home through the buyer’s eyes before the campaign exists."
+        eyebrow="Marketing previews"
+        title="Show exactly how the property will look in market."
+        description="This is the heart of the vendor presentation: social, portal, brochure, flyer, signboard, open-home, and photography previews."
       >
         <section className="rounded-3xl border border-blue-100 bg-white p-5 shadow-card lg:p-7">
           <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
@@ -335,17 +335,17 @@ export function PresentationGrid({ listing }: { listing: ListingState }) {
       <PresentationChapter
         number="04"
         eyebrow="Sale calendar"
-        title="Show the campaign calendar."
-        description="A visible calendar helps the vendor understand exactly what happens after they appoint the agent."
+        title="Show how the campaign rolls out."
+        description="A visible calendar helps the vendor understand the launch rhythm: photography, signboard, first open, auction, and follow-up."
       >
         <CampaignTimelineSection listing={listing} />
       </PresentationChapter>
 
       <PresentationChapter
         number="05"
-        eyebrow="Buyer database"
-        title="Show who the agent can call for this property."
-        description="This gives the owner confidence that the agent is not waiting for the market to respond from zero."
+        eyebrow="Buyer demand"
+        title="Show there is already a buyer conversation to start."
+        description="This is seller-facing proof of demand: the agent has buyers to call, not just portals to wait on."
       >
         <BuyerMatchEngineSection listing={listing} />
       </PresentationChapter>

@@ -1267,10 +1267,10 @@ export function BuyerDemandSection({ listing }: { listing: ListingState }) {
     <section className="mt-10 rounded-3xl bg-blue-950 p-7 text-white shadow-soft">
       <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-blue-100">
         <Users size={16} />
-        Buyer demand strategy
+        Buyer demand close
       </p>
       <h2 className="mt-5 text-4xl font-semibold tracking-tight">
-        Explain how the campaign will create competition.
+        Connect the marketing plan to buyer competition.
       </h2>
       <div className="mt-7 grid gap-4 lg:grid-cols-3">
         {buyers.map((buyer) => (
@@ -1281,8 +1281,9 @@ export function BuyerDemandSection({ listing }: { listing: ListingState }) {
         ))}
       </div>
       <p className="mt-6 text-sm leading-6 text-blue-100">
-        Campaign angle: lead with {notes}. Tie the photos, signboard, social
-        posts, and timing back to buyer competition.
+        Closing angle: lead with {notes}. Tie the photos, signboard, social
+        posts, and timing back to buyer competition so the seller can feel why
+        the campaign matters.
       </p>
       <div className="mt-6 rounded-3xl bg-white/10 p-5">
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-200">
@@ -1311,10 +1312,10 @@ export function CommissionDefenceSection() {
     <section className="mt-10 rounded-3xl border border-blue-100 bg-white p-7 shadow-card">
       <p className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
         <ShieldCheck size={16} />
-        Fee and value confidence
+        Commission and value confidence
       </p>
       <h2 className="mt-5 text-4xl font-semibold tracking-tight">
-        Connect the fee to buyer competition and negotiation.
+        Help the seller connect the fee to the result.
       </h2>
       <div className="mt-7 grid gap-4 lg:grid-cols-3">
         {points.map((point) => (
@@ -1349,10 +1350,10 @@ export function AppraisalScriptSection({ listing }: { listing: ListingState }) {
     <section className="mt-10 rounded-3xl border border-blue-100 bg-white p-7 shadow-card">
       <p className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
         <MessageSquareText size={16} />
-        Conversation prompts
+        Emotional conversation prompts
       </p>
       <h2 className="mt-5 text-4xl font-semibold tracking-tight">
-        Know what to say when the seller asks hard questions.
+        Know what to say when the seller hesitates.
       </h2>
       <div className="mt-7 grid gap-4 lg:grid-cols-3">
         {scripts.map((script) => (
@@ -1529,9 +1530,9 @@ export function BuyerMatchEngineSection({
             Show exactly who can be called for this property.
           </h2>
           <p className="mt-4 text-sm leading-6 text-slate-300">
-            Store buyer preferences, price ranges, suburb targets, and lead
-            temperature. ListingWin then ranks the best matches for the
-            property being appraised.
+            Use this as proof that the agent has real buyer conversations to
+            start. In the workspace, it becomes the call list that creates
+            momentum after the appraisal.
           </p>
           <div className="mt-6 rounded-2xl bg-white/10 p-5">
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-200">
@@ -1706,11 +1707,12 @@ export function FollowUpAutomationSection({
             Follow-up reminders
           </p>
           <h2 className="mt-5 max-w-3xl text-4xl font-semibold tracking-tight">
-            Know when to follow up and what to say.
+            Keep the seller warm after the appointment.
           </h2>
           <p className="mt-4 max-w-3xl text-sm leading-6 text-slate-600">
-            Keep the next step visible so the agent knows who to call, when to
-            follow up, and what to say after the appointment.
+            The seller may need time. This keeps the agent’s next move clear:
+            when to follow up, what to say, and how to keep the decision
+            emotionally alive.
           </p>
         </div>
         <div className="rounded-2xl bg-blue-700 px-5 py-4 text-white">
@@ -1798,14 +1800,15 @@ export function VendorReportSection({ listing }: { listing: ListingState }) {
       <div className="p-7 text-white lg:p-8" style={{ backgroundColor: brandColor }}>
         <p className="inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-semibold">
           <Users size={16} />
-          Example vendor report
+          Future vendor report
         </p>
         <h2 className="mt-5 max-w-3xl text-4xl font-semibold tracking-tight">
-          Show the seller how they will be updated after launch.
+          Show the seller how engaged they will feel after launch.
         </h2>
         <p className="mt-4 max-w-3xl text-sm leading-6 text-white/80">
-          Example report for {address}. In production, these numbers can connect
-          to CRM, portal, email, and inspection data.
+          Use this as a closing tool: “Once we launch, this is how I’ll keep
+          you informed.” Example report for {address}. Later these numbers can
+          connect to CRM, portal, email, and inspection data.
         </p>
       </div>
 
