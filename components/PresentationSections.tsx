@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { Smartphone } from "lucide-react";
+import Link from "next/link";
+import { Pencil, Smartphone } from "lucide-react";
 import { useState } from "react";
 import { useAgentProfile } from "@/components/AgentProfileProvider";
 import { generatePropertyWriteup } from "@/lib/copy";
@@ -37,12 +38,16 @@ function PresentationChapter({
   eyebrow,
   title,
   description,
+  editHref,
+  editLabel = "Edit section",
   children,
 }: {
   number: string;
   eyebrow: string;
   title: string;
   description?: string;
+  editHref?: string;
+  editLabel?: string;
   children: React.ReactNode;
 }) {
   return (
@@ -64,6 +69,15 @@ function PresentationChapter({
             </p>
           ) : null}
         </div>
+        {editHref ? (
+          <Link
+            href={editHref}
+            className="no-print inline-flex w-fit items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2.5 text-sm font-semibold text-blue-900 shadow-sm transition hover:border-blue-200 hover:bg-blue-50"
+          >
+            <Pencil size={15} />
+            {editLabel}
+          </Link>
+        ) : null}
       </div>
       {children}
     </section>
@@ -179,7 +193,13 @@ export function SellerMobilePreview({ listing }: { listing: ListingState }) {
   );
 }
 
-export function HeroPresentation({ listing }: { listing: ListingState }) {
+export function HeroPresentation({
+  listing,
+  editable = true,
+}: {
+  listing: ListingState;
+  editable?: boolean;
+}) {
   const { details } = listing;
   const propertyPhoto = getPrimaryPropertyPhoto(listing);
   const heroWriteup = limitWords(generatePropertyWriteup(details), 72);
@@ -209,12 +229,27 @@ export function HeroPresentation({ listing }: { listing: ListingState }) {
             {heroWriteup}
           </p>
         </div>
+        {editable ? (
+          <Link
+            href="/details"
+            className="no-print absolute right-5 top-5 inline-flex items-center gap-2 rounded-full bg-white/95 px-4 py-2.5 text-sm font-semibold text-slate-950 shadow-card backdrop-blur transition hover:bg-white"
+          >
+            <Pencil size={15} />
+            Edit intro
+          </Link>
+        ) : null}
       </div>
     </section>
   );
 }
 
-export function PresentationGrid({ listing }: { listing: ListingState }) {
+export function PresentationGrid({
+  listing,
+  editable = true,
+}: {
+  listing: ListingState;
+  editable?: boolean;
+}) {
   const visualScenes = [
     {
       id: "portal",
@@ -285,6 +320,8 @@ export function PresentationGrid({ listing }: { listing: ListingState }) {
         eyebrow="Pricing of property"
         title="Make the price conversation feel controlled."
         description="Start by lowering uncertainty. Show the seller the evidence, then explain how strong marketing can create emotional upside with the right buyers."
+        editHref={editable ? "/details" : undefined}
+        editLabel="Edit pricing"
       >
         <PriceConfidenceSection listing={listing} />
       </PresentationChapter>
@@ -294,6 +331,8 @@ export function PresentationGrid({ listing }: { listing: ListingState }) {
         eyebrow="Comparable sales / area history"
         title="Show the homes buyers will compare them against."
         description="This makes the seller feel the agent has done the homework and understands the real market before asking for the listing."
+        editHref={editable ? "/details" : undefined}
+        editLabel="Edit comparables"
       >
         <MarketExpertSection listing={listing} />
       </PresentationChapter>
@@ -303,6 +342,8 @@ export function PresentationGrid({ listing }: { listing: ListingState }) {
         eyebrow="Marketing"
         title="Show how your agency will sell this property."
         description="This is the emotional core: let the seller see the online, photography, brochure, signboard, social media, and portal campaign before it exists."
+        editHref={editable ? "/mockups" : undefined}
+        editLabel="Edit marketing"
       >
         <section className="rounded-3xl border border-blue-100 bg-white p-5 shadow-card lg:p-7">
           <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
@@ -341,6 +382,8 @@ export function PresentationGrid({ listing }: { listing: ListingState }) {
         eyebrow="Campaign method"
         title="Show that momentum starts the moment they say yes."
         description="Turn timing, price/no price, auction, launch, photography, signboard, first open, and follow-up into a simple campaign method."
+        editHref={editable ? "/details" : undefined}
+        editLabel="Edit calendar"
       >
         <CampaignTimelineSection listing={listing} />
       </PresentationChapter>
@@ -350,6 +393,8 @@ export function PresentationGrid({ listing }: { listing: ListingState }) {
         eyebrow="Database / buyer demand"
         title="Show the seller they are not starting from zero."
         description="This gives emotional reassurance: the agent already has buyer conversations to start, not just portals to wait on."
+        editHref={editable ? "/details" : undefined}
+        editLabel="Edit buyers"
       >
         <BuyerMatchEngineSection listing={listing} />
       </PresentationChapter>

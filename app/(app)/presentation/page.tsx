@@ -179,9 +179,18 @@ export default function PresentationPage() {
         </div>
 
         <section className="mb-6 rounded-[2rem] bg-white p-5 shadow-card ring-1 ring-blue-50 lg:p-7">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
-            Vendor presentation
-          </p>
+          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
+              Vendor presentation
+            </p>
+            <Link
+              href="/details"
+              className="no-print inline-flex w-fit items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2.5 text-sm font-semibold text-blue-900 shadow-sm transition hover:bg-blue-50"
+            >
+              <Pencil size={15} />
+              Edit overview
+            </Link>
+          </div>
           <div className="mt-3 grid gap-4 lg:grid-cols-[1fr_0.55fr] lg:items-end">
             <div>
               <h2 className="text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
@@ -204,6 +213,15 @@ export default function PresentationPage() {
         <PresentationGrid listing={presentationListing} />
 
         <section className="mt-10 overflow-hidden rounded-[2.4rem] bg-white shadow-soft ring-1 ring-blue-100">
+          <div className="no-print flex justify-end px-6 pt-6 lg:px-8">
+            <Link
+              href="/account"
+              className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2.5 text-sm font-semibold text-blue-900 shadow-sm transition hover:bg-blue-50"
+            >
+              <Pencil size={15} />
+              Edit agency section
+            </Link>
+          </div>
           <div className="grid gap-0 lg:grid-cols-[0.92fr_1.08fr] lg:items-stretch">
             <div>
               <div className="p-7 lg:p-10">
@@ -270,6 +288,15 @@ export default function PresentationPage() {
         </section>
 
         <section className="mt-10 overflow-hidden rounded-3xl bg-blue-950 text-white shadow-soft">
+          <div className="no-print flex justify-end px-6 pt-6 lg:px-8">
+            <Link
+              href="/account"
+              className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-blue-950 shadow-card transition hover:bg-blue-50"
+            >
+              <Pencil size={15} />
+              Edit contact details
+            </Link>
+          </div>
           <div className="grid gap-0 lg:grid-cols-[0.8fr_1.2fr]">
             <div className="flex min-h-56 items-center justify-center bg-white p-8">
               {logo ? (

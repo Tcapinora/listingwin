@@ -19,6 +19,7 @@ import {
   Handshake,
   HeartHandshake,
   Link2,
+  Mail,
   Megaphone,
   MessageSquareText,
   Ruler,
@@ -35,6 +36,47 @@ import { getPrimaryPropertyPhoto } from "@/lib/listingImages";
 import { getListingWinInsight } from "@/lib/listingScore";
 import { getPriceConfidence } from "@/lib/priceConfidence";
 import type { BuyerLead, ListingState } from "@/lib/types";
+
+const campaignEventStyles: Record<
+  string,
+  { cell: string; badge: string; dot: string }
+> = {
+  Photography: {
+    cell: "bg-violet-50 ring-violet-200",
+    badge: "bg-violet-100 text-violet-800",
+    dot: "bg-violet-500",
+  },
+  Signboard: {
+    cell: "bg-slate-100 ring-slate-200",
+    badge: "bg-slate-200 text-slate-800",
+    dot: "bg-slate-500",
+  },
+  Launch: {
+    cell: "bg-cyan-50 ring-cyan-200",
+    badge: "bg-cyan-100 text-cyan-800",
+    dot: "bg-cyan-500",
+  },
+  "Open home": {
+    cell: "bg-orange-50 ring-orange-200",
+    badge: "bg-orange-100 text-orange-800",
+    dot: "bg-orange-500",
+  },
+  Auction: {
+    cell: "bg-lime-50 ring-lime-200",
+    badge: "bg-lime-100 text-lime-800",
+    dot: "bg-lime-500",
+  },
+  "Follow-up": {
+    cell: "bg-blue-50 ring-blue-200",
+    badge: "bg-blue-100 text-blue-800",
+    dot: "bg-blue-500",
+  },
+  Other: {
+    cell: "bg-gray-50 ring-gray-200",
+    badge: "bg-gray-100 text-gray-700",
+    dot: "bg-gray-500",
+  },
+};
 
 const sellerBenefits = [
   {
@@ -695,10 +737,12 @@ export function CampaignPlanSection({ listing }: { listing: ListingState }) {
 }
 
 export function CampaignTimelineSection({ listing }: { listing: ListingState }) {
+  const { profile } = useAgentProfile();
   const events = [...listing.saleCalendarEvents].sort((a, b) =>
     a.date.localeCompare(b.date),
   );
   const [selectedDate, setSelectedDate] = useState(events[0]?.date || "");
+  const [shareStatus, setShareStatus] = useState("");
   const monthNames = [
     "January",
     "February",
@@ -713,14 +757,14 @@ export function CampaignTimelineSection({ listing }: { listing: ListingState }) 
     "November",
     "December",
   ];
-  const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const firstEventDate = events[0]?.date
     ? new Date(`${events[0].date}T00:00:00`)
     : new Date();
   const year = firstEventDate.getFullYear();
   const month = firstEventDate.getMonth();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const leadingEmptyDays = (new Date(year, month, 1).getDay() + 6) % 7;
+  const leadingEmptyDays = new Date(year, month, 1).getDay();
   const calendarCells = [
     ...Array.from({ length: leadingEmptyDays }, () => null),
     ...Array.from({ length: daysInMonth }, (_, index) => index + 1),
@@ -731,6 +775,32 @@ export function CampaignTimelineSection({ listing }: { listing: ListingState }) 
   }, {});
   const monthLabel = `${monthNames[month]} ${year}`;
   const selectedEvents = selectedDate ? eventMap[selectedDate] || [] : [];
+  const agentName = profile.agentName || listing.details.agentName || "Agent";
+  const calendarSummary = [
+    `${monthLabel} proposed calendar of sale`,
+    listing.details.address || "Property address",
+    "",
+    ...events.map((event) => {
+      const dateLabel = new Date(`${event.date}T00:00:00`).toLocaleDateString(
+        "en-AU",
+        {
+          weekday: "short",
+          day: "numeric",
+          month: "short",
+        },
+      );
+
+      return `${dateLabel}: ${event.type} - ${event.title}`;
+    }),
+    "",
+    "Notes:",
+    "Dates are proposed and subject to change.",
+    "ListingWin calendar prepared for vendor discussion.",
+    `Prepared by ${agentName}.`,
+  ].join("\n");
+  const calendarMailTo = `mailto:?subject=${encodeURIComponent(
+    `${listing.details.address || "Property"} sale calendar`,
+  )}&body=${encodeURIComponent(calendarSummary)}`;
   const selectedLabel = selectedDate
     ? new Date(`${selectedDate}T00:00:00`).toLocaleDateString("en-AU", {
         weekday: "long",
@@ -754,28 +824,53 @@ export function CampaignTimelineSection({ listing }: { listing: ListingState }) 
         <p className="max-w-md text-sm leading-6 text-slate-600">
           These dates come from the agent’s sale calendar. It turns the pitch
           into an organised launch plan instead of a vague promise.
-          <Link
-            href="/details"
-            className="no-print ml-2 font-semibold text-blue-700 underline"
-          >
-            Edit calendar
-          </Link>
         </p>
       </div>
 
       {events.length ? (
-        <div className="mt-7 grid gap-6 xl:grid-cols-[1fr_340px]">
-          <div className="overflow-hidden rounded-3xl border border-blue-100 bg-slate-50">
-            <div className="flex flex-col justify-between gap-3 bg-blue-950 p-5 text-white sm:flex-row sm:items-end">
+        <div className="mt-7">
+          <div className="no-print mb-4 flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={async () => {
+                try {
+                  await navigator.clipboard.writeText(calendarSummary);
+                  setShareStatus("Calendar copied");
+                } catch {
+                  setShareStatus("Copy the calendar from this section");
+                }
+
+                window.setTimeout(() => setShareStatus(""), 2600);
+              }}
+              className="inline-flex items-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card"
+            >
+              <Link2 size={16} />
+              {shareStatus || "Copy seller calendar"}
+            </button>
+            <a
+              href={calendarMailTo}
+              className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-5 py-3 text-sm font-semibold text-blue-900 shadow-sm"
+            >
+              <Mail size={16} />
+              Email calendar
+            </a>
+          </div>
+
+          <div className="grid gap-6 xl:grid-cols-[1fr_340px]">
+          <div className="overflow-hidden rounded-3xl border border-blue-100 bg-white">
+            <div className="flex flex-col justify-between gap-3 border-b border-slate-200 bg-white p-5 sm:flex-row sm:items-end">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-200">
-                  Campaign month
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
+                  Proposed calendar of sale
                 </p>
-                <h3 className="mt-2 text-3xl font-semibold tracking-tight">
+                <h3 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">
                   {monthLabel}
                 </h3>
               </div>
-              <p className="text-sm text-blue-100">
+              <p className="max-w-xs text-sm font-semibold text-slate-500">
+                {listing.details.address || "Property address"}
+              </p>
+              <p className="text-sm text-slate-500">
                 {events.length} planned milestone{events.length === 1 ? "" : "s"}
               </p>
             </div>
@@ -794,7 +889,7 @@ export function CampaignTimelineSection({ listing }: { listing: ListingState }) 
                     return (
                       <div
                         key={`empty-${index}`}
-                        className="min-h-28 rounded-2xl bg-white/45"
+                        className="min-h-28 rounded-2xl bg-slate-50"
                       />
                     );
                   }
@@ -805,6 +900,9 @@ export function CampaignTimelineSection({ listing }: { listing: ListingState }) 
                   )}-${String(day).padStart(2, "0")}`;
                   const dayEvents = eventMap[dateKey] || [];
                   const hasEvents = dayEvents.length > 0;
+                  const primaryStyle =
+                    campaignEventStyles[dayEvents[0]?.type || "Other"] ||
+                    campaignEventStyles.Other;
 
                   return (
                     <button
@@ -819,8 +917,8 @@ export function CampaignTimelineSection({ listing }: { listing: ListingState }) 
                         selectedDate === dateKey
                           ? "bg-blue-700 text-white shadow-card ring-blue-700"
                           : hasEvents
-                            ? "bg-white shadow-card ring-blue-200 hover:-translate-y-0.5 hover:ring-blue-400"
-                            : "bg-white/75 ring-slate-100"
+                            ? `${primaryStyle.cell} shadow-card hover:-translate-y-0.5 hover:ring-blue-400`
+                            : "bg-white ring-slate-100"
                       }`}
                     >
                       <div className="flex items-center justify-between gap-2">
@@ -844,14 +942,15 @@ export function CampaignTimelineSection({ listing }: { listing: ListingState }) 
                               className={`rounded-xl px-3 py-2 ${
                                 selectedDate === dateKey
                                   ? "bg-white/15"
-                                  : "bg-blue-50"
+                                  : campaignEventStyles[event.type]?.badge ||
+                                    campaignEventStyles.Other.badge
                               }`}
                             >
                               <p
                                 className={`truncate text-[11px] font-semibold uppercase tracking-[0.12em] ${
                                   selectedDate === dateKey
                                     ? "text-blue-100"
-                                    : "text-blue-700"
+                                    : ""
                                 }`}
                               >
                                 {event.type}
@@ -868,7 +967,7 @@ export function CampaignTimelineSection({ listing }: { listing: ListingState }) 
                             </div>
                           ))}
                           {dayEvents.length > 2 ? (
-                            <p className="text-xs font-semibold text-blue-700">
+                            <p className="text-xs font-semibold text-slate-600">
                               +{dayEvents.length - 2} more
                             </p>
                           ) : null}
@@ -877,6 +976,29 @@ export function CampaignTimelineSection({ listing }: { listing: ListingState }) 
                     </button>
                   );
                 })}
+              </div>
+            </div>
+            <div className="grid gap-4 border-t border-slate-200 p-5 lg:grid-cols-[1fr_auto] lg:items-end">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                  Notes
+                </p>
+                <p className="mt-2 text-sm leading-6 text-slate-600">
+                  Social media posts continue through the campaign. Vendor
+                  reporting is prepared after key inspection periods, and dates
+                  remain subject to change.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {Object.entries(campaignEventStyles).map(([label, style]) => (
+                  <span
+                    key={label}
+                    className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold ${style.badge}`}
+                  >
+                    <span className={`h-2 w-2 rounded-full ${style.dot}`} />
+                    {label}
+                  </span>
+                ))}
               </div>
             </div>
           </div>
@@ -932,6 +1054,7 @@ export function CampaignTimelineSection({ listing }: { listing: ListingState }) 
               ))}
             </div>
           </aside>
+          </div>
         </div>
       ) : (
         <div className="mt-7 rounded-2xl bg-blue-50/70 p-6">

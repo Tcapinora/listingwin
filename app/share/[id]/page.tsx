@@ -74,8 +74,8 @@ export default function SharedPresentationPage({
             </div>
           </div>
 
-          <HeroPresentation listing={presentation.listing} />
-          <PresentationGrid listing={presentation.listing} />
+          <HeroPresentation listing={presentation.listing} editable={false} />
+          <PresentationGrid listing={presentation.listing} editable={false} />
         </div>
       </main>
     </AgentProfileProvider>
