@@ -12,11 +12,6 @@ import {
 import { useEffect, useState } from "react";
 import { FlowProgress } from "@/components/FlowProgress";
 import { clampOverlay, DraggableSignboard } from "@/components/DraggableSignboard";
-import {
-  clampOpenHomeOverlay,
-  DraggableOpenHome,
-} from "@/components/DraggableOpenHome";
-import { OpenHomePlacementControls } from "@/components/OpenHomePlacementControls";
 import { AutoCutoutPreview } from "@/components/AutoCutoutPreview";
 import { UploadCard } from "@/components/UploadCard";
 import {
@@ -24,7 +19,6 @@ import {
   BrochureBookPreview,
   FlyerPreview,
   MockupCard,
-  OpenHomePreview,
   PropertyPortalPreview,
   SocialPreview,
   WriteupPanel,
@@ -35,12 +29,9 @@ import { ListingWinScoreCard } from "@/components/ValueSections";
 import { fileToOptimizedDataUrl } from "@/lib/imageFiles";
 import { autoCutoutImage } from "@/lib/imageProcessing";
 import { getPrimaryPropertyPhoto } from "@/lib/listingImages";
-import { openHomeOptions } from "@/lib/openHome";
 import type {
   AssetKey,
   ListingDetails,
-  OpenHomeOptionKey,
-  OverlayState,
 } from "@/lib/types";
 
 const brochureStatusOptions = [
@@ -53,7 +44,6 @@ const brochureStatusOptions = [
 const builderSteps = [
   { id: "signboards", label: "Signboards" },
   { id: "street", label: "Signboard preview" },
-  { id: "openHome", label: "Open home" },
   { id: "photography", label: "Photography" },
   { id: "brochurePortal", label: "Brochure and portal" },
   { id: "social", label: "Social media" },
@@ -158,20 +148,6 @@ export default function MockupsPage() {
   const selectedOverlay =
     listing.signboardOverlays[listing.activeSignboard] || listing.overlay;
   const primaryPropertyPhoto = getPrimaryPropertyPhoto(listing);
-  const openHomeOverlay =
-    listing.openHomeOverlays[listing.activeOpenHomeOption]?.[0] || {
-      x: 56,
-      y: 50,
-      width: 24,
-    };
-  const openHomeBuyers = openHomeOptions.map((option) => ({
-    ...option,
-    overlay: listing.openHomeOverlays[option.key]?.[0] || {
-      x: 56,
-      y: 50,
-      width: 24,
-    },
-  })).filter((option) => listing.openHomeVisible[option.key] !== false);
   const hasAnySignboard = Boolean(
     listing.assets.signboard1 || listing.assets.signboard2,
   );
@@ -235,27 +211,6 @@ export default function MockupsPage() {
         [field]: value,
       },
     }));
-  };
-
-  const updateOpenHomeOverlay = (
-    key: OpenHomeOptionKey,
-    overlay: OverlayState,
-  ) => {
-    setListing((current) => {
-      const nextOverlays = [...current.openHomeOverlays[key]];
-
-      nextOverlays[0] = clampOpenHomeOverlay(overlay);
-
-      return {
-        ...current,
-        activeOpenHomeOption: key,
-        activeOpenHomePhotoIndex: 0,
-        openHomeOverlays: {
-          ...current.openHomeOverlays,
-          [key]: nextOverlays,
-        },
-      };
-    });
   };
 
   return (
@@ -341,8 +296,8 @@ export default function MockupsPage() {
               Fine-tune the presentation visuals
             </span>
             <span className="mt-1 block text-xs leading-5 text-blue-800/70">
-              Adjust signboards, open-home scenes, brochures, portal, and
-              social media previews before showing the vendor.
+              Adjust signboards, brochures, portal, and social media previews
+              before showing the vendor.
             </span>
           </span>
           <ChevronDown
@@ -548,118 +503,6 @@ export default function MockupsPage() {
           </div>
           <WriteupPanel listing={listing} />
           <ListingWinScoreCard listing={listing} compact />
-        </div>
-      </section>
-
-      <section
-        className={`mt-6 rounded-3xl border border-blue-100 bg-white p-6 shadow-card lg:p-8 ${
-          showStep("openHome") ? "" : "hidden"
-        }`}
-      >
-        <StepHeader
-          step="Open-home preview"
-          title="Open Home buyer preview"
-          description="Use the main property photo and stage buyer groups together. The agent can move, resize, show, or remove each group so the scene still feels natural."
-        />
-
-        <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-          <div>
-            <DraggableOpenHome
-              propertyPhoto={primaryPropertyPhoto}
-              buyers={openHomeBuyers}
-              activeBuyer={listing.activeOpenHomeOption}
-              onSelectBuyer={(key) =>
-                setListing((current) => ({
-                  ...current,
-                  activeOpenHomeOption: key,
-                  activeOpenHomePhotoIndex: 0,
-                }))
-              }
-              onChange={updateOpenHomeOverlay}
-            />
-            <OpenHomePlacementControls
-              overlay={openHomeOverlay}
-              onChange={(overlay) =>
-                updateOpenHomeOverlay(listing.activeOpenHomeOption, overlay)
-              }
-            />
-          </div>
-
-          <div className="space-y-5">
-            <div className="rounded-2xl border border-gray-200 bg-white p-5">
-              <h3 className="text-sm font-semibold text-gray-950">
-                Select buyer group to move
-              </h3>
-              <p className="mt-1 text-sm leading-6 text-gray-500">
-                All three groups appear together. Select one, then drag it on
-                the image or use the placement controls.
-              </p>
-              <div className="mt-4 grid gap-3">
-                {openHomeOptions.map((option) => (
-                  <div
-                    key={option.key}
-                    className={`flex items-center gap-4 rounded-2xl border p-3 text-left transition ${
-                      listing.activeOpenHomeOption === option.key
-                        ? "border-blue-700 bg-blue-50"
-                        : "border-gray-200 hover:border-blue-200"
-                    }`}
-                  >
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setListing((current) => ({
-                          ...current,
-                          activeOpenHomeOption: option.key,
-                          openHomeVisible: {
-                            ...current.openHomeVisible,
-                            [option.key]: true,
-                          },
-                        }))
-                      }
-                      className="grid h-20 w-24 place-items-end overflow-hidden rounded-xl bg-gradient-to-b from-blue-50 to-white"
-                    >
-                      <Image
-                        src={option.src}
-                        alt={option.label}
-                        width={96}
-                        height={80}
-                        className="max-h-full max-w-full object-contain"
-                        unoptimized
-                      />
-                    </button>
-                    <span className="min-w-0 flex-1">
-                      <span className="block text-sm font-semibold text-gray-950">
-                        {option.label}
-                      </span>
-                      <span className="mt-1 block text-xs leading-5 text-gray-500">
-                        {listing.openHomeVisible[option.key] === false
-                          ? "Hidden from preview"
-                          : "Visible in preview"}
-                      </span>
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setListing((current) => ({
-                          ...current,
-                          openHomeVisible: {
-                            ...current.openHomeVisible,
-                            [option.key]:
-                              current.openHomeVisible[option.key] === false,
-                          },
-                        }))
-                      }
-                      className="rounded-full bg-gray-100 px-3 py-1.5 text-xs font-semibold text-gray-700"
-                    >
-                      {listing.openHomeVisible[option.key] === false
-                        ? "Show"
-                        : "Delete"}
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 

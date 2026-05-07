@@ -67,21 +67,6 @@ export function readListingState(): ListingState {
           signboard2: parsed.overlay,
         }),
       },
-      activeOpenHomeOption:
-        parsed.activeOpenHomeOption || emptyListingState.activeOpenHomeOption,
-      activeOpenHomePhotoIndex:
-        typeof parsed.activeOpenHomePhotoIndex === "number"
-          ? Math.max(0, Math.min(4, parsed.activeOpenHomePhotoIndex))
-          : emptyListingState.activeOpenHomePhotoIndex,
-      openHomeOverlays: {
-        buyers1: mergeOpenHomeOverlays(parsed.openHomeOverlays?.buyers1, "buyers1"),
-        buyers2: mergeOpenHomeOverlays(parsed.openHomeOverlays?.buyers2, "buyers2"),
-        buyers3: mergeOpenHomeOverlays(parsed.openHomeOverlays?.buyers3, "buyers3"),
-      },
-      openHomeVisible: {
-        ...emptyListingState.openHomeVisible,
-        ...parsed.openHomeVisible,
-      },
       overlay: {
         ...emptyListingState.overlay,
         ...parsed.overlay,
@@ -90,16 +75,6 @@ export function readListingState(): ListingState {
   } catch {
     return emptyListingState;
   }
-}
-
-function mergeOpenHomeOverlays(
-  overlays: ListingState["openHomeOverlays"]["buyers1"] | undefined,
-  option: keyof ListingState["openHomeOverlays"],
-) {
-  return emptyListingState.openHomeOverlays[option].map((overlay, index) => ({
-    ...overlay,
-    ...(Array.isArray(overlays) ? overlays[index] : undefined),
-  }));
 }
 
 export function writeListingState(state: ListingState) {

@@ -45,8 +45,6 @@ export type SignboardCrop = {
 
 export type SignboardKey = "signboard1" | "signboard2";
 
-export type OpenHomeOptionKey = "buyers1" | "buyers2" | "buyers3";
-
 export type ComparableProperty = {
   address: string;
   beds: string;
@@ -99,10 +97,6 @@ export type ListingState = {
   activeSignboard: SignboardKey;
   signboardCrops: Record<SignboardKey, SignboardCrop>;
   signboardOverlays: Record<SignboardKey, OverlayState>;
-  activeOpenHomeOption: OpenHomeOptionKey;
-  activeOpenHomePhotoIndex: number;
-  openHomeOverlays: Record<OpenHomeOptionKey, OverlayState[]>;
-  openHomeVisible: Record<OpenHomeOptionKey, boolean>;
   overlay: OverlayState;
 };
 
@@ -303,36 +297,6 @@ export const emptyListingState: ListingState = {
       y: 58,
       width: 24,
     },
-  },
-  activeOpenHomeOption: "buyers1",
-  activeOpenHomePhotoIndex: 0,
-  openHomeOverlays: {
-    buyers1: [
-      { x: 58, y: 50, width: 22 },
-      { x: 58, y: 50, width: 22 },
-      { x: 58, y: 50, width: 22 },
-      { x: 58, y: 50, width: 22 },
-      { x: 58, y: 50, width: 22 },
-    ],
-    buyers2: [
-      { x: 48, y: 52, width: 24 },
-      { x: 48, y: 52, width: 24 },
-      { x: 48, y: 52, width: 24 },
-      { x: 48, y: 52, width: 24 },
-      { x: 48, y: 52, width: 24 },
-    ],
-    buyers3: [
-      { x: 50, y: 46, width: 28 },
-      { x: 50, y: 46, width: 28 },
-      { x: 50, y: 46, width: 28 },
-      { x: 50, y: 46, width: 28 },
-      { x: 50, y: 46, width: 28 },
-    ],
-  },
-  openHomeVisible: {
-    buyers1: true,
-    buyers2: true,
-    buyers3: true,
   },
   overlay: {
     x: 58,

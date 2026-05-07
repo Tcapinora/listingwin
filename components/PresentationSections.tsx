@@ -11,7 +11,6 @@ import {
   BrochurePreview,
   BrochureBookPreview,
   FlyerPreview,
-  OpenHomePreview,
   PhotographyStylePreview,
   PropertyPortalPreview,
   SocialPreview,
@@ -267,12 +266,6 @@ export function PresentationGrid({ listing }: { listing: ListingState }) {
       ),
     },
     {
-      id: "open-home",
-      label: "Open home",
-      title: "Open-home energy",
-      component: <OpenHomePreview listing={listing} />,
-    },
-    {
       id: "photography",
       label: "Photography",
       title: "Photography direction",
@@ -309,7 +302,7 @@ export function PresentationGrid({ listing }: { listing: ListingState }) {
         number="03"
         eyebrow="Marketing"
         title="Show how your agency will sell this property."
-        description="This is the emotional core: let the seller see the online, photography, brochure, signboard, social media, open-home, and portal campaign before it exists."
+        description="This is the emotional core: let the seller see the online, photography, brochure, signboard, social media, and portal campaign before it exists."
       >
         <section className="rounded-3xl border border-blue-100 bg-white p-5 shadow-card lg:p-7">
           <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">

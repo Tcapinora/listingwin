@@ -16,7 +16,6 @@ import {
 import { useAgentProfile } from "@/components/AgentProfileProvider";
 import { generatePropertyWriteup } from "@/lib/copy";
 import { getPrimaryPropertyPhoto, getPropertyPhotos } from "@/lib/listingImages";
-import { openHomeOptions } from "@/lib/openHome";
 import { socialHandle } from "@/lib/social";
 import type { ListingState } from "@/lib/types";
 
@@ -541,74 +540,6 @@ export function FlyerPreview({ listing }: { listing: ListingState }) {
           </p>
           <p className="break-words">{website || "Agency website"}</p>
         </div>
-      </div>
-    </div>
-  );
-}
-
-export function OpenHomePreview({ listing }: { listing: ListingState }) {
-  const photos = getPropertyPhotos(listing);
-  const propertyPhoto = photos[0] || "";
-  const buyers = openHomeOptions.map((option) => ({
-    ...option,
-    overlay: listing.openHomeOverlays[option.key]?.[0] || {
-      x: 56,
-      y: 50,
-      width: 24,
-    },
-  })).filter((option) => listing.openHomeVisible[option.key] !== false);
-
-  return (
-    <div className="overflow-hidden rounded-xl border border-blue-100 bg-blue-950 text-white">
-      <div className="relative aspect-[16/10] bg-blue-100">
-        {propertyPhoto ? (
-          <Image
-            src={propertyPhoto}
-            alt="Open home buyer preview"
-            fill
-            className="object-cover"
-            unoptimized
-          />
-        ) : (
-          <div className="grid h-full place-items-center text-sm font-semibold text-blue-950">
-            Property photo
-          </div>
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
-        {propertyPhoto
-          ? buyers.map((buyer) => (
-              <div
-                key={buyer.key}
-                className="absolute"
-                style={{
-                  left: `${buyer.overlay.x}%`,
-                  top: `${buyer.overlay.y}%`,
-                  width: `${buyer.overlay.width}%`,
-                }}
-              >
-                <Image
-                  src={buyer.src}
-                  alt={buyer.label}
-                  width={520}
-                  height={520}
-                  className="h-auto w-full drop-shadow-[0_14px_18px_rgba(0,0,0,0.32)]"
-                  unoptimized
-                />
-              </div>
-            ))
-          : null}
-      </div>
-      <div className="p-5">
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-200">
-          Open Home preview
-        </p>
-        <h4 className="mt-2 text-xl font-semibold tracking-tight">
-          Show the seller what buyer energy could look like.
-        </h4>
-        <p className="mt-2 text-sm leading-6 text-blue-100">
-          Transparent buyer cutouts can be staged on any uploaded property
-          image to make the campaign feel tangible before launch.
-        </p>
       </div>
     </div>
   );

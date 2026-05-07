@@ -77,7 +77,7 @@ const sellerActions = [
     id: "marketing",
     title: "Approve campaign direction",
     description:
-      "The seller understands the proposed launch style, buyer-facing creative, and open-home story.",
+      "The seller understands the proposed launch style, buyer-facing creative, and inspection plan.",
   },
   {
     id: "pricing",
@@ -1147,7 +1147,7 @@ export function PriceConfidenceSection({ listing }: { listing: ListingState }) {
           </p>
           <p className="mt-3 text-sm leading-6 text-slate-600">
             The stretch result a campaign tries to create through presentation,
-            urgency, emotional appeal, scarcity, open-home energy, and skilled
+            urgency, emotional appeal, scarcity, inspection energy, and skilled
             negotiation.
           </p>
         </div>
@@ -1277,7 +1277,7 @@ export function BuyerDemandSection({ listing }: { listing: ListingState }) {
   const notes = listing.details.notes || "family-friendly lifestyle features";
   const buyers = [
     "Define the most likely buyer: family, upgrader, downsizer, investor, or prestige lifestyle buyer.",
-    "Launch with consistent portal, social, brochure, signboard, and open-home creative so buyers see the same story everywhere.",
+    "Launch with consistent portal, social, brochure, signboard, and inspection messaging so buyers see the same story everywhere.",
     "Use enquiry quality, inspection feedback, and competing stock to adjust the campaign in the first 7 to 10 days.",
   ];
   const actions = [
