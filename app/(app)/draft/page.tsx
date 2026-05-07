@@ -54,14 +54,14 @@ export default function DraftPage() {
   );
   const checks = [
     ["Agent profile", isProfileComplete],
-    ["Property details", hasProperty],
-    ["Media uploaded", hasImages],
-    ["Listing pack created", true],
+    ["Pricing prepared", hasProperty],
+    ["Marketing built", hasImages],
+    ["Presentation shown", true],
   ];
   const quickActions: Array<[string, string, LucideIcon]> = [
-    ["Call Matched Buyers", "#buyer-database", Users],
-    ["Plan Follow-Up", "#follow-up", Target],
-    ["Form 6 Explainer", "#form-6", FileText],
+    ["Call matched buyers", "#buyer-database", Users],
+    ["Plan follow-up", "#follow-up", Target],
+    ["Form 6 notes", "#form-6", FileText],
   ];
   const workspaceStages: Array<[string, string, string]> = [
     [

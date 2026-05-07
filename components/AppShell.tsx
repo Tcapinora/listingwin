@@ -21,7 +21,7 @@ import { WorkflowPath } from "@/components/WorkflowPath";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/mockups", label: "Presentations", icon: Sparkles },
+  { href: "/mockups", label: "Builder", icon: Sparkles },
   { href: "/draft", label: "Agent Workspace", icon: MonitorPlay },
   { href: "/account", label: "Settings", icon: UserCog },
 ];
@@ -84,7 +84,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   className="hidden items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:border-blue-300 hover:text-blue-900 sm:flex"
                 >
                   <FileCheck2 size={16} />
-                  Agent Workspace
+                  Workspace
                 </Link>
                 <Link
                   href="/create"
@@ -92,7 +92,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   aria-label="Start New Listing"
                 >
                   <Plus size={16} />
-                  <span className="hidden sm:inline">Create Presentation</span>
+                  <span className="hidden sm:inline">Start Builder</span>
                   <ArrowRight className="hidden sm:block" size={15} />
                 </Link>
               </div>

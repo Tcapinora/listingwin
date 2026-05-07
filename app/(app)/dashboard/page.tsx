@@ -77,7 +77,7 @@ export default function DashboardPage() {
               <PrimaryLink href="/create">
                 <span className="inline-flex items-center gap-2">
                   <Plus size={18} />
-                  Start with the Vendor Presentation
+                  Start Builder
                 </span>
               </PrimaryLink>
               <Link
@@ -85,7 +85,7 @@ export default function DashboardPage() {
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-blue-300 hover:text-blue-900"
               >
                 <MonitorPlay size={17} />
-                Open Agent Workspace
+                Agent Workspace
               </Link>
               <button
                 type="button"
@@ -99,8 +99,9 @@ export default function DashboardPage() {
               </button>
             </div>
             <p className="mt-4 max-w-xl text-sm leading-6 text-slate-500">
-              First time here? Start with the Vendor Presentation. The Agent
-              Workspace comes after the seller has seen the marketing.
+              First time here? Start with Builder. The seller sees the Vendor
+              Presentation. The Agent Workspace comes after the seller has seen
+              the marketing.
             </p>
           </div>
 
@@ -206,42 +207,6 @@ export default function DashboardPage() {
             </span>
           </Link>
         </div>
-      </section>
-
-      <section className="mt-6 grid gap-4 lg:grid-cols-3">
-        {[
-          [
-            "What is ListingWin?",
-            "A pre-appraisal presentation tool that shows sellers what their property will look like with your marketing.",
-          ],
-          [
-            "What does the seller see?",
-            "Only the premium Vendor Presentation: price story, competition, visuals, calendar, buyers, and agency advantage.",
-          ],
-          [
-            "What does the agent use?",
-            "The Agent Workspace after the presentation, to handle emotions, objections, follow-up, and the close.",
-          ],
-        ].map(([title, text]) => (
-          <article
-            key={title}
-            className="rounded-[1.5rem] bg-white p-5 shadow-sm ring-1 ring-slate-200/70"
-          >
-            <div className="flex items-start gap-3">
-              <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-blue-50 text-blue-700">
-                <CheckCircle2 size={17} />
-              </span>
-              <div>
-                <h2 className="text-base font-semibold tracking-tight text-slate-950">
-                  {title}
-                </h2>
-                <p className="mt-2 text-sm leading-6 text-slate-500">
-                  {text}
-                </p>
-              </div>
-            </div>
-          </article>
-        ))}
       </section>
 
       <section className="mt-12 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
