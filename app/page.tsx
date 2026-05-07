@@ -172,12 +172,6 @@ export default function Home() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/92 via-slate-950/30 to-slate-950/10" />
                   <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-slate-950 via-slate-950/68 to-transparent" />
-                  <div className="absolute left-6 top-6 rounded-full border border-white/25 bg-slate-950/55 px-4 py-2 text-xs font-semibold text-white shadow-card backdrop-blur-md">
-                    Vendor presentation
-                  </div>
-                  <div className="absolute right-6 top-6 rounded-full bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-slate-950 shadow-card">
-                    ListingWin
-                  </div>
                   <div className="absolute bottom-6 left-6 right-6">
                     <div className="max-w-lg rounded-[1.5rem] border border-white/15 bg-slate-950/70 p-5 shadow-soft backdrop-blur-md">
                       <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-100">
