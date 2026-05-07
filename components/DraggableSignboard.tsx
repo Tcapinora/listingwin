@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ImagePlus, MoveDiagonal2 } from "lucide-react";
+import { ImagePlus, Maximize2, Move, MoveDiagonal2 } from "lucide-react";
 import { PointerEvent, useRef, useState } from "react";
 import { cropToClipPath } from "@/lib/signboard";
 import type { OverlayState, SignboardCrop } from "@/lib/types";
@@ -48,6 +48,19 @@ export function DraggableSignboard({
     overlay,
   });
 
+  const pointerToStagePercent = (event: PointerEvent) => {
+    if (!stageRef.current) {
+      return { x: 0, y: 0 };
+    }
+
+    const rect = stageRef.current.getBoundingClientRect();
+
+    return {
+      x: ((event.clientX - rect.left) / rect.width) * 100,
+      y: ((event.clientY - rect.top) / rect.height) * 100,
+    };
+  };
+
   const updateFromPointer = (event: PointerEvent<HTMLDivElement>) => {
     if (!mode || !stageRef.current) {
       return;
@@ -66,9 +79,15 @@ export function DraggableSignboard({
       return;
     }
 
+    const pointer = pointerToStagePercent(event);
+    const diagonalWidth = Math.max(
+      pointer.x - start.overlay.x,
+      ((pointer.y - start.overlay.y) / STAGE_ASPECT) * BOARD_ASPECT,
+    );
+
     onChange(clampOverlay({
-      ...overlay,
-      width: start.overlay.width + dx + dy,
+      ...start.overlay,
+      width: diagonalWidth || start.overlay.width + dx + dy,
     }));
   };
 
@@ -88,7 +107,7 @@ export function DraggableSignboard({
   return (
     <div
       ref={stageRef}
-      className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-gray-100 shadow-soft"
+      className="relative aspect-[16/10] touch-none overflow-hidden rounded-2xl bg-gray-100 shadow-soft"
       onPointerMove={updateFromPointer}
       onPointerUp={() => setMode(null)}
       onPointerCancel={() => setMode(null)}
@@ -116,7 +135,9 @@ export function DraggableSignboard({
           tabIndex={0}
           title="Drag to position signboard"
           onPointerDown={(event) => beginDrag(event, "move")}
-          className="absolute cursor-move touch-none select-none shadow-2xl"
+          className={`absolute cursor-move touch-none select-none rounded-xl border-2 border-white/90 shadow-2xl ring-2 ring-blue-700/80 ${
+            mode === "move" ? "ring-4" : ""
+          }`}
           style={{
             left: `${overlay.x}%`,
             top: `${overlay.y}%`,
@@ -132,14 +153,33 @@ export function DraggableSignboard({
             style={{ clipPath: cropToClipPath(crop) }}
             unoptimized
           />
+          <div className="pointer-events-none absolute left-2 top-2 inline-flex items-center gap-1 rounded-full bg-blue-700 px-2.5 py-1 text-[11px] font-semibold text-white shadow-card">
+            <Move size={12} />
+            Drag
+          </div>
           <button
             type="button"
-            onPointerDown={(event) => beginDrag(event, "resize")}
-            className="absolute -bottom-3 -right-3 grid h-8 w-8 touch-none place-items-center rounded-full bg-gray-950 text-white shadow-card"
+            onPointerDown={(event) => {
+              event.stopPropagation();
+              beginDrag(event, "resize");
+            }}
+            className="absolute -bottom-4 -right-4 grid h-12 w-12 touch-none place-items-center rounded-full bg-blue-700 text-white shadow-card ring-4 ring-white transition hover:bg-blue-800"
             aria-label="Resize signboard"
-            title="Resize signboard"
+            title="Drag to resize signboard"
           >
-            <MoveDiagonal2 size={14} />
+            <MoveDiagonal2 size={18} />
+          </button>
+          <button
+            type="button"
+            onPointerDown={(event) => {
+              event.stopPropagation();
+              beginDrag(event, "resize");
+            }}
+            className="absolute -left-3 -top-3 grid h-8 w-8 touch-none place-items-center rounded-full bg-white text-blue-700 shadow-card ring-1 ring-blue-100"
+            aria-label="Resize signboard"
+            title="Drag to resize signboard"
+          >
+            <Maximize2 size={14} />
           </button>
         </div>
       ) : propertyPhoto ? (

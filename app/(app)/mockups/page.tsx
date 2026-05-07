@@ -213,6 +213,19 @@ export default function MockupsPage() {
     }));
   };
 
+  const updateActiveSignboardOverlay = (overlay: typeof selectedOverlay) => {
+    const cleanOverlay = clampOverlay(overlay);
+
+    setListing((current) => ({
+      ...current,
+      overlay: cleanOverlay,
+      signboardOverlays: {
+        ...current.signboardOverlays,
+        [current.activeSignboard]: cleanOverlay,
+      },
+    }));
+  };
+
   return (
     <>
       <FlowProgress currentStep={4} />
@@ -409,21 +422,48 @@ export default function MockupsPage() {
             </button>
           ) : null}
 
+          <div className="mb-5 grid gap-3 rounded-3xl bg-slate-50 p-4 ring-1 ring-slate-200 lg:grid-cols-[1fr_260px] lg:items-center">
+            <div>
+              <p className="text-sm font-semibold text-slate-950">
+                Currently editing{" "}
+                {listing.activeSignboard === "signboard1"
+                  ? "signboard option 1"
+                  : "signboard option 2"}
+              </p>
+              <p className="mt-1 text-sm leading-6 text-slate-500">
+                Drag the board itself to move it. Use the large blue corner
+                handle or the size slider to resize it.
+              </p>
+            </div>
+            <label>
+              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                Board size
+              </span>
+              <input
+                type="range"
+                min={8}
+                max={80}
+                value={Math.round(selectedOverlay.width)}
+                onChange={(event) =>
+                  updateActiveSignboardOverlay({
+                    ...selectedOverlay,
+                    width: Number(event.target.value),
+                  })
+                }
+                className="mt-3 w-full accent-blue-700"
+              />
+              <span className="mt-1 block text-xs font-semibold text-blue-800">
+                {Math.round(selectedOverlay.width)}%
+              </span>
+            </label>
+          </div>
+
           <DraggableSignboard
             propertyPhoto={primaryPropertyPhoto}
             signboard={selectedSignboard}
             crop={selectedCrop}
             overlay={selectedOverlay}
-            onChange={(overlay) =>
-              setListing((current) => ({
-                ...current,
-                overlay: clampOverlay(overlay),
-                signboardOverlays: {
-                  ...current.signboardOverlays,
-                  [current.activeSignboard]: clampOverlay(overlay),
-                },
-              }))
-            }
+            onChange={updateActiveSignboardOverlay}
           />
         </div>
 
@@ -483,6 +523,11 @@ export default function MockupsPage() {
                             : "Tap to move this option"
                           : "Add artwork in the upload section"}
                       </span>
+                      {signboard ? (
+                        <span className="mt-2 block text-xs font-semibold text-blue-800">
+                          Size {Math.round(listing.signboardOverlays[option].width)}%
+                        </span>
+                      ) : null}
                     </span>
                   </button>
                 );
