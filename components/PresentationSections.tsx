@@ -88,9 +88,9 @@ export function PresentationFlowNav() {
   const items = [
     "Pricing of property",
     "Comparable sales",
-    "Agency marketing",
-    "Campaign method",
-    "Database / buyer demand",
+    "Marketing vision",
+    "Campaign momentum",
+    "Buyer demand",
   ];
 
   return (
@@ -318,8 +318,8 @@ export function PresentationGrid({
       <PresentationChapter
         number="01"
         eyebrow="Pricing of property"
-        title="Make the price conversation feel controlled."
-        description="Start by lowering uncertainty. Show the seller the evidence, then explain how strong marketing can create emotional upside with the right buyers."
+        title="Make price feel calm, clear, and evidence-led."
+        description="The seller sees the expectation gap, understands the proof, and feels the price conversation is being handled by a prepared agent."
         editHref={editable ? "/details" : undefined}
         editLabel="Edit pricing"
       >
@@ -329,8 +329,8 @@ export function PresentationGrid({
       <PresentationChapter
         number="02"
         eyebrow="Comparable sales / area history"
-        title="Show the homes buyers will compare them against."
-        description="This makes the seller feel the agent has done the homework and understands the real market before asking for the listing."
+        title="Show the seller the market you are protecting them from."
+        description="When the seller sees the competing homes clearly, they stop guessing and start trusting the strategy."
         editHref={editable ? "/details" : undefined}
         editLabel="Edit comparables"
       >
@@ -340,8 +340,8 @@ export function PresentationGrid({
       <PresentationChapter
         number="03"
         eyebrow="Marketing"
-        title="Show how your agency will sell this property."
-        description="This is the emotional core: let the seller see the online, photography, brochure, signboard, social media, and portal campaign before it exists."
+        title="Let the seller see their property already launched."
+        description="This is the emotional shift: the seller can picture their home in your marketing before they have chosen an agent."
         editHref={editable ? "/mockups" : undefined}
         editLabel="Edit marketing"
       >
@@ -380,8 +380,8 @@ export function PresentationGrid({
       <PresentationChapter
         number="04"
         eyebrow="Campaign method"
-        title="Show that momentum starts the moment they say yes."
-        description="Turn timing, price/no price, auction, launch, photography, signboard, first open, and follow-up into a simple campaign method."
+        title="Show the seller there is a plan from day one."
+        description="The calendar turns the campaign into something real: photography, launch, inspections, buyer follow-up, vendor reporting, and auction momentum."
         editHref={editable ? "/details" : undefined}
         editLabel="Edit calendar"
       >
@@ -389,10 +389,10 @@ export function PresentationGrid({
       </PresentationChapter>
 
       <PresentationChapter
-        number="05"
+        number="06"
         eyebrow="Database / buyer demand"
-        title="Show the seller they are not starting from zero."
-        description="This gives emotional reassurance: the agent already has buyer conversations to start, not just portals to wait on."
+        title="Show the seller that you are not starting from zero."
+        description="When the seller sees real buyers, names, budgets, and next calls, their behaviour changes instantly. The campaign feels active before it even launches."
         editHref={editable ? "/details" : undefined}
         editLabel="Edit buyers"
       >

@@ -978,29 +978,6 @@ export function CampaignTimelineSection({ listing }: { listing: ListingState }) 
                 })}
               </div>
             </div>
-            <div className="grid gap-4 border-t border-slate-200 p-5 lg:grid-cols-[1fr_auto] lg:items-end">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
-                  Notes
-                </p>
-                <p className="mt-2 text-sm leading-6 text-slate-600">
-                  Social media posts continue through the campaign. Vendor
-                  reporting is prepared after key inspection periods, and dates
-                  remain subject to change.
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {Object.entries(campaignEventStyles).map(([label, style]) => (
-                  <span
-                    key={label}
-                    className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold ${style.badge}`}
-                  >
-                    <span className={`h-2 w-2 rounded-full ${style.dot}`} />
-                    {label}
-                  </span>
-                ))}
-              </div>
-            </div>
           </div>
 
           <aside className="rounded-3xl bg-blue-50/70 p-5 ring-1 ring-blue-100">
@@ -1674,12 +1651,12 @@ export function BuyerMatchEngineSection({
               Database / buyer demand
             </p>
             <h2 className="mt-5 max-w-3xl text-3xl font-semibold tracking-tight text-slate-950 lg:text-4xl">
-              Show exactly who can be called for this property.
+              Show the seller that you are not starting from zero.
             </h2>
             <p className="mt-4 max-w-3xl text-sm leading-6 text-slate-600">
-              Use this as proof that the agent has real buyer conversations to
-              start. In the workspace, it becomes the call list that creates
-              momentum after the appraisal.
+              When the seller sees real buyers, names, budgets, and the next
+              calls to make, the conversation changes. The campaign feels
+              active before it even launches.
             </p>
           </div>
           <div className="rounded-3xl bg-blue-700 p-5 text-white shadow-card">
