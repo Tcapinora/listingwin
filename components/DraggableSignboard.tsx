@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ImagePlus, Maximize2, Move, MoveDiagonal2 } from "lucide-react";
+import { ImagePlus, Move, MoveDiagonal2, MousePointer2 } from "lucide-react";
 import { PointerEvent, useRef, useState } from "react";
 import { cropToClipPath } from "@/lib/signboard";
 import type { OverlayState, SignboardCrop } from "@/lib/types";
@@ -91,10 +91,25 @@ export function DraggableSignboard({
     }));
   };
 
+  const placeAtPointer = (event: PointerEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+    const pointer = pointerToStagePercent(event);
+    const heightAsStagePercent = (overlay.width / BOARD_ASPECT) * STAGE_ASPECT;
+
+    onChange(clampOverlay({
+      ...overlay,
+      x: pointer.x - overlay.width / 2,
+      y: pointer.y - heightAsStagePercent / 2,
+    }));
+  };
+
   const beginDrag = (
     event: PointerEvent<HTMLDivElement | HTMLButtonElement>,
     nextMode: DragMode,
   ) => {
+    event.preventDefault();
+    event.stopPropagation();
     event.currentTarget.setPointerCapture(event.pointerId);
     setMode(nextMode);
     setStart({
@@ -130,6 +145,16 @@ export function DraggableSignboard({
       <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent" />
 
       {signboard ? (
+        <button
+          type="button"
+          aria-label="Place signboard here"
+          title="Click anywhere to place the selected signboard"
+          onPointerDown={placeAtPointer}
+          className="absolute inset-0 cursor-crosshair"
+        />
+      ) : null}
+
+      {signboard ? (
         <div
           role="button"
           tabIndex={0}
@@ -157,6 +182,10 @@ export function DraggableSignboard({
             <Move size={12} />
             Drag
           </div>
+          <div className="pointer-events-none absolute -top-11 left-1/2 hidden -translate-x-1/2 items-center gap-1 rounded-full bg-white px-3 py-1.5 text-[11px] font-semibold text-blue-950 shadow-card ring-1 ring-blue-100 sm:inline-flex">
+            <MousePointer2 size={12} />
+            Click photo to place
+          </div>
           <button
             type="button"
             onPointerDown={(event) => {
@@ -168,18 +197,6 @@ export function DraggableSignboard({
             title="Drag to resize signboard"
           >
             <MoveDiagonal2 size={18} />
-          </button>
-          <button
-            type="button"
-            onPointerDown={(event) => {
-              event.stopPropagation();
-              beginDrag(event, "resize");
-            }}
-            className="absolute -left-3 -top-3 grid h-8 w-8 touch-none place-items-center rounded-full bg-white text-blue-700 shadow-card ring-1 ring-blue-100"
-            aria-label="Resize signboard"
-            title="Drag to resize signboard"
-          >
-            <Maximize2 size={14} />
           </button>
         </div>
       ) : propertyPhoto ? (

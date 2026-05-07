@@ -488,31 +488,47 @@ export default function MockupsPage() {
                   : "signboard option 2"}
               </p>
               <p className="mt-1 text-sm leading-6 text-slate-500">
-                Drag the board itself to move it. Use the large blue corner
-                handle or the size slider to resize it.
+                Click anywhere on the property photo to drop this board there,
+                then drag it to refine. Use the large blue corner handle or the
+                size slider to resize it.
               </p>
             </div>
-            <label>
-              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
-                Board size
-              </span>
-              <input
-                type="range"
-                min={8}
-                max={80}
-                value={Math.round(selectedOverlay.width)}
-                onChange={(event) =>
+            <div className="grid gap-3">
+              <label>
+                <span className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                  Board size
+                </span>
+                <input
+                  type="range"
+                  min={8}
+                  max={80}
+                  value={Math.round(selectedOverlay.width)}
+                  onChange={(event) =>
+                    updateActiveSignboardOverlay({
+                      ...selectedOverlay,
+                      width: Number(event.target.value),
+                    })
+                  }
+                  className="mt-3 w-full accent-blue-700"
+                />
+                <span className="mt-1 block text-xs font-semibold text-blue-800">
+                  {Math.round(selectedOverlay.width)}%
+                </span>
+              </label>
+              <button
+                type="button"
+                onClick={() =>
                   updateActiveSignboardOverlay({
-                    ...selectedOverlay,
-                    width: Number(event.target.value),
+                    x: listing.activeSignboard === "signboard1" ? 58 : 46,
+                    y: 58,
+                    width: 24,
                   })
                 }
-                className="mt-3 w-full accent-blue-700"
-              />
-              <span className="mt-1 block text-xs font-semibold text-blue-800">
-                {Math.round(selectedOverlay.width)}%
-              </span>
-            </label>
+                className="rounded-full border border-blue-100 bg-white px-4 py-2.5 text-sm font-semibold text-blue-900 shadow-sm transition hover:bg-blue-50"
+              >
+                Reset this board
+              </button>
+            </div>
           </div>
 
           <DraggableSignboard
@@ -531,7 +547,8 @@ export default function MockupsPage() {
             </h3>
             <p className="mt-1 text-sm leading-6 text-gray-500">
               Choose option 1 or 2, then drag it on the image or resize it with
-              the corner handle. Each option keeps its own placement.
+              the corner handle. Each option keeps its own placement, so option
+              1 and option 2 can sit in different spots.
             </p>
             <div className="mt-4 grid gap-3">
               {(["signboard1", "signboard2"] as const).map((option, index) => {

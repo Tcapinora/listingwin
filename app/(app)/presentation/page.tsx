@@ -298,7 +298,7 @@ export default function PresentationPage() {
             </Link>
           </div>
           <div className="grid gap-0 lg:grid-cols-[0.8fr_1.2fr]">
-            <div className="flex min-h-56 items-center justify-center bg-white p-8">
+            <div className="flex min-h-56 items-center justify-center bg-blue-950 p-8 ring-1 ring-inset ring-white/10">
               {logo ? (
                 <Image
                   src={logo}
@@ -309,7 +309,7 @@ export default function PresentationPage() {
                   unoptimized
                 />
               ) : (
-                <div className="rounded-3xl border border-blue-100 px-8 py-5 text-center text-2xl font-semibold text-blue-950">
+                <div className="rounded-3xl border border-white/20 bg-white/5 px-8 py-5 text-center text-2xl font-semibold text-white">
                   {agencyName || "Agency"}
                 </div>
               )}

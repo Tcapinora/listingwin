@@ -9,7 +9,6 @@ import { generatePropertyWriteup } from "@/lib/copy";
 import { getPrimaryPropertyPhoto } from "@/lib/listingImages";
 import type { ListingState } from "@/lib/types";
 import {
-  BrochurePreview,
   BrochureBookPreview,
   FlyerPreview,
   PhotographyStylePreview,
@@ -258,21 +257,16 @@ export function PresentationGrid({
       component: <PropertyPortalPreview listing={listing} />,
     },
     {
-      id: "book",
-      label: "Book",
-      title: "4-page brochure book",
+      id: "brochure",
+      label: "Brochure",
+      title: "4-page brochure",
       component: <BrochureBookPreview listing={listing} />,
     },
     {
-      id: "brochure-flyer",
-      label: "Brochure",
-      title: "Brochure and flyer",
-      component: (
-        <div className="grid gap-6 lg:grid-cols-2">
-          <BrochurePreview listing={listing} />
-          <FlyerPreview listing={listing} />
-        </div>
-      ),
+      id: "flyer",
+      label: "Flyer",
+      title: "Campaign flyer",
+      component: <FlyerPreview listing={listing} />,
     },
     {
       id: "social",
