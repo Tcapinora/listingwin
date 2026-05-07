@@ -146,7 +146,7 @@ export default function Home() {
         </div>
 
         <div className="relative">
-          <div className="absolute inset-8 rounded-[2rem] bg-slate-200/70 blur-3xl" />
+          <div className="absolute inset-8 rounded-[2rem] bg-blue-200/50 blur-3xl" />
           <div className="relative overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-soft">
             <div className="flex items-center justify-between border-b border-blue-50 px-5 py-4">
               <div className="flex items-center gap-2">
@@ -163,15 +163,15 @@ export default function Home() {
               <div className="overflow-hidden rounded-[1.5rem] bg-slate-950 text-white shadow-card">
                 <div className="relative min-h-[460px]">
                   <Image
-                    src="/landing/vendor-presentation-home.jpg"
-                    alt="Premium property prepared for a ListingWin vendor presentation"
+                    src="/landing/central-avenue-courtyard.jpg"
+                    alt="Premium Queensland property prepared for a ListingWin vendor presentation"
                     fill
                     priority
                     sizes="(min-width: 1024px) 46vw, 100vw"
                     className="absolute inset-0 h-full w-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/92 via-slate-950/38 to-slate-950/18" />
-                  <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-slate-950 via-slate-950/72 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/92 via-slate-950/30 to-slate-950/10" />
+                  <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-slate-950 via-slate-950/68 to-transparent" />
                   <div className="absolute left-6 top-6 rounded-full border border-white/25 bg-slate-950/55 px-4 py-2 text-xs font-semibold text-white shadow-card backdrop-blur-md">
                     Vendor presentation
                   </div>
@@ -181,7 +181,7 @@ export default function Home() {
                   <div className="absolute bottom-6 left-6 right-6">
                     <div className="max-w-lg rounded-[1.5rem] border border-white/15 bg-slate-950/70 p-5 shadow-soft backdrop-blur-md">
                       <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-100">
-                        42 Seaview Avenue
+                        60 Central Avenue
                       </p>
                       <h2 className="mt-3 text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl">
                         A campaign vision the seller can already picture.
@@ -229,6 +229,27 @@ export default function Home() {
                     Start by recognising what matters about the home, then show
                     how the campaign turns that into buyer belief.
                   </p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="relative min-h-36 overflow-hidden rounded-3xl border border-slate-200 bg-slate-100">
+                    <Image
+                      src="/landing/central-avenue-front.jpg"
+                      alt="Front of 60 Central Avenue"
+                      fill
+                      sizes="220px"
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="relative min-h-36 overflow-hidden rounded-3xl border border-slate-200 bg-slate-100">
+                    <Image
+                      src="/landing/central-avenue-garden.jpg"
+                      alt="Garden detail at 60 Central Avenue"
+                      fill
+                      sizes="220px"
+                      className="object-cover"
+                    />
+                  </div>
                 </div>
 
                 <div className="rounded-3xl border border-slate-200 bg-white p-5">

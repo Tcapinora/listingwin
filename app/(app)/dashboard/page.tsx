@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -59,8 +60,20 @@ export default function DashboardPage() {
 
   return (
     <>
-      <section className="overflow-hidden rounded-[2.25rem] bg-white p-7 shadow-card ring-1 ring-slate-200/70 sm:p-10 lg:p-12">
-        <div className="grid gap-10 lg:grid-cols-[1.1fr_0.78fr] lg:items-center">
+      <section className="relative overflow-hidden rounded-[2.25rem] bg-white shadow-card ring-1 ring-slate-200/70">
+        <div className="absolute inset-y-0 right-0 hidden w-[42%] lg:block">
+          <Image
+            src="/landing/central-avenue-front.jpg"
+            alt="Premium property exterior used in ListingWin"
+            fill
+            priority
+            sizes="42vw"
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-white/5" />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/20 via-transparent to-transparent" />
+        </div>
+        <div className="relative grid gap-10 p-7 sm:p-10 lg:grid-cols-[1.05fr_0.82fr] lg:items-center lg:p-12">
           <div>
             <p className="inline-flex rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800 ring-1 ring-blue-100">
               Digital appraisal presentation
@@ -104,7 +117,7 @@ export default function DashboardPage() {
             </p>
           </div>
 
-          <div className="rounded-[1.75rem] bg-slate-950 p-5 text-white shadow-soft">
+          <div className="rounded-[1.75rem] bg-slate-950/95 p-5 text-white shadow-soft backdrop-blur">
             <div className="flex items-center gap-3">
               <span className="grid h-11 w-11 place-items-center rounded-2xl bg-white text-blue-800 shadow-sm">
                 <Sparkles size={19} />
