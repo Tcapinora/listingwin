@@ -601,8 +601,9 @@ export function PhotographyStylePreview() {
           ))
         ) : (
           <div className="rounded-2xl bg-blue-50 p-5 text-sm leading-6 text-blue-900 sm:col-span-2 lg:col-span-3">
-            Upload stock examples in the builder to show morning, afternoon,
-            and twilight photography styles.
+            Add your agency’s saved photography examples in the builder. Once
+            saved, morning, afternoon, and twilight examples appear here for
+            every future seller presentation.
           </div>
         )}
       </div>

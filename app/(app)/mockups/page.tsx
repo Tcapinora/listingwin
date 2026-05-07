@@ -7,6 +7,7 @@ import {
   CheckCircle2,
   ChevronDown,
   Loader2,
+  Trash2,
   WandSparkles,
 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -54,31 +55,53 @@ type BuilderStepId = (typeof builderSteps)[number]["id"];
 
 function PhotographyUploadGroup({
   label,
+  description,
   value,
   onChange,
 }: {
   label: string;
+  description: string;
   value: string[];
   onChange: (photos: string[]) => void;
 }) {
+  const remainingSlots = Math.max(0, 5 - value.length);
+
   return (
-    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-      <div className="flex items-center justify-between gap-4">
+    <div className="rounded-3xl border border-blue-100 bg-white p-5 shadow-sm">
+      <div className="flex items-start justify-between gap-4">
         <div>
-          <h3 className="text-sm font-semibold text-slate-950">{label}</h3>
-          <p className="mt-1 text-xs text-slate-500">
-            Upload once. Saved for future listings.
+          <div className="flex flex-wrap items-center gap-2">
+            <h3 className="text-lg font-semibold text-slate-950">{label}</h3>
+            <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-800">
+              {value.length}/5 saved
+            </span>
+          </div>
+          <p className="mt-2 text-sm leading-6 text-slate-600">
+            {description}
+          </p>
+          <p className="mt-2 text-xs font-semibold uppercase tracking-[0.16em] text-blue-700">
+            Saved to Agent Profile for future listings
           </p>
         </div>
-        <label className="cursor-pointer rounded-full bg-blue-700 px-4 py-2 text-xs font-semibold text-white">
-          Upload
+        <label
+          className={`shrink-0 rounded-full px-4 py-2 text-xs font-semibold shadow-sm ${
+            remainingSlots
+              ? "cursor-pointer bg-blue-700 text-white"
+              : "cursor-not-allowed bg-slate-100 text-slate-400"
+          }`}
+        >
+          {remainingSlots ? "Add photos" : "Full"}
           <input
             type="file"
             multiple
             accept="image/*"
             className="sr-only"
+            disabled={!remainingSlots}
             onChange={(event) => {
-              const files = Array.from(event.target.files || []);
+              const files = Array.from(event.target.files || []).slice(
+                0,
+                remainingSlots,
+              );
 
               void Promise.all(
                 files.map((file) => fileToOptimizedDataUrl(file, 1200, 0.84)),
@@ -88,24 +111,58 @@ function PhotographyUploadGroup({
           />
         </label>
       </div>
-      <div className="mt-4 grid grid-cols-5 gap-2">
+
+      <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-5">
         {Array.from({ length: 5 }).map((_, index) => (
           <div
             key={index}
-            className="relative aspect-square overflow-hidden rounded-xl bg-white ring-1 ring-slate-200"
+            className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-slate-50 ring-1 ring-slate-200"
           >
             {value[index] ? (
-              <Image
-                src={value[index]}
-                alt={`${label} ${index + 1}`}
-                fill
-                className="object-cover"
-                unoptimized
-              />
-            ) : null}
+              <>
+                <Image
+                  src={value[index]}
+                  alt={`${label} ${index + 1}`}
+                  fill
+                  className="object-cover"
+                  unoptimized
+                />
+                <button
+                  type="button"
+                  onClick={() =>
+                    onChange(value.filter((_, photoIndex) => photoIndex !== index))
+                  }
+                  className="absolute right-2 top-2 grid h-8 w-8 place-items-center rounded-full bg-white/92 text-slate-700 shadow-card backdrop-blur transition hover:text-red-600"
+                  aria-label={`Remove ${label} photo ${index + 1}`}
+                  title={`Remove ${label} photo ${index + 1}`}
+                >
+                  <Trash2 size={14} />
+                </button>
+              </>
+            ) : (
+              <div className="grid h-full place-items-center px-3 text-center text-xs font-semibold text-slate-400">
+                Example {index + 1}
+              </div>
+            )}
           </div>
         ))}
       </div>
+
+      {value.length ? (
+        <div className="mt-4 flex flex-col justify-between gap-3 rounded-2xl bg-blue-50 p-4 text-sm text-blue-900 sm:flex-row sm:items-center">
+          <span>
+            These examples are saved and will appear automatically in future
+            Vendor Presentations.
+          </span>
+          <button
+            type="button"
+            onClick={() => onChange([])}
+            className="w-fit rounded-full bg-white px-4 py-2 text-xs font-semibold text-blue-900 shadow-sm"
+          >
+            Clear {label.toLowerCase()}
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -558,17 +615,30 @@ export default function MockupsPage() {
       >
         <StepHeader
           step="Photography direction"
-          title="Show photography at different times of day"
-          description="Upload stock examples once for morning, afternoon, and twilight. These are saved to the Agent Profile and reused in future presentations so every seller can see the photography style."
+          title="Save your photography examples once"
+          description="These are not listing-specific photos. Upload your agency examples for morning, afternoon, and twilight shoots once, and ListingWin will reuse them for every future Vendor Presentation."
         />
+        <div className="mb-5 rounded-3xl bg-blue-50 p-5 ring-1 ring-blue-100">
+          <p className="text-sm font-semibold text-blue-950">
+            This section is saved for every listing.
+          </p>
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-blue-900/75">
+            Use this as your permanent photography style library. When an
+            agent presents to a seller, they can show what a property looks
+            like in morning light, afternoon light, and twilight without
+            uploading these examples again.
+          </p>
+        </div>
         <div className="grid gap-5 lg:grid-cols-3">
           <PhotographyUploadGroup
             label="Morning"
+            description="Show crisp daylight examples that feel fresh, bright, and clean."
             value={profile.photographyMorning}
             onChange={(photos) => updateProfile({ photographyMorning: photos })}
           />
           <PhotographyUploadGroup
             label="Afternoon"
+            description="Show warmer lifestyle examples with stronger depth and atmosphere."
             value={profile.photographyAfternoon}
             onChange={(photos) =>
               updateProfile({ photographyAfternoon: photos })
@@ -576,6 +646,7 @@ export default function MockupsPage() {
           />
           <PhotographyUploadGroup
             label="Twilight"
+            description="Show premium evening examples that make the campaign feel elevated."
             value={profile.photographyTwilight}
             onChange={(photos) => updateProfile({ photographyTwilight: photos })}
           />
