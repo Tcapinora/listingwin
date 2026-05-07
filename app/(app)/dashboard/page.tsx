@@ -27,16 +27,16 @@ export default function DashboardPage() {
   const address = listing.details.address || "No listings yet";
   const workflow = [
     {
-      title: "Build the vendor presentation",
-      text: "Prepare the marketing story in the office before the appraisal.",
+      title: "Prepare",
+      text: "Build the seller-facing marketing story before the appraisal.",
     },
     {
-      title: "Show the seller their campaign",
-      text: "Scroll through the presentation so they can picture their property with your marketing.",
+      title: "Present",
+      text: "Show the seller how their property looks with your agency marketing.",
     },
     {
-      title: "Open Agent Workspace",
-      text: "After presenting, use your closing tools for price, buyer proof, follow-up, and next steps.",
+      title: "Close",
+      text: "Move into the workspace for price, buyer proof, follow-up, and next steps.",
     },
   ];
   const firstRunGuide = [
@@ -60,24 +60,24 @@ export default function DashboardPage() {
   return (
     <>
       <section className="overflow-hidden rounded-[2.25rem] bg-white p-7 shadow-card ring-1 ring-slate-200/70 sm:p-10 lg:p-12">
-        <div className="grid gap-10 lg:grid-cols-[1.05fr_0.8fr] lg:items-end">
+        <div className="grid gap-10 lg:grid-cols-[1.1fr_0.78fr] lg:items-center">
           <div>
             <p className="inline-flex rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800 ring-1 ring-blue-100">
-              ListingWin for agents
+              Digital appraisal presentation
             </p>
             <h1 className="mt-7 max-w-3xl text-4xl font-semibold tracking-tight text-slate-950 sm:text-6xl">
-              Make the seller feel the campaign has already started.
+              Help sellers picture choosing you before they sign.
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
-              Create the vendor presentation, show the seller their property
-              inside your marketing, then move into the workspace to close
-              while momentum is high.
+              ListingWin shows the seller what their property will look like
+              with your marketing, then gives the agent a clean workspace to
+              close the listing while the emotion is fresh.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <PrimaryLink href="/create">
                 <span className="inline-flex items-center gap-2">
                   <Plus size={18} />
-                  Start Builder
+                  Create Vendor Presentation
                 </span>
               </PrimaryLink>
               <Link
@@ -85,7 +85,7 @@ export default function DashboardPage() {
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-blue-300 hover:text-blue-900"
               >
                 <MonitorPlay size={17} />
-                Agent Workspace
+                Open Agent Workspace
               </Link>
               <button
                 type="button"
@@ -99,41 +99,40 @@ export default function DashboardPage() {
               </button>
             </div>
             <p className="mt-4 max-w-xl text-sm leading-6 text-slate-500">
-              First time here? Start with Builder. The seller sees the Vendor
-              Presentation. The Agent Workspace comes after the seller has seen
-              the marketing.
+              First time here? Create the Vendor Presentation first. The Agent
+              Workspace comes after the seller has seen the marketing.
             </p>
           </div>
 
-          <div className="rounded-[1.75rem] bg-slate-50/80 p-5 ring-1 ring-slate-200">
+          <div className="rounded-[1.75rem] bg-slate-950 p-5 text-white shadow-soft">
             <div className="flex items-center gap-3">
               <span className="grid h-11 w-11 place-items-center rounded-2xl bg-white text-blue-800 shadow-sm">
                 <Sparkles size={19} />
               </span>
               <div>
-                <p className="text-sm font-semibold text-slate-950">
-                  Seller attachment flow
+                <p className="text-sm font-semibold text-white">
+                  The ListingWin method
                 </p>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-blue-100">
                   Marketing first. Closing second.
                 </p>
               </div>
             </div>
-            <div className="mt-5 grid gap-2 text-sm">
+            <div className="mt-5 grid gap-3 text-sm">
               {workflow.map((item, index) => (
                 <div
                   key={item.title}
-                  className="rounded-2xl bg-white px-4 py-4 shadow-sm ring-1 ring-slate-100 transition hover:-translate-y-0.5 hover:shadow-card"
+                  className="rounded-2xl bg-white/10 px-4 py-4 ring-1 ring-white/10"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="grid h-7 w-7 place-items-center rounded-full bg-blue-700 text-xs font-semibold text-white">
+                    <span className="grid h-7 w-7 place-items-center rounded-full bg-white text-xs font-semibold text-blue-900">
                       {index + 1}
                     </span>
-                    <span className="font-semibold text-slate-950">
+                    <span className="font-semibold text-white">
                       {item.title}
                     </span>
                   </div>
-                  <p className="mt-2 pl-10 text-sm leading-6 text-slate-500">
+                  <p className="mt-2 pl-10 text-sm leading-6 text-blue-100">
                     {item.text}
                   </p>
                 </div>
@@ -150,7 +149,7 @@ export default function DashboardPage() {
               First time using ListingWin?
             </p>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
-              Build the presentation, show the campaign, close the listing.
+              One clear path for the appraisal.
             </h2>
             <p className="mt-3 text-sm leading-6 text-slate-600">
               ListingWin is built for agents before a listing appraisal. It
@@ -182,16 +181,16 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      <section className="mt-6 rounded-[2rem] bg-blue-950 p-6 text-white shadow-card sm:p-8">
+      <section className="mt-6 rounded-[2rem] bg-blue-50 p-6 text-blue-950 shadow-card ring-1 ring-blue-100 sm:p-8">
         <div className="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-center">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-200">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
               The simple rule
             </p>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight">
               The seller sees the presentation. The agent uses the workspace.
             </h2>
-            <p className="mt-3 max-w-3xl text-sm leading-6 text-blue-100">
+            <p className="mt-3 max-w-3xl text-sm leading-6 text-blue-900/75">
               During the appointment, stay in the clean Vendor Presentation.
               Once the seller understands the campaign, open Agent Workspace to
               go deeper and close.
@@ -199,7 +198,7 @@ export default function DashboardPage() {
           </div>
           <Link
             href="/create"
-            className="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-blue-950 shadow-card transition hover:bg-blue-50"
+            className="inline-flex items-center justify-center rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card transition hover:bg-blue-800"
           >
             <span className="inline-flex items-center gap-2">
               Start Builder

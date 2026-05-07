@@ -55,7 +55,7 @@ export default function PropertyDetailsPage() {
       <FlowProgress currentStep={2} />
 
       <form
-        className="mx-auto max-w-4xl"
+        className="mx-auto max-w-6xl"
         onSubmit={(event) => {
           event.preventDefault();
           router.push("/upload");
@@ -84,7 +84,7 @@ export default function PropertyDetailsPage() {
             ))}
           </div>
 
-          <div className="mt-8 grid gap-5">
+          <div className="mt-8 grid gap-6">
             <label>
               <span className="text-sm font-semibold text-slate-800">
                 Listing headline
@@ -102,7 +102,7 @@ export default function PropertyDetailsPage() {
               </span>
             </label>
 
-            <div className="grid gap-5 sm:grid-cols-2">
+            <div className="grid gap-5 lg:grid-cols-[0.85fr_1.15fr]">
               <label>
                 <span className="text-sm font-semibold text-slate-800">
                   Property Type
@@ -169,7 +169,7 @@ export default function PropertyDetailsPage() {
             </label>
           </div>
 
-          <details className="group mt-6 rounded-[1.5rem] bg-slate-50 p-5 ring-1 ring-slate-200">
+          <details className="group mt-8 rounded-[1.5rem] bg-slate-50 p-5 ring-1 ring-slate-200">
             <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-semibold text-blue-900">
               <span>
                 Market positioning and pricing strategy
@@ -225,20 +225,20 @@ export default function PropertyDetailsPage() {
                 />
               </label>
 
-              <div className="grid gap-4">
+              <div className="grid gap-4 xl:grid-cols-3">
                 {listing.comparableProperties.map((property, index) => (
-                  <div key={index} className="rounded-2xl bg-white p-4">
+                  <div key={index} className="rounded-2xl bg-white p-4 ring-1 ring-slate-100">
                     <p className="text-sm font-semibold text-slate-950">
                       Market option {index + 1}
                     </p>
-                    <div className="mt-3 grid gap-3 sm:grid-cols-4">
+                    <div className="mt-3 grid gap-3 sm:grid-cols-4 xl:grid-cols-2">
                       <input
                         value={property.address}
                         onChange={(event) =>
                           updateComparable(index, "address", event.target.value)
                         }
                         placeholder="Comparable address"
-                        className="rounded-xl border-0 bg-slate-50 px-4 py-3 text-sm ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:col-span-4"
+                        className="rounded-xl border-0 bg-slate-50 px-4 py-3 text-sm ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:col-span-4 xl:col-span-2"
                       />
                       {[
                         ["beds", "Beds"],
@@ -266,7 +266,7 @@ export default function PropertyDetailsPage() {
                           updateComparable(index, "url", event.target.value)
                         }
                         placeholder="Property URL"
-                        className="rounded-xl border-0 bg-slate-50 px-4 py-3 text-sm ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:col-span-4"
+                        className="rounded-xl border-0 bg-slate-50 px-4 py-3 text-sm ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:col-span-4 xl:col-span-2"
                       />
                     </div>
                   </div>
@@ -289,7 +289,9 @@ export default function PropertyDetailsPage() {
             appear in the presentation so the vendor can see who you could call
             straight away for this property.
           </p>
-          <BuyerMatchEngineSection listing={listing} onUpdate={setListing} />
+          <div className="mt-6">
+            <BuyerMatchEngineSection listing={listing} onUpdate={setListing} />
+          </div>
         </section>
 
         <section className="mt-8 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-blue-50 sm:p-8 lg:p-10">
@@ -303,7 +305,9 @@ export default function PropertyDetailsPage() {
             Add photography, launch, open home, auction, and follow-up dates.
             These become the seller-facing calendar in presentation mode.
           </p>
-          <SaleCalendar />
+          <div className="mt-6">
+            <SaleCalendar />
+          </div>
         </section>
 
         <button
