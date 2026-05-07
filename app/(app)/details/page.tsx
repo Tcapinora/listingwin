@@ -279,7 +279,7 @@ export default function PropertyDetailsPage() {
 
         <section className="mt-8 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-blue-50 sm:p-8 lg:p-10">
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
-            Buyer database
+            Database / buyer demand
           </p>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
             Add buyers you can show the vendor.
@@ -294,10 +294,10 @@ export default function PropertyDetailsPage() {
 
         <section className="mt-8 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-blue-50 sm:p-8 lg:p-10">
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
-            Campaign timeline
+            Campaign method
           </p>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
-            Add the important sale dates.
+            Add timing, launch, and auction dates.
           </h2>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
             Add photography, launch, open home, auction, and follow-up dates.

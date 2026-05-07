@@ -52,11 +52,11 @@ const brochureStatusOptions = [
 
 const builderSteps = [
   { id: "signboards", label: "Signboards" },
-  { id: "street", label: "Street mockup" },
+  { id: "street", label: "Signboard preview" },
   { id: "openHome", label: "Open home" },
   { id: "photography", label: "Photography" },
-  { id: "brochurePortal", label: "Print and portal" },
-  { id: "social", label: "Social" },
+  { id: "brochurePortal", label: "Brochure and portal" },
+  { id: "social", label: "Social media" },
   { id: "all", label: "Show all" },
 ] as const;
 
@@ -264,7 +264,7 @@ export default function MockupsPage() {
 
       <section className="mb-8 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-blue-50 sm:p-8 lg:p-10">
         <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
-          Preview vendor presentation
+          Agency marketing
         </p>
         <div className="mt-4 grid gap-6 lg:grid-cols-[1fr_0.55fr] lg:items-end">
           <div>
@@ -272,14 +272,14 @@ export default function MockupsPage() {
               Create the vendor presentation pack
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-              Generate the seller-facing previews, then fine-tune the visual
-              mockups before the appointment.
+              Build the seller-facing marketing previews, then fine-tune how
+              your agency will present this property before the appointment.
             </p>
             <div className="mt-6 grid gap-3 sm:grid-cols-3">
               {[
-                detailsReady ? "Property story ready" : "Property story missing",
-                primaryPropertyPhoto ? "Media ready" : "Media optional",
-                "Visual tools included",
+                detailsReady ? "Pricing context ready" : "Pricing context missing",
+                primaryPropertyPhoto ? "Marketing media ready" : "Marketing media optional",
+                "Agency marketing included",
               ].map((item, index) => (
                 <div
                   key={item}
@@ -341,8 +341,8 @@ export default function MockupsPage() {
               Fine-tune the presentation visuals
             </span>
             <span className="mt-1 block text-xs leading-5 text-blue-800/70">
-              Adjust signboards, open-home scenes, print, portal, and social
-              previews before showing the vendor.
+              Adjust signboards, open-home scenes, brochures, portal, and
+              social media previews before showing the vendor.
             </span>
           </span>
           <ChevronDown
@@ -386,7 +386,7 @@ export default function MockupsPage() {
           </p>
           <p className="mt-2 text-sm leading-6 text-blue-900/75">
             Use the upload box labelled <strong>Signboard option 2</strong>
-            below. After uploading, open <strong>Street mockup</strong>, select
+            below. After uploading, open <strong>Signboard preview</strong>, select
             option 2, and drag it into its own position.
           </p>
         </div>
@@ -430,7 +430,7 @@ export default function MockupsPage() {
           <div className="mb-5 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-gray-500">
-                Street mockup
+                Signboard preview
               </p>
               <h2 className="mt-2 text-2xl font-semibold tracking-tight">
                 Add the signboard to the property photo
@@ -700,7 +700,7 @@ export default function MockupsPage() {
         }`}
       >
         <StepHeader
-          step="Print assets"
+          step="Brochures"
           title="Brochure front cover options"
           description="Choose the wording that appears on the brochure cover: For sale, Auction, Price guide TBC, or a specific price."
         />
@@ -764,8 +764,8 @@ export default function MockupsPage() {
         }`}
       >
         <StepHeader
-          step="Social style"
-          title="Add social marketing style references"
+          step="Social media"
+          title="Add social media marketing style references"
           description="Upload example Instagram and Facebook listing screenshots from the agent or agency. ListingWin uses them as style references and inserts the property photo into a seller preview."
         />
         <div className="grid gap-5 lg:grid-cols-2">
@@ -802,9 +802,9 @@ export default function MockupsPage() {
         }`}
       >
         <StepHeader
-          step="Presentation preview set"
-          title="Final vendor-facing previews"
-          description="Review the remaining vendor-facing marketing pieces before opening presentation mode."
+          step="Agency marketing preview"
+          title="Final seller-facing marketing previews"
+          description="Review the brochure, flyer, Instagram, and Facebook examples before opening presentation mode."
         />
         <div className="grid gap-6 lg:grid-cols-2">
           <MockupCard title="Brochure book preview">

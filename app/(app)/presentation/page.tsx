@@ -207,10 +207,10 @@ export default function PresentationPage() {
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
-                Agency advantage
+                Our approach
               </p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
-                The agent already feels invested in the result.
+                The seller can see the team, experience, and process.
               </h2>
               <p className="mt-3 text-sm leading-6 text-slate-600">
                 End the presentation by making the seller feel this agent has
@@ -245,12 +245,12 @@ export default function PresentationPage() {
                   "The seller can see the campaign before it exists: portals, social, brochures, flyers, signboards, open homes, timing, and buyer demand.",
                 ],
                 [
-                  "Agency information",
-                  `${agencyName || "The agency"} brings brand presence, database reach, local market proof, and a repeatable launch process to the property.`,
+                  "Team and experience",
+                  `${agencyName || "The agency"} brings team support, database reach, local market proof, and a repeatable launch process to the property.`,
                 ],
                 [
-                  "Marketing proof",
-                  "Use previous campaigns, buyer reach, and strong local examples to make the seller feel they would lose momentum by choosing a weaker launch.",
+                  "Communication process",
+                  "Show the seller how owners and buyers are kept informed, so the campaign feels organised from appraisal to launch.",
                 ],
               ].map(([title, text]) => (
                 <article

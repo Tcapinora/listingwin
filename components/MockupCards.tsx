@@ -158,7 +158,7 @@ function CampaignCreative({
               {agencyName}
             </p>
             <p className="text-[11px] text-white/70">
-              Campaign mockup
+              Campaign preview
             </p>
           </div>
         </div>
@@ -1057,7 +1057,7 @@ export function SocialPreview({
               {listingSummary}
             </p>
             <p className="text-xs text-gray-500">
-              Mockup image for seller preview.
+              Marketing preview for seller discussion.
             </p>
           </div>
         </div>
@@ -1181,7 +1181,9 @@ export function SocialPreview({
               <p className="mt-2 text-xs font-semibold text-gray-500">Reply</p>
             </div>
           </div>
-          <p className="mt-4 text-xs text-gray-400">Mockup image for seller preview.</p>
+          <p className="mt-4 text-xs text-gray-400">
+            Marketing preview for seller discussion.
+          </p>
         </div>
         <div className="mt-auto flex shrink-0 items-center gap-2 border-t border-gray-200 bg-white px-4 py-3">
           <span className="grid h-8 w-8 place-items-center rounded-full border border-gray-300 text-gray-500">

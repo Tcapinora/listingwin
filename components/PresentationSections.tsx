@@ -63,11 +63,11 @@ function PresentationChapter({
 
 export function PresentationFlowNav() {
   const items = [
-    "Price makes sense",
-    "Competition is clear",
-    "Their home looks premium",
-    "The campaign has momentum",
-    "Buyers are ready",
+    "Pricing of property",
+    "Comparable sales",
+    "Agency marketing",
+    "Campaign method",
+    "Database / buyer demand",
   ];
 
   return (
@@ -78,12 +78,12 @@ export function PresentationFlowNav() {
             Vendor room flow
           </p>
           <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">
-            One simple marketing story.
+            The appraisal conversation in order.
           </h2>
         </div>
         <p className="max-w-md text-sm leading-6 text-slate-500">
-          This is the emotional path: help the seller see their home in market,
-          believe buyers will care, and feel momentum before they sign.
+          This follows the appraisal run sheet: price, competition, marketing,
+          campaign method, database, then the agent’s closing conversation.
         </p>
       </div>
       <div className="mt-5 flex flex-wrap gap-2">
@@ -278,7 +278,7 @@ export function PresentationGrid({ listing }: { listing: ListingState }) {
 
       <PresentationChapter
         number="01"
-        eyebrow="Price context"
+        eyebrow="Pricing of property"
         title="Make the price conversation feel controlled."
         description="Start by lowering uncertainty. Show the seller the evidence, then explain how strong marketing can create emotional upside with the right buyers."
       >
@@ -287,7 +287,7 @@ export function PresentationGrid({ listing }: { listing: ListingState }) {
 
       <PresentationChapter
         number="02"
-        eyebrow="Current competition"
+        eyebrow="Comparable sales / area history"
         title="Show the homes buyers will compare them against."
         description="This makes the seller feel the agent has done the homework and understands the real market before asking for the listing."
       >
@@ -296,9 +296,9 @@ export function PresentationGrid({ listing }: { listing: ListingState }) {
 
       <PresentationChapter
         number="03"
-        eyebrow="Marketing previews"
-        title="Make the seller fall in love with their own launch."
-        description="This is the emotional core: let the seller see their property on social, portals, brochures, flyers, signboards, open homes, and photography before the campaign exists."
+        eyebrow="Marketing"
+        title="Show how your agency will sell this property."
+        description="This is the emotional core: let the seller see the online, photography, brochure, signboard, social media, open-home, and portal campaign before it exists."
       >
         <section className="rounded-3xl border border-blue-100 bg-white p-5 shadow-card lg:p-7">
           <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
@@ -334,16 +334,16 @@ export function PresentationGrid({ listing }: { listing: ListingState }) {
 
       <PresentationChapter
         number="04"
-        eyebrow="Sale calendar"
+        eyebrow="Campaign method"
         title="Show that momentum starts the moment they say yes."
-        description="The calendar turns the decision into action: photography, signboard, first open, auction, and follow-up."
+        description="Turn timing, price/no price, auction, launch, photography, signboard, first open, and follow-up into a simple campaign method."
       >
         <CampaignTimelineSection listing={listing} />
       </PresentationChapter>
 
       <PresentationChapter
         number="05"
-        eyebrow="Buyer demand"
+        eyebrow="Database / buyer demand"
         title="Show the seller they are not starting from zero."
         description="This gives emotional reassurance: the agent already has buyer conversations to start, not just portals to wait on."
       >

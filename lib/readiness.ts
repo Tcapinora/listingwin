@@ -16,7 +16,7 @@ export function presentationReadiness(
       href: "/account",
     },
     {
-      label: "Property story",
+      label: "Pricing of property",
       ready: Boolean(
         listing.details.address.trim() &&
           (listing.details.headline.trim() ||
@@ -39,7 +39,7 @@ export function presentationReadiness(
       href: "/upload",
     },
     {
-      label: "Campaign visual",
+      label: "Agency marketing preview",
       ready: Boolean(listing.assets.signboard1 || listing.assets.signboard2),
       href: "/mockups",
     },

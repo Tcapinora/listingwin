@@ -228,7 +228,7 @@ export function DashboardValuePanel({ listing }: { listing: ListingState }) {
           href={hasListing ? "/mockups" : "/create"}
           className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white hover:bg-blue-800"
         >
-          Build seller pitch
+          Build appraisal presentation
           <ArrowRight size={16} />
         </Link>
       </div>
@@ -242,9 +242,10 @@ export function DashboardValuePanel({ listing }: { listing: ListingState }) {
           Give {agentName} the appraisal system they will not want to give up.
         </h2>
         <p className="mt-4 max-w-2xl text-sm leading-6 text-blue-100">
-          The value is not a mockup. It is having the price story, market proof,
-          campaign visuals, sale dates, seller talking points, and follow-up
-          ready before the appraisal starts.
+          The value is the appraisal run sheet brought to life: pricing,
+          comparable sales, agency marketing, campaign method, database proof,
+          seller talking points, and follow-up ready before the appraisal
+          starts.
         </p>
         <div className="mt-7 grid gap-4 md:grid-cols-2">
           {[...agentWins, ...premiumWorkflow].map((win) => (
@@ -271,7 +272,7 @@ export function AppraisalCommandCentre({ listing }: { listing: ListingState }) {
       action: "Add agent profile, logo, phone, email, and socials.",
     },
     {
-      label: "Property story captured",
+      label: "Pricing of property captured",
       ready: Boolean(listing.details.address && listing.details.notes),
       action: "Add address and appraisal notes.",
     },
@@ -1525,7 +1526,7 @@ export function BuyerMatchEngineSection({
           <div>
             <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-blue-100">
               <Users size={16} />
-              Buyer database
+            Database / buyer demand
             </p>
             <h2 className="mt-5 max-w-3xl text-3xl font-semibold tracking-tight lg:text-4xl">
               Show exactly who can be called for this property.

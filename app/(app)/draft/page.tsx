@@ -87,15 +87,16 @@ export default function DraftPage() {
         <div className="grid gap-8 lg:grid-cols-[1fr_0.6fr] lg:items-end">
           <div>
             <div className="inline-flex rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
-              Agent workspace
+              Close & next steps
             </div>
             <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-              Close while the seller feels momentum.
+              Close while the seller understands the value.
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-              The seller has seen the marketing vision. Use this workspace to
-              go deeper: handle emotion, answer price concerns, show the future
-              vendor report, call buyers, and make the next decision feel easy.
+              The seller has seen the agency marketing, campaign method, and
+              database proof. Use this workspace to handle emotion, commission,
+              price concerns, seller situation, follow-up, compliance, and the
+              next decision.
             </p>
           </div>
           <div className="rounded-[1.5rem] bg-blue-50 p-5 ring-1 ring-blue-100">
@@ -135,6 +136,11 @@ export default function DraftPage() {
                 workspace to answer the emotional questions underneath the
                 decision: “Can I trust this?”, “Will buyers care?”, “What
                 happens next?”, and “Am I safe choosing this agent?”
+              </p>
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300">
+                Keep the seller’s situation in mind: growing family,
+                separation, deceased estate, downsizing, or a lifestyle move.
+                The close should match the reason they are selling.
               </p>
             </div>
             <Link

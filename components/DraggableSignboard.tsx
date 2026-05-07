@@ -96,7 +96,7 @@ export function DraggableSignboard({
       {propertyPhoto ? (
         <Image
           src={propertyPhoto}
-          alt="Property front with signboard mockup"
+          alt="Property front with signboard preview"
           fill
           className="object-cover"
           priority
@@ -104,7 +104,7 @@ export function DraggableSignboard({
         />
       ) : (
         <div className="checkerboard grid h-full place-items-center text-center text-sm text-gray-500">
-          Upload a property photo to build the street mockup.
+          Upload a property photo to build the signboard preview.
         </div>
       )}
 
