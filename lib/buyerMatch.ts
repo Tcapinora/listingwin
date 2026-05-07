@@ -40,6 +40,8 @@ export function getBuyerMatches(listing: ListingState) {
         statusScore(buyer.status) +
         (budgetMatch ? 42 : 12) +
         (suburbMatch ? 20 : 6) +
+        (buyer.contactType === "Buyer Agent" ? 8 : 0) +
+        Math.min(10, buyer.tags.length * 2) +
         (buyer.beds ? 8 : 0);
 
       return {
@@ -48,11 +50,13 @@ export function getBuyerMatches(listing: ListingState) {
         budgetMatch,
         suburbMatch,
         alert:
-          buyer.status === "Hot" && (budgetMatch || suburbMatch)
-            ? "Call this buyer NOW"
-            : buyer.status === "Warm"
-              ? "Send a preview message"
-              : "Keep warm for launch",
+          buyer.contactType === "Buyer Agent" && buyer.status !== "Cold"
+            ? "Call this buyer agent NOW"
+            : buyer.status === "Hot" && (budgetMatch || suburbMatch)
+              ? "Call this buyer NOW"
+              : buyer.status === "Warm"
+                ? "Send a preview message"
+                : "Keep warm for launch",
       };
     })
     .sort((a, b) => b.score - a.score);

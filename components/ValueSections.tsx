@@ -37,6 +37,37 @@ import { getListingWinInsight } from "@/lib/listingScore";
 import { getPriceConfidence } from "@/lib/priceConfidence";
 import type { BuyerLead, ListingState } from "@/lib/types";
 
+const buyerTags = [
+  "Investor",
+  "Downsizer",
+  "Upsizer",
+  "First home buyer",
+  "Family buyer",
+  "Renovator",
+  "Builder",
+  "Developer",
+  "Prestige buyer",
+  "Local buyer",
+  "Interstate buyer",
+  "Cash buyer",
+  "Finance approved",
+];
+
+const buyerAgentTags = [
+  "Active brief",
+  "Inner-west specialist",
+  "Prestige brief",
+  "Investor brief",
+  "Family brief",
+  "Relocation buyer",
+  "Cash-ready clients",
+  "Urgent buyer",
+  "Off-market contact",
+  "Multiple clients",
+  "Builder clients",
+  "Developer clients",
+];
+
 const campaignEventStyles: Record<
   string,
   { cell: string; badge: string; dot: string }
@@ -1596,7 +1627,9 @@ export function BuyerMatchEngineSection({
     id: "",
     name: "",
     phone: "",
+    contactType: "Buyer",
     status: "Warm",
+    tags: [],
     budgetMin: "",
     budgetMax: "",
     suburbs: "",
@@ -1627,6 +1660,8 @@ export function BuyerMatchEngineSection({
       id: "",
       name: "",
       phone: "",
+      contactType: draft.contactType,
+      tags: [],
       budgetMin: "",
       budgetMax: "",
       suburbs: "",
@@ -1639,6 +1674,16 @@ export function BuyerMatchEngineSection({
     Hot: "bg-red-50 text-red-700 ring-red-200",
     Warm: "bg-amber-50 text-amber-700 ring-amber-200",
     Cold: "bg-sky-50 text-sky-700 ring-sky-200",
+  };
+  const availableTags =
+    draft.contactType === "Buyer Agent" ? buyerAgentTags : buyerTags;
+  const toggleDraftTag = (tag: string) => {
+    setDraft((current) => ({
+      ...current,
+      tags: current.tags.includes(tag)
+        ? current.tags.filter((item) => item !== tag)
+        : [...current.tags, tag],
+    }));
   };
 
   return (
@@ -1654,9 +1699,9 @@ export function BuyerMatchEngineSection({
               Show the seller that you are not starting from zero.
             </h2>
             <p className="mt-4 max-w-3xl text-sm leading-6 text-slate-600">
-              When the seller sees real buyers, names, budgets, and the next
-              calls to make, the conversation changes. The campaign feels
-              active before it even launches.
+              When the seller sees direct buyers and buyer agents with active
+              briefs, budgets, and the next calls to make, the conversation
+              changes. The campaign feels active before it even launches.
             </p>
           </div>
           <div className="rounded-3xl bg-blue-700 p-5 text-white shadow-card">
@@ -1690,6 +1735,9 @@ export function BuyerMatchEngineSection({
                     >
                       {buyer.status} lead
                     </p>
+                    <p className="mt-2 text-xs font-semibold uppercase tracking-[0.16em] text-blue-700">
+                      {buyer.contactType}
+                    </p>
                     <h3 className="mt-3 text-xl font-semibold tracking-tight text-slate-950">
                       {buyer.name}
                     </h3>
@@ -1701,6 +1749,18 @@ export function BuyerMatchEngineSection({
                 <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">
                   {buyer.notes}
                 </p>
+                {buyer.tags.length ? (
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {buyer.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-700"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
                 <div className="mt-4 grid gap-2 rounded-2xl bg-slate-50 p-4 text-sm text-slate-600">
                   <span className="font-semibold text-slate-950">
                     {buyer.phone || "No phone saved"}
@@ -1730,19 +1790,37 @@ export function BuyerMatchEngineSection({
         {onUpdate ? (
           <div className="rounded-3xl border border-blue-100 bg-blue-50/60 p-5 lg:p-6">
               <h3 className="text-xl font-semibold tracking-tight text-slate-950">
-                Add a buyer to the database
+                Add demand to the database
               </h3>
               <p className="mt-2 text-sm leading-6 text-slate-600">
-                Keep it simple: name, number, budget, suburbs, and one note.
-                This becomes both seller proof and the agent’s call list.
+                Add direct buyers or buyer agents, then tap tags to show what
+                kind of demand they represent. Tags are easy to add and remove.
               </p>
-              <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-5">
+              <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-[180px_1fr_1fr_1fr_1fr]">
+                <select
+                  value={draft.contactType}
+                  onChange={(event) =>
+                    setDraft({
+                      ...draft,
+                      contactType: event.target.value as BuyerLead["contactType"],
+                      tags: [],
+                    })
+                  }
+                  className="rounded-2xl border border-blue-100 bg-white px-4 py-3 text-sm font-semibold outline-none focus:border-blue-400"
+                >
+                  <option>Buyer</option>
+                  <option>Buyer Agent</option>
+                </select>
                 <input
                   value={draft.name}
                   onChange={(event) =>
                     setDraft({ ...draft, name: event.target.value })
                   }
-                  placeholder="Buyer name"
+                  placeholder={
+                    draft.contactType === "Buyer Agent"
+                      ? "Buyer agent name"
+                      : "Buyer name"
+                  }
                   className="rounded-2xl border border-blue-100 bg-white px-4 py-3 text-sm outline-none focus:border-blue-400"
                 />
                 <input
@@ -1777,6 +1855,63 @@ export function BuyerMatchEngineSection({
                   placeholder="Preferred suburbs"
                   className="rounded-2xl border border-blue-100 bg-white px-4 py-3 text-sm outline-none focus:border-blue-400"
                 />
+              </div>
+              <div className="mt-4 rounded-3xl bg-white p-4 ring-1 ring-blue-100">
+                <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
+                  <div>
+                    <p className="text-sm font-semibold text-slate-950">
+                      Tags for {draft.contactType.toLowerCase()}s
+                    </p>
+                    <p className="mt-1 text-xs leading-5 text-slate-500">
+                      Tap to add. Tap again to remove.
+                    </p>
+                  </div>
+                  {draft.tags.length ? (
+                    <button
+                      type="button"
+                      onClick={() => setDraft({ ...draft, tags: [] })}
+                      className="w-fit rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600"
+                    >
+                      Clear tags
+                    </button>
+                  ) : null}
+                </div>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {availableTags.map((tag) => {
+                    const selected = draft.tags.includes(tag);
+
+                    return (
+                      <button
+                        key={tag}
+                        type="button"
+                        onClick={() => toggleDraftTag(tag)}
+                        className={`rounded-full px-3 py-2 text-xs font-semibold ring-1 transition ${
+                          selected
+                            ? "bg-blue-700 text-white ring-blue-700"
+                            : "bg-blue-50 text-blue-900 ring-blue-100 hover:bg-blue-100"
+                        }`}
+                      >
+                        {selected ? "✓ " : ""}
+                        {tag}
+                      </button>
+                    );
+                  })}
+                </div>
+                {draft.tags.length ? (
+                  <div className="mt-3 flex flex-wrap gap-2 border-t border-blue-50 pt-3">
+                    {draft.tags.map((tag) => (
+                      <button
+                        key={tag}
+                        type="button"
+                        onClick={() => toggleDraftTag(tag)}
+                        className="rounded-full bg-slate-950 px-3 py-1.5 text-xs font-semibold text-white"
+                        title={`Remove ${tag}`}
+                      >
+                        {tag} ×
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
               </div>
               <div className="mt-3 grid gap-3 md:grid-cols-[180px_1fr_auto]">
                 <select

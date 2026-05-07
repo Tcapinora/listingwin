@@ -62,12 +62,15 @@ export type SaleCalendarEvent = {
 };
 
 export type BuyerLeadStatus = "Hot" | "Warm" | "Cold";
+export type BuyerContactType = "Buyer" | "Buyer Agent";
 
 export type BuyerLead = {
   id: string;
   name: string;
   phone: string;
+  contactType: BuyerContactType;
   status: BuyerLeadStatus;
+  tags: string[];
   budgetMin: string;
   budgetMax: string;
   suburbs: string;
@@ -214,7 +217,9 @@ export const emptyListingState: ListingState = {
       id: "buyer-1",
       name: "Sarah and Tom",
       phone: "0412 880 214",
+      contactType: "Buyer",
       status: "Hot",
+      tags: ["Family buyer", "Upsizer", "Finance approved"],
       budgetMin: "$1,150,000",
       budgetMax: "$1,400,000",
       suburbs: "Paddington, Bardon, Red Hill",
@@ -227,7 +232,9 @@ export const emptyListingState: ListingState = {
       id: "buyer-2",
       name: "Mia Chen",
       phone: "0431 440 908",
+      contactType: "Buyer",
       status: "Warm",
+      tags: ["Investor", "Local buyer"],
       budgetMin: "$1,000,000",
       budgetMax: "$1,250,000",
       suburbs: "Paddington, Auchenflower, Toowong",
@@ -240,7 +247,9 @@ export const emptyListingState: ListingState = {
       id: "buyer-3",
       name: "Daniel Brooks",
       phone: "0409 118 732",
+      contactType: "Buyer Agent",
       status: "Cold",
+      tags: ["Active brief", "Inner-west specialist", "Multiple clients"],
       budgetMin: "$900,000",
       budgetMax: "$1,100,000",
       suburbs: "Red Hill, Kelvin Grove, Ashgrove",

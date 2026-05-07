@@ -45,6 +45,9 @@ export function readListingState(): ListingState {
         ? parsed.buyerLeads.map((buyer: Partial<ListingState["buyerLeads"][number]>) => ({
             phone: "",
             ...buyer,
+            tags: Array.isArray(buyer.tags) ? buyer.tags : [],
+            contactType:
+              buyer.contactType === "Buyer Agent" ? "Buyer Agent" : "Buyer",
           }))
         : emptyListingState.buyerLeads,
       followUpReminders: Array.isArray(parsed.followUpReminders)
