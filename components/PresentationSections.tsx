@@ -23,6 +23,16 @@ import {
   PriceConfidenceSection,
 } from "@/components/ValueSections";
 
+function limitWords(value: string, maxWords: number) {
+  const words = value.trim().split(/\s+/).filter(Boolean);
+
+  if (words.length <= maxWords) {
+    return value;
+  }
+
+  return `${words.slice(0, maxWords).join(" ")}...`;
+}
+
 function PresentationChapter({
   number,
   eyebrow,
@@ -173,6 +183,7 @@ export function SellerMobilePreview({ listing }: { listing: ListingState }) {
 export function HeroPresentation({ listing }: { listing: ListingState }) {
   const { details } = listing;
   const propertyPhoto = getPrimaryPropertyPhoto(listing);
+  const heroWriteup = limitWords(generatePropertyWriteup(details), 72);
 
   return (
     <section className="relative overflow-hidden rounded-3xl bg-gray-950 text-white shadow-soft">
@@ -195,8 +206,8 @@ export function HeroPresentation({ listing }: { listing: ListingState }) {
           <h1 className="mt-4 max-w-[32rem] break-words text-4xl font-semibold leading-tight tracking-tight sm:max-w-[40rem] sm:text-5xl lg:max-w-2xl">
             {details.address || "Property address"}
           </h1>
-          <p className="mt-5 max-w-[34rem] text-base leading-7 text-gray-100 sm:max-w-[38rem] sm:text-lg sm:leading-8 lg:max-w-2xl">
-            {generatePropertyWriteup(details)}
+          <p className="mt-5 max-w-[34rem] text-sm leading-6 text-gray-100 sm:max-w-[38rem] sm:text-base sm:leading-7 lg:max-w-2xl">
+            {heroWriteup}
           </p>
         </div>
       </div>

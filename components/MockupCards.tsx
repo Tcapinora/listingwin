@@ -951,6 +951,10 @@ export function SocialPreview({
   const [addressLine, ...addressRest] = (details.address || "Property address").split(",");
   const suburbLine = addressRest.join(",").trim() || "Local market";
   const listingSummary = generatePropertyWriteup(details);
+  const bedroomCount = details.bedrooms || "3";
+  const bathroomCount = details.bathrooms || "2";
+  const carCount = details.carSpaces || "1";
+  const featureLine = `${bedroomCount} 🛏️ ${bathroomCount} 🛁 ${carCount} 🚗`;
 
   if (type === "Instagram") {
     return (
@@ -1051,7 +1055,7 @@ export function SocialPreview({
               🏡 {addressLine}
             </p>
             <p className="text-gray-100">
-              4 🛏️ 2 🛁 2 🚗
+              {featureLine}
             </p>
             <p className="line-clamp-5 text-gray-200">
               {listingSummary}
@@ -1139,7 +1143,7 @@ export function SocialPreview({
         </div>
         <div className="shrink-0 space-y-3 px-4 pb-3 text-[15px] leading-5">
           <p>🏡 {addressLine}{suburbLine ? `, ${suburbLine}` : ""}</p>
-          <p>4 🛏️ 2 🛁 2 🚗</p>
+          <p>{featureLine}</p>
           <p className="line-clamp-2">
             {listingSummary}{" "}
             <span className="font-semibold text-gray-500">See more</span>

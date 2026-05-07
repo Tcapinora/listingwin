@@ -203,27 +203,29 @@ export default function PresentationPage() {
         <HeroPresentation listing={presentationListing} />
         <PresentationGrid listing={presentationListing} />
 
-        <section className="mt-10 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-blue-50 lg:p-8">
-          <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+        <section className="mt-10 overflow-hidden rounded-[2.4rem] bg-white shadow-soft ring-1 ring-blue-100">
+          <div className="grid gap-0 lg:grid-cols-[0.92fr_1.08fr] lg:items-stretch">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
-                Our approach
-              </p>
-              <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
-                The seller can see the team, experience, and process.
-              </h2>
-              <p className="mt-3 text-sm leading-6 text-slate-600">
-                End the presentation by making the seller feel this agent has
-                already started working for them: brand, reach, proof,
-                preparation, and a clear launch plan.
-              </p>
+              <div className="p-7 lg:p-10">
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-blue-700">
+                  Our approach
+                </p>
+                <h2 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950 lg:text-5xl">
+                  The seller can see the team, experience, and process.
+                </h2>
+                <p className="mt-5 max-w-xl text-base leading-8 text-slate-600">
+                  End the presentation by making the seller feel this agent and
+                  team have already started working for them: brand, reach,
+                  proof, preparation, communication, and a clear launch plan.
+                </p>
+              </div>
 
               {presentationProfile.agentTeamPhotos.length ? (
-                <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                <div className="grid gap-3 px-7 pb-7 sm:grid-cols-2 lg:px-10 lg:pb-10">
                   {presentationProfile.agentTeamPhotos.map((photo, index) => (
                     <div
                       key={`${photo.slice(0, 32)}-${index}`}
-                      className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-slate-100 shadow-sm"
+                      className="relative aspect-[4/3] overflow-hidden rounded-[2rem] bg-slate-100 shadow-card"
                     >
                       <Image
                         src={photo}
@@ -238,7 +240,7 @@ export default function PresentationPage() {
               ) : null}
             </div>
 
-            <div className="grid gap-4">
+            <div className="grid gap-4 bg-blue-950 p-7 text-white lg:p-10">
               {[
                 [
                   "Our difference",
@@ -255,12 +257,12 @@ export default function PresentationPage() {
               ].map(([title, text]) => (
                 <article
                   key={title}
-                  className="rounded-[1.5rem] bg-blue-50/60 p-5 ring-1 ring-blue-100"
+                  className="rounded-[1.75rem] bg-white/10 p-6 ring-1 ring-white/10"
                 >
-                  <h3 className="text-lg font-semibold tracking-tight text-slate-950">
+                  <h3 className="text-2xl font-semibold tracking-tight">
                     {title}
                   </h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">{text}</p>
+                  <p className="mt-3 text-sm leading-7 text-blue-100">{text}</p>
                 </article>
               ))}
             </div>

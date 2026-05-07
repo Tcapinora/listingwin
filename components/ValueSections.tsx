@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowRight,
   Bath,
@@ -27,7 +27,6 @@ import {
   Target,
   Timer,
   Trophy,
-  Upload,
   Users,
 } from "lucide-react";
 import { useAgentProfile } from "@/components/AgentProfileProvider";
@@ -1045,6 +1044,13 @@ export function ListingWinScoreCard({
 
 export function PriceConfidenceSection({ listing }: { listing: ListingState }) {
   const price = getPriceConfidence(listing);
+  const gapAbs = Math.abs(price.gapPercent);
+  const gapDirection =
+    price.gapPercent > 0
+      ? "above"
+      : price.gapPercent < 0
+        ? "below"
+        : "in line with";
 
   return (
     <section className="mt-10 rounded-3xl border border-blue-100 bg-white p-7 shadow-card">
@@ -1058,10 +1064,10 @@ export function PriceConfidenceSection({ listing }: { listing: ListingState }) {
             {price.confidence}/100 pricing evidence confidence
           </h2>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
-            {price.gapLabel}. This is an evidence-readiness gauge, not a
-            valuation. It is based only on what the agent has entered: seller
-            expectation, agent guide, reviewed market properties, property
-            photos, and pricing notes.
+            {price.gapLabel}. This is not a valuation and should not be used as
+            one. It is a confidence gauge for the conversation: how well the
+            agent can explain the gap between what the seller hopes for and
+            what the current evidence supports.
           </p>
         </div>
         <div className="w-full max-w-sm rounded-3xl bg-blue-950 p-5 text-white">
@@ -1105,10 +1111,26 @@ export function PriceConfidenceSection({ listing }: { listing: ListingState }) {
       </div>
 
       <p className="mt-5 rounded-2xl bg-slate-50 p-4 text-sm leading-6 text-slate-500">
-        Use this as an appraisal-room confidence indicator: it tells the vendor
-        how well-supported the price conversation is before the campaign begins.
+        The expectation gap is the distance between the seller&apos;s hoped-for
+        price and the agent&apos;s evidence-backed guide. A small gap means the
+        conversation is already aligned. A larger gap does not mean the seller
+        is wrong; it means the agent should slow down, explain the evidence, and
+        show how marketing can try to create emotional upside.
       </p>
-      <div className="mt-5 grid gap-4 lg:grid-cols-2">
+      <div className="mt-5 grid gap-4 lg:grid-cols-3">
+        <div className="rounded-2xl bg-blue-950 p-5 text-white">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-200">
+            How to explain it
+          </p>
+          <p className="mt-3 text-sm leading-6 text-blue-50">
+            “This is not me putting a ceiling on the property. It shows where
+            the evidence sits today, then our campaign is designed to create the
+            strongest possible emotional competition above that.”
+          </p>
+          <p className="mt-3 text-xs font-semibold uppercase tracking-[0.16em] text-blue-200">
+            Current gap: {gapAbs}% {gapDirection} guide
+          </p>
+        </div>
         <div className="rounded-2xl bg-blue-50/70 p-5">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">
             Mathematical price
@@ -1864,10 +1886,13 @@ export function VendorReportSection({ listing }: { listing: ListingState }) {
 export function Form6PrototypeSection() {
   const { profile } = useAgentProfile();
   const brandColor = profile.brandColor || "#1d4ed8";
-  const [formName, setFormName] = useState("Blank Form 6 - VG.pdf");
-  const [documentUrl, setDocumentUrl] = useState("/templates/form-6-vg.pdf");
-  const [documentMime, setDocumentMime] = useState("application/pdf");
+  const formName = "Example Form 6";
+  const documentUrl = "/templates/form-6-vg.pdf";
+  const documentMime = "application/pdf";
   const [activePage, setActivePage] = useState("Appointment");
+  const [formNotes, setFormNotes] = useState(
+    "Seller questions to prepare for:\n\n- What am I signing?\n- When do I pay commission?\n- What marketing costs are approved?\n- How long is the appointment?\n- What happens after I say yes?",
+  );
   const formPages = [
     {
       title: "Appointment",
@@ -1924,6 +1949,18 @@ export function Form6PrototypeSection() {
   ];
   const active = formPages.find((page) => page.title === activePage) || formPages[0];
 
+  useEffect(() => {
+    const savedNotes = window.localStorage.getItem("listingwin-form6-notes");
+
+    if (savedNotes) {
+      setFormNotes(savedNotes);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem("listingwin-form6-notes", formNotes);
+  }, [formNotes]);
+
   return (
     <section className="mt-10 rounded-3xl border border-blue-100 bg-white p-7 shadow-card lg:p-8">
       <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-start">
@@ -1945,23 +1982,6 @@ export function Form6PrototypeSection() {
             before appointing an agent.
           </p>
         </div>
-        <label className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-blue-200 bg-white px-5 py-3 text-sm font-semibold text-blue-900 shadow-sm">
-          <Upload size={16} />
-          Upload agency Form 6
-          <input
-            type="file"
-            accept="application/pdf,image/*"
-            className="sr-only"
-            onChange={(event) => {
-              const file = event.target.files?.[0];
-              if (file) {
-                setFormName(file.name);
-                setDocumentUrl(URL.createObjectURL(file));
-                setDocumentMime(file.type || "application/pdf");
-              }
-            }}
-          />
-        </label>
       </div>
 
       <div className="mt-7 grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
@@ -1973,7 +1993,7 @@ export function Form6PrototypeSection() {
             />
             <div className="border-b border-slate-100 p-5">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-                Form 6 template
+                Form 6 example document
               </p>
               <h3 className="mt-2 text-2xl font-semibold tracking-tight">
                 {formName}
@@ -2040,53 +2060,53 @@ export function Form6PrototypeSection() {
         <div className="grid gap-4">
           <div className="rounded-3xl p-6 text-white" style={{ backgroundColor: brandColor }}>
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white/70">
-              Seller question
+              Agent notes
             </p>
             <h3 className="mt-3 text-3xl font-semibold tracking-tight">
-              {active.sellerQuestion}
+              Save what sellers may ask about Form 6.
             </h3>
             <p className="mt-4 text-sm leading-7 text-white/85">
-              {active.agentAnswer}
+              These notes are for the agent only. Use them to prepare the
+              questions, objections, and plain-English explanations that come
+              up before the final agency appointment is signed.
             </p>
           </div>
 
           <div className="rounded-2xl border border-blue-100 bg-blue-50/70 p-5">
+            <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+              <h3 className="text-lg font-semibold tracking-tight">
+                Form 6 conversation notes
+              </h3>
+              <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-blue-800">
+                Auto-saved
+              </span>
+            </div>
+            <textarea
+              value={formNotes}
+              onChange={(event) => setFormNotes(event.target.value)}
+              className="mt-4 min-h-[360px] w-full resize-y rounded-2xl border border-blue-100 bg-white p-4 text-sm leading-6 text-slate-800 outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+              placeholder="Add the seller questions, agency notes, commission explanation, marketing cost explanation, appointment term, special conditions, and follow-up points here..."
+            />
+          </div>
+
+          <div className="rounded-2xl border border-slate-200 bg-white p-5">
             <h3 className="text-lg font-semibold tracking-tight">
-              What to point out on this page
+              Quick guide for the selected page
             </h3>
-            <div className="mt-4 grid gap-3">
+            <p className="mt-2 text-sm font-semibold text-blue-800">
+              {active.sellerQuestion}
+            </p>
+            <p className="mt-2 text-sm leading-6 text-slate-600">
+              {active.agentAnswer}
+            </p>
+            <div className="mt-4 grid gap-2">
               {active.callouts.map(([label, text]) => (
-                <div key={label} className="rounded-2xl bg-white p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-700">
-                    {label}
-                  </p>
-                  <p className="mt-1 text-sm leading-6 text-slate-600">
-                    {text}
-                  </p>
-                </div>
+                <p key={label} className="text-sm leading-6 text-slate-600">
+                  <strong>{label}:</strong> {text}
+                </p>
               ))}
             </div>
           </div>
-
-          {[
-            [
-              "Why this matters",
-              "The seller can understand the appointment before the legal signing step, which builds confidence and reduces friction.",
-            ],
-            [
-              "Agent advantage",
-              "The agent can answer common concerns without asking the seller to read dense legal wording during the appraisal.",
-            ],
-            [
-              "Agency workflow",
-              "Once the seller is comfortable, the final Form 6 should be completed and signed through the agency’s approved compliance process.",
-            ],
-          ].map(([title, body]) => (
-            <div key={title} className="rounded-2xl border border-slate-200 bg-white p-5">
-              <h3 className="text-lg font-semibold tracking-tight">{title}</h3>
-              <p className="mt-2 text-sm leading-6 text-slate-600">{body}</p>
-            </div>
-          ))}
         </div>
       </div>
     </section>
