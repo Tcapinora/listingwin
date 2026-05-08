@@ -20,7 +20,7 @@ import { socialHandle } from "@/lib/social";
 import type { ListingState } from "@/lib/types";
 
 function Logo({ src, agencyName }: { src: string; agencyName: string }) {
-  const displayName = agencyName || "Plum Property";
+  const displayName = agencyName || "Harbour & Co Estate Agents";
 
   if (src) {
     return (
@@ -83,7 +83,8 @@ function CampaignCreative({
   const agentName = profile.agentName || listing.details.agentName || "Agent name";
   const phone = profile.phone || listing.details.phone || "Phone";
   const brandColor = profile.brandColor || "#123f53";
-  const agencyName = profile.agencyName || listing.details.agencyName || "Plum Property";
+  const agencyName =
+    profile.agencyName || listing.details.agencyName || "Harbour & Co Estate Agents";
   const logo = profile.agencyLogo || listing.assets.agencyLogo;
   const [lineOne, ...rest] = address.split(",");
   const suburb = rest.join(",").trim() || "Suburb";
@@ -302,7 +303,8 @@ export function BrochurePreview({ listing }: { listing: ListingState }) {
   const [photoIndex, setPhotoIndex] = useState(0);
   const selectedPhoto = photos[Math.min(photoIndex, photos.length - 1)] || "";
   const agentName = profile.agentName || details.agentName;
-  const agencyName = profile.agencyName || details.agencyName || "Plum Property";
+  const agencyName =
+    profile.agencyName || details.agencyName || "Harbour & Co Estate Agents";
   const phone = profile.phone || details.phone;
   const email = profile.email || details.email;
   const website = profile.agencyWebsite || details.agencyWebsite;
@@ -491,7 +493,8 @@ export function FlyerPreview({ listing }: { listing: ListingState }) {
   const [photoIndex, setPhotoIndex] = useState(0);
   const selectedPhoto = photos[Math.min(photoIndex, photos.length - 1)] || "";
   const agentName = profile.agentName || details.agentName;
-  const agencyName = profile.agencyName || details.agencyName || "Plum Property";
+  const agencyName =
+    profile.agencyName || details.agencyName || "Harbour & Co Estate Agents";
   const phone = profile.phone || details.phone;
   const email = profile.email || details.email;
   const website = profile.agencyWebsite || details.agencyWebsite;
@@ -865,8 +868,9 @@ export function SocialPreview({
 }) {
   const { details, assets } = listing;
   const { profile } = useAgentProfile();
-  const agentName = profile.agentName || details.agentName || "Vern Gilbert";
-  const agencyName = profile.agencyName || details.agencyName || "Plum Property";
+  const agentName = profile.agentName || details.agentName || "Alex Morgan";
+  const agencyName =
+    profile.agencyName || details.agencyName || "Harbour & Co Estate Agents";
   const logo = profile.agencyLogo || assets.agencyLogo;
   const agentSocial =
     type === "Instagram" ? profile.agentInstagramUrl : profile.agentFacebookUrl;

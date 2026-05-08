@@ -100,7 +100,7 @@ export default function CreatePage() {
                   onChange={(event) =>
                     updateDetail("agencyName", event.target.value)
                   }
-                  placeholder="Plum Property"
+                  placeholder="Harbour & Co Estate Agents"
                   className="mt-2 w-full rounded-2xl border-0 bg-slate-50 px-5 py-4 text-base text-slate-950 shadow-inner outline-none ring-1 ring-slate-200 transition focus:bg-white focus:ring-2 focus:ring-blue-500"
                 />
               </label>

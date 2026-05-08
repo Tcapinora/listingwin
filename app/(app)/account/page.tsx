@@ -47,7 +47,7 @@ export default function AccountPage() {
     setPresentations(readSavedPresentations());
   }, []);
 
-  const agencyName = profile.agencyName || "Plum Property";
+  const agencyName = profile.agencyName || "Harbour & Co Estate Agents";
 
   return (
     <>

@@ -127,7 +127,7 @@ export function SellerMobilePreview({ listing }: { listing: ListingState }) {
   const propertyPhoto = getPrimaryPropertyPhoto(listing);
   const agentName = profile.agentName || listing.details.agentName || "Agent name";
   const agencyName =
-    profile.agencyName || listing.details.agencyName || "Plum Property";
+    profile.agencyName || listing.details.agencyName || "Harbour & Co Estate Agents";
 
   return (
     <section className="mt-10 grid gap-8 rounded-3xl bg-gray-950 p-6 text-white shadow-soft lg:grid-cols-[0.9fr_1.1fr] lg:p-10">
