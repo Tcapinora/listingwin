@@ -6,17 +6,6 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-[#F2F4F8] text-[#1F2A4A]">
       <section className="mx-auto flex min-h-screen w-full max-w-6xl flex-col items-center justify-center px-6 py-12 text-center">
-        <div className="mb-10 flex items-center justify-center">
-          <Image
-            src="/brand/listingwin-mark-exact.png"
-            alt="ListingWin trophy icon"
-            width={647}
-            height={569}
-            priority
-            className="h-auto w-24 sm:w-28"
-          />
-        </div>
-
         <Image
           src="/brand/listingwin-lockup-exact.png"
           alt="ListingWin"
