@@ -8,6 +8,7 @@ import {
   Copy,
   FileText,
   Handshake,
+  MessageCircleQuestion,
   Share2,
   Target,
   Users,
@@ -79,6 +80,56 @@ export default function DraftPage() {
       "Make the next step easy",
       "Explain the Form 6, capture notes, and leave with a clear commitment path.",
     ],
+  ];
+  const objectionTools = [
+    {
+      objection: "Another agent said we can get more.",
+      meaning: "The seller wants confidence, not just a bigger number.",
+      response:
+        "That is exactly why I wanted to show you the campaign first. The best price comes from buyer belief, not just an optimistic quote.",
+      question: "Would you rather choose the highest promise, or the clearest plan to create competition?",
+      close: "Let’s launch with the strategy that gives the market the best chance to prove the price.",
+    },
+    {
+      objection: "Your commission is too high.",
+      meaning: "The seller is testing whether the fee is tied to a better result.",
+      response:
+        "I understand. My role is not just to list the property; it is to create the competition, protect the price, and manage the campaign properly.",
+      question: "If the right strategy protects even one extra bid, would that outweigh the fee difference?",
+      close: "Let’s focus on the net result, not just the line item.",
+    },
+    {
+      objection: "We want to think about it.",
+      meaning: "The seller is not fully comfortable making the decision yet.",
+      response:
+        "Of course. Before I leave, can I ask what part you feel you still need to be sure about: price, timing, marketing, or choosing the agent?",
+      question: "What would need to be clearer for you to feel comfortable moving forward?",
+      close: "If we can solve that now, we can leave here with a clear plan.",
+    },
+    {
+      objection: "We want to try a higher price first.",
+      meaning: "The seller is emotionally attached to the upside.",
+      response:
+        "I want the best price too. The risk is not ambition; the risk is sitting above the buyer pool and losing momentum.",
+      question: "Would you be open to a strategy that protects your upside but still keeps buyers engaged early?",
+      close: "Let’s use the evidence and campaign response to control the price conversation.",
+    },
+    {
+      objection: "We might sell off-market.",
+      meaning: "The seller wants less stress, but may not see what they could miss.",
+      response:
+        "Off-market can suit some situations, but it usually limits the emotional competition that creates a premium result.",
+      question: "If we already have buyers, would you still want to test the wider market before accepting a private result?",
+      close: "Let’s use the database first, then decide whether the full campaign gives you more leverage.",
+    },
+    {
+      objection: "We already know who we want to use.",
+      meaning: "The seller has a relationship, but may still be movable with proof.",
+      response:
+        "That makes sense. My job today is simply to show you what choosing us would look like and what we would do differently.",
+      question: "After seeing the campaign, is there anything here you wish the other agent had shown you?",
+      close: "If this feels stronger, let’s talk about what would make switching comfortable.",
+    },
   ];
 
   return (
@@ -333,6 +384,72 @@ export default function DraftPage() {
           trust, fear, price, campaign confidence, fee value, and what the owner
           needs to feel before saying yes.
         </p>
+      </section>
+
+      <section className="mt-8 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-slate-200/70 sm:p-8">
+        <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
+          <div>
+            <p className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
+              <MessageCircleQuestion size={16} />
+              Closing tool
+            </p>
+            <h2 className="mt-5 text-3xl font-semibold tracking-tight text-slate-950">
+              Handle seller objections calmly.
+            </h2>
+            <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
+              Use this only inside the Agent Workspace. It gives the agent a
+              clean response, a better question, and a simple close when the
+              seller hesitates after the presentation.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-6 grid gap-4 lg:grid-cols-2">
+          {objectionTools.map((tool) => (
+            <details
+              key={tool.objection}
+              className="group rounded-[1.5rem] bg-slate-50 p-5 ring-1 ring-slate-200 transition open:bg-white open:shadow-card"
+            >
+              <summary className="cursor-pointer list-none">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
+                      Seller says
+                    </p>
+                    <h3 className="mt-2 text-lg font-semibold tracking-tight text-slate-950">
+                      {tool.objection}
+                    </h3>
+                  </div>
+                  <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-blue-800 ring-1 ring-blue-100 group-open:bg-blue-700 group-open:text-white">
+                    Open
+                  </span>
+                </div>
+              </summary>
+              <div className="mt-5 grid gap-3 text-sm leading-6">
+                <div className="rounded-2xl bg-blue-50 p-4 text-blue-950">
+                  <span className="font-semibold">What they mean: </span>
+                  {tool.meaning}
+                </div>
+                <div className="rounded-2xl bg-white p-4 text-slate-700 ring-1 ring-slate-100">
+                  <span className="font-semibold text-slate-950">
+                    Best response:{" "}
+                  </span>
+                  {tool.response}
+                </div>
+                <div className="rounded-2xl bg-white p-4 text-slate-700 ring-1 ring-slate-100">
+                  <span className="font-semibold text-slate-950">
+                    Ask next:{" "}
+                  </span>
+                  {tool.question}
+                </div>
+                <div className="rounded-2xl bg-blue-950 p-4 text-white">
+                  <span className="font-semibold">Close: </span>
+                  {tool.close}
+                </div>
+              </div>
+            </details>
+          ))}
+        </div>
       </section>
 
       <VendorReportSection listing={listing} />
