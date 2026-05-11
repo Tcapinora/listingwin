@@ -30,15 +30,15 @@ export default function DashboardPage() {
   const workflow = [
     {
       title: "Prepare",
-      text: "Build the seller-facing marketing story before the appraisal.",
+      text: "Draft the seller-facing campaign before the appraisal.",
     },
     {
       title: "Present",
-      text: "Show the seller how their property looks with your agency marketing.",
+      text: "Add real photos live and show the seller their home inside your marketing.",
     },
     {
       title: "Close",
-      text: "Move into the workspace for price, buyer proof, follow-up, and next steps.",
+      text: "Turn the live presentation into the operating plan and next decision.",
     },
   ];
   const firstRunGuide = [
@@ -49,8 +49,8 @@ export default function DashboardPage() {
     },
     {
       title: "2. Present",
-      subtitle: "Show you are the marketing expert",
-      text: "Show the seller your agency marketing, how their property will look, and how you sell a property from launch to buyer demand.",
+      subtitle: "Build the campaign live",
+      text: "Show the seller your agency marketing, then optionally add real photos so their property appears inside the campaign immediately.",
     },
     {
       title: "3. Close",
@@ -83,9 +83,10 @@ export default function DashboardPage() {
               Help sellers picture choosing you before they sign.
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
-              ListingWin shows the seller what their property will look like
-              with your marketing, then gives the agent a clean workspace to
-              close the listing while the emotion is fresh.
+              ListingWin lets you show the campaign before the campaign. Build
+              the presentation before the appraisal, add real photos live in
+              the room, then move into the workspace while the seller is
+              emotionally attached to the plan.
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <PrimaryLink href="/create">
@@ -135,7 +136,7 @@ export default function DashboardPage() {
                   The ListingWin method
                 </p>
                 <p className="text-xs text-blue-100">
-                  Marketing first. Closing second.
+                  Build live. Present visually. Close with momentum.
                 </p>
               </div>
             </div>
@@ -170,11 +171,13 @@ export default function DashboardPage() {
               First time using ListingWin?
             </p>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
-              One clear path for the appraisal.
+              One clear path for a live appraisal.
             </h2>
             <p className="mt-3 text-sm leading-6 text-slate-600">
               ListingWin is built for agents before a listing appraisal. It
-              helps the seller see your marketing before they choose an agent.
+              helps the seller see your marketing before they choose an agent,
+              then lets you add their actual property photos live if the moment
+              calls for it.
             </p>
           </div>
 
@@ -213,8 +216,8 @@ export default function DashboardPage() {
             </h2>
             <p className="mt-3 max-w-3xl text-sm leading-6 text-blue-900/75">
               During the appointment, stay in the clean Vendor Presentation.
-              Once the seller understands the campaign, open Agent Workspace to
-              go deeper and close.
+              Add photos live when useful, let the seller see their home become
+              the campaign, then open Agent Workspace to go deeper and close.
             </p>
           </div>
           <Link

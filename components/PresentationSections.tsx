@@ -334,8 +334,8 @@ export function PresentationGrid({
       <PresentationChapter
         number="03"
         eyebrow="Marketing"
-        title="Let the seller see their property already launched."
-        description="This is the emotional shift: the seller can picture their home in your marketing before they have chosen an agent."
+        title="Let the seller watch their campaign come to life."
+        description="This is the emotional shift: the seller can see their actual home inside your marketing while the appraisal is still happening."
         editHref={editable ? "/mockups" : undefined}
         editLabel="Edit marketing"
       >

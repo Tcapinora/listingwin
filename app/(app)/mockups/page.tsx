@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { FlowProgress } from "@/components/FlowProgress";
+import { LiveCampaignPhotoButton } from "@/components/LiveCampaignPhotoButton";
 import { clampOverlay, DraggableSignboard } from "@/components/DraggableSignboard";
 import { AutoCutoutPreview } from "@/components/AutoCutoutPreview";
 import { UploadCard } from "@/components/UploadCard";
@@ -29,7 +30,7 @@ import { useAgentProfile } from "@/components/AgentProfileProvider";
 import { ListingWinScoreCard } from "@/components/ValueSections";
 import { fileToOptimizedDataUrl } from "@/lib/imageFiles";
 import { autoCutoutImage } from "@/lib/imageProcessing";
-import { getPrimaryPropertyPhoto } from "@/lib/listingImages";
+import { getPrimaryPropertyPhoto, getPropertyPhotos } from "@/lib/listingImages";
 import type {
   AssetKey,
   ListingDetails,
@@ -206,6 +207,7 @@ export default function MockupsPage() {
   const selectedOverlay =
     listing.signboardOverlays[listing.activeSignboard] || listing.overlay;
   const primaryPropertyPhoto = getPrimaryPropertyPhoto(listing);
+  const propertyPhotos = getPropertyPhotos(listing);
   const hasAnySignboard = Boolean(
     listing.assets.signboard1 || listing.assets.signboard2,
   );
@@ -284,22 +286,33 @@ export default function MockupsPage() {
     }));
   };
 
+  const updatePropertyPhotos = (photos: string[]) => {
+    setListing((current) => ({
+      ...current,
+      propertyPhotos: photos,
+      assets: {
+        ...current.assets,
+        propertyPhoto: photos[0] || "",
+      },
+    }));
+  };
+
   return (
     <>
       <FlowProgress currentStep={4} />
 
       <section className="mb-8 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-blue-50 sm:p-8 lg:p-10">
         <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
-          Agency marketing
+          Live campaign creation
         </p>
         <div className="mt-4 grid gap-6 lg:grid-cols-[1fr_0.55fr] lg:items-end">
           <div>
             <h1 className="text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-              Create the vendor presentation pack
+              Build the campaign in front of the seller
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-              Build the seller-facing marketing previews, then fine-tune how
-              your agency will present this property before the appointment.
+              Fine-tune the agency marketing before the appointment, then add
+              real property photos live and watch every mockup update instantly.
             </p>
             <div className="mt-6 grid gap-3 sm:grid-cols-3">
               {[
@@ -317,7 +330,14 @@ export default function MockupsPage() {
               ))}
             </div>
           </div>
-          <div className="lg:text-right">
+          <div className="space-y-4 lg:text-right">
+            <div className="flex justify-start lg:justify-end">
+              <LiveCampaignPhotoButton
+                photos={propertyPhotos}
+                onChange={updatePropertyPhotos}
+                label="Add property photos"
+              />
+            </div>
             <button
               type="button"
               disabled={generationState === "loading"}
@@ -356,15 +376,15 @@ export default function MockupsPage() {
         open={generationState === "success" || hasAnySignboard}
       >
         <summary className="flex cursor-pointer list-none items-center justify-between gap-4 rounded-[1.5rem] bg-blue-50 px-4 py-4">
-          <span>
-            <span className="block text-sm font-semibold text-blue-950">
-              Fine-tune the presentation visuals
-            </span>
-            <span className="mt-1 block text-xs leading-5 text-blue-800/70">
-              Adjust signboards, brochures, portal, and social media previews
-              before showing the vendor.
-            </span>
+        <span>
+          <span className="block text-sm font-semibold text-blue-950">
+              Fine-tune the live campaign visuals
           </span>
+          <span className="mt-1 block text-xs leading-5 text-blue-800/70">
+              Adjust signboards, brochures, portal, and social media previews.
+              If you add new property photos, the previews update immediately.
+          </span>
+        </span>
           <ChevronDown
             className="shrink-0 text-blue-800 transition group-open:rotate-180"
             size={19}

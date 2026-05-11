@@ -22,11 +22,13 @@ import {
   HeroPresentation,
   PresentationGrid,
 } from "@/components/PresentationSections";
+import { LiveCampaignPhotoButton } from "@/components/LiveCampaignPhotoButton";
 import { demoAgentProfile, demoListingState } from "@/lib/demoData";
+import { getPropertyPhotos } from "@/lib/listingImages";
 import { presentationReadiness } from "@/lib/readiness";
 
 export default function PresentationPage() {
-  const { listing } = useListing();
+  const { listing, setListing } = useListing();
   const { profile } = useAgentProfile();
   const [saved, setSaved] = useState(false);
   const [shareStatus, setShareStatus] = useState("");
@@ -49,6 +51,21 @@ export default function PresentationPage() {
     presentationListing,
     presentationProfile,
   );
+  const propertyPhotos = getPropertyPhotos(presentationListing);
+  const updatePropertyPhotos = (photos: string[]) => {
+    if (demoMode) {
+      return;
+    }
+
+    setListing((current) => ({
+      ...current,
+      propertyPhotos: photos,
+      assets: {
+        ...current.assets,
+        propertyPhoto: photos[0] || "",
+      },
+    }));
+  };
 
   return (
     <>
@@ -62,10 +79,18 @@ export default function PresentationPage() {
               Vendor Presentation
             </a>
             <p className="text-sm font-medium text-slate-500">
-              Client-facing view. Keep it simple and scroll.
+              Client-facing view. Add photos live if the seller wants to see
+              their home in the campaign.
             </p>
           </div>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            {!demoMode ? (
+              <LiveCampaignPhotoButton
+                photos={propertyPhotos}
+                onChange={updatePropertyPhotos}
+                label="Add photos live"
+              />
+            ) : null}
             <Link
               href="/details"
               className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/92 px-4 py-2.5 text-sm font-semibold text-blue-900 shadow-sm transition hover:-translate-y-0.5 hover:bg-white"
@@ -198,8 +223,9 @@ export default function PresentationPage() {
               </p>
             </div>
             <div className="rounded-[1.75rem] bg-blue-50/80 p-5 text-sm leading-7 text-blue-900 ring-1 ring-blue-100">
-              Keep this view clean. Deeper objections, Form 6, follow-up, and
-              decision-closing tools stay in the Agent Workspace.
+              Build the campaign live in front of the seller. Add photos during
+              the appraisal and they flow straight into the hero, social,
+              brochure, portal, and campaign previews.
             </div>
           </div>
         </section>
