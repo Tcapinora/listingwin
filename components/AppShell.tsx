@@ -45,10 +45,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <AgentProfileProvider>
       <ListingProvider>
-        <div className="min-h-screen">
+        <div className="min-h-screen bg-[#F2F4F8]">
           {!isPresentationMode ? (
-          <header className="sticky top-0 z-30 border-b border-slate-200/70 bg-white/95 backdrop-blur-xl no-print">
-            <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:gap-6 sm:px-5 lg:px-8">
+          <header className="sticky top-0 z-30 border-b border-white/70 bg-white/88 shadow-sm backdrop-blur-xl no-print">
+            <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:gap-6 sm:px-6 lg:px-8">
               <Link href="/dashboard" className="flex items-center gap-3">
                 <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#1F2A4A] shadow-card">
                   <Image
@@ -90,24 +90,24 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 </button>
                 <Link
                   href="/draft"
-                  className="hidden items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:border-blue-300 hover:text-blue-900 sm:flex"
+                  className="hidden items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:border-blue-300 hover:bg-white hover:text-blue-900 sm:flex"
                 >
                   <FileCheck2 size={16} />
                   Workspace
                 </Link>
                 <Link
                   href="/create"
-                  className="inline-flex items-center gap-2 rounded-full bg-blue-700 px-3 py-2 text-sm font-semibold text-white shadow-card transition hover:bg-blue-800 sm:px-4"
+                  className="inline-flex items-center gap-2 rounded-full bg-blue-700 px-3 py-2 text-sm font-semibold text-white shadow-card transition hover:-translate-y-0.5 hover:bg-blue-800 sm:px-4"
                   aria-label="Start New Listing"
                 >
                   <Plus size={16} />
-                  <span className="hidden sm:inline">Start Builder</span>
+                  <span className="hidden sm:inline">New presentation</span>
                   <ArrowRight className="hidden sm:block" size={15} />
                 </Link>
               </div>
             </div>
-            <div className="hidden border-t border-blue-50 lg:block">
-              <div className="mx-auto flex max-w-7xl items-center gap-2 px-8 py-2">
+            <div className="hidden border-t border-blue-50/70 lg:block">
+              <div className="mx-auto flex max-w-7xl items-center gap-2 px-8 py-2.5">
                 <span className="mr-2 text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
                   Builder
                 </span>
@@ -119,8 +119,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                       href={item.href}
                       className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
                         active
-                          ? "bg-blue-700 text-white"
-                          : "bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-800"
+                          ? "bg-blue-700 text-white shadow-sm"
+                          : "bg-white/70 text-slate-600 hover:bg-blue-50 hover:text-blue-800"
                       }`}
                     >
                       {item.label}
@@ -135,8 +135,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <main
             className={
               isPresentationMode
-                ? "min-h-screen bg-slate-100"
-                : "mx-auto max-w-7xl px-4 py-7 sm:px-5 sm:py-8 lg:px-8 lg:py-10"
+                ? "min-h-screen bg-[#F2F4F8]"
+                : "page-enter mx-auto max-w-7xl px-4 py-9 sm:px-6 sm:py-10 lg:px-8 lg:py-14"
             }
           >
             {!isPresentationMode &&

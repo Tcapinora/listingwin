@@ -50,20 +50,20 @@ function PresentationChapter({
   children: React.ReactNode;
 }) {
   return (
-    <section className="mt-10">
-      <div className="mb-6 flex flex-col justify-between gap-4 border-t border-slate-200 pt-8 lg:flex-row lg:items-end">
+    <section className="presentation-slide mt-20">
+      <div className="mb-8 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
         <div className="max-w-3xl">
           <p className="inline-flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
-            <span className="grid h-8 w-8 place-items-center rounded-full bg-blue-700 text-[11px] text-white">
+            <span className="grid h-9 w-9 place-items-center rounded-full bg-blue-700 text-[11px] text-white shadow-card">
               {number}
             </span>
             {eyebrow}
           </p>
-          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
+          <h2 className="mt-5 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
             {title}
           </h2>
           {description ? (
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
+            <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
               {description}
             </p>
           ) : null}
@@ -71,7 +71,7 @@ function PresentationChapter({
         {editHref ? (
           <Link
             href={editHref}
-            className="no-print inline-flex w-fit items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2.5 text-sm font-semibold text-blue-900 shadow-sm transition hover:border-blue-200 hover:bg-blue-50"
+            className="no-print inline-flex w-fit items-center gap-2 rounded-full border border-blue-100 bg-white/90 px-4 py-2.5 text-sm font-semibold text-blue-900 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200 hover:bg-white"
           >
             <Pencil size={15} />
             {editLabel}
@@ -93,7 +93,7 @@ export function PresentationFlowNav() {
   ];
 
   return (
-    <section className="no-print mt-8 rounded-3xl border border-slate-200 bg-white p-5 shadow-card">
+    <section className="no-print mt-12 rounded-[2.25rem] border border-white bg-white/78 p-7 shadow-card backdrop-blur">
       <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
@@ -108,11 +108,11 @@ export function PresentationFlowNav() {
           campaign method, database, then the agent’s closing conversation.
         </p>
       </div>
-      <div className="mt-5 flex flex-wrap gap-2">
+      <div className="mt-6 flex flex-wrap gap-2">
         {items.map((item, index) => (
           <span
             key={item}
-            className="rounded-full bg-blue-50 px-4 py-2 text-xs font-semibold text-blue-900"
+            className="rounded-full bg-blue-50 px-4 py-2 text-xs font-semibold text-blue-900 ring-1 ring-blue-100"
           >
             {index + 1}. {item}
           </span>
@@ -130,7 +130,7 @@ export function SellerMobilePreview({ listing }: { listing: ListingState }) {
     profile.agencyName || listing.details.agencyName || "Harbour & Co Estate Agents";
 
   return (
-    <section className="mt-10 grid gap-8 rounded-3xl bg-gray-950 p-6 text-white shadow-soft lg:grid-cols-[0.9fr_1.1fr] lg:p-10">
+    <section className="presentation-slide mt-16 grid gap-10 rounded-[2.5rem] bg-gray-950 p-7 text-white shadow-soft lg:grid-cols-[0.9fr_1.1fr] lg:p-12">
       <div className="flex flex-col justify-center">
         <p className="inline-flex w-fit items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-gray-200">
           <Smartphone size={16} />
@@ -204,8 +204,8 @@ export function HeroPresentation({
   const heroWriteup = limitWords(generatePropertyWriteup(details), 72);
 
   return (
-    <section className="relative overflow-hidden rounded-3xl bg-gray-950 text-white shadow-soft">
-      <div className="relative aspect-[16/8] min-h-[420px]">
+    <section className="presentation-slide relative overflow-hidden rounded-[2.75rem] bg-gray-950 text-white shadow-soft">
+      <div className="relative aspect-[16/8] min-h-[560px]">
         {propertyPhoto ? (
           <Image
             src={propertyPhoto}
@@ -216,22 +216,22 @@ export function HeroPresentation({
             unoptimized
           />
         ) : null}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
-        <div className="absolute bottom-8 left-6 w-[calc(100%-3rem)] max-w-full sm:bottom-10 sm:left-8 sm:w-[calc(100%-4rem)] lg:left-12 lg:w-auto lg:max-w-3xl">
+        <div className="absolute inset-0 bg-gradient-to-r from-black/82 via-black/42 to-transparent" />
+        <div className="absolute bottom-8 left-6 w-[calc(100%-3rem)] max-w-full sm:bottom-12 sm:left-10 sm:w-[calc(100%-5rem)] lg:left-14 lg:w-auto lg:max-w-4xl">
           <p className="text-sm font-semibold uppercase tracking-[0.28em] text-gray-200">
             Vendor presentation
           </p>
-          <h1 className="mt-4 max-w-[32rem] break-words text-4xl font-semibold leading-tight tracking-tight sm:max-w-[40rem] sm:text-5xl lg:max-w-2xl">
+          <h1 className="mt-5 max-w-[32rem] break-words text-5xl font-semibold leading-[0.98] tracking-tight sm:max-w-[44rem] sm:text-6xl lg:max-w-4xl">
             {details.address || "Property address"}
           </h1>
-          <p className="mt-5 max-w-[34rem] text-sm leading-6 text-gray-100 sm:max-w-[38rem] sm:text-base sm:leading-7 lg:max-w-2xl">
+          <p className="mt-7 max-w-[34rem] text-base leading-7 text-gray-100 sm:max-w-[42rem] sm:text-lg sm:leading-8 lg:max-w-3xl">
             {heroWriteup}
           </p>
         </div>
         {editable ? (
           <Link
             href="/details"
-            className="no-print absolute right-5 top-5 inline-flex items-center gap-2 rounded-full bg-white/95 px-4 py-2.5 text-sm font-semibold text-slate-950 shadow-card backdrop-blur transition hover:bg-white"
+            className="no-print absolute right-5 top-5 inline-flex items-center gap-2 rounded-full bg-white/95 px-4 py-2.5 text-sm font-semibold text-slate-950 shadow-card backdrop-blur transition hover:-translate-y-0.5 hover:bg-white"
           >
             <Pencil size={15} />
             Edit intro
@@ -278,7 +278,7 @@ export function PresentationGrid({
             <SocialPreview listing={listing} type="Instagram" />
             <SocialPreview listing={listing} type="Facebook" />
           </div>
-          <div className="rounded-3xl border border-blue-100 bg-white p-6 shadow-card">
+          <div className="rounded-[2rem] border border-blue-100 bg-white p-7 shadow-card">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
               Ad sponsorship example
             </p>
@@ -339,13 +339,13 @@ export function PresentationGrid({
         editHref={editable ? "/mockups" : undefined}
         editLabel="Edit marketing"
       >
-        <section className="rounded-3xl border border-blue-100 bg-white p-5 shadow-card lg:p-7">
+        <section className="rounded-[2.5rem] border border-blue-100 bg-white p-7 shadow-card lg:p-10">
           <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
                 Campaign preview selector
               </p>
-              <h3 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">
+              <h3 className="mt-3 text-4xl font-semibold tracking-tight text-slate-950">
                 {activeVisual.title}
               </h3>
             </div>
@@ -358,7 +358,7 @@ export function PresentationGrid({
                   className={`rounded-full px-4 py-2 text-xs font-semibold transition ${
                     activeVisualId === scene.id
                       ? "bg-blue-700 text-white shadow-card"
-                      : "bg-blue-50 text-blue-900 hover:bg-blue-100"
+                      : "bg-blue-50 text-blue-900 hover:-translate-y-0.5 hover:bg-blue-100"
                   }`}
                 >
                   {scene.label}
@@ -366,7 +366,9 @@ export function PresentationGrid({
               ))}
             </div>
           </div>
-          <div className="mt-6">{activeVisual.component}</div>
+          <div key={activeVisual.id} className="page-enter mt-10">
+            {activeVisual.component}
+          </div>
         </section>
         <SellerMobilePreview listing={listing} />
       </PresentationChapter>
@@ -383,7 +385,7 @@ export function PresentationGrid({
       </PresentationChapter>
 
       <PresentationChapter
-        number="06"
+        number="05"
         eyebrow="Database / buyer demand"
         title="Show the seller that you are not starting from zero."
         description="When the seller sees real buyers, names, budgets, and next calls, their behaviour changes instantly. The campaign feels active before it even launches."

@@ -61,7 +61,7 @@ export default function DashboardPage() {
 
   return (
     <>
-      <section className="relative overflow-hidden rounded-[2.25rem] bg-white shadow-card ring-1 ring-slate-200/70">
+      <section className="relative overflow-hidden rounded-[2.75rem] bg-white shadow-soft ring-1 ring-white/80">
         <div className="absolute inset-y-0 right-0 hidden w-[42%] lg:block">
           <Image
             src="/landing/central-avenue-front.jpg"
@@ -74,7 +74,7 @@ export default function DashboardPage() {
           <div className="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-white/5" />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950/20 via-transparent to-transparent" />
         </div>
-        <div className="relative grid gap-10 p-7 sm:p-10 lg:grid-cols-[1.05fr_0.82fr] lg:items-center lg:p-12">
+        <div className="relative grid gap-12 p-7 sm:p-10 lg:grid-cols-[1.05fr_0.82fr] lg:items-center lg:p-14">
           <div>
             <p className="inline-flex rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800 ring-1 ring-blue-100">
               Digital appraisal presentation
@@ -87,7 +87,7 @@ export default function DashboardPage() {
               with your marketing, then gives the agent a clean workspace to
               close the listing while the emotion is fresh.
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <PrimaryLink href="/create">
                 <span className="inline-flex items-center gap-2">
                   <Plus size={18} />
@@ -96,14 +96,14 @@ export default function DashboardPage() {
               </PrimaryLink>
               <Link
                 href="/draft"
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-blue-300 hover:text-blue-900"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:text-blue-900"
               >
                 <MonitorPlay size={17} />
                 Open Agent Workspace
               </Link>
               <Link
                 href="/calendar"
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-blue-300 hover:text-blue-900"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:text-blue-900"
               >
                 <CalendarDays size={17} />
                 Calendar Only
@@ -125,7 +125,7 @@ export default function DashboardPage() {
             </p>
           </div>
 
-          <div className="rounded-[1.75rem] bg-slate-950/95 p-5 text-white shadow-soft backdrop-blur">
+          <div className="rounded-[2rem] bg-slate-950/95 p-6 text-white shadow-soft backdrop-blur">
             <div className="flex items-center gap-3">
               <span className="grid h-11 w-11 place-items-center rounded-2xl bg-white text-blue-800 shadow-sm">
                 <Sparkles size={19} />
@@ -163,7 +163,7 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      <section className="mt-6 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-slate-200/70 sm:p-8">
+      <section className="mt-8 rounded-[2.25rem] bg-white/90 p-7 shadow-card ring-1 ring-white/80 sm:p-9">
         <div className="grid gap-6 lg:grid-cols-[0.7fr_1.3fr] lg:items-start">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
@@ -182,7 +182,7 @@ export default function DashboardPage() {
             {firstRunGuide.map((card) => (
               <article
                 key={card.title}
-                className="rounded-[1.5rem] bg-slate-50 p-5 ring-1 ring-slate-200/70"
+                className="premium-lift rounded-[1.75rem] bg-slate-50 p-6 ring-1 ring-slate-200/70"
               >
                 <span className="grid h-9 w-9 place-items-center rounded-full bg-blue-700 text-white">
                   <CheckCircle2 size={17} />
@@ -202,7 +202,7 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      <section className="mt-6 rounded-[2rem] bg-blue-50 p-6 text-blue-950 shadow-card ring-1 ring-blue-100 sm:p-8">
+      <section className="mt-8 rounded-[2.25rem] bg-blue-50/90 p-7 text-blue-950 shadow-card ring-1 ring-blue-100 sm:p-9">
         <div className="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-center">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
@@ -219,7 +219,7 @@ export default function DashboardPage() {
           </div>
           <Link
             href="/create"
-            className="inline-flex items-center justify-center rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card transition hover:bg-blue-800"
+            className="inline-flex items-center justify-center rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card transition hover:-translate-y-0.5 hover:bg-blue-800"
           >
             <span className="inline-flex items-center gap-2">
               Start Builder

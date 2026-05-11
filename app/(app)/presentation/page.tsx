@@ -22,7 +22,6 @@ import {
   HeroPresentation,
   PresentationGrid,
 } from "@/components/PresentationSections";
-import { WorkflowPath } from "@/components/WorkflowPath";
 import { demoAgentProfile, demoListingState } from "@/lib/demoData";
 import { presentationReadiness } from "@/lib/readiness";
 
@@ -53,12 +52,12 @@ export default function PresentationPage() {
 
   return (
     <>
-      <section className="no-print sticky top-0 z-40 border-b border-slate-200/70 bg-white/94 px-4 py-3 shadow-sm backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+      <section className="no-print sticky top-0 z-40 border-b border-white/70 bg-[#F2F4F8]/86 px-4 py-3 shadow-sm backdrop-blur-xl">
+        <div className="mx-auto flex max-w-6xl flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex flex-wrap items-center gap-3">
             <a
               href="#presentation-start"
-              className="inline-flex items-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card"
+              className="inline-flex items-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card transition hover:-translate-y-0.5 hover:bg-blue-800"
             >
               Vendor Presentation
             </a>
@@ -69,14 +68,14 @@ export default function PresentationPage() {
           <div className="flex flex-wrap gap-2">
             <Link
               href="/details"
-              className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2.5 text-sm font-semibold text-blue-900 shadow-sm"
+              className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/92 px-4 py-2.5 text-sm font-semibold text-blue-900 shadow-sm transition hover:-translate-y-0.5 hover:bg-white"
             >
               <Pencil size={16} />
               Edit Builder
             </Link>
             <button
               type="button"
-              className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2.5 text-sm font-semibold text-blue-900 shadow-sm"
+              className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/92 px-4 py-2.5 text-sm font-semibold text-blue-900 shadow-sm transition hover:-translate-y-0.5 hover:bg-white"
               onClick={() => {
                 savePresentationSnapshot(presentationListing, presentationProfile);
                 setSaved(true);
@@ -88,7 +87,7 @@ export default function PresentationPage() {
             </button>
             <button
               type="button"
-              className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2.5 text-sm font-semibold text-blue-900 shadow-sm"
+              className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/92 px-4 py-2.5 text-sm font-semibold text-blue-900 shadow-sm transition hover:-translate-y-0.5 hover:bg-white"
               onClick={async () => {
                 const presentation = savePresentationSnapshot(
                   presentationListing,
@@ -172,13 +171,9 @@ export default function PresentationPage() {
       {readiness.isReady ? (
       <div
         id="presentation-start"
-        className="mx-auto max-w-7xl px-4 py-6 sm:px-5 lg:px-8 lg:py-8"
+        className="page-enter mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14"
       >
-        <div className="no-print mb-6">
-          <WorkflowPath active="presentation" />
-        </div>
-
-        <section className="mb-6 rounded-[2rem] bg-white p-5 shadow-card ring-1 ring-blue-50 lg:p-7">
+        <section className="presentation-slide mb-10 rounded-[2.5rem] bg-white/86 p-7 shadow-soft ring-1 ring-white/80 backdrop-blur lg:p-10">
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
               Vendor presentation
@@ -193,16 +188,16 @@ export default function PresentationPage() {
           </div>
           <div className="mt-3 grid gap-4 lg:grid-cols-[1fr_0.55fr] lg:items-end">
             <div>
-              <h2 className="text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
+              <h2 className="text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
                 Make the seller picture choosing this campaign.
               </h2>
-              <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">
+              <p className="mt-5 max-w-3xl text-base leading-8 text-slate-600">
                 This is the seller-facing emotional moment: show how their
                 property will look, how buyers will experience it, and why
                 momentum starts with this agent.
               </p>
             </div>
-            <div className="rounded-[1.5rem] bg-blue-50 p-4 text-sm leading-6 text-blue-900 ring-1 ring-blue-100">
+            <div className="rounded-[1.75rem] bg-blue-50/80 p-5 text-sm leading-7 text-blue-900 ring-1 ring-blue-100">
               Keep this view clean. Deeper objections, Form 6, follow-up, and
               decision-closing tools stay in the Agent Workspace.
             </div>
@@ -212,11 +207,11 @@ export default function PresentationPage() {
         <HeroPresentation listing={presentationListing} />
         <PresentationGrid listing={presentationListing} />
 
-        <section className="mt-10 overflow-hidden rounded-[2.4rem] bg-white shadow-soft ring-1 ring-blue-100">
+        <section className="presentation-slide mt-20 overflow-hidden rounded-[2.75rem] bg-white shadow-soft ring-1 ring-blue-100">
           <div className="no-print flex justify-end px-6 pt-6 lg:px-8">
             <Link
               href="/account"
-              className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2.5 text-sm font-semibold text-blue-900 shadow-sm transition hover:bg-blue-50"
+              className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2.5 text-sm font-semibold text-blue-900 shadow-sm transition hover:-translate-y-0.5 hover:bg-blue-50"
             >
               <Pencil size={15} />
               Edit agency section
@@ -258,7 +253,7 @@ export default function PresentationPage() {
               ) : null}
             </div>
 
-            <div className="grid gap-4 bg-blue-950 p-7 text-white lg:p-10">
+            <div className="grid gap-4 bg-blue-950 p-7 text-white lg:p-12">
               {[
                 [
                   "Our difference",
@@ -287,11 +282,11 @@ export default function PresentationPage() {
           </div>
         </section>
 
-        <section className="mt-10 overflow-hidden rounded-3xl bg-blue-950 text-white shadow-soft">
+        <section className="presentation-slide mt-12 overflow-hidden rounded-[2.5rem] bg-blue-950 text-white shadow-soft">
           <div className="no-print flex justify-end px-6 pt-6 lg:px-8">
             <Link
               href="/account"
-              className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-blue-950 shadow-card transition hover:bg-blue-50"
+              className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-blue-950 shadow-card transition hover:-translate-y-0.5 hover:bg-blue-50"
             >
               <Pencil size={15} />
               Edit contact details
@@ -348,7 +343,7 @@ export default function PresentationPage() {
           </div>
         </section>
 
-        <section className="no-print mt-8 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-blue-50 lg:p-8">
+        <section className="no-print presentation-slide mt-12 rounded-[2.25rem] bg-white/90 p-7 shadow-card ring-1 ring-white/80 backdrop-blur lg:p-9">
           <div className="grid gap-6 lg:grid-cols-[1fr_0.55fr] lg:items-center">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
@@ -366,13 +361,13 @@ export default function PresentationPage() {
             <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
               <Link
                 href="/finish"
-                className="inline-flex items-center justify-center rounded-full bg-blue-700 px-6 py-4 text-sm font-semibold text-white shadow-card"
+                className="inline-flex items-center justify-center rounded-full bg-blue-700 px-6 py-4 text-sm font-semibold text-white shadow-card transition hover:-translate-y-0.5 hover:bg-blue-800"
               >
                 Finish presentation
               </Link>
               <Link
                 href="/details"
-                className="inline-flex items-center justify-center rounded-full border border-blue-200 bg-white px-6 py-4 text-sm font-semibold text-blue-900 shadow-sm"
+                className="inline-flex items-center justify-center rounded-full border border-blue-200 bg-white px-6 py-4 text-sm font-semibold text-blue-900 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300"
               >
                 Edit setup
               </Link>
