@@ -1,0 +1,11 @@
+<svg width="476" height="112" viewBox="0 0 476 112" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ListingWin">
+  <path d="M32 30H18C18 48 27.5 61 42 63.5" stroke="#1F2A4A" stroke-width="8" stroke-linecap="round"/>
+  <path d="M80 30H94C94 48 84.5 61 70 63.5" stroke="#1F2A4A" stroke-width="8" stroke-linecap="round"/>
+  <path d="M37 20H75V48C75 62.3594 66.4934 74 56 74C45.5066 74 37 62.3594 37 48V20Z" fill="#1F2A4A"/>
+  <path d="M45 29H67V47C67 56.9411 62.0751 65 56 65C49.9249 65 45 56.9411 45 47V29Z" fill="#3563E0"/>
+  <path d="M51 74H61V90H51V74Z" fill="#1F2A4A"/>
+  <path d="M38 90H74V98H38V90Z" fill="#1F2A4A"/>
+  <path d="M31 98H81V104H31V98Z" fill="#1F2A4A"/>
+  <text x="126" y="75" fill="#1F2A4A" font-family="Geist, Inter, Arial, sans-serif" font-size="72" font-weight="300" letter-spacing="-3">listing</text>
+  <text x="337" y="75" fill="#3563E0" font-family="Geist, Inter, Arial, sans-serif" font-size="72" font-weight="800" letter-spacing="-3">win</text>
+</svg>

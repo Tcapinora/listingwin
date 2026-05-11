@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -49,8 +50,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <header className="sticky top-0 z-30 border-b border-slate-200/70 bg-white/95 backdrop-blur-xl no-print">
             <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:gap-6 sm:px-5 lg:px-8">
               <Link href="/dashboard" className="flex items-center gap-3">
-                <span className="grid h-10 w-10 place-items-center rounded-xl bg-blue-700 text-white shadow-card">
-                  <Sparkles size={18} />
+                <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#1F2A4A] shadow-card">
+                  <Image
+                    src="/brand/listingwin-mark-light.svg"
+                    alt="ListingWin"
+                    width={28}
+                    height={28}
+                    className="h-7 w-7"
+                  />
                 </span>
                 <span>
                   <span className="block text-base font-semibold tracking-tight">
@@ -163,8 +170,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     onClick={() => setMenuOpen(false)}
                     className="flex items-center gap-3"
                   >
-                    <span className="grid h-10 w-10 place-items-center rounded-xl bg-blue-700 text-white">
-                      <Sparkles size={18} />
+                    <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#1F2A4A]">
+                      <Image
+                        src="/brand/listingwin-mark-light.svg"
+                        alt="ListingWin"
+                        width={28}
+                        height={28}
+                        className="h-7 w-7"
+                      />
                     </span>
                     <span>
                       <span className="block text-base font-semibold tracking-tight">

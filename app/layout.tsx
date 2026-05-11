@@ -4,6 +4,9 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "ListingWin",
   description: "Premium vendor presentation workspace for real estate agents",
+  icons: {
+    icon: "/brand/listingwin-mark.svg",
+  },
 };
 
 export default function RootLayout({
