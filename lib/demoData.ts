@@ -18,7 +18,7 @@ export const demoAgentProfile: AgentProfile = {
   agentTeamPhotos: [],
   agencyLogo: "",
   agencyLogos: [],
-  brandColor: "#1d4ed8",
+  brandColor: "#3563E0",
   instagramTemplate: "",
   facebookTemplate: "",
   photographyMorning: [],

@@ -2044,7 +2044,7 @@ export function FollowUpAutomationSection({
 
 export function VendorReportSection({ listing }: { listing: ListingState }) {
   const { profile } = useAgentProfile();
-  const brandColor = profile.brandColor || "#1d4ed8";
+  const brandColor = profile.brandColor || "#3563E0";
   const address = listing.details.address || "this property";
   const metrics = [
     ["Buyer enquiries", "84", "+18% vs local average"],
@@ -2135,7 +2135,7 @@ export function VendorReportSection({ listing }: { listing: ListingState }) {
 
 export function Form6PrototypeSection() {
   const { profile } = useAgentProfile();
-  const brandColor = profile.brandColor || "#1d4ed8";
+  const brandColor = profile.brandColor || "#3563E0";
   const formName = "Example Form 6";
   const documentUrl = "/templates/form-6-vg.pdf";
   const documentMime = "application/pdf";
