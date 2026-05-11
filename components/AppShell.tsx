@@ -19,6 +19,7 @@ import { useState } from "react";
 import { ListingProvider } from "@/components/ListingProvider";
 import { AgentProfileProvider } from "@/components/AgentProfileProvider";
 import { AgentProfileModal } from "@/components/AgentProfileModal";
+import { AuthControls } from "@/components/AuthControls";
 import { WorkflowPath } from "@/components/WorkflowPath";
 
 const navItems = [
@@ -104,6 +105,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   <span className="hidden sm:inline">New presentation</span>
                   <ArrowRight className="hidden sm:block" size={15} />
                 </Link>
+                <AuthControls />
               </div>
             </div>
             <div className="hidden border-t border-blue-50/70 lg:block">

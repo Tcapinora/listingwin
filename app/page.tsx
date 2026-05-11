@@ -22,7 +22,7 @@ export default function Home() {
 
         <div className="mt-12 grid w-full max-w-3xl gap-3 sm:grid-cols-3">
           <Link
-            href="/account"
+            href="/sign-up"
             className="inline-flex items-center justify-center gap-2 rounded-full bg-[#1F2A4A] px-6 py-4 text-sm font-semibold text-white shadow-card transition hover:bg-[#18223d]"
           >
             <UserPlus size={17} />
