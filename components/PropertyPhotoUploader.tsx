@@ -35,7 +35,7 @@ export function PropertyPhotoUploader({
 
       <label
         htmlFor="property-gallery-upload"
-        className="group flex min-h-44 cursor-pointer flex-col items-center justify-center rounded-[1.5rem] border border-dashed border-blue-200 bg-blue-50/60 px-6 py-9 text-center transition hover:-translate-y-0.5 hover:border-blue-400 hover:bg-blue-50"
+        className="group flex min-h-44 cursor-pointer flex-col items-center justify-center rounded-[1.5rem] border border-dashed border-blue-200 bg-blue-50/60 px-6 py-9 text-center transition hover:-translate-y-0.5 hover:border-blue-400 hover:bg-blue-50 sm:min-h-52"
       >
         <span className="grid h-14 w-14 place-items-center rounded-full bg-white text-blue-800 shadow-sm">
           <Camera size={22} />
@@ -64,7 +64,7 @@ export function PropertyPhotoUploader({
           }
 
           const nextPhotos = await Promise.all(
-            files.map((file) => fileToOptimizedDataUrl(file, 1400, 0.82)),
+            files.map((file) => fileToOptimizedDataUrl(file, 1200, 0.78)),
           );
 
           onChange([...photos, ...nextPhotos].slice(0, MAX_IMAGES));

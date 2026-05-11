@@ -48,7 +48,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <div className="min-h-screen bg-[#F2F4F8]">
           {!isPresentationMode ? (
           <header className="sticky top-0 z-30 border-b border-white/70 bg-white/88 shadow-sm backdrop-blur-xl no-print">
-            <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:gap-6 sm:px-6 lg:px-8">
+            <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-3 py-3 sm:gap-6 sm:px-6 sm:py-4 lg:px-8">
               <Link href="/dashboard" className="flex items-center gap-3">
                 <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#1F2A4A] shadow-card">
                   <Image
@@ -63,7 +63,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   <span className="block text-base font-semibold tracking-tight">
                     ListingWin
                   </span>
-                  <span className="hidden text-xs text-slate-500 sm:block">
+                    <span className="hidden text-xs text-slate-500 md:block">
                     Attach. Present. Close.
                   </span>
                 </span>
@@ -73,7 +73,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 <button
                   type="button"
                   onClick={() => setMenuOpen(true)}
-                  className="grid h-10 w-10 place-items-center rounded-full border border-blue-100 bg-white text-slate-700 shadow-sm transition hover:border-blue-300 hover:text-blue-800"
+                  className="grid h-11 w-11 place-items-center rounded-full border border-blue-100 bg-white text-slate-700 shadow-sm transition hover:border-blue-300 hover:text-blue-800"
                   aria-label="Open menu"
                   title="Open menu"
                 >
@@ -82,7 +82,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 <button
                   type="button"
                   onClick={() => setProfileOpen(true)}
-                  className="grid h-10 w-10 place-items-center rounded-full border border-blue-100 bg-white text-slate-700 shadow-sm transition hover:border-blue-300 hover:text-blue-800"
+                  className="grid h-11 w-11 place-items-center rounded-full border border-blue-100 bg-white text-slate-700 shadow-sm transition hover:border-blue-300 hover:text-blue-800"
                   aria-label="Edit Profile"
                   title="Edit Profile"
                 >
@@ -97,7 +97,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 </Link>
                 <Link
                   href="/create"
-                  className="inline-flex items-center gap-2 rounded-full bg-blue-700 px-3 py-2 text-sm font-semibold text-white shadow-card transition hover:-translate-y-0.5 hover:bg-blue-800 sm:px-4"
+                  className="inline-flex min-h-11 items-center gap-2 rounded-full bg-blue-700 px-3 py-2 text-sm font-semibold text-white shadow-card transition hover:-translate-y-0.5 hover:bg-blue-800 sm:px-4"
                   aria-label="Start New Listing"
                 >
                   <Plus size={16} />
@@ -136,7 +136,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             className={
               isPresentationMode
                 ? "min-h-screen bg-[#F2F4F8]"
-                : "page-enter mx-auto max-w-7xl px-4 py-9 sm:px-6 sm:py-10 lg:px-8 lg:py-14"
+                : "page-enter mx-auto max-w-7xl px-3 py-6 sm:px-6 sm:py-10 lg:px-8 lg:py-14"
             }
           >
             {!isPresentationMode &&

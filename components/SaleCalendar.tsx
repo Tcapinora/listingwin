@@ -201,7 +201,7 @@ export function SaleCalendar({
 
   return (
     <section
-      className={`rounded-3xl border border-blue-100 bg-white p-6 shadow-card lg:p-8 ${
+      className={`rounded-[2rem] border border-blue-100 bg-white p-4 shadow-card sm:p-6 lg:p-8 ${
         standalone ? "" : "mt-8"
       }`}
     >
@@ -220,7 +220,7 @@ export function SaleCalendar({
             also hold photography, open home, launch, auction, and follow-up
             tasks.
           </p>
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-4 -mx-1 flex gap-2 overflow-x-auto px-1 pb-2 sm:flex-wrap sm:overflow-visible sm:pb-0">
             {eventTypes.map((eventType) => (
               <button
                 key={eventType}
@@ -238,7 +238,7 @@ export function SaleCalendar({
                     title: eventType,
                   }));
                 }}
-                className={`inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-semibold ring-1 ${eventColours[eventType]}`}
+                className={`inline-flex min-h-10 shrink-0 items-center gap-2 rounded-full px-3 py-2 text-xs font-semibold ring-1 ${eventColours[eventType]}`}
                 title={`Drag ${eventType} onto a date`}
               >
                 <GripVertical size={13} />
@@ -248,11 +248,11 @@ export function SaleCalendar({
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-3">
+        <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap">
           <select
             value={month}
             onChange={(event) => setMonth(Number(event.target.value))}
-            className="rounded-2xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm font-semibold text-blue-950 outline-none"
+            className="min-h-12 rounded-2xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm font-semibold text-blue-950 outline-none"
           >
             {monthNames.map((name, index) => (
               <option key={name} value={index}>
@@ -268,13 +268,14 @@ export function SaleCalendar({
             }
             min={1900}
             max={2200}
-            className="rounded-2xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm font-semibold text-blue-950 outline-none"
+            className="min-h-12 rounded-2xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm font-semibold text-blue-950 outline-none"
           />
         </div>
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[1fr_390px]">
-        <div>
+        <div className="overflow-x-auto pb-3">
+          <div className="min-w-[680px]">
           <div className="grid grid-cols-7 gap-2 text-center text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
             {weekDays.map((day) => (
               <div key={day} className="py-2">
@@ -354,9 +355,10 @@ export function SaleCalendar({
               );
             })}
           </div>
+          </div>
         </div>
 
-        <aside className="rounded-3xl bg-blue-950 p-5 text-white">
+        <aside className="rounded-[2rem] bg-blue-950 p-4 text-white sm:p-5">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-200">
             Selected date
           </p>
@@ -391,7 +393,7 @@ export function SaleCalendar({
                   onChange={(event) =>
                     setDraft({ ...draft, time: event.target.value })
                   }
-                  className="w-full rounded-2xl border border-white/10 bg-white px-4 py-3 text-sm font-semibold text-blue-950 outline-none"
+                  className="min-h-12 w-full rounded-2xl border border-white/10 bg-white px-4 py-3 text-sm font-semibold text-blue-950 outline-none"
                 />
               </label>
               <label>
@@ -408,7 +410,7 @@ export function SaleCalendar({
                       ? "Styling consultation"
                       : "Painter quote"
                   }
-                  className="w-full rounded-2xl border border-white/10 bg-white px-4 py-3 text-sm font-semibold text-blue-950 outline-none"
+                  className="min-h-12 w-full rounded-2xl border border-white/10 bg-white px-4 py-3 text-sm font-semibold text-blue-950 outline-none"
                 />
               </label>
             </div>
@@ -418,7 +420,7 @@ export function SaleCalendar({
                 setDraft({ ...draft, supplier: event.target.value })
               }
               placeholder="Supplier or business name"
-              className="rounded-2xl border border-white/10 bg-white px-4 py-3 text-sm font-semibold text-blue-950 outline-none"
+              className="min-h-12 rounded-2xl border border-white/10 bg-white px-4 py-3 text-sm font-semibold text-blue-950 outline-none"
             />
             <input
               value={draft.contact}
@@ -426,7 +428,7 @@ export function SaleCalendar({
                 setDraft({ ...draft, contact: event.target.value })
               }
               placeholder="Contact name, phone, or email"
-              className="rounded-2xl border border-white/10 bg-white px-4 py-3 text-sm font-semibold text-blue-950 outline-none"
+              className="min-h-12 rounded-2xl border border-white/10 bg-white px-4 py-3 text-sm font-semibold text-blue-950 outline-none"
             />
             <textarea
               value={draft.taskDetails}
@@ -449,7 +451,7 @@ export function SaleCalendar({
             <button
               type="button"
               onClick={addEvent}
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-blue-900"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-blue-900"
             >
               <Plus size={16} />
               Save to date

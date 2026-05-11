@@ -204,8 +204,8 @@ export function HeroPresentation({
   const heroWriteup = limitWords(generatePropertyWriteup(details), 72);
 
   return (
-    <section className="presentation-slide relative overflow-hidden rounded-[2.75rem] bg-gray-950 text-white shadow-soft">
-      <div className="relative aspect-[16/8] min-h-[560px]">
+    <section className="presentation-slide relative overflow-hidden rounded-[2rem] bg-gray-950 text-white shadow-soft sm:rounded-[2.75rem]">
+      <div className="relative aspect-[4/5] min-h-[520px] sm:aspect-[16/8] sm:min-h-[560px]">
         {propertyPhoto ? (
           <Image
             src={propertyPhoto}
@@ -217,14 +217,14 @@ export function HeroPresentation({
           />
         ) : null}
         <div className="absolute inset-0 bg-gradient-to-r from-black/82 via-black/42 to-transparent" />
-        <div className="absolute bottom-8 left-6 w-[calc(100%-3rem)] max-w-full sm:bottom-12 sm:left-10 sm:w-[calc(100%-5rem)] lg:left-14 lg:w-auto lg:max-w-4xl">
+        <div className="absolute bottom-7 left-5 w-[calc(100%-2.5rem)] max-w-full sm:bottom-12 sm:left-10 sm:w-[calc(100%-5rem)] lg:left-14 lg:w-auto lg:max-w-4xl">
           <p className="text-sm font-semibold uppercase tracking-[0.28em] text-gray-200">
             Vendor presentation
           </p>
-          <h1 className="mt-5 max-w-[32rem] break-words text-5xl font-semibold leading-[0.98] tracking-tight sm:max-w-[44rem] sm:text-6xl lg:max-w-4xl">
+          <h1 className="mt-4 max-w-[32rem] break-words text-4xl font-semibold leading-[1.02] tracking-tight sm:mt-5 sm:max-w-[44rem] sm:text-6xl lg:max-w-4xl">
             {details.address || "Property address"}
           </h1>
-          <p className="mt-7 max-w-[34rem] text-base leading-7 text-gray-100 sm:max-w-[42rem] sm:text-lg sm:leading-8 lg:max-w-3xl">
+          <p className="mt-5 max-w-[34rem] text-sm leading-6 text-gray-100 sm:mt-7 sm:max-w-[42rem] sm:text-lg sm:leading-8 lg:max-w-3xl">
             {heroWriteup}
           </p>
         </div>

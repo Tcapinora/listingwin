@@ -192,7 +192,7 @@ export function DraggableSignboard({
               event.stopPropagation();
               beginDrag(event, "resize");
             }}
-            className="absolute -bottom-4 -right-4 grid h-12 w-12 touch-none place-items-center rounded-full bg-blue-700 text-white shadow-card ring-4 ring-white transition hover:bg-blue-800"
+          className="absolute -bottom-5 -right-5 grid h-14 w-14 touch-none place-items-center rounded-full bg-blue-700 text-white shadow-card ring-4 ring-white transition hover:bg-blue-800 sm:h-12 sm:w-12"
             aria-label="Resize signboard"
             title="Drag to resize signboard"
           >

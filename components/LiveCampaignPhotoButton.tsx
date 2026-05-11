@@ -22,10 +22,10 @@ export function LiveCampaignPhotoButton({
   const [status, setStatus] = useState<"idle" | "loading" | "saved">("idle");
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
       <label
         htmlFor={inputId}
-        className={`inline-flex cursor-pointer items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold shadow-card transition hover:-translate-y-0.5 ${
+        className={`inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold shadow-card transition hover:-translate-y-0.5 ${
           tone === "dark"
             ? "bg-blue-700 text-white hover:bg-blue-800"
             : "bg-white text-blue-950 hover:bg-blue-50"
@@ -63,7 +63,7 @@ export function LiveCampaignPhotoButton({
 
           setStatus("loading");
           const nextPhotos = await Promise.all(
-            files.map((file) => fileToOptimizedDataUrl(file, 1400, 0.82)),
+            files.map((file) => fileToOptimizedDataUrl(file, 1200, 0.78)),
           );
 
           onChange([...photos, ...nextPhotos].slice(0, MAX_IMAGES));
@@ -73,7 +73,7 @@ export function LiveCampaignPhotoButton({
         }}
       />
       <span
-        className={`inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-semibold ${
+        className={`inline-flex min-h-10 items-center justify-center gap-2 rounded-full px-3 py-2 text-xs font-semibold ${
           tone === "dark"
             ? "bg-white/10 text-blue-100 ring-1 ring-white/10"
             : "bg-blue-50 text-blue-900 ring-1 ring-blue-100"
