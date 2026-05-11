@@ -8,22 +8,22 @@ export default function Home() {
       <section className="mx-auto flex min-h-screen w-full max-w-6xl flex-col items-center justify-center px-6 py-12 text-center">
         <div className="mb-10 flex items-center justify-center">
           <Image
-            src="/brand/listingwin-mark.svg"
+            src="/brand/listingwin-mark-exact.png"
             alt="ListingWin trophy icon"
-            width={92}
-            height={92}
+            width={647}
+            height={569}
             priority
-            className="h-20 w-20 sm:h-24 sm:w-24"
+            className="h-auto w-24 sm:w-28"
           />
         </div>
 
         <Image
-          src="/brand/listingwin-lockup.svg"
+          src="/brand/listingwin-lockup-exact.png"
           alt="ListingWin"
-          width={476}
-          height={112}
+          width={1333}
+          height={255}
           priority
-          className="h-auto w-full max-w-[420px] sm:max-w-[520px]"
+          className="h-auto w-full max-w-[520px] sm:max-w-[620px]"
         />
 
         <h1 className="sr-only">ListingWin</h1>

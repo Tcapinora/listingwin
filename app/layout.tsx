@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "ListingWin",
   description: "Premium vendor presentation workspace for real estate agents",
   icons: {
-    icon: "/brand/listingwin-mark.svg",
+    icon: "/brand/listingwin-mark-exact.png",
   },
 };
 

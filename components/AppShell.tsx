@@ -52,11 +52,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <Link href="/dashboard" className="flex items-center gap-3">
                 <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#1F2A4A] shadow-card">
                   <Image
-                    src="/brand/listingwin-mark-light.svg"
+                    src="/brand/listingwin-mark-light-exact.png"
                     alt="ListingWin"
-                    width={28}
-                    height={28}
-                    className="h-7 w-7"
+                    width={647}
+                    height={568}
+                    className="h-7 w-7 object-contain"
                   />
                 </span>
                 <span>
@@ -172,11 +172,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   >
                     <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#1F2A4A]">
                       <Image
-                        src="/brand/listingwin-mark-light.svg"
+                        src="/brand/listingwin-mark-light-exact.png"
                         alt="ListingWin"
-                        width={28}
-                        height={28}
-                        className="h-7 w-7"
+                        width={647}
+                        height={568}
+                        className="h-7 w-7 object-contain"
                       />
                     </span>
                     <span>
