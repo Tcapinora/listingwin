@@ -1656,17 +1656,19 @@ export function BuyerMatchEngineSection({
       ],
     });
     setDraft({
-      ...draft,
       id: "",
       name: "",
       phone: "",
       contactType: draft.contactType,
+      status: draft.status,
       tags: [],
       budgetMin: "",
       budgetMax: "",
       suburbs: "",
       beds: "",
       notes: "",
+      lastContact: "",
+      nextFollowUp: "",
     });
   }
 
@@ -1749,7 +1751,7 @@ export function BuyerMatchEngineSection({
                 <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">
                   {buyer.notes}
                 </p>
-                {buyer.tags.length ? (
+                {buyer.tags?.length ? (
                   <div className="mt-4 flex flex-wrap gap-2">
                     {buyer.tags.map((tag) => (
                       <span

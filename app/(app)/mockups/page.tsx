@@ -245,10 +245,17 @@ export default function MockupsPage() {
   ]);
 
   const updateAsset = async (assetKey: AssetKey, value: string) => {
-    const nextValue =
-      value && (assetKey === "signboard1" || assetKey === "signboard2")
-        ? await autoCutoutImage(value)
-        : value;
+    let nextValue = value;
+
+    if (value && (assetKey === "signboard1" || assetKey === "signboard2")) {
+      try {
+        nextValue = await autoCutoutImage(value);
+      } catch {
+        // If automatic cutout fails on an unusual file, keep the original
+        // upload rather than blocking the agent during the appraisal.
+        nextValue = value;
+      }
+    }
 
     setListing((current) => ({
       ...current,
@@ -260,6 +267,17 @@ export default function MockupsPage() {
         ...current.assets,
         [assetKey]: nextValue,
       },
+      signboardOverlays:
+        assetKey === "signboard1" || assetKey === "signboard2"
+          ? {
+              ...current.signboardOverlays,
+              [assetKey]:
+                current.signboardOverlays[assetKey] ||
+                (assetKey === "signboard1"
+                  ? { x: 58, y: 58, width: 24 }
+                  : { x: 46, y: 58, width: 24 }),
+            }
+          : current.signboardOverlays,
     }));
   };
 
@@ -373,7 +391,7 @@ export default function MockupsPage() {
 
       <details
         className="group rounded-[2rem] bg-white p-4 shadow-card ring-1 ring-blue-50 no-print sm:p-5"
-        open={generationState === "success" || hasAnySignboard}
+        open
       >
         <summary className="flex cursor-pointer list-none items-center justify-between gap-4 rounded-[1.5rem] bg-blue-50 px-4 py-4">
         <span>

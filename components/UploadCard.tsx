@@ -107,6 +107,12 @@ export function UploadCard({
               0.8,
             )
               .then((value) => onChange(assetKey, value))
+              .catch(() => {
+                // Keep the upload usable if browser canvas processing fails.
+                const reader = new FileReader();
+                reader.onload = () => onChange(assetKey, String(reader.result));
+                reader.readAsDataURL(file);
+              })
               .finally(() => setUploading(false));
             event.currentTarget.value = "";
           }}

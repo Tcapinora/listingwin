@@ -1,12 +1,19 @@
 import type { BuyerLead, FollowUpReminder, ListingState } from "@/lib/types";
 
-function parsePrice(value: string) {
-  const digits = value.replace(/[^\d]/g, "");
+function safeText(value: unknown) {
+  return typeof value === "string" ? value : "";
+}
+
+function parsePrice(value: unknown) {
+  const digits = safeText(value).replace(/[^\d]/g, "");
   return digits ? Number(digits) : 0;
 }
 
-function suburbFromAddress(address: string) {
-  const parts = address.split(",").map((part) => part.trim()).filter(Boolean);
+function suburbFromAddress(address: unknown) {
+  const parts = safeText(address)
+    .split(",")
+    .map((part) => part.trim())
+    .filter(Boolean);
   return parts[parts.length - 1] || "";
 }
 
@@ -33,19 +40,23 @@ export function getBuyerMatches(listing: ListingState) {
       const min = parsePrice(buyer.budgetMin);
       const max = parsePrice(buyer.budgetMax);
       const budgetMatch = guide && min && max ? guide >= min && guide <= max : false;
+      const buyerSuburbs = safeText(buyer.suburbs);
+      const buyerTags = Array.isArray(buyer.tags) ? buyer.tags : [];
       const suburbMatch = suburb
-        ? buyer.suburbs.toLowerCase().includes(suburb)
+        ? buyerSuburbs.toLowerCase().includes(suburb)
         : false;
       const score =
         statusScore(buyer.status) +
         (budgetMatch ? 42 : 12) +
         (suburbMatch ? 20 : 6) +
         (buyer.contactType === "Buyer Agent" ? 8 : 0) +
-        Math.min(10, buyer.tags.length * 2) +
-        (buyer.beds ? 8 : 0);
+        Math.min(10, buyerTags.length * 2) +
+        (safeText(buyer.beds) ? 8 : 0);
 
       return {
         ...buyer,
+        suburbs: buyerSuburbs,
+        tags: buyerTags,
         score: Math.min(100, score),
         budgetMatch,
         suburbMatch,
