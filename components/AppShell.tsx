@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   ArrowRight,
+  CalendarDays,
   FileCheck2,
   LayoutDashboard,
   Menu,
@@ -22,6 +23,7 @@ import { WorkflowPath } from "@/components/WorkflowPath";
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/mockups", label: "Builder", icon: Sparkles },
+  { href: "/calendar", label: "Calendar", icon: CalendarDays },
   { href: "/draft", label: "Agent Workspace", icon: MonitorPlay },
   { href: "/account", label: "Settings", icon: UserCog },
 ];

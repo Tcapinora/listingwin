@@ -59,6 +59,11 @@ export type SaleCalendarEvent = {
   date: string;
   title: string;
   type: string;
+  time?: string;
+  notes?: string;
+  supplier?: string;
+  contact?: string;
+  taskDetails?: string;
 };
 
 export type BuyerLeadStatus = "Hot" | "Warm" | "Cold";

@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import {
   ArrowRight,
-  CheckCircle2,
   ChevronDown,
   Loader2,
   Trash2,
@@ -194,6 +194,7 @@ function StepHeader({
 }
 
 export default function MockupsPage() {
+  const router = useRouter();
   const { listing, setListing } = useListing();
   const { profile, updateProfile } = useAgentProfile();
   const [activeStep, setActiveStep] = useState<BuilderStepId>("signboards");
@@ -322,7 +323,10 @@ export default function MockupsPage() {
               disabled={generationState === "loading"}
               onClick={() => {
                 setGenerationState("loading");
-                window.setTimeout(() => setGenerationState("success"), 900);
+                window.setTimeout(() => {
+                  setGenerationState("success");
+                  router.push("/finish");
+                }, 650);
               }}
               className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-700 px-6 py-4 text-base font-semibold text-white shadow-card transition hover:bg-blue-800 disabled:cursor-wait disabled:bg-blue-500 sm:w-auto"
             >
@@ -333,25 +337,16 @@ export default function MockupsPage() {
                 </>
               ) : generationState === "success" ? (
                 <>
-                  <CheckCircle2 size={18} />
-                  Vendor presentation ready.
+                  <Loader2 className="animate-spin" size={18} />
+                  Opening next step...
                 </>
               ) : (
                 <>
                   <WandSparkles size={18} />
-                  Generate Vendor Presentation
+                  Create Presentation
                 </>
               )}
             </button>
-            {generationState === "success" ? (
-              <Link
-                href="/finish"
-                className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full border border-blue-200 bg-white px-6 py-3 text-sm font-semibold text-blue-900 shadow-sm sm:w-auto"
-              >
-                Preview Vendor Presentation
-                <ArrowRight size={16} />
-              </Link>
-            ) : null}
           </div>
         </div>
       </section>
@@ -810,7 +805,7 @@ export default function MockupsPage() {
           href="/finish"
           className="inline-flex items-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card"
         >
-          Preview Vendor Presentation
+          Create Presentation
           <ArrowRight size={16} />
         </Link>
       </div>

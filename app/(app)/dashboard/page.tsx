@@ -5,6 +5,7 @@ import Link from "next/link";
 import {
   ArrowRight,
   Building2,
+  CalendarDays,
   CheckCircle2,
   Clock3,
   MonitorPlay,
@@ -99,6 +100,13 @@ export default function DashboardPage() {
               >
                 <MonitorPlay size={17} />
                 Open Agent Workspace
+              </Link>
+              <Link
+                href="/calendar"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-blue-300 hover:text-blue-900"
+              >
+                <CalendarDays size={17} />
+                Calendar Only
               </Link>
               <button
                 type="button"
