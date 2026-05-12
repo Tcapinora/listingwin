@@ -30,7 +30,17 @@ export default function SignInPage() {
 
         <div className="flex justify-center lg:justify-end">
           {clerkEnabled ? (
-            <SignIn routing="path" path="/sign-in" signUpUrl="/sign-up" />
+            <div className="w-full max-w-md">
+              <SignIn routing="path" path="/sign-in" signUpUrl="/sign-up" />
+              <div className="mt-4 rounded-[1.25rem] bg-white/85 px-5 py-4 text-center shadow-sm ring-1 ring-blue-100">
+                <Link
+                  href="/forgot-password"
+                  className="text-sm font-semibold text-[#008AD8] transition hover:text-[#0069a6]"
+                >
+                  Forgot password?
+                </Link>
+              </div>
+            </div>
           ) : (
             <div className="w-full max-w-md rounded-[2rem] bg-white p-7 shadow-soft ring-1 ring-blue-100">
               <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
