@@ -143,11 +143,22 @@ function normalizeComparableProperty(
     ...fallback,
     ...value,
     address: normalizeString(value?.address),
+    suburb: normalizeString(value?.suburb),
+    state: normalizeString(value?.state),
+    soldPrice: normalizeString(value?.soldPrice),
+    saleDate: normalizeString(value?.saleDate),
     beds: normalizeString(value?.beds),
     baths: normalizeString(value?.baths),
     cars: normalizeString(value?.cars),
     blockSize: normalizeString(value?.blockSize),
+    landSize: normalizeString(value?.landSize || value?.blockSize),
+    propertyType: normalizeString(value?.propertyType),
+    agency: normalizeString(value?.agency),
+    agentName: normalizeString(value?.agentName),
+    description: normalizeString(value?.description),
+    notes: normalizeString(value?.notes),
     url: normalizeString(value?.url),
+    sourceUrl: normalizeString(value?.sourceUrl || value?.url),
   };
 }
 

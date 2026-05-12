@@ -1332,7 +1332,7 @@ export function MarketExpertSection({ listing }: { listing: ListingState }) {
 
       <div className="mt-7 grid gap-4 lg:grid-cols-3">
         {comparables.map((property, index) => {
-          const url = normaliseUrl(property.url);
+          const url = normaliseUrl(property.sourceUrl || property.url);
           return (
             <article
               key={`${property.address}-${index}`}
@@ -1344,6 +1344,19 @@ export function MarketExpertSection({ listing }: { listing: ListingState }) {
               <h3 className="mt-3 min-h-16 text-xl font-semibold tracking-tight text-slate-950">
                 {property.address || "Comparable property"}
               </h3>
+              {(property.soldPrice || property.saleDate) && (
+                <div className="mt-4 rounded-2xl bg-white p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                    Sale result
+                  </p>
+                  <p className="mt-2 text-lg font-semibold text-blue-950">
+                    {property.soldPrice || "Price not added"}
+                  </p>
+                  <p className="mt-1 text-xs text-slate-500">
+                    {property.saleDate || "Sale date not added"}
+                  </p>
+                </div>
+              )}
 
               <div className="mt-5 grid grid-cols-4 gap-2 text-sm">
                 <div className="rounded-2xl bg-white p-3">
@@ -1370,15 +1383,49 @@ export function MarketExpertSection({ listing }: { listing: ListingState }) {
                 <div className="rounded-2xl bg-white p-3">
                   <Ruler className="text-blue-700" size={17} />
                   <p className="mt-2 font-semibold">
-                    {property.blockSize || "-"}
+                    {property.landSize || property.blockSize || "-"}
                   </p>
                   <p className="text-xs text-slate-500">Land</p>
                 </div>
               </div>
 
+              {(property.propertyType || property.agency || property.agentName) && (
+                <div className="mt-4 rounded-2xl bg-white p-4 text-sm leading-6 text-slate-600">
+                  {property.propertyType ? (
+                    <p>
+                      <span className="font-semibold text-slate-950">Type:</span>{" "}
+                      {property.propertyType}
+                    </p>
+                  ) : null}
+                  {property.agency ? (
+                    <p>
+                      <span className="font-semibold text-slate-950">Agency:</span>{" "}
+                      {property.agency}
+                    </p>
+                  ) : null}
+                  {property.agentName ? (
+                    <p>
+                      <span className="font-semibold text-slate-950">Agent:</span>{" "}
+                      {property.agentName}
+                    </p>
+                  ) : null}
+                </div>
+              )}
+
+              {(property.notes || property.description) && (
+                <div className="mt-4 rounded-2xl bg-white p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                    Why this comparable matters
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">
+                    {property.notes || property.description}
+                  </p>
+                </div>
+              )}
+
               <div className="mt-5 rounded-2xl bg-white p-4">
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
-                  Saved market URL
+                  Source listing URL
                 </p>
                 {url ? (
                   <a
@@ -1387,7 +1434,7 @@ export function MarketExpertSection({ listing }: { listing: ListingState }) {
                     rel="noreferrer"
                     className="mt-2 flex items-center gap-2 break-all text-sm font-semibold text-blue-800"
                   >
-                    Open property link
+                    View Original Listing
                     <ExternalLink size={14} />
                   </a>
                 ) : (

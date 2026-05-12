@@ -51,6 +51,9 @@ export default function PresentationPage() {
     presentationListing,
     presentationProfile,
   );
+  const presentationIntro =
+    presentationProfile.defaultPresentationIntro ||
+    "This is the seller-facing emotional moment: show how their property will look, how buyers will experience it, and why momentum starts with this agent.";
   const propertyPhotos = getPropertyPhotos(presentationListing);
   const updatePropertyPhotos = (photos: string[]) => {
     if (demoMode) {
@@ -217,9 +220,7 @@ export default function PresentationPage() {
                 Make the seller picture choosing this campaign.
               </h2>
               <p className="mt-5 max-w-3xl text-base leading-8 text-slate-600">
-                This is the seller-facing emotional moment: show how their
-                property will look, how buyers will experience it, and why
-                momentum starts with this agent.
+                {presentationIntro}
               </p>
             </div>
             <div className="rounded-[1.75rem] bg-blue-50/80 p-5 text-sm leading-7 text-blue-900 ring-1 ring-blue-100">
@@ -283,7 +284,8 @@ export default function PresentationPage() {
               {[
                 [
                   "Our difference",
-                  "The seller can see the campaign before it exists: portals, social, brochures, flyers, signboards, open homes, timing, and buyer demand.",
+                  presentationProfile.defaultMarketingText ||
+                    "The seller can see the campaign before it exists: portals, social, brochures, flyers, signboards, open homes, timing, and buyer demand.",
                 ],
                 [
                   "Team and experience",

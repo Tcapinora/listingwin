@@ -1,7 +1,16 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowRight, ChevronDown, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  ChevronDown,
+  ExternalLink,
+  Plus,
+  Sparkles,
+  Wand2,
+  X,
+} from "lucide-react";
 import { FlowProgress } from "@/components/FlowProgress";
 import { useListing } from "@/components/ListingProvider";
 import { BuyerMatchEngineSection } from "@/components/ValueSections";
@@ -20,6 +29,8 @@ const propertyTypes = [
 export default function PropertyDetailsPage() {
   const router = useRouter();
   const { listing, setListing } = useListing();
+  const [showComparableOptions, setShowComparableOptions] = useState(false);
+  const [smartPasteOpen, setSmartPasteOpen] = useState(false);
 
   const updateDetail = (fieldId: keyof ListingDetails, value: string) => {
     setListing((current) => ({
@@ -44,10 +55,64 @@ export default function PropertyDetailsPage() {
             ? {
                 ...property,
                 [fieldId]: value,
+                ...(fieldId === "landSize" ? { blockSize: value } : {}),
+                ...(fieldId === "blockSize" ? { landSize: value } : {}),
               }
             : property,
       ),
     }));
+  };
+
+  const blankComparable = (): ComparableProperty => ({
+    address: "",
+    suburb: "",
+    state: "",
+    soldPrice: "",
+    saleDate: "",
+    beds: "",
+    baths: "",
+    cars: "",
+    blockSize: "",
+    landSize: "",
+    propertyType: "",
+    agency: "",
+    agentName: "",
+    description: "",
+    notes: "",
+    url: "",
+    sourceUrl: "",
+  });
+
+  const addManualComparable = () => {
+    setListing((current) => ({
+      ...current,
+      comparableProperties: [...current.comparableProperties, blankComparable()],
+    }));
+    setShowComparableOptions(false);
+  };
+
+  const saveSmartComparable = (property: ComparableProperty) => {
+    setListing((current) => {
+      const emptyIndex = current.comparableProperties.findIndex(
+        (item) => !item.address && !item.url && !item.sourceUrl,
+      );
+
+      if (emptyIndex >= 0) {
+        return {
+          ...current,
+          comparableProperties: current.comparableProperties.map((item, index) =>
+            index === emptyIndex ? property : item,
+          ),
+        };
+      }
+
+      return {
+        ...current,
+        comparableProperties: [...current.comparableProperties, property],
+      };
+    });
+    setSmartPasteOpen(false);
+    setShowComparableOptions(false);
   };
 
   return (
@@ -174,7 +239,7 @@ export default function PropertyDetailsPage() {
               <span>
                 Market positioning and pricing strategy
                 <span className="mt-1 block text-xs font-medium leading-5 text-blue-800/70">
-                  Add the evidence that supports your pricing conversation.
+                  Paste, generate, review, and save comparable sales evidence.
                 </span>
               </span>
               <ChevronDown
@@ -225,12 +290,98 @@ export default function PropertyDetailsPage() {
                 />
               </label>
 
+              <div className="rounded-[1.5rem] bg-white p-5 ring-1 ring-blue-100">
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">
+                      Comparable sales
+                    </p>
+                    <h3 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">
+                      Add market evidence without heavy typing.
+                    </h3>
+                    <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+                      Use Smart Paste to organise copied listing or sale notes
+                      into a comparable sale. ListingWin never visits or scrapes
+                      external property websites.
+                    </p>
+                  </div>
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setShowComparableOptions((isOpen) => !isOpen)
+                      }
+                      className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card transition hover:bg-blue-800 lg:w-auto"
+                    >
+                      <Plus size={16} />
+                      Add Comparable Sale
+                    </button>
+                    {showComparableOptions ? (
+                      <div className="absolute right-0 z-20 mt-3 w-72 rounded-3xl bg-white p-3 shadow-soft ring-1 ring-blue-100">
+                        <button
+                          type="button"
+                          onClick={addManualComparable}
+                          className="w-full rounded-2xl px-4 py-3 text-left transition hover:bg-slate-50"
+                        >
+                          <span className="block text-sm font-semibold text-slate-950">
+                            Manual Entry
+                          </span>
+                          <span className="mt-1 block text-xs leading-5 text-slate-500">
+                            Add a blank comparable sale card and fill only what
+                            you need.
+                          </span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSmartPasteOpen(true);
+                            setShowComparableOptions(false);
+                          }}
+                          className="mt-1 w-full rounded-2xl bg-blue-50 px-4 py-3 text-left transition hover:bg-blue-100"
+                        >
+                          <span className="flex items-center gap-2 text-sm font-semibold text-blue-950">
+                            <Wand2 size={15} />
+                            Smart Paste
+                          </span>
+                          <span className="mt-1 block text-xs leading-5 text-blue-900/70">
+                            Paste copied sales text, generate fields, review,
+                            then save.
+                          </span>
+                        </button>
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
+              </div>
+
               <div className="grid gap-4 xl:grid-cols-3">
                 {listing.comparableProperties.map((property, index) => (
-                  <div key={index} className="rounded-2xl bg-white p-4 ring-1 ring-slate-100">
-                    <p className="text-sm font-semibold text-slate-950">
-                      Market option {index + 1}
-                    </p>
+                  <div
+                    key={index}
+                    className="rounded-2xl bg-white p-4 ring-1 ring-slate-100"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <p className="text-sm font-semibold text-slate-950">
+                          Comparable sale {index + 1}
+                        </p>
+                        <p className="mt-1 text-xs leading-5 text-slate-500">
+                          Review generated details before using them in the
+                          vendor presentation.
+                        </p>
+                      </div>
+                      {property.sourceUrl || property.url ? (
+                        <a
+                          href={normalizeUrl(property.sourceUrl || property.url)}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex shrink-0 items-center gap-1 rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-800"
+                        >
+                          View Original Listing
+                          <ExternalLink size={12} />
+                        </a>
+                      ) : null}
+                    </div>
                     <div className="mt-3 grid gap-3 sm:grid-cols-4 xl:grid-cols-2">
                       <input
                         value={property.address}
@@ -241,14 +392,19 @@ export default function PropertyDetailsPage() {
                         className="rounded-xl border-0 bg-slate-50 px-4 py-3 text-sm ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:col-span-4 xl:col-span-2"
                       />
                       {[
+                        ["soldPrice", "Sold price"],
+                        ["saleDate", "Sale date"],
                         ["beds", "Beds"],
                         ["baths", "Baths"],
                         ["cars", "Cars"],
-                        ["blockSize", "Block size"],
+                        ["landSize", "Land size"],
+                        ["propertyType", "Type"],
                       ].map(([fieldId, label]) => (
                         <input
                           key={fieldId}
-                          value={property[fieldId as keyof ComparableProperty]}
+                          value={
+                            property[fieldId as keyof ComparableProperty] || ""
+                          }
                           onChange={(event) =>
                             updateComparable(
                               index,
@@ -261,12 +417,37 @@ export default function PropertyDetailsPage() {
                         />
                       ))}
                       <input
-                        value={property.url}
+                        value={property.agency || ""}
                         onChange={(event) =>
-                          updateComparable(index, "url", event.target.value)
+                          updateComparable(index, "agency", event.target.value)
                         }
-                        placeholder="Property URL"
+                        placeholder="Agency"
+                        className="rounded-xl border-0 bg-slate-50 px-4 py-3 text-sm ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                      <input
+                        value={property.agentName || ""}
+                        onChange={(event) =>
+                          updateComparable(index, "agentName", event.target.value)
+                        }
+                        placeholder="Agent"
+                        className="rounded-xl border-0 bg-slate-50 px-4 py-3 text-sm ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                      <input
+                        value={property.sourceUrl || property.url}
+                        onChange={(event) =>
+                          updateComparable(index, "sourceUrl", event.target.value)
+                        }
+                        placeholder="Source Listing URL"
                         className="rounded-xl border-0 bg-slate-50 px-4 py-3 text-sm ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:col-span-4 xl:col-span-2"
+                      />
+                      <textarea
+                        value={property.notes || ""}
+                        onChange={(event) =>
+                          updateComparable(index, "notes", event.target.value)
+                        }
+                        placeholder="Notes / why this is comparable"
+                        rows={3}
+                        className="resize-none rounded-xl border-0 bg-slate-50 px-4 py-3 text-sm ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:col-span-4 xl:col-span-2"
                       />
                     </div>
                   </div>
@@ -318,6 +499,289 @@ export default function PropertyDetailsPage() {
           <ArrowRight size={18} />
         </button>
       </form>
+
+      {smartPasteOpen ? (
+        <SmartPasteComparableModal
+          onClose={() => setSmartPasteOpen(false)}
+          onSave={saveSmartComparable}
+        />
+      ) : null}
     </>
   );
+}
+
+function SmartPasteComparableModal({
+  onClose,
+  onSave,
+}: {
+  onClose: () => void;
+  onSave: (property: ComparableProperty) => void;
+}) {
+  const [pastedText, setPastedText] = useState("");
+  const [generated, setGenerated] = useState<ComparableProperty | null>(null);
+  const [message, setMessage] = useState("");
+
+  const updateGenerated = (
+    fieldId: keyof ComparableProperty,
+    value: string,
+  ) => {
+    setGenerated((current) =>
+      current
+        ? {
+            ...current,
+            [fieldId]: value,
+          }
+        : current,
+    );
+  };
+
+  const generateComparable = () => {
+    const parsed = parseComparableText(pastedText);
+    const detectedCount = [
+      parsed.address,
+      parsed.soldPrice,
+      parsed.beds,
+      parsed.baths,
+      parsed.cars,
+      parsed.landSize,
+      parsed.propertyType,
+      parsed.agency,
+      parsed.agentName,
+      parsed.description,
+    ].filter(Boolean).length;
+
+    setGenerated(parsed);
+    setMessage(
+      detectedCount < 3
+        ? "We couldn’t detect enough property details. Please add the missing information manually."
+        : "Please review all generated details before saving.",
+    );
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 bg-slate-950/45 px-4 py-6 backdrop-blur-sm">
+      <div className="mx-auto max-h-[calc(100vh-3rem)] max-w-4xl overflow-y-auto rounded-[2rem] bg-white p-6 shadow-soft ring-1 ring-blue-100 sm:p-8">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
+              Paste, generate, review, save
+            </p>
+            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">
+              Smart Paste Comparable Sale
+            </h2>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
+              Paste listing or sales information below. ListingWin will
+              organise it into a comparable sale for you to review before
+              saving.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-slate-100 text-slate-500 transition hover:bg-slate-200 hover:text-slate-950"
+            aria-label="Close Smart Paste"
+            title="Close Smart Paste"
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        <div className="mt-6 grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+          <div>
+            <label>
+              <span className="text-sm font-semibold text-slate-800">
+                Pasted property information
+              </span>
+              <textarea
+                value={pastedText}
+                onChange={(event) => setPastedText(event.target.value)}
+                placeholder="Paste text copied from realestate.com.au, Domain, CRM notes, sales reports, agency websites, or your own notes..."
+                rows={14}
+                className="mt-2 w-full resize-none rounded-3xl border-0 bg-slate-50 px-5 py-4 text-sm leading-6 text-slate-950 shadow-inner outline-none ring-1 ring-slate-200 transition focus:bg-white focus:ring-2 focus:ring-blue-500"
+              />
+            </label>
+            <button
+              type="button"
+              onClick={generateComparable}
+              disabled={!pastedText.trim()}
+              className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:bg-slate-300"
+            >
+              <Wand2 size={16} />
+              Generate Comparable Sale
+            </button>
+            <p className="mt-3 text-xs leading-5 text-slate-500">
+              Source URLs are stored only as reference links. ListingWin does
+              not visit, scrape, crawl, or process external websites.
+            </p>
+          </div>
+
+          <div className="rounded-3xl bg-blue-50/60 p-5 ring-1 ring-blue-100">
+            <p className="text-sm font-semibold text-blue-950">
+              Review before saving
+            </p>
+            <p className="mt-2 text-xs leading-5 text-blue-900/70">
+              {message || "Generated fields will appear here for review."}
+            </p>
+
+            {generated ? (
+              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                {smartPasteFields.map((field) => (
+                  <label
+                    key={field.id}
+                    className={field.large ? "sm:col-span-2" : ""}
+                  >
+                    <span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+                      {field.label}
+                    </span>
+                    {field.large ? (
+                      <textarea
+                        value={generated[field.id] || ""}
+                        onChange={(event) =>
+                          updateGenerated(field.id, event.target.value)
+                        }
+                        rows={3}
+                        className="mt-2 w-full resize-none rounded-2xl border-0 bg-white px-4 py-3 text-sm text-slate-950 outline-none ring-1 ring-blue-100 focus:ring-2 focus:ring-blue-500"
+                      />
+                    ) : (
+                      <input
+                        value={generated[field.id] || ""}
+                        onChange={(event) =>
+                          updateGenerated(field.id, event.target.value)
+                        }
+                        className="mt-2 w-full rounded-2xl border-0 bg-white px-4 py-3 text-sm text-slate-950 outline-none ring-1 ring-blue-100 focus:ring-2 focus:ring-blue-500"
+                      />
+                    )}
+                  </label>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => onSave(generated)}
+                  className="mt-2 inline-flex items-center justify-center rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card transition hover:bg-blue-800 sm:col-span-2"
+                >
+                  Save Comparable Sale
+                </button>
+              </div>
+            ) : (
+              <div className="mt-5 rounded-3xl bg-white p-5 text-sm leading-6 text-slate-600 ring-1 ring-blue-100">
+                Paste copied property information, then generate. Blank fields
+                are fine; the agent reviews and confirms everything before it
+                appears in the presentation.
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const smartPasteFields: Array<{
+  id: keyof ComparableProperty;
+  label: string;
+  large?: boolean;
+}> = [
+  { id: "address", label: "Property address" },
+  { id: "suburb", label: "Suburb" },
+  { id: "state", label: "State" },
+  { id: "soldPrice", label: "Sold price" },
+  { id: "saleDate", label: "Sale date" },
+  { id: "beds", label: "Beds" },
+  { id: "baths", label: "Baths" },
+  { id: "cars", label: "Cars" },
+  { id: "landSize", label: "Land size" },
+  { id: "propertyType", label: "Property type" },
+  { id: "agency", label: "Agency" },
+  { id: "agentName", label: "Agent name" },
+  { id: "sourceUrl", label: "Source Listing URL", large: true },
+  { id: "description", label: "Property description", large: true },
+  { id: "notes", label: "Notes / reason comparable", large: true },
+];
+
+function parseComparableText(text: string): ComparableProperty {
+  const cleaned = text.replace(/\r/g, "\n").replace(/[ \t]+/g, " ").trim();
+  const lines = cleaned
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+  const joined = lines.join(" ");
+  const addressLine =
+    lines.find((line) =>
+      /^\d+[A-Za-z]?\s+.+\b(street|st|road|rd|avenue|ave|drive|dr|place|pl|court|ct|crescent|cres|terrace|tce|lane|ln|way|parade|pde|close|circuit|circ)\b/i.test(
+        line,
+      ),
+    ) || "";
+  const urlMatch = joined.match(/https?:\/\/\S+/i)?.[0] || "";
+  const priceMatch =
+    joined.match(/(?:sold|sale price|price)\s*(?:for|at|:)?\s*(\$[\d,]+(?:\.\d+)?[kKmM+]*)/i)?.[1] ||
+    joined.match(/\$[\d,]+(?:\.\d+)?[kKmM+]*/)?.[0] ||
+    "";
+  const dateMatch =
+    joined.match(
+      /(?:sold|sale date|date)\s*(?:on|:)?\s*((?:\d{1,2}\s+)?(?:jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\s+\d{4}|\d{1,2}[/-]\d{1,2}[/-]\d{2,4})/i,
+    )?.[1] || "";
+  const beds = extractFeature(joined, ["bed", "beds", "bedroom", "bedrooms"]);
+  const baths = extractFeature(joined, ["bath", "baths", "bathroom", "bathrooms"]);
+  const cars = extractFeature(joined, ["car", "cars", "garage", "garages"]);
+  const landSize =
+    joined.match(/(\d[\d,]*(?:\.\d+)?\s*(?:sqm|m2|ha|acres?))/i)?.[1] ||
+    "";
+  const propertyType =
+    joined.match(/\b(House|Apartment|Townhouse|Unit|Acreage|Land|Villa|Duplex)\b/i)?.[1] ||
+    "";
+  const agency =
+    joined.match(/(?:agency|listed by|sold by)\s*:?\s*([A-Z][A-Za-z&.\-\s]{2,40})/i)?.[1]?.trim() ||
+    "";
+  const agentName =
+    joined.match(/(?:agent|sales agent|contact)\s*:?\s*([A-Z][a-z]+(?:\s+[A-Z][a-z]+){0,2})/i)?.[1] ||
+    "";
+  const suburbState = parseSuburbState(addressLine || joined);
+  const description = lines
+    .filter((line) => line.length > 70 && !line.includes("http"))
+    .slice(0, 2)
+    .join(" ");
+
+  return {
+    address: addressLine,
+    suburb: suburbState.suburb,
+    state: suburbState.state,
+    soldPrice: priceMatch,
+    saleDate: dateMatch,
+    beds,
+    baths,
+    cars,
+    blockSize: landSize,
+    landSize,
+    propertyType,
+    agency,
+    agentName,
+    description,
+    notes: description
+      ? "Similar buyer profile, property style, location, or price evidence. Review and adjust before presenting."
+      : "",
+    url: urlMatch,
+    sourceUrl: urlMatch,
+  };
+}
+
+function extractFeature(text: string, labels: string[]) {
+  const pattern = new RegExp(`(\\d+)\\s*(?:${labels.join("|")})\\b`, "i");
+  return text.match(pattern)?.[1] || "";
+}
+
+function parseSuburbState(text: string) {
+  const match = text.match(
+    /,\s*([A-Za-z][A-Za-z\s'-]+)\s+(QLD|NSW|VIC|SA|WA|TAS|ACT|NT)\b/i,
+  );
+  return {
+    suburb: match?.[1]?.trim() || "",
+    state: match?.[2]?.toUpperCase() || "",
+  };
+}
+
+function normalizeUrl(value: string) {
+  if (!value) {
+    return "";
+  }
+
+  return /^https?:\/\//i.test(value) ? value : `https://${value}`;
 }

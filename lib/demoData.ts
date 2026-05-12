@@ -8,6 +8,8 @@ const signboard = "/demo/signboard.svg";
 export const demoAgentProfile: AgentProfile = {
   agentName: "Alex Morgan",
   agencyName: "ListingWin Realty",
+  agencyAddress: "100 Market Street, Brisbane QLD",
+  officeDetails: "A local appraisal team with campaign, buyer, and vendor support.",
   agencyWebsite: "https://listingwin.example",
   agentInstagramUrl: "https://instagram.com/alexmorganproperty",
   agentFacebookUrl: "https://facebook.com/alexmorganproperty",
@@ -24,6 +26,14 @@ export const demoAgentProfile: AgentProfile = {
   photographyMorning: [],
   photographyAfternoon: [],
   photographyTwilight: [],
+  defaultMarketingText:
+    "The seller can see the campaign before it exists: portals, social, brochures, flyers, signboards, timing, and buyer demand.",
+  defaultPresentationIntro:
+    "This is the seller-facing emotional moment: show how their property will look, how buyers will experience it, and why momentum starts with this agent.",
+  defaultAppraisalDisclaimer:
+    "All pricing guidance is appraisal opinion only and should be reviewed against current market feedback.",
+  defaultVendorFollowUpMessage:
+    "Thanks again for your time today. Here is the campaign plan we discussed and the next step to bring the listing to market.",
 };
 
 export const demoListingState: ListingState = {

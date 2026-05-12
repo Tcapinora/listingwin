@@ -240,7 +240,7 @@ export default function DraftPage() {
           </summary>
           <div className="mt-5 grid gap-4 lg:grid-cols-3">
             {[
-              ["Vendor follow-up copy", writeup],
+              ["Vendor follow-up copy", profile.defaultVendorFollowUpMessage || writeup],
               ["Social caption", socialCaption],
               ["Property strengths", keyFeatures],
               [

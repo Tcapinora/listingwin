@@ -47,11 +47,22 @@ export type SignboardKey = "signboard1" | "signboard2";
 
 export type ComparableProperty = {
   address: string;
+  suburb?: string;
+  state?: string;
+  soldPrice?: string;
+  saleDate?: string;
   beds: string;
   baths: string;
   cars: string;
   blockSize: string;
+  landSize?: string;
+  propertyType?: string;
+  agency?: string;
+  agentName?: string;
+  description?: string;
+  notes?: string;
   url: string;
+  sourceUrl?: string;
 };
 
 export type SaleCalendarEvent = {
@@ -111,6 +122,8 @@ export type ListingState = {
 export type AgentProfile = {
   agentName: string;
   agencyName: string;
+  agencyAddress: string;
+  officeDetails: string;
   agencyWebsite: string;
   agentInstagramUrl: string;
   agentFacebookUrl: string;
@@ -127,6 +140,10 @@ export type AgentProfile = {
   photographyMorning: string[];
   photographyAfternoon: string[];
   photographyTwilight: string[];
+  defaultMarketingText: string;
+  defaultPresentationIntro: string;
+  defaultAppraisalDisclaimer: string;
+  defaultVendorFollowUpMessage: string;
 };
 
 export type SavedPresentation = {
@@ -142,6 +159,8 @@ export type SavedPresentation = {
 export const emptyAgentProfile: AgentProfile = {
   agentName: "",
   agencyName: "",
+  agencyAddress: "",
+  officeDetails: "",
   agencyWebsite: "",
   agentInstagramUrl: "",
   agentFacebookUrl: "",
@@ -158,6 +177,10 @@ export const emptyAgentProfile: AgentProfile = {
   photographyMorning: [],
   photographyAfternoon: [],
   photographyTwilight: [],
+  defaultMarketingText: "",
+  defaultPresentationIntro: "",
+  defaultAppraisalDisclaimer: "",
+  defaultVendorFollowUpMessage: "",
 };
 
 export const emptyListingState: ListingState = {
@@ -193,27 +216,60 @@ export const emptyListingState: ListingState = {
   comparableProperties: [
     {
       address: "",
+      suburb: "",
+      state: "",
+      soldPrice: "",
+      saleDate: "",
       beds: "",
       baths: "",
       cars: "",
       blockSize: "",
+      landSize: "",
+      propertyType: "",
+      agency: "",
+      agentName: "",
+      description: "",
+      notes: "",
       url: "",
+      sourceUrl: "",
     },
     {
       address: "",
+      suburb: "",
+      state: "",
+      soldPrice: "",
+      saleDate: "",
       beds: "",
       baths: "",
       cars: "",
       blockSize: "",
+      landSize: "",
+      propertyType: "",
+      agency: "",
+      agentName: "",
+      description: "",
+      notes: "",
       url: "",
+      sourceUrl: "",
     },
     {
       address: "",
+      suburb: "",
+      state: "",
+      soldPrice: "",
+      saleDate: "",
       beds: "",
       baths: "",
       cars: "",
       blockSize: "",
+      landSize: "",
+      propertyType: "",
+      agency: "",
+      agentName: "",
+      description: "",
+      notes: "",
       url: "",
+      sourceUrl: "",
     },
   ],
   saleCalendarEvents: [],

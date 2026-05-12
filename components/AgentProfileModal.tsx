@@ -20,12 +20,26 @@ const profileFields: Array<{
     | "photographyMorning"
     | "photographyAfternoon"
     | "photographyTwilight"
+    | "defaultMarketingText"
+    | "defaultPresentationIntro"
+    | "defaultAppraisalDisclaimer"
+    | "defaultVendorFollowUpMessage"
   >;
   label: string;
   placeholder: string;
 }> = [
   { id: "agentName", label: "Agent name", placeholder: "Alex Morgan" },
   { id: "agencyName", label: "Agency name", placeholder: "North & Co Property" },
+  {
+    id: "agencyAddress",
+    label: "Agency address",
+    placeholder: "123 Example Street, Brisbane QLD",
+  },
+  {
+    id: "officeDetails",
+    label: "Office details",
+    placeholder: "Inner-west office, appraisal team, support contact...",
+  },
   {
     id: "agencyWebsite",
     label: "Agency website URL",
@@ -53,6 +67,41 @@ const profileFields: Array<{
   },
   { id: "phone", label: "Phone number", placeholder: "0412 345 678" },
   { id: "email", label: "Email", placeholder: "alex@agency.com.au" },
+];
+
+const reusableTextFields: Array<{
+  id:
+    | "defaultMarketingText"
+    | "defaultPresentationIntro"
+    | "defaultAppraisalDisclaimer"
+    | "defaultVendorFollowUpMessage";
+  label: string;
+  placeholder: string;
+}> = [
+  {
+    id: "defaultPresentationIntro",
+    label: "Default presentation intro",
+    placeholder:
+      "This presentation shows how we would bring your campaign to life before launch.",
+  },
+  {
+    id: "defaultMarketingText",
+    label: "Default marketing text",
+    placeholder:
+      "Our campaign approach combines premium visuals, buyer database reach, social proof, and clear seller communication.",
+  },
+  {
+    id: "defaultAppraisalDisclaimer",
+    label: "Default appraisal disclaimer",
+    placeholder:
+      "All pricing guidance is appraisal opinion only and should be reviewed against current market feedback.",
+  },
+  {
+    id: "defaultVendorFollowUpMessage",
+    label: "Default vendor follow-up message",
+    placeholder:
+      "Thanks again for your time today. I have attached the campaign plan we discussed and the next steps.",
+  },
 ];
 
 export function AgentProfileModal({
@@ -124,6 +173,39 @@ export function AgentProfileModal({
               ) : null}
             </label>
           ))}
+        </div>
+
+        <div className="mt-6 rounded-3xl border border-blue-100 bg-blue-50/50 p-5">
+          <div className="mb-5">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">
+              Reusable agency text
+            </p>
+            <h3 className="mt-2 text-xl font-semibold tracking-tight">
+              Write once, reuse everywhere
+            </h3>
+            <p className="mt-2 text-sm leading-6 text-gray-600">
+              Save default wording for future appraisals so each new listing
+              starts from review and polish, not a blank page.
+            </p>
+          </div>
+          <div className="grid gap-4">
+            {reusableTextFields.map((field) => (
+              <label key={field.id}>
+                <span className="text-sm font-semibold text-gray-800">
+                  {field.label}
+                </span>
+                <textarea
+                  value={profile[field.id]}
+                  onChange={(event) =>
+                    updateProfile({ [field.id]: event.target.value })
+                  }
+                  placeholder={field.placeholder}
+                  rows={3}
+                  className="mt-2 w-full resize-none rounded-2xl border border-blue-100 bg-white px-4 py-3 text-gray-950 outline-none transition focus:border-blue-400"
+                />
+              </label>
+            ))}
+          </div>
         </div>
 
         <div className="mt-6 rounded-3xl border border-blue-100 bg-blue-50/50 p-5">
