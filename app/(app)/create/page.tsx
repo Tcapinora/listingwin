@@ -67,13 +67,31 @@ export default function CreatePage() {
               Office preparation
             </p>
             <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-              Create the vendor presentation
+              Start with the property.
             </h1>
             <p className="mt-4 max-w-xl text-base leading-7 text-slate-600">
-              Start with the property. ListingWin will guide you toward a
-              seller-facing presentation that makes the campaign feel real
-              before they sign.
+              Keep this light. ListingWin reuses your saved profile, agency
+              brand, logos, and default presentation text so each listing starts
+              from review instead of retyping.
             </p>
+
+            <div className="mt-6 rounded-[1.5rem] bg-blue-50 p-4 ring-1 ring-blue-100">
+              <div className="flex items-start gap-3">
+                <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white text-blue-700 shadow-sm">
+                  <CheckCircle2 size={16} />
+                </span>
+                <div>
+                  <p className="text-sm font-semibold text-blue-950">
+                    Profile details are reused automatically
+                  </p>
+                  <p className="mt-1 text-sm leading-6 text-blue-900/70">
+                    Agent name, agency, phone, email, logo, brand colour, and
+                    default copy come from your Agent Profile unless you change
+                    them.
+                  </p>
+                </div>
+              </div>
+            </div>
 
             <div className="mt-8 grid gap-5">
               <label>
@@ -103,6 +121,10 @@ export default function CreatePage() {
                   placeholder="Harbour & Co Estate Agents"
                   className="mt-2 w-full rounded-2xl border-0 bg-slate-50 px-5 py-4 text-base text-slate-950 shadow-inner outline-none ring-1 ring-slate-200 transition focus:bg-white focus:ring-2 focus:ring-blue-500"
                 />
+                <span className="mt-2 block text-sm text-slate-500">
+                  Auto-filled from your Agent Profile. Edit only if this listing
+                  needs a different agency name.
+                </span>
               </label>
             </div>
 
@@ -110,20 +132,20 @@ export default function CreatePage() {
               type="submit"
               className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-700 px-6 py-4 text-base font-semibold text-white shadow-card transition hover:bg-blue-800 sm:w-auto"
             >
-              Save & Continue
+              Continue
               <ArrowRight size={18} />
             </button>
           </div>
 
           <aside className="border-t border-blue-50 bg-blue-50/70 p-6 sm:p-8 lg:border-l lg:border-t-0 lg:p-10">
             <p className="text-sm font-semibold text-blue-950">
-              What the agent is building
+              What happens next
             </p>
             <div className="mt-5 grid gap-4">
               {[
-                "A premium Vendor Presentation to show the seller.",
-                "A visual campaign preview built around their property.",
-                "An Agent Workspace for the closing conversation afterwards.",
+                "Add the property story and price evidence.",
+                "Upload or add photos live during the appraisal.",
+                "Create the Vendor Presentation, then move into Agent Workspace.",
               ].map((item) => (
                 <div key={item} className="flex gap-3">
                   <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-white text-blue-700 shadow-sm">

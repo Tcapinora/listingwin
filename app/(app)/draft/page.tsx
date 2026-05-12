@@ -138,16 +138,16 @@ export default function DraftPage() {
         <div className="grid gap-8 lg:grid-cols-[1fr_0.6fr] lg:items-end">
           <div>
             <div className="inline-flex rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
-              Close & next steps
+              Agent Workspace
             </div>
             <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-              Close while the seller understands the value.
+              Close the listing with calm proof.
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-              The seller has seen the agency marketing, campaign method, and
-              database proof. Use this workspace to handle emotion, commission,
-              price concerns, seller situation, follow-up, compliance, and the
-              next decision.
+              The seller has seen what their campaign could look like. Now use
+              this workspace to guide the decision: buyer proof, pricing
+              confidence, objections, follow-up, Form 6 notes, and the next
+              step.
             </p>
           </div>
           <div className="rounded-[1.5rem] bg-blue-50 p-5 ring-1 ring-blue-100">
@@ -175,18 +175,17 @@ export default function DraftPage() {
 
         <div className="mt-8 rounded-[1.75rem] bg-slate-950 p-5 text-white">
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-200">
-            Start here
+            Start here after the presentation
           </p>
           <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_auto] lg:items-center">
             <div>
               <h2 className="text-2xl font-semibold tracking-tight">
-                Turn attachment into a decision.
+                Turn visual attachment into a decision.
               </h2>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300">
-                The seller has just seen their home in market. Now use the
-                workspace to answer the emotional questions underneath the
-                decision: “Can I trust this?”, “Will buyers care?”, “What
-                happens next?”, and “Am I safe choosing this agent?”
+                The seller has just seen their home in market. Answer the
+                questions underneath the decision: Can I trust this agent? Will
+                buyers care? What happens next? Am I safe moving forward?
               </p>
               <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300">
                 Keep the seller’s situation in mind: growing family,
@@ -203,35 +202,47 @@ export default function DraftPage() {
           </div>
         </div>
 
-        <div className="mt-6 grid gap-3 sm:grid-cols-4">
-          {checks.map(([label, done]) => (
-            <div
-              key={String(label)}
-              className="flex items-center gap-2 rounded-2xl bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700"
-            >
-              {done ? (
-                <BadgeCheck className="text-blue-700" size={16} />
-              ) : (
-                <CheckCircle2 className="text-slate-300" size={16} />
-              )}
-              {label}
+        <div className="mt-6 grid gap-4 lg:grid-cols-[0.95fr_1.05fr]">
+          <div className="rounded-[1.5rem] bg-slate-50 p-5 ring-1 ring-slate-200/70">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">
+              Readiness
+            </p>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              {checks.map(([label, done]) => (
+                <div
+                  key={String(label)}
+                  className="flex items-center gap-2 rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-slate-700"
+                >
+                  {done ? (
+                    <BadgeCheck className="text-blue-700" size={16} />
+                  ) : (
+                    <CheckCircle2 className="text-slate-300" size={16} />
+                  )}
+                  {label}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
 
-        <div className="mt-6 grid gap-3 lg:grid-cols-3">
-          {quickActions.map(([label, href, ActionIcon]) => {
-            return (
-              <Link
-                key={label}
-                href={href}
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-blue-50 px-5 py-3 text-sm font-semibold text-blue-900 transition hover:bg-blue-100"
-              >
-                <ActionIcon size={16} />
-                {label}
-              </Link>
-            );
-          })}
+          <div className="rounded-[1.5rem] bg-blue-50 p-5 ring-1 ring-blue-100">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">
+              Next best actions
+            </p>
+            <div className="mt-4 grid gap-3 sm:grid-cols-3">
+              {quickActions.map(([label, href, ActionIcon]) => {
+                return (
+                  <Link
+                    key={label}
+                    href={href}
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-blue-900 shadow-sm transition hover:bg-blue-100"
+                  >
+                    <ActionIcon size={16} />
+                    {label}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
         </div>
 
         <details className="mt-6 rounded-[1.5rem] bg-slate-50 p-5">

@@ -24,7 +24,7 @@ import { WorkflowPath } from "@/components/WorkflowPath";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/mockups", label: "Builder", icon: Sparkles },
+  { href: "/mockups", label: "Campaign Builder", icon: Sparkles },
   { href: "/calendar", label: "Calendar", icon: CalendarDays },
   { href: "/draft", label: "Agent Workspace", icon: MonitorPlay },
   { href: "/account", label: "Settings", icon: UserCog },
@@ -32,9 +32,9 @@ const navItems = [
 
 const workflowItems = [
   { href: "/create", label: "1. Start" },
-  { href: "/details", label: "2. Story" },
+  { href: "/details", label: "2. Evidence" },
   { href: "/upload", label: "3. Media" },
-  { href: "/mockups", label: "4. Present" },
+  { href: "/mockups", label: "4. Create" },
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -65,7 +65,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     ListingWin
                   </span>
                     <span className="hidden text-xs text-slate-500 md:block">
-                    Attach. Present. Close.
+                    Show the campaign before the campaign.
                   </span>
                 </span>
               </Link>
@@ -186,7 +186,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                         ListingWin
                       </span>
                       <span className="text-xs text-gray-500">
-                        Attach. Present. Close.
+                        Show the campaign before the campaign.
                       </span>
                     </span>
                   </Link>
@@ -226,8 +226,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 <div className="absolute inset-x-5 bottom-5 rounded-3xl bg-blue-950 p-5 text-white">
                   <p className="text-sm font-semibold">Listing workflow</p>
                   <p className="mt-2 text-xs leading-5 text-gray-300">
-                    Build the seller-facing campaign vision first. Use the
-                    workspace after the presentation to close.
+                    Build the seller-facing campaign first. Use the workspace
+                    after the presentation to close.
                   </p>
                   <Link
                     href="/draft"

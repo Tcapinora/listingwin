@@ -29,16 +29,16 @@ export default function DashboardPage() {
   const address = listing.details.address || "No listings yet";
   const workflow = [
     {
-      title: "Prepare",
-      text: "Draft the seller-facing campaign before the appraisal.",
+      title: "Prepare in the office",
+      text: "Set the property, brand, campaign style, buyer proof, and calendar before you arrive.",
     },
     {
-      title: "Present",
-      text: "Add real photos live and show the seller their home inside your marketing.",
+      title: "Present in the room",
+      text: "Show the seller their home inside the marketing, not just a promise of what you will do.",
     },
     {
-      title: "Close",
-      text: "Turn the live presentation into the operating plan and next decision.",
+      title: "Close with proof",
+      text: "Move into the workspace for pricing, objections, buyers, follow-up, and next steps.",
     },
   ];
   const firstRunGuide = [
@@ -77,16 +77,16 @@ export default function DashboardPage() {
         <div className="relative grid gap-12 p-7 sm:p-10 lg:grid-cols-[1.05fr_0.82fr] lg:items-center lg:p-14">
           <div>
             <p className="inline-flex rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800 ring-1 ring-blue-100">
-              Digital appraisal presentation
+              Premium live appraisal platform
             </p>
             <h1 className="mt-7 max-w-3xl text-4xl font-semibold tracking-tight text-slate-950 sm:text-6xl">
-              Help sellers picture choosing you before they sign.
+              Build the campaign live in front of the seller.
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
-              ListingWin lets you show the campaign before the campaign. Build
-              the presentation before the appraisal, add real photos live in
-              the room, then move into the workspace while the seller is
-              emotionally attached to the plan.
+              ListingWin helps agents turn a listing appraisal into a visual
+              campaign moment. Prepare the story before you arrive, add real
+              photos live if needed, then show the seller what choosing you
+              actually looks like.
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <PrimaryLink href="/create">
@@ -121,8 +121,8 @@ export default function DashboardPage() {
               </button>
             </div>
             <p className="mt-4 max-w-xl text-sm leading-6 text-slate-500">
-              First time here? Create the Vendor Presentation first. The Agent
-              Workspace comes after the seller has seen the marketing.
+              First time here? Start with the Vendor Presentation. The Agent
+              Workspace is for after the seller has seen the campaign.
             </p>
           </div>
 
@@ -136,7 +136,7 @@ export default function DashboardPage() {
                   The ListingWin method
                 </p>
                 <p className="text-xs text-blue-100">
-                  Build live. Present visually. Close with momentum.
+                  Prepare. Present. Close.
                 </p>
               </div>
             </div>
@@ -171,13 +171,12 @@ export default function DashboardPage() {
               First time using ListingWin?
             </p>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
-              One clear path for a live appraisal.
+              Three moves. No confusion.
             </h2>
             <p className="mt-3 text-sm leading-6 text-slate-600">
-              ListingWin is built for agents before a listing appraisal. It
-              helps the seller see your marketing before they choose an agent,
-              then lets you add their actual property photos live if the moment
-              calls for it.
+              ListingWin is not a CRM. It is the appraisal room workflow:
+              create the visual campaign, present it with confidence, then
+              close with practical proof.
             </p>
           </div>
 
@@ -212,7 +211,7 @@ export default function DashboardPage() {
               The simple rule
             </p>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight">
-              The seller sees the presentation. The agent uses the workspace.
+              Seller-facing first. Agent tools second.
             </h2>
             <p className="mt-3 max-w-3xl text-sm leading-6 text-blue-900/75">
               During the appointment, stay in the clean Vendor Presentation.
