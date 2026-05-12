@@ -234,10 +234,13 @@ export default function PropertyDetailsPage() {
             </label>
           </div>
 
-          <details className="group mt-8 rounded-[1.5rem] bg-slate-50 p-5 ring-1 ring-slate-200">
+          <details
+            open
+            className="group mt-8 rounded-[1.5rem] bg-slate-50 p-5 ring-1 ring-slate-200"
+          >
             <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-semibold text-blue-900">
               <span>
-                Market positioning and pricing strategy
+                Comparable sales and pricing strategy
                 <span className="mt-1 block text-xs font-medium leading-5 text-blue-800/70">
                   Paste, generate, review, and save comparable sales evidence.
                 </span>

@@ -5,7 +5,9 @@ import {
   Clock3,
   Contact,
   GripVertical,
+  Mail,
   Plus,
+  Save,
   Trash2,
 } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -15,6 +17,8 @@ import type { SaleCalendarEvent } from "@/lib/types";
 const eventTypes = [
   "Styling",
   "Trades",
+  "Buyer call backs",
+  "Communication",
   "Photography",
   "Signboard",
   "Launch",
@@ -27,6 +31,8 @@ const eventTypes = [
 const eventColours: Record<string, string> = {
   Styling: "bg-pink-100 text-pink-800 ring-pink-200",
   Trades: "bg-orange-100 text-orange-800 ring-orange-200",
+  "Buyer call backs": "bg-cyan-100 text-cyan-800 ring-cyan-200",
+  Communication: "bg-indigo-100 text-indigo-800 ring-indigo-200",
   Photography: "bg-violet-100 text-violet-800 ring-violet-200",
   Signboard: "bg-slate-200 text-slate-800 ring-slate-300",
   Launch: "bg-blue-100 text-blue-800 ring-blue-200",
@@ -36,7 +42,13 @@ const eventColours: Record<string, string> = {
   Other: "bg-gray-100 text-gray-700 ring-gray-200",
 };
 
-const calendarTabs = ["Styling", "Trades"] as const;
+const primaryTaskTypes = [
+  "Photography",
+  "Open home",
+  "Auction",
+  "Buyer call backs",
+  "Communication",
+] as const;
 
 const monthNames = [
   "January",
@@ -118,11 +130,10 @@ export function SaleCalendar({
   const [selectedDate, setSelectedDate] = useState(
     toDateKey(today.getFullYear(), today.getMonth(), today.getDate()),
   );
-  const [activeType, setActiveType] = useState<(typeof calendarTabs)[number]>(
-    "Styling",
-  );
+  const [activeType, setActiveType] = useState("Photography");
   const [draft, setDraft] = useState<CalendarDraft>(emptyDraft);
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
+  const [saveStatus, setSaveStatus] = useState("");
 
   const days = useMemo(() => makeCalendarDays(year, month), [month, year]);
   const eventsForSelectedDate = listing.saleCalendarEvents
@@ -194,10 +205,39 @@ export function SaleCalendar({
   const selectEntry = (event: SaleCalendarEvent) => {
     setSelectedDate(event.date);
     setSelectedEventId(event.id);
-    if (event.type === "Styling" || event.type === "Trades") {
+    if (eventTypes.includes(event.type)) {
       setActiveType(event.type);
     }
   };
+
+  const calendarSummary = listing.saleCalendarEvents
+    .slice()
+    .sort((a, b) =>
+      `${a.date} ${a.time || "99:99"}`.localeCompare(
+        `${b.date} ${b.time || "99:99"}`,
+      ),
+    )
+    .map((event) => {
+      const parts = [
+        event.date,
+        event.time ? formatTime(event.time) : "",
+        event.type,
+        event.title,
+        event.supplier ? `Supplier: ${event.supplier}` : "",
+        event.contact ? `Contact: ${event.contact}` : "",
+        event.taskDetails,
+        event.notes,
+      ].filter(Boolean);
+
+      return parts.join(" | ");
+    })
+    .join("\n");
+  const emailCalendarHref = `mailto:?subject=${encodeURIComponent(
+    "ListingWin campaign calendar",
+  )}&body=${encodeURIComponent(
+    calendarSummary ||
+      "No calendar tasks have been added yet. Add campaign dates in ListingWin first.",
+  )}`;
 
   return (
     <section
@@ -215,10 +255,9 @@ export function SaleCalendar({
             Plan the campaign dates clearly.
           </h2>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
-            Select a date, choose Styling or Trades, add the time, supplier,
-            contact details, notes, and task information. The same calendar can
-            also hold photography, open home, launch, auction, and follow-up
-            tasks.
+            Select a date, choose the task type, add the time, contact details,
+            and task information. Use this for photography, open homes, buyer
+            call backs, communication, launch, auction, styling, and trades.
           </p>
           <div className="mt-4 -mx-1 flex gap-2 overflow-x-auto px-1 pb-2 sm:flex-wrap sm:overflow-visible sm:pb-0">
             {eventTypes.map((eventType) => (
@@ -249,6 +288,37 @@ export function SaleCalendar({
         </div>
 
         <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap">
+          {standalone ? (
+            <>
+              <button
+                type="button"
+                onClick={() => {
+                  try {
+                    window.localStorage.setItem(
+                      "listingwin-calendar-last-saved",
+                      new Date().toISOString(),
+                    );
+                    setSaveStatus("Saved");
+                  } catch {
+                    // LocalStorage can be unavailable in private sessions.
+                    setSaveStatus("Saved in this session");
+                  }
+                  window.setTimeout(() => setSaveStatus(""), 2200);
+                }}
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl border border-blue-100 bg-white px-4 py-3 text-sm font-semibold text-blue-900 shadow-sm"
+              >
+                <Save size={16} />
+                {saveStatus || "Save calendar"}
+              </button>
+              <a
+                href={emailCalendarHref}
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-blue-700 px-4 py-3 text-sm font-semibold text-white shadow-sm"
+              >
+                <Mail size={16} />
+                Email calendar
+              </a>
+            </>
+          ) : null}
           <select
             value={month}
             onChange={(event) => setMonth(Number(event.target.value))}
@@ -364,13 +434,16 @@ export function SaleCalendar({
           </p>
           <h3 className="mt-2 text-2xl font-semibold">{selectedDate}</h3>
 
-          <div className="mt-5 grid grid-cols-2 gap-2 rounded-full bg-white/10 p-1">
-            {calendarTabs.map((tab) => (
+          <div className="mt-5 grid gap-2 rounded-3xl bg-white/10 p-2 sm:grid-cols-2">
+            {primaryTaskTypes.map((tab) => (
               <button
                 key={tab}
                 type="button"
-                onClick={() => setActiveType(tab)}
-                className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
+                onClick={() => {
+                  setActiveType(tab);
+                  setDraft((current) => ({ ...current, title: tab }));
+                }}
+                className={`rounded-2xl px-4 py-2.5 text-sm font-semibold transition ${
                   activeType === tab
                     ? "bg-white text-blue-950"
                     : "text-blue-100 hover:bg-white/10"
@@ -406,9 +479,11 @@ export function SaleCalendar({
                     setDraft({ ...draft, title: event.target.value })
                   }
                   placeholder={
-                    activeType === "Styling"
-                      ? "Styling consultation"
-                      : "Painter quote"
+                    activeType === "Buyer call backs"
+                      ? "Call buyer list"
+                      : activeType === "Communication"
+                        ? "Vendor update"
+                        : `${activeType} task`
                   }
                   className="min-h-12 w-full rounded-2xl border border-white/10 bg-white px-4 py-3 text-sm font-semibold text-blue-950 outline-none"
                 />

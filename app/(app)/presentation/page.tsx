@@ -141,37 +141,20 @@ export default function PresentationPage() {
       </section>
 
       {!readiness.isReady ? (
-        <section className="mx-auto my-8 max-w-6xl rounded-[2rem] border border-blue-100 bg-white p-6 shadow-card lg:p-8">
-          <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
-            <div>
+        <section className="no-print mx-auto my-6 max-w-6xl rounded-[1.5rem] border border-blue-100 bg-white/90 p-5 shadow-card">
+          <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
+            <div className="max-w-2xl">
               <p className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
                 <Sparkles size={16} />
-                Presentation needs a little more detail
+                Presentation opened
               </p>
-              <h2 className="mt-5 text-4xl font-semibold tracking-tight text-slate-950">
-                Start from a polished demo or finish the seller details first.
-              </h2>
-              <p className="mt-4 text-sm leading-6 text-slate-600">
-                This prevents the seller view from opening with weak placeholder
-                content. For testing, load a complete demo listing. For a real
-                appraisal, complete the missing items below.
+              <p className="mt-3 text-sm leading-6 text-slate-600">
+                A few setup items are still light, but the Vendor Presentation
+                is open. Use the edit links if you want to strengthen any
+                section before showing the seller.
               </p>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <Link
-                  href="/presentation?demo=1"
-                  className="inline-flex items-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card hover:bg-blue-800"
-                >
-                  Load demo presentation
-                </Link>
-                <Link
-                  href="/create"
-                  className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white px-5 py-3 text-sm font-semibold text-blue-900"
-                >
-                  Continue setup
-                </Link>
-              </div>
             </div>
-            <div className="grid gap-3">
+            <div className="grid gap-2 sm:grid-cols-2 lg:min-w-[420px]">
               {readiness.checks.map((check) => (
                 <Link
                   key={check.label}
@@ -196,7 +179,6 @@ export default function PresentationPage() {
         </section>
       ) : null}
 
-      {readiness.isReady ? (
       <div
         id="presentation-start"
         className="page-enter mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14"
@@ -403,7 +385,6 @@ export default function PresentationPage() {
           </div>
         </section>
       </div>
-      ) : null}
     </>
   );
 }

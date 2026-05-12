@@ -28,6 +28,7 @@ import {
   Target,
   Timer,
   Trophy,
+  Trash2,
   Users,
 } from "lucide-react";
 import { useAgentProfile } from "@/components/AgentProfileProvider";
@@ -1719,6 +1720,17 @@ export function BuyerMatchEngineSection({
     });
   }
 
+  function removeBuyer(id: string) {
+    if (!onUpdate) {
+      return;
+    }
+
+    onUpdate({
+      ...listing,
+      buyerLeads: listing.buyerLeads.filter((buyer) => buyer.id !== id),
+    });
+  }
+
   const statusStyles: Record<BuyerLead["status"], string> = {
     Hot: "bg-red-50 text-red-700 ring-red-200",
     Warm: "bg-amber-50 text-amber-700 ring-amber-200",
@@ -1770,12 +1782,12 @@ export function BuyerMatchEngineSection({
       </div>
 
       <div className="grid gap-5 p-5 lg:p-7">
-        <div className="overflow-x-auto pb-2">
-          <div className="grid min-w-full auto-cols-[minmax(280px,1fr)] grid-flow-col gap-4 xl:grid-flow-row xl:grid-cols-3">
+        <div className="overflow-x-auto pb-3">
+          <div className="grid min-w-max auto-cols-[minmax(300px,340px)] grid-flow-col gap-4">
             {matches.length ? matches.map((buyer) => (
               <article
                 key={buyer.id}
-                className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm"
+                className="relative rounded-3xl border border-slate-200 bg-white p-5 shadow-sm"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>
@@ -1795,6 +1807,17 @@ export function BuyerMatchEngineSection({
                     {buyer.score}/100
                   </span>
                 </div>
+                {onUpdate ? (
+                  <button
+                    type="button"
+                    onClick={() => removeBuyer(buyer.id)}
+                    className="absolute right-4 top-14 grid h-8 w-8 place-items-center rounded-full bg-slate-100 text-slate-500 transition hover:bg-red-50 hover:text-red-700"
+                    aria-label={`Delete ${buyer.name}`}
+                    title={`Delete ${buyer.name}`}
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                ) : null}
                 <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">
                   {buyer.notes}
                 </p>
@@ -1828,7 +1851,7 @@ export function BuyerMatchEngineSection({
                 </p>
               </article>
             )) : (
-              <div className="rounded-3xl border border-dashed border-blue-200 bg-blue-50/70 p-6 text-sm leading-6 text-blue-900 xl:col-span-3">
+              <div className="w-[340px] rounded-3xl border border-dashed border-blue-200 bg-blue-50/70 p-6 text-sm leading-6 text-blue-900">
                 Add the buyers you already know before the appraisal. The
                 strongest matches will appear here as a simple call list.
               </div>

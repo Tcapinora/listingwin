@@ -124,9 +124,9 @@ export function AgentProfileModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/40 px-4 py-6 backdrop-blur-sm">
-      <div className="mx-auto max-h-[calc(100vh-3rem)] max-w-3xl overflow-y-auto rounded-3xl bg-white p-6 shadow-soft lg:p-8">
-        <div className="mb-6 flex items-start justify-between gap-4">
+    <div className="fixed inset-0 z-50 bg-slate-950/40 px-3 py-3 backdrop-blur-sm sm:px-4 sm:py-5">
+      <div className="mx-auto flex max-h-[calc(100dvh-1.5rem)] max-w-5xl flex-col overflow-hidden rounded-3xl bg-white shadow-soft sm:max-h-[calc(100dvh-2.5rem)]">
+        <div className="flex items-start justify-between gap-4 border-b border-slate-100 bg-white p-5 sm:p-6 lg:p-7">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
               Agent Profile
@@ -149,6 +149,7 @@ export function AgentProfileModal({
           </button>
         </div>
 
+        <div className="overflow-y-auto p-5 sm:p-6 lg:p-7">
         <div className="grid gap-5 sm:grid-cols-2">
           {profileFields.map((field) => (
             <label
@@ -463,7 +464,9 @@ export function AgentProfileModal({
           )}
         </div>
 
-        <div className="mt-6 flex justify-end">
+        </div>
+        <div className="border-t border-slate-100 bg-white p-5 sm:p-6">
+        <div className="flex justify-end">
           <button
             type="button"
             onClick={onClose}
@@ -471,6 +474,7 @@ export function AgentProfileModal({
           >
             Done
           </button>
+        </div>
         </div>
       </div>
     </div>

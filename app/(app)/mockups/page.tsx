@@ -811,17 +811,11 @@ export default function MockupsPage() {
         }`}
       >
         <StepHeader
-          step="Agency marketing preview"
-          title="Final seller-facing marketing previews"
-          description="Review the brochure, flyer, Instagram, and Facebook examples before opening presentation mode."
+          step="Social media preview"
+          title="Instagram and Facebook phone previews"
+          description="Review only the social media screens here. Brochure, flyer, and portal previews stay in their own campaign sections."
         />
         <div className="grid gap-6 lg:grid-cols-2">
-          <MockupCard title="Brochure book preview">
-            <BrochureBookPreview listing={listing} />
-          </MockupCard>
-          <MockupCard title="Flyer preview">
-            <FlyerPreview listing={listing} />
-          </MockupCard>
           <MockupCard title="Instagram post">
             <SocialPreview listing={listing} type="Instagram" />
           </MockupCard>
