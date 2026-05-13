@@ -37,6 +37,7 @@ export default function PropertyDetailsPage() {
     null,
   );
   const [smartPasteText, setSmartPasteText] = useState("");
+  const [smartPasteNotice, setSmartPasteNotice] = useState("");
   const [manualComparable, setManualComparable] = useState<ComparableProperty>(
     createBlankComparable(),
   );
@@ -112,8 +113,20 @@ export default function PropertyDetailsPage() {
   const saveSmartPasteText = () => {
     if (!smartPasteText.trim()) return;
 
-    saveSmartComparable(parseComparableText(smartPasteText));
+    const parsedComparable = parseComparableText(smartPasteText);
+
+    if (!hasEnoughComparableEvidence(parsedComparable)) {
+      setSmartPasteNotice(
+        "We couldn't detect enough property details. Please add the missing information manually.",
+      );
+      setManualComparable(parsedComparable);
+      setComparableMode("manual");
+      return;
+    }
+
+    saveSmartComparable(parsedComparable);
     setSmartPasteText("");
+    setSmartPasteNotice("");
   };
 
   const saveManualComparable = () => {
@@ -377,16 +390,27 @@ export default function PropertyDetailsPage() {
                         <p className="mt-2 text-sm leading-6 text-slate-600">
                           Paste the comparable sale information copied from
                           realestate.com.au, Domain, CRM notes, or a sales
-                          report. ListingWin will format it into the card below.
+                          report. Best result: include the address, property
+                          details row, price or status, agency, and any RP Data
+                          property notes. ListingWin will format it into the
+                          card below.
                         </p>
                       </div>
                       <textarea
                         value={smartPasteText}
-                        onChange={(event) => setSmartPasteText(event.target.value)}
+                        onChange={(event) => {
+                          setSmartPasteText(event.target.value);
+                          setSmartPasteNotice("");
+                        }}
                         placeholder="Paste comparable sale information here..."
                         rows={9}
                         className="w-full resize-none rounded-[1.5rem] border-0 bg-slate-50 px-5 py-4 text-sm leading-6 text-slate-950 shadow-inner outline-none ring-1 ring-slate-200 transition focus:bg-white focus:ring-2 focus:ring-blue-500"
                       />
+                      {smartPasteNotice ? (
+                        <p className="rounded-2xl bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-900 ring-1 ring-amber-200">
+                          {smartPasteNotice}
+                        </p>
+                      ) : null}
                       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                         <button
                           type="button"
@@ -769,84 +793,482 @@ const agentPitchFields: Array<{
 ];
 
 function parseComparableText(text: string): ComparableProperty {
-  const cleaned = text.replace(/\r/g, "\n").replace(/[ \t]+/g, " ").trim();
-  const lines = cleaned
-    .split("\n")
-    .map((line) => line.trim())
-    .filter(Boolean);
+  const lines = normaliseComparableLines(text);
   const joined = lines.join(" ");
-  const addressLine =
-    lines.find((line) =>
-      /^\d+[A-Za-z]?\s+.+\b(street|st|road|rd|avenue|ave|drive|dr|place|pl|court|ct|crescent|cres|terrace|tce|lane|ln|way|parade|pde|close|circuit|circ)\b/i.test(
-        line,
-      ),
-    ) || "";
-  const urlMatch = joined.match(/https?:\/\/\S+/i)?.[0] || "";
-  const priceMatch =
-    joined.match(/(?:sold|sale price|price)\s*(?:for|at|:)?\s*(\$[\d,]+(?:\.\d+)?[kKmM+]*)/i)?.[1] ||
-    joined.match(/\$[\d,]+(?:\.\d+)?[kKmM+]*/)?.[0] ||
-    "";
-  const dateMatch =
-    joined.match(
-      /(?:sold|sale date|date)\s*(?:on|:)?\s*((?:\d{1,2}\s+)?(?:jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\s+\d{4}|\d{1,2}[/-]\d{1,2}[/-]\d{2,4})/i,
-    )?.[1] || "";
-  const beds = extractFeature(joined, ["bed", "beds", "bedroom", "bedrooms"]);
-  const baths = extractFeature(joined, ["bath", "baths", "bathroom", "bathrooms"]);
-  const cars = extractFeature(joined, ["car", "cars", "garage", "garages"]);
+  const sourceUrl = extractSourceUrl(joined);
+  const addressCandidate = extractAddress(lines, joined);
+  const addressParts = parseAddressParts(addressCandidate);
+  const compactFeatures = extractCompactFeatureRow(lines);
+  const beds =
+    extractLabelledNumber(joined, ["bed(?:room)?s?", "beds?"]) ||
+    compactFeatures.beds;
+  const baths =
+    extractLabelledNumber(joined, ["bath(?:room)?s?", "baths?"]) ||
+    compactFeatures.baths;
+  const cars =
+    extractLabelledNumber(joined, [
+      "car(?:space)?s?",
+      "parking",
+      "garage(?:s)?",
+    ]) || compactFeatures.cars;
   const landSize =
-    joined.match(/(\d[\d,]*(?:\.\d+)?\s*(?:sqm|m2|ha|acres?))/i)?.[1] ||
-    "";
+    extractLabelledArea(joined, ["land(?: size)?", "block(?: size)?"]) ||
+    compactFeatures.landSize ||
+    extractFirstArea(lines);
+  const buildingSize =
+    extractLabelledArea(joined, [
+      "building(?: size)?",
+      "floor(?: area)?",
+      "internal(?: area)?",
+    ]) || compactFeatures.buildingSize;
   const propertyType =
-    joined.match(/\b(House|Apartment|Townhouse|Unit|Acreage|Land|Villa|Duplex)\b/i)?.[1] ||
-    "";
-  const agency =
-    joined.match(/(?:agency|listed by|sold by)\s*:?\s*([A-Z][A-Za-z&.\-\s]{2,40})/i)?.[1]?.trim() ||
-    "";
-  const agentName =
-    joined.match(/(?:agent|sales agent|contact)\s*:?\s*([A-Z][a-z]+(?:\s+[A-Z][a-z]+){0,2})/i)?.[1] ||
-    "";
-  const suburbState = parseSuburbState(addressLine || joined);
-  const description = lines
-    .filter((line) => line.length > 70 && !line.includes("http"))
-    .slice(0, 2)
-    .join(" ");
-
-  return {
-    address: addressLine,
-    suburb: suburbState.suburb,
-    state: suburbState.state,
-    soldPrice: priceMatch,
-    saleDate: dateMatch,
+    extractPropertyType(joined) || compactFeatures.propertyType;
+  const soldPrice = extractPrice(joined) || extractStatus(joined);
+  const saleDate = extractDate(joined);
+  const agency = extractAgency(lines, joined);
+  const agentName = extractAgentName(joined);
+  const description = extractDescription(lines);
+  const notes = buildComparableNotes({
+    sourceLabel: getSourceLabel(sourceUrl, joined),
+    status: extractStatus(joined),
     beds,
     baths,
     cars,
+    landSize,
+    buildingSize,
+    propertyType,
+    soldPrice,
+    saleDate,
+    yearBuilt: extractYearBuilt(joined),
+    developmentZone: extractDevelopmentZone(joined),
+    daysOnMarket: joined.match(/\b\d+\s+days?\s+on\s+market\b/i)?.[0] || "",
+    inspection: extractInspection(joined),
+  });
+
+  return {
+    address: addressParts.formattedAddress || addressCandidate,
+    suburb: addressParts.suburb,
+    state: addressParts.state,
+    soldPrice,
+    saleDate,
+    beds,
+    baths,
+    cars: cars === "-" ? "" : cars,
     blockSize: landSize,
     landSize,
     propertyType,
     agency,
     agentName,
     description,
-    notes: description
-      ? "Similar buyer profile, property style, location, or price evidence. Review and adjust before presenting."
-      : "",
-    url: urlMatch,
-    sourceUrl: urlMatch,
+    notes,
+    url: sourceUrl,
+    sourceUrl,
   };
 }
 
-function extractFeature(text: string, labels: string[]) {
-  const pattern = new RegExp(`(\\d+)\\s*(?:${labels.join("|")})\\b`, "i");
-  return text.match(pattern)?.[1] || "";
+function hasEnoughComparableEvidence(property: ComparableProperty) {
+  const detectedFields = [
+    property.address,
+    property.soldPrice,
+    property.beds,
+    property.baths,
+    property.landSize,
+    property.propertyType,
+    property.agency,
+    property.saleDate,
+  ].filter(Boolean);
+
+  return Boolean(property.address) || detectedFields.length >= 3;
 }
 
-function parseSuburbState(text: string) {
-  const match = text.match(
-    /,\s*([A-Za-z][A-Za-z\s'-]+)\s+(QLD|NSW|VIC|SA|WA|TAS|ACT|NT)\b/i,
+function normaliseComparableLines(text: string) {
+  return text
+    .replace(/\r/g, "\n")
+    .replace(/\u00a0/g, " ")
+    .split("\n")
+    .map((line) =>
+      line
+        .replace(/[🛏🛌🛁🚿🚗🏠]/g, " ")
+        .replace(/\bCopy\b|\bUpdate data\b/gi, " ")
+        .replace(/\s+/g, " ")
+        .trim(),
+    )
+    .filter(Boolean);
+}
+
+function extractSourceUrl(text: string) {
+  return text.match(/https?:\/\/[^\s)]+/i)?.[0].replace(/[.,]+$/, "") || "";
+}
+
+const streetTypePattern =
+  "Street|St|Road|Rd|Avenue|Ave|Drive|Dr|Place|Pl|Court|Ct|Crescent|Cres|Terrace|Tce|Lane|Ln|Way|Parade|Pde|Close|Circuit|Cct|Boulevard|Blvd|Highway|Hwy|Esplanade|Grove|Rise|Row|Square|Sq|Track|Trail|View|Mews|Quay|Promenade|Prom";
+const statePattern =
+  "QLD|Queensland|NSW|New South Wales|VIC|Victoria|SA|South Australia|WA|Western Australia|TAS|Tasmania|ACT|NT|Northern Territory";
+
+function extractAddress(lines: string[], joined: string) {
+  const fullAddressRegex = new RegExp(
+    `\\b\\d{1,5}[A-Za-z]?\\s+[A-Za-z0-9'&./\\-\\s]+?\\b(?:${streetTypePattern})\\b(?:,?\\s+[A-Za-z][A-Za-z'\\-\\s]+){0,3},?\\s+(?:${statePattern})\\s*\\d{4}\\b`,
+    "i",
   );
+  const streetOnlyRegex = new RegExp(
+    `\\b\\d{1,5}[A-Za-z]?\\s+[A-Za-z0-9'&./\\-\\s]+?\\b(?:${streetTypePattern})\\b(?:,?\\s+[A-Za-z][A-Za-z'\\-\\s]+){0,2}\\b`,
+    "i",
+  );
+  const fromLine = lines
+    .map((line) => line.match(fullAddressRegex)?.[0] || "")
+    .find(Boolean);
+
+  if (fromLine) {
+    return cleanAddress(fromLine);
+  }
+
+  const fromJoined = joined.match(fullAddressRegex)?.[0];
+
+  if (fromJoined) {
+    return cleanAddress(fromJoined);
+  }
+
+  return cleanAddress(
+    lines
+      .map((line) => line.match(streetOnlyRegex)?.[0] || "")
+      .find(Boolean) || "",
+  );
+}
+
+function cleanAddress(value: string) {
+  return value
+    .replace(/\bCopy\b/gi, "")
+    .replace(/\s+,/g, ",")
+    .replace(/\s+/g, " ")
+    .replace(/,\s*,/g, ",")
+    .trim();
+}
+
+function parseAddressParts(address: string) {
+  const stateMatch = address.match(
+    new RegExp(`\\b(${statePattern})\\s*(\\d{4})\\b`, "i"),
+  );
+  const state = stateMatch ? normaliseState(stateMatch[1]) : "";
+  const postcode = stateMatch?.[2] || "";
+  const beforeState = stateMatch
+    ? address.slice(0, stateMatch.index).replace(/[,\s]+$/, "")
+    : address;
+  const commaParts = beforeState
+    .split(",")
+    .map((part) => part.trim())
+    .filter(Boolean);
+  let street = beforeState;
+  let suburb = "";
+
+  if (commaParts.length >= 2) {
+    suburb = commaParts[commaParts.length - 1];
+    street = commaParts.slice(0, -1).join(", ");
+  } else {
+    const streetSuburb = beforeState.match(
+      new RegExp(`^(.*?\\b(?:${streetTypePattern})\\b)\\s+(.+)$`, "i"),
+    );
+
+    if (streetSuburb) {
+      street = streetSuburb[1].trim();
+      suburb = streetSuburb[2].trim();
+    }
+  }
+
+  const formattedSuburb = smartTitleCase(suburb);
+
   return {
-    suburb: match?.[1]?.trim() || "",
-    state: match?.[2]?.toUpperCase() || "",
+    suburb: formattedSuburb,
+    state,
+    formattedAddress:
+      street && formattedSuburb && state && postcode
+        ? `${street}, ${formattedSuburb} ${state} ${postcode}`
+        : address,
   };
+}
+
+function normaliseState(value: string) {
+  const upperValue = value.toUpperCase();
+  const stateMap: Record<string, string> = {
+    QUEENSLAND: "QLD",
+    "NEW SOUTH WALES": "NSW",
+    VICTORIA: "VIC",
+    "SOUTH AUSTRALIA": "SA",
+    "WESTERN AUSTRALIA": "WA",
+    TASMANIA: "TAS",
+    "NORTHERN TERRITORY": "NT",
+  };
+
+  return stateMap[upperValue] || upperValue;
+}
+
+function smartTitleCase(value: string) {
+  if (!value || value !== value.toUpperCase()) {
+    return value;
+  }
+
+  return value
+    .toLowerCase()
+    .replace(/\b[a-z]/g, (letter) => letter.toUpperCase());
+}
+
+function extractCompactFeatureRow(lines: string[]) {
+  const propertyTypePattern =
+    "House|Apartment|Townhouse|Unit|Acreage|Land|Villa|Duplex";
+  const featureLine = lines
+    .map((line) => line.replace(/m\s*²/gi, "m²").replace(/\s+/g, " "))
+    .find(
+      (line) =>
+        /\d/.test(line) &&
+        /(?:m²|sqm|m2|House|Apartment|Townhouse|Unit|Acreage|Land|Villa|Duplex)/i.test(
+          line,
+        ) &&
+        (line.match(/\b\d[\d,]*\b/g) || []).length >= 3,
+    );
+
+  const match = featureLine?.match(
+    new RegExp(
+      `(?:^|\\s)(\\d+)\\s+(\\d+)\\s+(\\d+|-)\\s+(\\d[\\d,]*)\\s*(?:m²|sqm|m2)(?:\\s+(\\d[\\d,]*)\\s*(?:m²|sqm|m2))?(?:\\s+(${propertyTypePattern}))?\\b`,
+      "i",
+    ),
+  );
+
+  return {
+    beds: match?.[1] || "",
+    baths: match?.[2] || "",
+    cars: match?.[3] || "",
+    landSize: match?.[4] ? `${match[4]}m²` : "",
+    buildingSize: match?.[5] ? `${match[5]}m²` : "",
+    propertyType: match?.[6] || "",
+  };
+}
+
+function extractLabelledNumber(text: string, labels: string[]) {
+  for (const label of labels) {
+    const beforeLabel = text.match(new RegExp(`\\b(\\d+)\\s*${label}\\b`, "i"));
+    const afterLabel = text.match(new RegExp(`\\b${label}\\s*:?\\s*(\\d+)\\b`, "i"));
+
+    if (beforeLabel?.[1]) return beforeLabel[1];
+    if (afterLabel?.[1]) return afterLabel[1];
+  }
+
+  return "";
+}
+
+function extractLabelledArea(text: string, labels: string[]) {
+  for (const label of labels) {
+    const match = text.match(
+      new RegExp(
+        `\\b${label}\\s*:?\\s*(\\d[\\d,]*(?:\\.\\d+)?)\\s*(m²|sqm|m2|ha|acres?)\\b`,
+        "i",
+      ),
+    );
+
+    if (match?.[1] && match[2]) {
+      return `${match[1]}${normaliseAreaUnit(match[2])}`;
+    }
+  }
+
+  return "";
+}
+
+function extractFirstArea(lines: string[]) {
+  const match = lines
+    .join(" ")
+    .match(/\b(\d[\d,]*(?:\.\d+)?)\s*(m²|sqm|m2|ha|acres?)\b/i);
+
+  return match?.[1] && match[2]
+    ? `${match[1]}${normaliseAreaUnit(match[2])}`
+    : "";
+}
+
+function normaliseAreaUnit(value: string) {
+  if (/sqm|m2|m²/i.test(value)) return "m²";
+  return value.toLowerCase();
+}
+
+function extractPropertyType(text: string) {
+  return (
+    text.match(
+      /\bProperty Type\s*:?\s*(House|Apartment|Townhouse|Unit|Acreage|Land|Villa|Duplex)\b/i,
+    )?.[1] ||
+    text.match(/\b(House|Apartment|Townhouse|Unit|Acreage|Land|Villa|Duplex)\b/i)
+      ?.[1] ||
+    ""
+  );
+}
+
+function extractPrice(text: string) {
+  const priceWithLabel = text.match(
+    /\b(offers?\s+over|offer\s+over|offers?\s+above|price\s+guide|guide|asking\s+price|listed\s+for|sold(?:\s+for)?|sale\s+price|last\s+sold(?:\s+for)?)\s*:?\s*(\$[\d,]+(?:\.\d+)?\s*(?:m|million|k|\+)?)/i,
+  );
+
+  if (priceWithLabel?.[1] && priceWithLabel[2]) {
+    return `${sentenceCase(priceWithLabel[1])} ${priceWithLabel[2].replace(/\s+/g, "")}`;
+  }
+
+  return text.match(/\$[\d,]+(?:\.\d+)?\s*(?:m|million|k|\+)?/i)?.[0] || "";
+}
+
+function sentenceCase(value: string) {
+  const lowerValue = value.toLowerCase();
+  return lowerValue.charAt(0).toUpperCase() + lowerValue.slice(1);
+}
+
+function extractStatus(text: string) {
+  if (/\bfor sale now\b/i.test(text)) return "For sale now";
+  if (/\bfor sale\b/i.test(text)) return "For sale";
+  if (/\bauction\b/i.test(text)) return "Auction";
+  if (/\bunder offer\b/i.test(text)) return "Under offer";
+  if (/\bsold\b/i.test(text)) return "Sold";
+  return "";
+}
+
+function extractDate(text: string) {
+  const datePattern =
+    "(?:\\d{1,2}\\s+(?:jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\\s+\\d{4}|\\d{1,2}[/-]\\d{1,2}[/-]\\d{2,4})";
+  const labelledDate = text.match(
+    new RegExp(
+      `\\b(?:sold|sale date|settled|contract date|last listed|listed)\\s*(?:on|:)?\\s*(${datePattern})\\b`,
+      "i",
+    ),
+  );
+
+  if (labelledDate?.[1]) {
+    return labelledDate[1];
+  }
+
+  return (
+    text.match(new RegExp(`\\bOn\\s+(${datePattern})\\b`, "i"))?.[1] || ""
+  );
+}
+
+function extractAgency(lines: string[], joined: string) {
+  const labelledAgency = joined.match(
+    /\b(?:agency|office|listed by|sold by)\s*:?\s*([A-Z][A-Za-z&.'\-\s]{2,55})\b/,
+  )?.[1];
+
+  if (labelledAgency) {
+    return labelledAgency.trim();
+  }
+
+  const agencyBrands =
+    /(McGrath|Ray White|Place|Belle Property|Harcourts|LJ Hooker|RE\/MAX|Coronis|Barry Plant|Nelson Alexander|Jellis Craig|Marshall White|Buxton|Fletchers|Professionals|First National|PRD|Raine & Horne|Sotheby's|Kollosche|The Agency|BresicWhitney|Stone Real Estate|Richardson & Wrench|Elders)(?:\s+[A-Za-z][A-Za-z&.'-]+){0,3}/i;
+  const candidates = lines
+    .map((line) => line.match(agencyBrands)?.[0] || "")
+    .filter((line) => line.length >= 4 && line.length <= 55);
+
+  return candidates.sort((a, b) => b.length - a.length)[0] || "";
+}
+
+function extractAgentName(text: string) {
+  return (
+    text.match(
+      /\b(?:agent|sales agent|contact|selling agent)\s*:?\s*([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,2})\b/,
+    )?.[1] || ""
+  );
+}
+
+function extractDescription(lines: string[]) {
+  const ignoredLine =
+    /(realestate\.com\.au|rpp\.corelogic|rp data|menu|sign in|join|share|save|back to results|can you afford|understand your repayments|keyboard shortcuts|map data|report a map error|property notes|click edit|help|update data|view all)/i;
+
+  return lines
+    .filter((line) => line.length > 80 && !ignoredLine.test(line))
+    .slice(0, 2)
+    .join(" ");
+}
+
+function extractYearBuilt(text: string) {
+  return text.match(/\bYear Built\s*:?\s*(\d{4})\b/i)?.[1] || "";
+}
+
+function extractDevelopmentZone(text: string) {
+  return (
+    text.match(
+      /\bDevelopment Zone\s*:?\s*([A-Za-z0-9 /&.'-]+?)(?=\s+(?:Year Built|Property History|Last Listed|For Sale|Sale|Listing|Rental|DA|$))/i,
+    )?.[1]?.trim() || ""
+  );
+}
+
+function extractInspection(text: string) {
+  return (
+    text.match(/\bInspection\s+([A-Za-z]{3}\s+\d{1,2}\s+[A-Za-z]{3}\s+\d{1,2}:\d{2}\s*(?:am|pm))/i)?.[1] ||
+    ""
+  );
+}
+
+function getSourceLabel(sourceUrl: string, text: string) {
+  if (/realestate\.com\.au/i.test(sourceUrl) || /realestate\.com\.au/i.test(text)) {
+    return "realestate.com.au";
+  }
+
+  if (/rpp\.corelogic|RP Data/i.test(sourceUrl) || /RP Data/i.test(text)) {
+    return "RP Data";
+  }
+
+  if (/domain\.com\.au/i.test(sourceUrl) || /Domain/i.test(text)) {
+    return "Domain";
+  }
+
+  return "Smart Paste";
+}
+
+function buildComparableNotes({
+  sourceLabel,
+  status,
+  beds,
+  baths,
+  cars,
+  landSize,
+  buildingSize,
+  propertyType,
+  soldPrice,
+  saleDate,
+  yearBuilt,
+  developmentZone,
+  daysOnMarket,
+  inspection,
+}: {
+  sourceLabel: string;
+  status: string;
+  beds: string;
+  baths: string;
+  cars: string;
+  landSize: string;
+  buildingSize: string;
+  propertyType: string;
+  soldPrice: string;
+  saleDate: string;
+  yearBuilt: string;
+  developmentZone: string;
+  daysOnMarket: string;
+  inspection: string;
+}) {
+  const evidence = [
+    beds || baths || cars
+      ? `${beds || "-"} bed / ${baths || "-"} bath / ${cars || "-"} car`
+      : "",
+    landSize ? `${landSize} land` : "",
+    buildingSize ? `${buildingSize} building` : "",
+    propertyType,
+    soldPrice,
+    saleDate ? `date: ${saleDate}` : "",
+  ].filter(Boolean);
+  const extraDetails = [
+    status ? `Status: ${status}` : "",
+    yearBuilt ? `Year built: ${yearBuilt}` : "",
+    developmentZone ? `Development zone: ${developmentZone}` : "",
+    daysOnMarket,
+    inspection ? `Inspection: ${inspection}` : "",
+  ].filter(Boolean);
+
+  return [
+    `${sourceLabel} smart paste${evidence.length ? `: ${evidence.join(", ")}` : ""}.`,
+    extraDetails.join(". "),
+    "Please review all generated details before saving.",
+  ]
+    .filter(Boolean)
+    .join(" ");
 }
 
 function normalizeUrl(value: string) {
