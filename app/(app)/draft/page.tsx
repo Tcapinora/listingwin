@@ -9,7 +9,6 @@ import {
   MessageCircleQuestion,
   Share2,
   Target,
-  Users,
   type LucideIcon,
 } from "lucide-react";
 import { useState } from "react";
@@ -18,13 +17,9 @@ import { useListing } from "@/components/ListingProvider";
 import {
   AgentNotesSection,
   AppraisalScriptSection,
-  BuyerDemandSection,
-  BuyerMatchEngineSection,
   CommissionDefenceSection,
-  FollowUpAutomationSection,
   Form6PrototypeSection,
   SellerFollowUpSection,
-  VendorReportSection,
 } from "@/components/ValueSections";
 import { generatePropertyWriteup } from "@/lib/copy";
 import { getListingWinInsight } from "@/lib/listingScore";
@@ -46,6 +41,11 @@ export default function DraftPage() {
   const socialCaption = `${listing.details.headline || "New listing opportunity"} ${
     listing.details.address ? `at ${listing.details.address}` : ""
   }. A polished campaign launch designed to create attention, urgency, and buyer confidence.`;
+  const defaultClientMessage =
+    "Hi [Client Name], thanks again for having me through the property today. I really enjoyed seeing the home and discussing your plans. I'll send through the proposal and next steps shortly, but if you have any questions in the meantime, please feel free to reach out.";
+  const [clientMessage, setClientMessage] = useState(
+    listing.workspaceChecklist["client-message"]?.notes || defaultClientMessage,
+  );
 
   const hasProperty = Boolean(listing.details.address.trim());
   const hasImages = Boolean(
@@ -57,8 +57,8 @@ export default function DraftPage() {
     hasImages ? "Marketing visuals ready" : "Marketing visuals missing",
   ];
   const quickActions: Array<[string, string, LucideIcon]> = [
-    ["Call matched buyers", "#buyer-database", Users],
-    ["Plan follow-up", "#follow-up", Target],
+    ["Follow-up checklist", "#workspace-checklist", Target],
+    ["Client message", "#client-message", MessageCircleQuestion],
     ["Form 6 notes", "#form-6", FileText],
   ];
   const updateChecklistTopic = (
@@ -242,7 +242,7 @@ export default function DraftPage() {
           </div>
         </div>
 
-        <div className="mt-6 grid gap-4 lg:grid-cols-2">
+        <div id="workspace-checklist" className="mt-6 grid gap-4 lg:grid-cols-2">
           {workspaceChecklistTopics.map((topic) => {
             const saved = listing.workspaceChecklist[topic.id] || {
               done: false,
@@ -323,6 +323,66 @@ export default function DraftPage() {
             );
           })}
         </div>
+
+        <section
+          id="client-message"
+          className="mt-6 rounded-[1.75rem] bg-blue-50 p-5 ring-1 ring-blue-100"
+        >
+          <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-start">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">
+                Message to send client after appraisal
+              </p>
+              <h2 className="mt-3 text-2xl font-semibold tracking-tight text-slate-950">
+                Keep momentum while the decision is fresh.
+              </h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+                Edit this after the appointment, copy it, then send it by SMS or
+                email with the proposal/report.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={async () => {
+                  try {
+                    await navigator.clipboard.writeText(clientMessage);
+                    setShareStatus("Message copied");
+                  } catch {
+                    setShareStatus("Copy unavailable");
+                  }
+
+                  window.setTimeout(() => setShareStatus(""), 2500);
+                }}
+                className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-blue-900 shadow-sm ring-1 ring-blue-100"
+              >
+                <Copy size={16} />
+                {shareStatus === "Message copied" ? "Copied" : "Copy message"}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  updateChecklistTopic("client-message", (current) => ({
+                    ...current,
+                    done: true,
+                    notes: clientMessage,
+                  }));
+                  setShareStatus("Message saved");
+                  window.setTimeout(() => setShareStatus(""), 2500);
+                }}
+                className="inline-flex items-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card"
+              >
+                Save message
+              </button>
+            </div>
+          </div>
+          <textarea
+            value={clientMessage}
+            onChange={(event) => setClientMessage(event.target.value)}
+            rows={5}
+            className="mt-5 w-full resize-none rounded-[1.25rem] border-0 bg-white px-5 py-4 text-sm leading-7 text-slate-950 outline-none ring-1 ring-blue-100 focus:ring-2 focus:ring-blue-500"
+          />
+        </section>
 
         <details className="mt-6 rounded-[1.5rem] bg-slate-50 p-5">
           <summary className="cursor-pointer text-sm font-semibold text-slate-950">
@@ -405,43 +465,6 @@ export default function DraftPage() {
         </div>
       </section>
 
-      <section
-        id="buyer-database"
-        className="mt-8 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-blue-50 sm:p-8"
-      >
-        <div className="max-w-3xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
-            Buyer and follow-up tools
-          </p>
-          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
-            Prove there is already demand, then keep the seller close.
-          </h2>
-          <p className="mt-3 text-sm leading-6 text-slate-600">
-            This is where the agent turns the marketing presentation into a
-            real next step: who to call, what to say, and how to keep momentum
-            after the appraisal.
-          </p>
-        </div>
-      </section>
-
-      <section id="follow-up" className="mt-10 rounded-[2rem] bg-slate-950 p-6 text-white shadow-soft sm:p-8">
-        <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-blue-100">
-          <Target size={16} />
-          Follow-up plan
-        </p>
-        <h2 className="mt-5 text-3xl font-semibold tracking-tight">
-          Decide who gets called first.
-        </h2>
-        <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-300">
-          Use the buyer matches and reminders below to leave the appointment
-          with a call list, a message, and a reason for the seller to stay
-          emotionally engaged.
-        </p>
-      </section>
-
-      <BuyerMatchEngineSection listing={listing} onUpdate={setListing} />
-      <FollowUpAutomationSection listing={listing} onUpdate={setListing} />
-
       <section className="mt-10 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-slate-200/70 sm:p-8">
         <p className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
           <Handshake size={16} />
@@ -523,9 +546,7 @@ export default function DraftPage() {
         </div>
       </section>
 
-      <VendorReportSection listing={listing} />
       <SellerFollowUpSection listing={listing} />
-      <BuyerDemandSection listing={listing} />
       <CommissionDefenceSection />
       <AppraisalScriptSection listing={listing} />
       <AgentNotesSection listing={listing} />
@@ -570,52 +591,70 @@ export default function DraftPage() {
 
 const workspaceChecklistTopics = [
   {
-    id: "seller-motivation",
-    title: "Seller motivation",
+    id: "buyer-demand-close",
+    title: "Buyer Demand Close",
     description:
-      "Understand the reason behind the move so the close matches the seller’s real driver.",
+      "Use the seller-facing buyer proof as a closing point without turning this workspace into the presentation.",
     subtasks: [
-      "Reason for selling",
-      "Ideal timeline",
-      "Price expectations",
-      "Preferred settlement terms",
+      "Buyer demand explained",
+      "Active buyers discussed",
+      "Similar buyer enquiry discussed",
+      "Buyer database used as a closing point",
+      "Vendor understands why launching now matters",
     ],
   },
   {
-    id: "pricing-strategy",
-    title: "Pricing strategy",
+    id: "follow-up-reminders",
+    title: "Follow-Up Reminders",
     description:
-      "Use evidence and feedback to make the price conversation feel controlled.",
+      "Keep control after the appraisal by locking in the next contact and decision point.",
     subtasks: [
-      "Comparable sales discussed",
-      "Market conditions explained",
-      "Recommended price guide",
-      "Vendor feedback captured",
+      "Send post-appraisal message",
+      "Send updated proposal/report",
+      "Call vendor after 24 hours",
+      "Confirm next decision date",
+      "Follow up objections",
+      "Send Form 6 / agency agreement if required",
     ],
   },
   {
-    id: "marketing-campaign",
-    title: "Marketing campaign",
+    id: "commission-confidence",
+    title: "Commission and Confidence Checklist",
     description:
-      "Confirm the campaign pieces the seller has seen in the vendor presentation.",
+      "Connect the fee, marketing investment, and strategy back to the result the vendor wants.",
     subtasks: [
-      "Signboard",
-      "Photography",
-      "Floor plan",
-      "Social media",
-      "Realestate.com.au / Domain campaign",
+      "Commission discussed",
+      "Commission justified with value",
+      "Marketing investment discussed",
+      "Agent explained why their strategy gives the vendor confidence",
+      "Vendor concerns addressed",
     ],
   },
   {
-    id: "presentation-follow-up",
-    title: "Presentation follow-up",
+    id: "emotional-prompts",
+    title: "Emotional Conversation Prompts",
     description:
-      "Turn the appointment into a clear next step without making the seller feel rushed.",
+      "Ask better questions so the close speaks to the seller’s real reason for moving.",
     subtasks: [
-      "Questions answered",
-      "Objections handled",
-      "Next steps agreed",
-      "Form 6 / agency agreement discussed",
+      "Why are you considering selling?",
+      "What would a great result mean for you?",
+      "What is most important to you in the process?",
+      "Are you more focused on price, timing, or certainty?",
+      "What concerns do you have about selling?",
+    ],
+  },
+  {
+    id: "general-appraisal",
+    title: "General Appraisal Checklist",
+    description:
+      "A simple tick-and-flick list for the core points that should be covered before leaving.",
+    subtasks: [
+      "Seller motivation discussed",
+      "Timeline confirmed",
+      "Price expectations discussed",
+      "Marketing campaign explained",
+      "Comparable sales explained",
+      "Next steps confirmed",
     ],
   },
 ];

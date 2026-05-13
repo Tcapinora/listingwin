@@ -20,6 +20,7 @@ import {
   CampaignTimelineSection,
   MarketExpertSection,
   PriceConfidenceSection,
+  VendorReportSection,
 } from "@/components/ValueSections";
 
 function limitWords(value: string, maxWords: number) {
@@ -88,8 +89,9 @@ export function PresentationFlowNav() {
     "Pricing of property",
     "Comparable sales",
     "Marketing vision",
-    "Campaign momentum",
     "Buyer demand",
+    "Future vendor report",
+    "Campaign momentum",
   ];
 
   return (
@@ -396,6 +398,17 @@ export function PresentationGrid({
         editLabel="Edit buyers"
       >
         <BuyerMatchEngineSection listing={listing} />
+      </PresentationChapter>
+
+      <PresentationChapter
+        number="06"
+        eyebrow="Future vendor report"
+        title="Show the seller how informed they will feel after launch."
+        description="This is the promise after the campaign starts: buyer numbers, inspection feedback, price feedback, and the next move, all reported clearly."
+        editHref={editable ? "/presentation" : undefined}
+        editLabel="Review report"
+      >
+        <VendorReportSection listing={listing} />
       </PresentationChapter>
     </>
   );
