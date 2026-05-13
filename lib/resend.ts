@@ -20,12 +20,17 @@ export async function sendResendEmail({
   text,
   html,
   replyTo,
+  attachments,
 }: {
   to: string;
   subject: string;
   text?: string;
   html?: string;
   replyTo?: string;
+  attachments?: Array<{
+    filename: string;
+    content: string;
+  }>;
 }) {
   if (!resendApiKey) {
     throw new Error(
@@ -57,6 +62,7 @@ export async function sendResendEmail({
       ...(replyTo || resendReplyTo
         ? { reply_to: replyTo || resendReplyTo }
         : {}),
+      ...(attachments?.length ? { attachments } : {}),
     }),
   });
 

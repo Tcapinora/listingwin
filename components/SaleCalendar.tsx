@@ -5,11 +5,11 @@ import {
   Clock3,
   Contact,
   GripVertical,
-  Mail,
   Plus,
   Save,
   Trash2,
 } from "lucide-react";
+import { EmailCalendarPdfButton } from "@/components/EmailCalendarPdfButton";
 import { useMemo, useState } from "react";
 import { useListing } from "@/components/ListingProvider";
 import type { SaleCalendarEvent } from "@/lib/types";
@@ -210,35 +210,6 @@ export function SaleCalendar({
     }
   };
 
-  const calendarSummary = listing.saleCalendarEvents
-    .slice()
-    .sort((a, b) =>
-      `${a.date} ${a.time || "99:99"}`.localeCompare(
-        `${b.date} ${b.time || "99:99"}`,
-      ),
-    )
-    .map((event) => {
-      const parts = [
-        event.date,
-        event.time ? formatTime(event.time) : "",
-        event.type,
-        event.title,
-        event.supplier ? `Supplier: ${event.supplier}` : "",
-        event.contact ? `Contact: ${event.contact}` : "",
-        event.taskDetails,
-        event.notes,
-      ].filter(Boolean);
-
-      return parts.join(" | ");
-    })
-    .join("\n");
-  const emailCalendarHref = `mailto:?subject=${encodeURIComponent(
-    "ListingWin campaign calendar",
-  )}&body=${encodeURIComponent(
-    calendarSummary ||
-      "No calendar tasks have been added yet. Add campaign dates in ListingWin first.",
-  )}`;
-
   return (
     <section
       className={`rounded-[2rem] border border-blue-100 bg-white p-4 shadow-card sm:p-6 lg:p-8 ${
@@ -310,13 +281,12 @@ export function SaleCalendar({
                 <Save size={16} />
                 {saveStatus || "Save calendar"}
               </button>
-              <a
-                href={emailCalendarHref}
+              <EmailCalendarPdfButton
+                listing={listing}
+                month={month}
+                year={year}
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-blue-700 px-4 py-3 text-sm font-semibold text-white shadow-sm"
-              >
-                <Mail size={16} />
-                Email calendar
-              </a>
+              />
             </>
           ) : null}
           <select

@@ -19,7 +19,6 @@ import {
   Handshake,
   HeartHandshake,
   Link2,
-  Mail,
   Megaphone,
   MessageSquareText,
   Ruler,
@@ -32,6 +31,7 @@ import {
   Users,
 } from "lucide-react";
 import { useAgentProfile } from "@/components/AgentProfileProvider";
+import { EmailCalendarPdfButton } from "@/components/EmailCalendarPdfButton";
 import { getBuyerMatches, getFollowUpPlan } from "@/lib/buyerMatch";
 import { getPrimaryPropertyPhoto } from "@/lib/listingImages";
 import { getListingWinInsight } from "@/lib/listingScore";
@@ -830,9 +830,6 @@ export function CampaignTimelineSection({ listing }: { listing: ListingState }) 
     "ListingWin calendar prepared for vendor discussion.",
     `Prepared by ${agentName}.`,
   ].join("\n");
-  const calendarMailTo = `mailto:?subject=${encodeURIComponent(
-    `${listing.details.address || "Property"} sale calendar`,
-  )}&body=${encodeURIComponent(calendarSummary)}`;
   const selectedLabel = selectedDate
     ? new Date(`${selectedDate}T00:00:00`).toLocaleDateString("en-AU", {
         weekday: "long",
@@ -879,13 +876,12 @@ export function CampaignTimelineSection({ listing }: { listing: ListingState }) 
               <Link2 size={16} />
               {shareStatus || "Copy seller calendar"}
             </button>
-            <a
-              href={calendarMailTo}
+            <EmailCalendarPdfButton
+              listing={listing}
+              month={month}
+              year={year}
               className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-5 py-3 text-sm font-semibold text-blue-900 shadow-sm"
-            >
-              <Mail size={16} />
-              Email calendar
-            </a>
+            />
           </div>
 
           <div className="grid gap-6 xl:grid-cols-[1fr_320px]">
