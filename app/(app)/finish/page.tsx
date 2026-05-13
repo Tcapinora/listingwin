@@ -11,15 +11,15 @@ export default function FinishPage() {
 
       <div className="mt-7 rounded-[2rem] bg-white p-7 shadow-card ring-1 ring-slate-200/70 sm:p-10">
         <p className="inline-flex rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
-          Builder complete
+          Appointment handoff
         </p>
         <h1 className="mt-5 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-          Open the Vendor Presentation first.
+          Present first. Close second.
         </h1>
         <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-          The builder is for preparation. The next step is the clean
-          seller-facing presentation. After the seller has seen the campaign,
-          move into the Agent Workspace to close.
+          Use the Vendor Presentation with the seller. Once they have seen
+          their property inside your campaign, move into the Agent Workspace for
+          the private closing checklist, objections, follow-up, and notes.
         </p>
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
@@ -49,7 +49,8 @@ export default function FinishPage() {
               Agent Workspace
             </h2>
             <p className="mt-2 text-sm leading-6 text-slate-600">
-              Use this after the presentation to close the listing.
+              Private checklist for the closing conversation after the seller
+              has seen the campaign.
             </p>
             <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-blue-800">
               Open workspace

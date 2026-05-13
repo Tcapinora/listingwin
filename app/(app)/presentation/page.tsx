@@ -364,15 +364,15 @@ export default function PresentationPage() {
           <div className="grid gap-6 lg:grid-cols-[1fr_0.55fr] lg:items-center">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
-              Close the appointment
+                Close the appointment
               </p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
                 Ready to move into the Agent Workspace?
               </h2>
               <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
-                Once the seller is attached to the marketing vision, move into
-                the closing workspace to handle emotion, price, trust, and the
-                next decision while momentum is fresh.
+                The seller has now seen the campaign. Finish the presentation,
+                then use the private workspace to confirm motivation, handle
+                objections, send the follow-up, and agree the next step.
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">

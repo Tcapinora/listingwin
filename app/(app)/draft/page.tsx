@@ -3,10 +3,12 @@
 import Link from "next/link";
 import {
   ArrowRight,
+  CheckCircle2,
   Copy,
   FileText,
   Handshake,
   MessageCircleQuestion,
+  MonitorPlay,
   Share2,
   Target,
   type LucideIcon,
@@ -19,7 +21,6 @@ import {
   AppraisalScriptSection,
   CommissionDefenceSection,
   Form6PrototypeSection,
-  SellerFollowUpSection,
 } from "@/components/ValueSections";
 import { generatePropertyWriteup } from "@/lib/copy";
 import { getListingWinInsight } from "@/lib/listingScore";
@@ -60,6 +61,20 @@ export default function DraftPage() {
     ["Follow-up checklist", "#workspace-checklist", Target],
     ["Client message", "#client-message", MessageCircleQuestion],
     ["Form 6 notes", "#form-6", FileText],
+  ];
+  const workspaceSteps = [
+    {
+      title: "1. Confirm",
+      text: "Tick off what the seller has understood: price, campaign, buyers, timing, and next steps.",
+    },
+    {
+      title: "2. Handle",
+      text: "Use the objection prompts only when the seller hesitates or needs more confidence.",
+    },
+    {
+      title: "3. Follow up",
+      text: "Copy the client message, save your notes, and lock in the next decision date.",
+    },
   ];
   const updateChecklistTopic = (
     topicId: string,
@@ -154,17 +169,32 @@ export default function DraftPage() {
         <div className="grid gap-8 lg:grid-cols-[1fr_0.6fr] lg:items-end">
           <div>
             <div className="inline-flex rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
-              Agent Workspace
+              Agent Workspace · private
             </div>
             <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-              Close the listing with calm proof.
+              Close the listing after the seller sees the campaign.
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-              The seller has seen what their campaign could look like. Now use
-              this workspace to guide the decision: buyer proof, pricing
-              confidence, objections, follow-up, Form 6 notes, and the next
-              step.
+              This is not another presentation. It is the private agent screen
+              for the closing conversation: confirm what landed, handle what is
+              still uncertain, then leave with a clear next step.
             </p>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <Link
+                href="/presentation"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-blue-100 bg-white px-5 py-3 text-sm font-semibold text-blue-900 shadow-sm transition hover:bg-blue-50"
+              >
+                <MonitorPlay size={17} />
+                Open Vendor Presentation
+              </Link>
+              <a
+                href="#workspace-checklist"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card transition hover:bg-blue-800"
+              >
+                Start closing checklist
+                <ArrowRight size={17} />
+              </a>
+            </div>
           </div>
           <div className="rounded-[1.5rem] bg-blue-50 p-5 ring-1 ring-blue-100">
             <div className="flex items-end justify-between gap-4">
@@ -187,6 +217,27 @@ export default function DraftPage() {
               />
             </div>
           </div>
+        </div>
+
+        <div className="mt-8 grid gap-3 lg:grid-cols-3">
+          {workspaceSteps.map((step) => (
+            <article
+              key={step.title}
+              className="rounded-[1.5rem] bg-white p-5 shadow-sm ring-1 ring-slate-200/70"
+            >
+              <div className="flex items-center gap-3">
+                <span className="grid h-9 w-9 place-items-center rounded-full bg-blue-50 text-blue-700">
+                  <CheckCircle2 size={17} />
+                </span>
+                <h2 className="text-lg font-semibold tracking-tight text-slate-950">
+                  {step.title}
+                </h2>
+              </div>
+              <p className="mt-3 text-sm leading-6 text-slate-600">
+                {step.text}
+              </p>
+            </article>
+          ))}
         </div>
 
         <div className="mt-8 grid gap-4 lg:grid-cols-[0.95fr_1.05fr]">
@@ -546,7 +597,6 @@ export default function DraftPage() {
         </div>
       </section>
 
-      <SellerFollowUpSection listing={listing} />
       <CommissionDefenceSection />
       <AppraisalScriptSection listing={listing} />
       <AgentNotesSection listing={listing} />
