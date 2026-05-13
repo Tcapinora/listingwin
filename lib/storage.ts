@@ -56,6 +56,14 @@ export function readListingState(): ListingState {
       saleCalendarEvents: Array.isArray(parsed.saleCalendarEvents)
         ? parsed.saleCalendarEvents.map(normalizeSaleCalendarEvent)
         : emptyListingState.saleCalendarEvents,
+      agentPitchContent: {
+        ...emptyListingState.agentPitchContent,
+        ...parsed.agentPitchContent,
+      },
+      workspaceChecklist:
+        parsed.workspaceChecklist && typeof parsed.workspaceChecklist === "object"
+          ? parsed.workspaceChecklist
+          : emptyListingState.workspaceChecklist,
       buyerLeads: Array.isArray(parsed.buyerLeads)
         ? parsed.buyerLeads.map(normalizeBuyerLead)
         : emptyListingState.buyerLeads,

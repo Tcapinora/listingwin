@@ -3,8 +3,6 @@
 import Link from "next/link";
 import {
   ArrowRight,
-  BadgeCheck,
-  CheckCircle2,
   Copy,
   FileText,
   Handshake,
@@ -53,34 +51,52 @@ export default function DraftPage() {
   const hasImages = Boolean(
     listing.propertyPhotos.length || listing.assets.propertyPhoto,
   );
-  const checks = [
-    ["Agent profile", isProfileComplete],
-    ["Pricing prepared", hasProperty],
-    ["Marketing built", hasImages],
-    ["Presentation shown", true],
+  const setupStatus = [
+    isProfileComplete ? "Agent profile ready" : "Agent profile needs attention",
+    hasProperty ? "Property details ready" : "Property details missing",
+    hasImages ? "Marketing visuals ready" : "Marketing visuals missing",
   ];
   const quickActions: Array<[string, string, LucideIcon]> = [
     ["Call matched buyers", "#buyer-database", Users],
     ["Plan follow-up", "#follow-up", Target],
     ["Form 6 notes", "#form-6", FileText],
   ];
-  const workspaceStages: Array<[string, string, string]> = [
-    [
-      "1",
-      "Call the right people",
-      "Use the buyer database and follow-up plan to create movement straight after the appraisal.",
-    ],
-    [
-      "2",
-      "Handle the hard conversations",
-      "Use price, buyer demand, campaign reporting, and fee confidence to answer vendor concerns.",
-    ],
-    [
-      "3",
-      "Make the next step easy",
-      "Explain the Form 6, capture notes, and leave with a clear commitment path.",
-    ],
-  ];
+  const updateChecklistTopic = (
+    topicId: string,
+    updater: (current: { done: boolean; subtasks: Record<string, boolean>; notes: string }) => {
+      done: boolean;
+      subtasks: Record<string, boolean>;
+      notes: string;
+    },
+  ) => {
+    setListing((current) => {
+      const existing = current.workspaceChecklist[topicId] || {
+        done: false,
+        subtasks: {},
+        notes: "",
+      };
+
+      return {
+        ...current,
+        workspaceChecklist: {
+          ...current.workspaceChecklist,
+          [topicId]: updater(existing),
+        },
+      };
+    });
+  };
+  const checklistCompleted = workspaceChecklistTopics.reduce((total, topic) => {
+    const saved = listing.workspaceChecklist[topic.id];
+    const subtaskCount = topic.subtasks.filter(
+      (subtask) => saved?.subtasks?.[subtask],
+    ).length;
+
+    return total + (saved?.done ? 1 : 0) + subtaskCount;
+  }, 0);
+  const checklistTotal = workspaceChecklistTopics.reduce(
+    (total, topic) => total + 1 + topic.subtasks.length,
+    0,
+  );
   const objectionTools = [
     {
       objection: "Another agent said we can get more.",
@@ -173,54 +189,35 @@ export default function DraftPage() {
           </div>
         </div>
 
-        <div className="mt-8 rounded-[1.75rem] bg-slate-950 p-5 text-white">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-200">
-            Start here after the presentation
-          </p>
-          <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_auto] lg:items-center">
-            <div>
-              <h2 className="text-2xl font-semibold tracking-tight">
-                Turn visual attachment into a decision.
-              </h2>
-              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300">
-                The seller has just seen their home in market. Answer the
-                questions underneath the decision: Can I trust this agent? Will
-                buyers care? What happens next? Am I safe moving forward?
-              </p>
-              <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300">
-                Keep the seller’s situation in mind: growing family,
-                separation, deceased estate, downsizing, or a lifestyle move.
-                The close should match the reason they are selling.
-              </p>
-            </div>
-            <Link
-              href="#buyer-database"
-              className="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-blue-950 shadow-card"
-            >
-              Start closing with buyer proof
-            </Link>
-          </div>
-        </div>
-
-        <div className="mt-6 grid gap-4 lg:grid-cols-[0.95fr_1.05fr]">
+        <div className="mt-8 grid gap-4 lg:grid-cols-[0.95fr_1.05fr]">
           <div className="rounded-[1.5rem] bg-slate-50 p-5 ring-1 ring-slate-200/70">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">
-              Readiness
+              Private closing checklist
             </p>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              {checks.map(([label, done]) => (
-                <div
-                  key={String(label)}
-                  className="flex items-center gap-2 rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-slate-700"
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-slate-950">
+              Tick off what has been covered.
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-slate-600">
+              {checklistCompleted}/{checklistTotal} items complete. This is for
+              the agent only, after the seller-facing presentation.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {setupStatus.map((status) => (
+                <span
+                  key={status}
+                  className="rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-slate-600"
                 >
-                  {done ? (
-                    <BadgeCheck className="text-blue-700" size={16} />
-                  ) : (
-                    <CheckCircle2 className="text-slate-300" size={16} />
-                  )}
-                  {label}
-                </div>
+                  {status}
+                </span>
               ))}
+            </div>
+            <div className="mt-4 h-2 overflow-hidden rounded-full bg-white">
+              <div
+                className="h-full rounded-full bg-blue-700"
+                style={{
+                  width: `${Math.round((checklistCompleted / checklistTotal) * 100)}%`,
+                }}
+              />
             </div>
           </div>
 
@@ -245,9 +242,91 @@ export default function DraftPage() {
           </div>
         </div>
 
+        <div className="mt-6 grid gap-4 lg:grid-cols-2">
+          {workspaceChecklistTopics.map((topic) => {
+            const saved = listing.workspaceChecklist[topic.id] || {
+              done: false,
+              subtasks: {},
+              notes: "",
+            };
+
+            return (
+              <article
+                key={topic.id}
+                className="rounded-[1.75rem] bg-slate-50 p-5 ring-1 ring-slate-200/70"
+              >
+                <label className="flex cursor-pointer items-start gap-3">
+                  <input
+                    type="checkbox"
+                    checked={saved.done}
+                    onChange={(event) =>
+                      updateChecklistTopic(topic.id, (current) => ({
+                        ...current,
+                        done: event.target.checked,
+                      }))
+                    }
+                    className="mt-1 h-5 w-5 rounded border-slate-300 text-blue-700 focus:ring-blue-500"
+                  />
+                  <span>
+                    <span className="block text-lg font-semibold tracking-tight text-slate-950">
+                      {topic.title}
+                    </span>
+                    <span className="mt-1 block text-sm leading-6 text-slate-600">
+                      {topic.description}
+                    </span>
+                  </span>
+                </label>
+
+                <div className="mt-4 grid gap-2">
+                  {topic.subtasks.map((subtask) => (
+                    <label
+                      key={subtask}
+                      className="flex cursor-pointer items-center gap-3 rounded-2xl bg-white px-4 py-3 text-sm font-medium text-slate-700"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={Boolean(saved.subtasks[subtask])}
+                        onChange={(event) =>
+                          updateChecklistTopic(topic.id, (current) => ({
+                            ...current,
+                            subtasks: {
+                              ...current.subtasks,
+                              [subtask]: event.target.checked,
+                            },
+                          }))
+                        }
+                        className="h-4 w-4 rounded border-slate-300 text-blue-700 focus:ring-blue-500"
+                      />
+                      {subtask}
+                    </label>
+                  ))}
+                </div>
+
+                <label className="mt-4 block">
+                  <span className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                    Notes
+                  </span>
+                  <textarea
+                    value={saved.notes}
+                    onChange={(event) =>
+                      updateChecklistTopic(topic.id, (current) => ({
+                        ...current,
+                        notes: event.target.value,
+                      }))
+                    }
+                    placeholder="Add private notes from the appraisal..."
+                    rows={4}
+                    className="mt-2 w-full resize-none rounded-2xl border-0 bg-white px-4 py-3 text-sm leading-6 text-slate-950 outline-none ring-1 ring-slate-200 focus:ring-2 focus:ring-blue-500"
+                  />
+                </label>
+              </article>
+            );
+          })}
+        </div>
+
         <details className="mt-6 rounded-[1.5rem] bg-slate-50 p-5">
           <summary className="cursor-pointer text-sm font-semibold text-slate-950">
-            View prepared notes and copy
+            View prepared follow-up copy
           </summary>
           <div className="mt-5 grid gap-4 lg:grid-cols-3">
             {[
@@ -324,25 +403,6 @@ export default function DraftPage() {
             </button>
           </div>
         </div>
-      </section>
-
-      <section className="mt-8 grid gap-4 lg:grid-cols-3">
-        {workspaceStages.map(([number, title, text]) => (
-          <article
-            key={title}
-            className="rounded-[1.75rem] bg-white p-5 shadow-card ring-1 ring-slate-200/70"
-          >
-            <div className="flex items-center gap-3">
-              <span className="grid h-9 w-9 place-items-center rounded-full bg-blue-700 text-sm font-semibold text-white">
-                {number}
-              </span>
-              <h2 className="text-lg font-semibold tracking-tight text-slate-950">
-                {title}
-              </h2>
-            </div>
-            <p className="mt-3 text-sm leading-6 text-slate-500">{text}</p>
-          </article>
-        ))}
       </section>
 
       <section
@@ -507,3 +567,55 @@ export default function DraftPage() {
     </>
   );
 }
+
+const workspaceChecklistTopics = [
+  {
+    id: "seller-motivation",
+    title: "Seller motivation",
+    description:
+      "Understand the reason behind the move so the close matches the seller’s real driver.",
+    subtasks: [
+      "Reason for selling",
+      "Ideal timeline",
+      "Price expectations",
+      "Preferred settlement terms",
+    ],
+  },
+  {
+    id: "pricing-strategy",
+    title: "Pricing strategy",
+    description:
+      "Use evidence and feedback to make the price conversation feel controlled.",
+    subtasks: [
+      "Comparable sales discussed",
+      "Market conditions explained",
+      "Recommended price guide",
+      "Vendor feedback captured",
+    ],
+  },
+  {
+    id: "marketing-campaign",
+    title: "Marketing campaign",
+    description:
+      "Confirm the campaign pieces the seller has seen in the vendor presentation.",
+    subtasks: [
+      "Signboard",
+      "Photography",
+      "Floor plan",
+      "Social media",
+      "Realestate.com.au / Domain campaign",
+    ],
+  },
+  {
+    id: "presentation-follow-up",
+    title: "Presentation follow-up",
+    description:
+      "Turn the appointment into a clear next step without making the seller feel rushed.",
+    subtasks: [
+      "Questions answered",
+      "Objections handled",
+      "Next steps agreed",
+      "Form 6 / agency agreement discussed",
+    ],
+  },
+];

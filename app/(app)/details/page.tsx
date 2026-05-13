@@ -9,13 +9,16 @@ import {
   Plus,
   Sparkles,
   Wand2,
-  X,
 } from "lucide-react";
 import { FlowProgress } from "@/components/FlowProgress";
 import { useListing } from "@/components/ListingProvider";
 import { BuyerMatchEngineSection } from "@/components/ValueSections";
 import { SaleCalendar } from "@/components/SaleCalendar";
-import type { ComparableProperty, ListingDetails } from "@/lib/types";
+import type {
+  AgentPitchContent,
+  ComparableProperty,
+  ListingDetails,
+} from "@/lib/types";
 
 const propertyTypes = [
   "House",
@@ -30,7 +33,13 @@ export default function PropertyDetailsPage() {
   const router = useRouter();
   const { listing, setListing } = useListing();
   const [showComparableOptions, setShowComparableOptions] = useState(false);
-  const [smartPasteOpen, setSmartPasteOpen] = useState(false);
+  const [comparableMode, setComparableMode] = useState<"smart" | "manual" | null>(
+    null,
+  );
+  const [smartPasteText, setSmartPasteText] = useState("");
+  const [manualComparable, setManualComparable] = useState<ComparableProperty>(
+    createBlankComparable(),
+  );
 
   const updateDetail = (fieldId: keyof ListingDetails, value: string) => {
     setListing((current) => ({
@@ -63,32 +72,17 @@ export default function PropertyDetailsPage() {
     }));
   };
 
-  const blankComparable = (): ComparableProperty => ({
-    address: "",
-    suburb: "",
-    state: "",
-    soldPrice: "",
-    saleDate: "",
-    beds: "",
-    baths: "",
-    cars: "",
-    blockSize: "",
-    landSize: "",
-    propertyType: "",
-    agency: "",
-    agentName: "",
-    description: "",
-    notes: "",
-    url: "",
-    sourceUrl: "",
-  });
-
-  const addManualComparable = () => {
+  const updatePitchContent = (
+    fieldId: keyof typeof listing.agentPitchContent,
+    value: string,
+  ) => {
     setListing((current) => ({
       ...current,
-      comparableProperties: [...current.comparableProperties, blankComparable()],
+      agentPitchContent: {
+        ...current.agentPitchContent,
+        [fieldId]: value,
+      },
     }));
-    setShowComparableOptions(false);
   };
 
   const saveSmartComparable = (property: ComparableProperty) => {
@@ -111,8 +105,20 @@ export default function PropertyDetailsPage() {
         comparableProperties: [...current.comparableProperties, property],
       };
     });
-    setSmartPasteOpen(false);
+    setComparableMode(null);
     setShowComparableOptions(false);
+  };
+
+  const saveSmartPasteText = () => {
+    if (!smartPasteText.trim()) return;
+
+    saveSmartComparable(parseComparableText(smartPasteText));
+    setSmartPasteText("");
+  };
+
+  const saveManualComparable = () => {
+    saveSmartComparable(manualComparable);
+    setManualComparable(createBlankComparable());
   };
 
   return (
@@ -323,7 +329,26 @@ export default function PropertyDetailsPage() {
                       <div className="absolute right-0 z-20 mt-3 w-72 rounded-3xl bg-white p-3 shadow-soft ring-1 ring-blue-100">
                         <button
                           type="button"
-                          onClick={addManualComparable}
+                          onClick={() => {
+                            setComparableMode("smart");
+                            setShowComparableOptions(false);
+                          }}
+                          className="w-full rounded-2xl bg-blue-50 px-4 py-3 text-left transition hover:bg-blue-100"
+                        >
+                          <span className="flex items-center gap-2 text-sm font-semibold text-blue-950">
+                            <Wand2 size={15} />
+                            Smart Paste
+                          </span>
+                          <span className="mt-1 block text-xs leading-5 text-blue-900/70">
+                            Paste copied sales text and save it into a card.
+                          </span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setComparableMode("manual");
+                            setShowComparableOptions(false);
+                          }}
                           className="w-full rounded-2xl px-4 py-3 text-left transition hover:bg-slate-50"
                         >
                           <span className="block text-sm font-semibold text-slate-950">
@@ -334,31 +359,111 @@ export default function PropertyDetailsPage() {
                             you need.
                           </span>
                         </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setSmartPasteOpen(true);
-                            setShowComparableOptions(false);
-                          }}
-                          className="mt-1 w-full rounded-2xl bg-blue-50 px-4 py-3 text-left transition hover:bg-blue-100"
-                        >
-                          <span className="flex items-center gap-2 text-sm font-semibold text-blue-950">
-                            <Wand2 size={15} />
-                            Smart Paste
-                          </span>
-                          <span className="mt-1 block text-xs leading-5 text-blue-900/70">
-                            Paste copied sales text, generate fields, review,
-                            then save.
-                          </span>
-                        </button>
                       </div>
                     ) : null}
                   </div>
                 </div>
               </div>
 
+              {comparableMode ? (
+                <div className="rounded-[1.5rem] bg-white p-5 ring-1 ring-blue-100">
+                  {comparableMode === "smart" ? (
+                    <div className="grid gap-4">
+                      <div>
+                        <p className="flex items-center gap-2 text-sm font-semibold text-blue-950">
+                          <Wand2 size={16} />
+                          Smart Paste
+                        </p>
+                        <p className="mt-2 text-sm leading-6 text-slate-600">
+                          Paste the comparable sale information copied from
+                          realestate.com.au, Domain, CRM notes, or a sales
+                          report. ListingWin will format it into the card below.
+                        </p>
+                      </div>
+                      <textarea
+                        value={smartPasteText}
+                        onChange={(event) => setSmartPasteText(event.target.value)}
+                        placeholder="Paste comparable sale information here..."
+                        rows={9}
+                        className="w-full resize-none rounded-[1.5rem] border-0 bg-slate-50 px-5 py-4 text-sm leading-6 text-slate-950 shadow-inner outline-none ring-1 ring-slate-200 transition focus:bg-white focus:ring-2 focus:ring-blue-500"
+                      />
+                      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                        <button
+                          type="button"
+                          onClick={saveSmartPasteText}
+                          disabled={!smartPasteText.trim()}
+                          className="inline-flex items-center justify-center rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:bg-slate-300"
+                        >
+                          Save Comparable Sale
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setComparableMode("manual")}
+                          className="text-sm font-semibold text-blue-700 transition hover:text-blue-900"
+                        >
+                          Manual entry
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="grid gap-4">
+                      <div>
+                        <p className="text-sm font-semibold text-slate-950">
+                          Manual Entry
+                        </p>
+                        <p className="mt-2 text-sm leading-6 text-slate-600">
+                          Fill only the fields you need. This stays separate
+                          from Smart Paste so the workflow feels clearer.
+                        </p>
+                      </div>
+                      <ManualComparableForm
+                        property={manualComparable}
+                        onChange={(fieldId, value) =>
+                          setManualComparable((current) => ({
+                            ...current,
+                            [fieldId]: value,
+                            ...(fieldId === "landSize"
+                              ? { blockSize: value }
+                              : {}),
+                            ...(fieldId === "blockSize"
+                              ? { landSize: value }
+                              : {}),
+                          }))
+                        }
+                      />
+                      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                        <button
+                          type="button"
+                          onClick={saveManualComparable}
+                          className="inline-flex items-center justify-center rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card transition hover:bg-blue-800"
+                        >
+                          Save Comparable Sale
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setComparableMode("smart")}
+                          className="text-sm font-semibold text-blue-700 transition hover:text-blue-900"
+                        >
+                          Back to Smart Paste
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : null}
+
               <div className="grid gap-4 xl:grid-cols-3">
-                {listing.comparableProperties.map((property, index) => (
+                {listing.comparableProperties
+                  .map((property, index) => ({ property, index }))
+                  .filter(
+                    ({ property }) =>
+                      property.address ||
+                      property.soldPrice ||
+                      property.sourceUrl ||
+                      property.url ||
+                      property.notes,
+                  )
+                  .map(({ property, index }) => (
                   <div
                     key={index}
                     className="rounded-2xl bg-white p-4 ring-1 ring-slate-100"
@@ -463,6 +568,38 @@ export default function PropertyDetailsPage() {
 
         <section className="mt-8 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-blue-50 sm:p-8 lg:p-10">
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
+            Agent pitch text
+          </p>
+          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
+            Personalise the “Our Approach” section.
+          </h2>
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
+            These lines appear in the vendor presentation so each agent can
+            match the pitch to their own agency style, process, and buyer
+            database.
+          </p>
+          <div className="mt-6 grid gap-4 lg:grid-cols-2">
+            {agentPitchFields.map((field) => (
+              <label key={field.id} className="block">
+                <span className="text-sm font-semibold text-slate-800">
+                  {field.label}
+                </span>
+                <textarea
+                  value={listing.agentPitchContent[field.id]}
+                  onChange={(event) =>
+                    updatePitchContent(field.id, event.target.value)
+                  }
+                  placeholder={field.placeholder}
+                  rows={field.large ? 5 : 3}
+                  className="mt-2 w-full resize-none rounded-2xl border-0 bg-slate-50 px-5 py-4 text-sm leading-6 text-slate-950 shadow-inner outline-none ring-1 ring-slate-200 transition focus:bg-white focus:ring-2 focus:ring-blue-500"
+                />
+              </label>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-8 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-blue-50 sm:p-8 lg:p-10">
+          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
             Database / buyer demand
           </p>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
@@ -503,182 +640,70 @@ export default function PropertyDetailsPage() {
         </button>
       </form>
 
-      {smartPasteOpen ? (
-        <SmartPasteComparableModal
-          onClose={() => setSmartPasteOpen(false)}
-          onSave={saveSmartComparable}
-        />
-      ) : null}
     </>
   );
 }
 
-function SmartPasteComparableModal({
-  onClose,
-  onSave,
+function createBlankComparable(): ComparableProperty {
+  return {
+    address: "",
+    suburb: "",
+    state: "",
+    soldPrice: "",
+    saleDate: "",
+    beds: "",
+    baths: "",
+    cars: "",
+    blockSize: "",
+    landSize: "",
+    propertyType: "",
+    agency: "",
+    agentName: "",
+    description: "",
+    notes: "",
+    url: "",
+    sourceUrl: "",
+  };
+}
+
+function ManualComparableForm({
+  property,
+  onChange,
 }: {
-  onClose: () => void;
-  onSave: (property: ComparableProperty) => void;
+  property: ComparableProperty;
+  onChange: (fieldId: keyof ComparableProperty, value: string) => void;
 }) {
-  const [pastedText, setPastedText] = useState("");
-  const [generated, setGenerated] = useState<ComparableProperty | null>(null);
-  const [message, setMessage] = useState("");
-
-  const updateGenerated = (
-    fieldId: keyof ComparableProperty,
-    value: string,
-  ) => {
-    setGenerated((current) =>
-      current
-        ? {
-            ...current,
-            [fieldId]: value,
-          }
-        : current,
-    );
-  };
-
-  const generateComparable = () => {
-    const parsed = parseComparableText(pastedText);
-    const detectedCount = [
-      parsed.address,
-      parsed.soldPrice,
-      parsed.beds,
-      parsed.baths,
-      parsed.cars,
-      parsed.landSize,
-      parsed.propertyType,
-      parsed.agency,
-      parsed.agentName,
-      parsed.description,
-    ].filter(Boolean).length;
-
-    setGenerated(parsed);
-    setMessage(
-      detectedCount < 3
-        ? "We couldn’t detect enough property details. Please add the missing information manually."
-        : "Please review all generated details before saving.",
-    );
-  };
-
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/45 px-4 py-6 backdrop-blur-sm">
-      <div className="mx-auto max-h-[calc(100vh-3rem)] max-w-4xl overflow-y-auto rounded-[2rem] bg-white p-6 shadow-soft ring-1 ring-blue-100 sm:p-8">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
-              Paste, generate, review, save
-            </p>
-            <h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">
-              Smart Paste Comparable Sale
-            </h2>
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
-              Paste listing or sales information below. ListingWin will
-              organise it into a comparable sale for you to review before
-              saving.
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-slate-100 text-slate-500 transition hover:bg-slate-200 hover:text-slate-950"
-            aria-label="Close Smart Paste"
-            title="Close Smart Paste"
-          >
-            <X size={18} />
-          </button>
-        </div>
-
-        <div className="mt-6 grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
-          <div>
-            <label>
-              <span className="text-sm font-semibold text-slate-800">
-                Pasted property information
-              </span>
-              <textarea
-                value={pastedText}
-                onChange={(event) => setPastedText(event.target.value)}
-                placeholder="Paste text copied from realestate.com.au, Domain, CRM notes, sales reports, agency websites, or your own notes..."
-                rows={14}
-                className="mt-2 w-full resize-none rounded-3xl border-0 bg-slate-50 px-5 py-4 text-sm leading-6 text-slate-950 shadow-inner outline-none ring-1 ring-slate-200 transition focus:bg-white focus:ring-2 focus:ring-blue-500"
-              />
-            </label>
-            <button
-              type="button"
-              onClick={generateComparable}
-              disabled={!pastedText.trim()}
-              className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:bg-slate-300"
-            >
-              <Wand2 size={16} />
-              Generate Comparable Sale
-            </button>
-            <p className="mt-3 text-xs leading-5 text-slate-500">
-              Source URLs are stored only as reference links. ListingWin does
-              not visit, scrape, crawl, or process external websites.
-            </p>
-          </div>
-
-          <div className="rounded-3xl bg-blue-50/60 p-5 ring-1 ring-blue-100">
-            <p className="text-sm font-semibold text-blue-950">
-              Review before saving
-            </p>
-            <p className="mt-2 text-xs leading-5 text-blue-900/70">
-              {message || "Generated fields will appear here for review."}
-            </p>
-
-            {generated ? (
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                {smartPasteFields.map((field) => (
-                  <label
-                    key={field.id}
-                    className={field.large ? "sm:col-span-2" : ""}
-                  >
-                    <span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
-                      {field.label}
-                    </span>
-                    {field.large ? (
-                      <textarea
-                        value={generated[field.id] || ""}
-                        onChange={(event) =>
-                          updateGenerated(field.id, event.target.value)
-                        }
-                        rows={3}
-                        className="mt-2 w-full resize-none rounded-2xl border-0 bg-white px-4 py-3 text-sm text-slate-950 outline-none ring-1 ring-blue-100 focus:ring-2 focus:ring-blue-500"
-                      />
-                    ) : (
-                      <input
-                        value={generated[field.id] || ""}
-                        onChange={(event) =>
-                          updateGenerated(field.id, event.target.value)
-                        }
-                        className="mt-2 w-full rounded-2xl border-0 bg-white px-4 py-3 text-sm text-slate-950 outline-none ring-1 ring-blue-100 focus:ring-2 focus:ring-blue-500"
-                      />
-                    )}
-                  </label>
-                ))}
-                <button
-                  type="button"
-                  onClick={() => onSave(generated)}
-                  className="mt-2 inline-flex items-center justify-center rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card transition hover:bg-blue-800 sm:col-span-2"
-                >
-                  Save Comparable Sale
-                </button>
-              </div>
-            ) : (
-              <div className="mt-5 rounded-3xl bg-white p-5 text-sm leading-6 text-slate-600 ring-1 ring-blue-100">
-                Paste copied property information, then generate. Blank fields
-                are fine; the agent reviews and confirms everything before it
-                appears in the presentation.
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
+    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      {manualComparableFields.map((field) => (
+        <label
+          key={field.id}
+          className={field.large ? "sm:col-span-2 lg:col-span-4" : ""}
+        >
+          <span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+            {field.label}
+          </span>
+          {field.large ? (
+            <textarea
+              value={property[field.id] || ""}
+              onChange={(event) => onChange(field.id, event.target.value)}
+              rows={3}
+              className="mt-2 w-full resize-none rounded-2xl border-0 bg-slate-50 px-4 py-3 text-sm text-slate-950 outline-none ring-1 ring-slate-200 focus:ring-2 focus:ring-blue-500"
+            />
+          ) : (
+            <input
+              value={property[field.id] || ""}
+              onChange={(event) => onChange(field.id, event.target.value)}
+              className="mt-2 w-full rounded-2xl border-0 bg-slate-50 px-4 py-3 text-sm text-slate-950 outline-none ring-1 ring-slate-200 focus:ring-2 focus:ring-blue-500"
+            />
+          )}
+        </label>
+      ))}
     </div>
   );
 }
 
-const smartPasteFields: Array<{
+const manualComparableFields: Array<{
   id: keyof ComparableProperty;
   label: string;
   large?: boolean;
@@ -698,6 +723,49 @@ const smartPasteFields: Array<{
   { id: "sourceUrl", label: "Source Listing URL", large: true },
   { id: "description", label: "Property description", large: true },
   { id: "notes", label: "Notes / reason comparable", large: true },
+];
+
+const agentPitchFields: Array<{
+  id: keyof AgentPitchContent;
+  label: string;
+  placeholder: string;
+  large?: boolean;
+}> = [
+  {
+    id: "ourDifference",
+    label: "Our difference",
+    placeholder:
+      "Explain what makes your campaign stronger than a standard appraisal.",
+    large: true,
+  },
+  {
+    id: "teamExperience",
+    label: "Team experience",
+    placeholder: "Describe your team, track record, local knowledge, and support.",
+  },
+  {
+    id: "communicationProcess",
+    label: "Communication process",
+    placeholder:
+      "Explain how you keep owners informed before, during, and after launch.",
+  },
+  {
+    id: "buyerDemand",
+    label: "Buyer database / buyer demand",
+    placeholder:
+      "Explain who is already in your database and why you are not starting from zero.",
+  },
+  {
+    id: "aboutAgent",
+    label: "About the agent",
+    placeholder: "Add a short bio or appraisal-room positioning statement.",
+  },
+  {
+    id: "ourApproach",
+    label: "Our approach",
+    placeholder: "Summarise your full campaign approach in plain language.",
+    large: true,
+  },
 ];
 
 function parseComparableText(text: string): ComparableProperty {

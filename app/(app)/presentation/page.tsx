@@ -236,9 +236,8 @@ export default function PresentationPage() {
                   The seller can see the team, experience, and process.
                 </h2>
                 <p className="mt-5 max-w-xl text-base leading-8 text-slate-600">
-                  End the presentation by making the seller feel this agent and
-                  team have already started working for them: brand, reach,
-                  proof, preparation, communication, and a clear launch plan.
+                  {presentationListing.agentPitchContent.ourApproach ||
+                    "End the presentation by making the seller feel this agent and team have already started working for them: brand, reach, proof, preparation, communication, and a clear launch plan."}
                 </p>
               </div>
 
@@ -266,16 +265,24 @@ export default function PresentationPage() {
               {[
                 [
                   "Our difference",
-                  presentationProfile.defaultMarketingText ||
+                  presentationListing.agentPitchContent.ourDifference ||
+                    presentationProfile.defaultMarketingText ||
                     "The seller can see the campaign before it exists: portals, social, brochures, flyers, signboards, open homes, timing, and buyer demand.",
                 ],
                 [
                   "Team and experience",
-                  `${agencyName || "The agency"} brings team support, database reach, local market proof, and a repeatable launch process to the property.`,
+                  presentationListing.agentPitchContent.teamExperience ||
+                    `${agencyName || "The agency"} brings team support, database reach, local market proof, and a repeatable launch process to the property.`,
                 ],
                 [
                   "Communication process",
-                  "Show the seller how owners and buyers are kept informed, so the campaign feels organised from appraisal to launch.",
+                  presentationListing.agentPitchContent.communicationProcess ||
+                    "Show the seller how owners and buyers are kept informed, so the campaign feels organised from appraisal to launch.",
+                ],
+                [
+                  "About the agent",
+                  presentationListing.agentPitchContent.aboutAgent ||
+                    `${agentName || "The agent"} brings preparation, local buyer knowledge, and a clear process to help the seller feel confident choosing the campaign.`,
                 ],
               ].map(([title, text]) => (
                 <article

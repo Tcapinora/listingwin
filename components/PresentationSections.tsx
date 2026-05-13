@@ -388,7 +388,10 @@ export function PresentationGrid({
         number="05"
         eyebrow="Database / buyer demand"
         title="Show the seller that you are not starting from zero."
-        description="When the seller sees real buyers, names, budgets, and next calls, their behaviour changes instantly. The campaign feels active before it even launches."
+        description={
+          listing.agentPitchContent.buyerDemand ||
+          "When the seller sees real buyers, names, budgets, and next calls, their behaviour changes instantly. The campaign feels active before it even launches."
+        }
         editHref={editable ? "/details" : undefined}
         editLabel="Edit buyers"
       >

@@ -77,6 +77,21 @@ export type SaleCalendarEvent = {
   taskDetails?: string;
 };
 
+export type AgentPitchContent = {
+  ourDifference: string;
+  teamExperience: string;
+  communicationProcess: string;
+  buyerDemand: string;
+  aboutAgent: string;
+  ourApproach: string;
+};
+
+export type WorkspaceChecklistItem = {
+  done: boolean;
+  subtasks: Record<string, boolean>;
+  notes: string;
+};
+
 export type BuyerLeadStatus = "Hot" | "Warm" | "Cold";
 export type BuyerContactType = "Buyer" | "Buyer Agent";
 
@@ -112,6 +127,8 @@ export type ListingState = {
   saleCalendarEvents: SaleCalendarEvent[];
   buyerLeads: BuyerLead[];
   followUpReminders: FollowUpReminder[];
+  agentPitchContent: AgentPitchContent;
+  workspaceChecklist: Record<string, WorkspaceChecklistItem>;
   propertyPhotos: string[];
   activeSignboard: SignboardKey;
   signboardCrops: Record<SignboardKey, SignboardCrop>;
@@ -273,6 +290,15 @@ export const emptyListingState: ListingState = {
     },
   ],
   saleCalendarEvents: [],
+  agentPitchContent: {
+    ourDifference: "",
+    teamExperience: "",
+    communicationProcess: "",
+    buyerDemand: "",
+    aboutAgent: "",
+    ourApproach: "",
+  },
+  workspaceChecklist: {},
   buyerLeads: [
     {
       id: "buyer-1",

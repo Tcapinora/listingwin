@@ -888,7 +888,7 @@ export function CampaignTimelineSection({ listing }: { listing: ListingState }) 
             </a>
           </div>
 
-          <div className="grid gap-6 xl:grid-cols-[1fr_340px]">
+          <div className="grid gap-6 xl:grid-cols-[1fr_320px]">
           <div className="overflow-hidden rounded-3xl border border-blue-100 bg-white">
             <div className="flex flex-col justify-between gap-3 border-b border-slate-200 bg-white p-5 sm:flex-row sm:items-end">
               <div>
@@ -906,8 +906,8 @@ export function CampaignTimelineSection({ listing }: { listing: ListingState }) 
                 {events.length} planned milestone{events.length === 1 ? "" : "s"}
               </p>
             </div>
-            <div className="overflow-x-auto p-4">
-              <div className="grid min-w-[720px] grid-cols-7 gap-2">
+            <div className="p-4">
+              <div className="grid grid-cols-7 gap-2">
                 {weekDays.map((day) => (
                   <div
                     key={day}
@@ -921,7 +921,7 @@ export function CampaignTimelineSection({ listing }: { listing: ListingState }) 
                     return (
                       <div
                         key={`empty-${index}`}
-                        className="min-h-28 rounded-2xl bg-slate-50"
+                        className="min-h-24 rounded-2xl bg-slate-50"
                       />
                     );
                   }
@@ -945,7 +945,7 @@ export function CampaignTimelineSection({ listing }: { listing: ListingState }) 
                         }
                       }}
                       key={dateKey}
-                      className={`min-h-28 rounded-2xl p-3 text-left ring-1 transition ${
+                      className={`min-h-24 rounded-2xl p-2.5 text-left ring-1 transition lg:p-3 ${
                         selectedDate === dateKey
                           ? "bg-blue-700 text-white shadow-card ring-blue-700"
                           : hasEvents
@@ -971,7 +971,7 @@ export function CampaignTimelineSection({ listing }: { listing: ListingState }) 
                           {dayEvents.slice(0, 2).map((event) => (
                             <div
                               key={event.id}
-                              className={`rounded-xl px-3 py-2 ${
+                            className={`rounded-xl px-2 py-1.5 lg:px-3 lg:py-2 ${
                                 selectedDate === dateKey
                                   ? "bg-white/15"
                                   : campaignEventStyles[event.type]?.badge ||
