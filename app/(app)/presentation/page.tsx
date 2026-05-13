@@ -23,6 +23,7 @@ import {
   PresentationGrid,
 } from "@/components/PresentationSections";
 import { LiveCampaignPhotoButton } from "@/components/LiveCampaignPhotoButton";
+import { EmailPresentationButton } from "@/components/EmailPresentationButton";
 import { demoAgentProfile, demoListingState } from "@/lib/demoData";
 import { getPropertyPhotos } from "@/lib/listingImages";
 import { presentationReadiness } from "@/lib/readiness";
@@ -136,6 +137,10 @@ export default function PresentationPage() {
               <Link2 size={16} />
               {shareStatus || "Share"}
             </button>
+            <EmailPresentationButton
+              listing={presentationListing}
+              profile={presentationProfile}
+            />
           </div>
         </div>
       </section>
