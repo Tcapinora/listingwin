@@ -5,7 +5,6 @@ import Link from "next/link";
 import {
   ArrowRight,
   Building2,
-  CalendarDays,
   CheckCircle2,
   Clock3,
   MonitorPlay,
@@ -29,16 +28,16 @@ export default function DashboardPage() {
   const address = listing.details.address || "No listings yet";
   const workflow = [
     {
-      title: "Prepare in the office",
-      text: "Paste the property notes, review the facts, add comparable evidence, and prepare the appraisal story.",
+      title: "Paste the appraisal mess",
+      text: "Drop in notes, links, property details, and comparable sale text. ListingWin turns it into a clean property profile.",
     },
     {
-      title: "Present in the room",
-      text: "Show the seller their home inside the marketing, not just a promise of what you will do.",
+      title: "Show the campaign live",
+      text: "Put the seller’s home inside your portal, social, brochure, flyer, signboard, and calendar previews.",
     },
     {
-      title: "Close with proof",
-      text: "Move into the workspace for pricing, objections, buyers, follow-up, and next steps.",
+      title: "Close with confidence",
+      text: "Move into the private workspace for the checklist, objections, follow-up message, and next decision.",
     },
   ];
   const firstRunGuide = [
@@ -77,37 +76,37 @@ export default function DashboardPage() {
         <div className="relative grid gap-12 p-7 sm:p-10 lg:grid-cols-[1.05fr_0.82fr] lg:items-center lg:p-14">
           <div>
             <p className="inline-flex rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800 ring-1 ring-blue-100">
-              Premium live appraisal platform
+              The appraisal room painkiller
             </p>
             <h1 className="mt-7 max-w-3xl text-4xl font-semibold tracking-tight text-slate-950 sm:text-6xl">
-              Build the campaign live in front of the seller.
+              Show the seller the campaign before the campaign.
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
-              ListingWin helps agents turn a listing appraisal into a visual
-              campaign moment. Prepare the story before you arrive, add real
-              photos live if needed, then show the seller what choosing you
-              actually looks like.
+              ListingWin helps agents walk into an appraisal with proof, not
+              promises. Paste the messy appraisal info, generate the property
+              presentation, and show the seller what their home looks like with
+              your marketing.
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <PrimaryLink href="/create">
                 <span className="inline-flex items-center gap-2">
                   <Plus size={18} />
-                  Create Vendor Presentation
+                  Start Appraisal Builder
                 </span>
               </PrimaryLink>
+              <Link
+                href="/presentation"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:text-blue-900"
+              >
+                <MonitorPlay size={17} />
+                Open Vendor Presentation
+              </Link>
               <Link
                 href="/draft"
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:text-blue-900"
               >
-                <MonitorPlay size={17} />
-                Open Agent Workspace
-              </Link>
-              <Link
-                href="/calendar"
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:text-blue-900"
-              >
-                <CalendarDays size={17} />
-                Calendar Only
+                <CheckCircle2 size={17} />
+                Agent Workspace
               </Link>
               <button
                 type="button"
@@ -121,8 +120,8 @@ export default function DashboardPage() {
               </button>
             </div>
             <p className="mt-4 max-w-xl text-sm leading-6 text-slate-500">
-              First time here? Start with the Vendor Presentation. The Agent
-              Workspace is for after the seller has seen the campaign.
+              First time here? Start with the Appraisal Builder. Everything
+              else flows from that.
             </p>
           </div>
 
@@ -132,11 +131,11 @@ export default function DashboardPage() {
                 <Sparkles size={19} />
               </span>
               <div>
-                <p className="text-sm font-semibold text-white">
-                  The ListingWin method
+              <p className="text-sm font-semibold text-white">
+                  What agents do in ListingWin
                 </p>
                 <p className="text-xs text-blue-100">
-                  Prepare. Present. Close.
+                  Paste. Present. Close.
                 </p>
               </div>
             </div>
@@ -174,9 +173,8 @@ export default function DashboardPage() {
               Three moves. No confusion.
             </h2>
             <p className="mt-3 text-sm leading-6 text-slate-600">
-              ListingWin is not a CRM. It is the appraisal room workflow:
-              create the visual campaign, present it with confidence, then
-              close with practical proof.
+              ListingWin is not another admin dashboard. It is a guided
+              appraisal flow that shows agents exactly what to do next.
             </p>
           </div>
 
@@ -211,12 +209,12 @@ export default function DashboardPage() {
               The simple rule
             </p>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight">
-              Seller-facing first. Agent tools second.
+              One clear path: Builder → Presentation → Workspace.
             </h2>
             <p className="mt-3 max-w-3xl text-sm leading-6 text-blue-900/75">
-              During the appointment, stay in the clean Vendor Presentation.
-              Add photos live when useful, let the seller see their home become
-              the campaign, then open Agent Workspace to go deeper and close.
+              The Builder is only for the property appraisal. The Vendor
+              Presentation is seller-facing. The Agent Workspace is private and
+              used after the seller has seen the campaign.
             </p>
           </div>
           <Link
@@ -301,7 +299,7 @@ export default function DashboardPage() {
             </p>
             <div className="mt-7">
               <div className="flex flex-col justify-center gap-3 sm:flex-row">
-                <PrimaryLink href="/create">Create Vendor Presentation</PrimaryLink>
+                <PrimaryLink href="/create">Start Appraisal Builder</PrimaryLink>
                 <button
                   type="button"
                   onClick={() => {

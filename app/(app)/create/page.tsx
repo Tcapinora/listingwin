@@ -64,15 +64,15 @@ export default function CreatePage() {
         <section className="grid overflow-hidden rounded-[2rem] bg-white shadow-card ring-1 ring-slate-200/70 lg:grid-cols-[1fr_0.82fr]">
           <div className="p-6 sm:p-8 lg:p-10">
             <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
-              Office preparation
+              Appraisal builder
             </p>
             <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-              Start with the property.
+              Start with one address.
             </h1>
             <p className="mt-4 max-w-xl text-base leading-7 text-slate-600">
-              Keep this light. ListingWin reuses your saved profile, agency
-              brand, logos, and default presentation text so each listing starts
-              from review instead of retyping.
+              This screen has one job: start the appraisal file. ListingWin
+              reuses your saved profile and brand details, then the next screen
+              builds the property story from Smart Paste.
             </p>
 
             <div className="mt-6 rounded-[1.5rem] bg-blue-50 p-4 ring-1 ring-blue-100">
@@ -132,20 +132,20 @@ export default function CreatePage() {
               type="submit"
               className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-700 px-6 py-4 text-base font-semibold text-white shadow-card transition hover:bg-blue-800 sm:w-auto"
             >
-              Continue
+              Continue to Smart Paste
               <ArrowRight size={18} />
             </button>
           </div>
 
           <aside className="border-t border-blue-50 bg-blue-50/70 p-6 sm:p-8 lg:border-l lg:border-t-0 lg:p-10">
             <p className="text-sm font-semibold text-blue-950">
-              What happens next
+              The next three clicks
             </p>
             <div className="mt-5 grid gap-4">
               {[
-                "Add the property story and price evidence.",
-                "Upload or add photos live during the appraisal.",
-                "Create the Vendor Presentation, then move into Agent Workspace.",
+                "Paste messy appraisal notes and comparable sales.",
+                "Review the generated property profile.",
+                "Add photos, create the presentation, then use the workspace.",
               ].map((item) => (
                 <div key={item} className="flex gap-3">
                   <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-white text-blue-700 shadow-sm">
@@ -160,9 +160,9 @@ export default function CreatePage() {
                 Simple flow
               </p>
               <p className="mt-3 text-sm leading-6 text-slate-600">
-                Prepare it in the office, present it in the lounge room, then
-                move into the workspace when the seller is ready to talk about
-                price, trust, and next steps.
+                The agent should never wonder what to do next: build the
+                appraisal, show the campaign, then use the private workspace to
+                close.
               </p>
             </div>
           </aside>

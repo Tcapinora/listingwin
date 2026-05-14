@@ -180,13 +180,6 @@ export default function DraftPage() {
               still uncertain, then leave with a clear next step.
             </p>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/presentation"
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-blue-100 bg-white px-5 py-3 text-sm font-semibold text-blue-900 shadow-sm transition hover:bg-blue-50"
-              >
-                <MonitorPlay size={17} />
-                Open Vendor Presentation
-              </Link>
               <a
                 href="#workspace-checklist"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card transition hover:bg-blue-800"
@@ -194,6 +187,13 @@ export default function DraftPage() {
                 Start closing checklist
                 <ArrowRight size={17} />
               </a>
+              <Link
+                href="/presentation"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-blue-100 bg-white px-5 py-3 text-sm font-semibold text-blue-900 shadow-sm transition hover:bg-blue-50"
+              >
+                <MonitorPlay size={17} />
+                Back to presentation
+              </Link>
             </div>
           </div>
           <div className="rounded-[1.5rem] bg-blue-50 p-5 ring-1 ring-blue-100">

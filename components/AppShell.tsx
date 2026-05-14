@@ -24,9 +24,10 @@ import { WorkflowPath } from "@/components/WorkflowPath";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/mockups", label: "Campaign Preview", icon: Sparkles },
+  { href: "/create", label: "Appraisal Builder", icon: Sparkles },
+  { href: "/presentation", label: "Vendor Presentation", icon: MonitorPlay },
+  { href: "/draft", label: "Agent Workspace", icon: FileCheck2 },
   { href: "/calendar", label: "Calendar", icon: CalendarDays },
-  { href: "/draft", label: "Agent Workspace", icon: MonitorPlay },
   { href: "/account", label: "Settings", icon: UserCog },
 ];
 

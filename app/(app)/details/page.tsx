@@ -205,12 +205,12 @@ export default function PropertyDetailsPage() {
             Auto appraisal builder
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-            Paste messy appraisal info. Generate the property profile.
+            Paste once. Review the property profile.
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-            Keep this section focused on the property being appraised: address,
-            facts, key selling points, pricing evidence, comparable sales, and
-            appraisal notes.
+            This builder is only for the property being appraised: address,
+            facts, selling points, pricing notes, comparable sales, and source
+            links. Campaign tools live after the presentation is created.
           </p>
           <div className="mt-6 grid gap-3 rounded-[1.5rem] bg-slate-50 p-4 ring-1 ring-slate-200 sm:grid-cols-3">
             {["Smart Paste", "Review details", "Comparable evidence"].map((item) => (
@@ -244,7 +244,7 @@ export default function PropertyDetailsPage() {
                 className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card transition hover:bg-blue-800"
               >
                 <Wand2 size={16} />
-                Generate Appraisal
+                Generate Property Profile
               </button>
             </div>
             <textarea
@@ -273,8 +273,8 @@ export default function PropertyDetailsPage() {
                       Appraisal profile generated.
                     </h3>
                     <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
-                      Please review the fields and comparable cards below before
-                      creating the Vendor Presentation.
+                      Generated information is never final until you check it.
+                      Review the property fields and comparable cards below.
                     </p>
                   </div>
                   <div className="grid gap-2 text-sm font-semibold text-blue-950 sm:grid-cols-3 lg:min-w-[24rem]">
@@ -322,6 +322,20 @@ export default function PropertyDetailsPage() {
           </section>
 
           <div className="mt-8 grid gap-6">
+            <div className="rounded-[1.5rem] bg-white p-5 ring-1 ring-slate-200">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">
+                02 · Review property profile
+              </p>
+              <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">
+                Make the generated details appraisal-ready.
+              </h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+                Adjust only what matters. These details flow straight into the
+                Vendor Presentation, social mockups, brochure, flyer, and
+                Agent Workspace.
+              </p>
+            </div>
+
             <label>
               <span className="text-sm font-semibold text-slate-800">
                 Listing headline
@@ -412,9 +426,10 @@ export default function PropertyDetailsPage() {
           >
             <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-semibold text-blue-900">
               <span>
-                Comparable sales and pricing strategy
+                03 · Comparable sales and pricing evidence
                 <span className="mt-1 block text-xs font-medium leading-5 text-blue-800/70">
-                  Paste, generate, review, and save comparable sales evidence.
+                  Paste, generate, review, and save the evidence the agent will
+                  talk through with the seller.
                 </span>
               </span>
               <ChevronDown
@@ -789,7 +804,7 @@ export default function PropertyDetailsPage() {
           type="submit"
           className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-700 px-6 py-4 text-base font-semibold text-white shadow-card transition hover:bg-blue-800 sm:w-auto"
         >
-          Save & Continue
+          Continue to Property Media
           <ArrowRight size={18} />
         </button>
       </form>
