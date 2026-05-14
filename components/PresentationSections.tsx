@@ -51,20 +51,20 @@ function PresentationChapter({
   children: React.ReactNode;
 }) {
   return (
-    <section className="presentation-slide mt-20">
-      <div className="mb-8 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
+    <section className="presentation-slide mt-24 border-t border-slate-200/80 pt-20">
+      <div className="mb-12 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
         <div className="max-w-3xl">
-          <p className="inline-flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
-            <span className="grid h-9 w-9 place-items-center rounded-full bg-blue-700 text-[11px] text-white shadow-card">
+          <p className="inline-flex items-center gap-4 text-xs font-semibold uppercase tracking-[0.24em] text-blue-700">
+            <span className="grid h-10 w-10 place-items-center rounded-full bg-blue-700 text-[11px] text-white shadow-card">
               {number}
             </span>
             {eyebrow}
           </p>
-          <h2 className="mt-5 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
+          <h2 className="mt-6 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
             {title}
           </h2>
           {description ? (
-            <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
+            <p className="mt-5 max-w-2xl text-base leading-8 text-slate-600">
               {description}
             </p>
           ) : null}
@@ -95,13 +95,13 @@ export function PresentationFlowNav() {
   ];
 
   return (
-    <section className="no-print mt-12 rounded-[2.25rem] border border-white bg-white/78 p-7 shadow-card backdrop-blur">
-      <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
+    <section className="no-print mt-20 border-y border-slate-200/80 py-12">
+      <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
             Vendor room flow
           </p>
-          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">
+          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
             The appraisal conversation in order.
           </h2>
         </div>
@@ -110,11 +110,11 @@ export function PresentationFlowNav() {
           campaign method, database, then the agent’s closing conversation.
         </p>
       </div>
-      <div className="mt-6 flex flex-wrap gap-2">
+      <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((item, index) => (
           <span
             key={item}
-            className="rounded-full bg-blue-50 px-4 py-2 text-xs font-semibold text-blue-900 ring-1 ring-blue-100"
+            className="rounded-2xl bg-blue-50/70 px-4 py-3 text-xs font-semibold text-blue-900 ring-1 ring-blue-100"
           >
             {index + 1}. {item}
           </span>
@@ -202,34 +202,38 @@ export function HeroPresentation({
   editable?: boolean;
 }) {
   const { details } = listing;
+  const { profile } = useAgentProfile();
   const propertyPhoto = getPrimaryPropertyPhoto(listing);
   const heroWriteup = limitWords(generatePropertyWriteup(details), 72);
+  const agentName = profile.agentName || details.agentName || "Agent name";
+  const agencyName = profile.agencyName || details.agencyName || "Agency";
 
   return (
-    <section className="presentation-slide relative overflow-hidden rounded-[2rem] bg-gray-950 text-white shadow-soft sm:rounded-[2.75rem]">
-      <div className="relative aspect-[4/5] min-h-[520px] sm:aspect-[16/8] sm:min-h-[560px]">
+    <section className="presentation-slide overflow-hidden bg-white">
+      <div className="mx-auto max-w-5xl px-6 py-24 text-center sm:py-28 lg:py-32">
+        <h1 className="mx-auto max-w-4xl text-5xl font-semibold leading-tight tracking-tight text-slate-950 sm:text-6xl lg:text-7xl">
+          {details.address || "Property address"}
+        </h1>
+        <p className="mt-8 text-3xl font-light tracking-tight text-slate-900 sm:text-4xl">
+          Vendor Marketing Presentation
+        </p>
+        <p className="mt-5 text-base font-medium text-slate-500">
+          By {agentName}
+          {agencyName ? `, ${agencyName}` : ""}
+        </p>
+      </div>
+
+      <div className="relative min-h-[380px] overflow-hidden bg-slate-100 sm:min-h-[460px] lg:min-h-[520px]">
         {propertyPhoto ? (
           <Image
             src={propertyPhoto}
             alt="Presentation hero property"
             fill
-            className="object-cover opacity-80"
+            className="object-cover"
             priority
             unoptimized
           />
         ) : null}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/82 via-black/42 to-transparent" />
-        <div className="absolute bottom-7 left-5 w-[calc(100%-2.5rem)] max-w-full sm:bottom-12 sm:left-10 sm:w-[calc(100%-5rem)] lg:left-14 lg:w-auto lg:max-w-4xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.28em] text-gray-200">
-            Vendor presentation
-          </p>
-          <h1 className="mt-4 max-w-[32rem] break-words text-4xl font-semibold leading-[1.02] tracking-tight sm:mt-5 sm:max-w-[44rem] sm:text-6xl lg:max-w-4xl">
-            {details.address || "Property address"}
-          </h1>
-          <p className="mt-5 max-w-[34rem] text-sm leading-6 text-gray-100 sm:mt-7 sm:max-w-[42rem] sm:text-lg sm:leading-8 lg:max-w-3xl">
-            {heroWriteup}
-          </p>
-        </div>
         {editable ? (
           <Link
             href="/details"
@@ -239,6 +243,12 @@ export function HeroPresentation({
             Edit intro
           </Link>
         ) : null}
+      </div>
+
+      <div className="mx-auto max-w-4xl px-6 py-16 text-center sm:py-20">
+        <p className="text-xl font-light leading-9 text-slate-700 sm:text-2xl sm:leading-10">
+          {heroWriteup}
+        </p>
       </div>
     </section>
   );
@@ -343,7 +353,7 @@ export function PresentationGrid({
         editHref={editable ? "/mockups" : undefined}
         editLabel="Edit marketing"
       >
-        <section className="rounded-[2.5rem] border border-blue-100 bg-white p-7 shadow-card lg:p-10">
+        <section className="bg-white py-2">
           <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
@@ -370,7 +380,7 @@ export function PresentationGrid({
               ))}
             </div>
           </div>
-          <div key={activeVisual.id} className="page-enter mt-10">
+          <div key={activeVisual.id} className="page-enter mt-12">
             {activeVisual.component}
           </div>
         </section>
