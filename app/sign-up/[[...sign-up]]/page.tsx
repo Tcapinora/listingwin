@@ -30,7 +30,35 @@ export default function SignUpPage() {
 
         <div className="flex justify-center lg:justify-end">
           {clerkEnabled ? (
-            <SignUp routing="path" path="/sign-up" signInUrl="/sign-in" />
+            <div className="w-full max-w-md">
+              <SignUp
+                routing="path"
+                path="/sign-up"
+                signInUrl="/sign-in"
+                appearance={{
+                  variables: {
+                    colorPrimary: "#3563E0",
+                    colorText: "#1F2A4A",
+                    colorBackground: "#FFFFFF",
+                    borderRadius: "1rem",
+                  },
+                  elements: {
+                    cardBox:
+                      "rounded-[2rem] shadow-soft ring-1 ring-blue-100 border-0",
+                    headerTitle:
+                      "text-[#1F2A4A] text-2xl font-semibold tracking-tight",
+                    headerSubtitle: "text-slate-500",
+                    formButtonPrimary:
+                      "bg-[#3563E0] hover:bg-[#2848B8] text-sm font-semibold normal-case",
+                    socialButtonsBlockButton:
+                      "rounded-2xl border-blue-100 text-[#1F2A4A]",
+                    formFieldInput:
+                      "rounded-2xl border-blue-100 bg-[#F8FAFC] focus:border-[#3563E0] focus:ring-[#DCE8FF]",
+                    footerActionLink: "text-[#3563E0] hover:text-[#2848B8]",
+                  },
+                }}
+              />
+            </div>
           ) : (
             <div className="w-full max-w-md rounded-[2rem] bg-white p-7 shadow-soft ring-1 ring-blue-100">
               <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">

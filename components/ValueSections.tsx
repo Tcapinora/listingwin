@@ -448,7 +448,7 @@ export function SellerDecisionRoomSection({
   const agencyName =
     profile.agencyName || listing.details.agencyName || "Agency";
   const agentName = profile.agentName || listing.details.agentName || "Agent";
-  const brandColor = profile.brandColor || "#123f53";
+  const brandColor = profile.brandColor || "#3563E0";
   const active =
     sellerActions.find((action) => action.id === activeAction) ||
     sellerActions[0];

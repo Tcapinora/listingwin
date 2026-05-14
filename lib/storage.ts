@@ -27,9 +27,18 @@ export function readListingState(): ListingState {
     }
 
     const parsed = JSON.parse(stored) as Partial<ListingState>;
-    const normalizedComparableProperties = emptyListingState.comparableProperties.map(
+    const comparableSource =
+      Array.isArray(parsed.comparableProperties) &&
+      parsed.comparableProperties.length
+        ? parsed.comparableProperties
+        : emptyListingState.comparableProperties;
+    const normalizedComparableProperties = comparableSource.map(
       (property, index) =>
-        normalizeComparableProperty(parsed.comparableProperties?.[index], property),
+        normalizeComparableProperty(
+          property,
+          emptyListingState.comparableProperties[index] ||
+            emptyListingState.comparableProperties[0],
+        ),
     );
     const normalizedPropertyPhotos =
       parsed.propertyPhotos && parsed.propertyPhotos.length

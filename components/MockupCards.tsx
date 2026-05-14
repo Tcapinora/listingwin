@@ -82,7 +82,7 @@ function CampaignCreative({
       : listing.assets.facebookTemplate || profile.facebookTemplate;
   const agentName = profile.agentName || listing.details.agentName || "Agent name";
   const phone = profile.phone || listing.details.phone || "Phone";
-  const brandColor = profile.brandColor || "#123f53";
+  const brandColor = profile.brandColor || "#3563E0";
   const agencyName =
     profile.agencyName || listing.details.agencyName || "Harbour & Co Estate Agents";
   const logo = profile.agencyLogo || listing.assets.agencyLogo;
@@ -712,7 +712,7 @@ export function PropertyPortalPreview({ listing }: { listing: ListingState }) {
   const photos = getPropertyPhotos(listing);
   const primaryPhoto = photos[0] || "";
   const gallery = [0, 1, 2, 3].map((index) => photos[index] || primaryPhoto);
-  const brandColor = profile.brandColor || "#123f53";
+  const brandColor = profile.brandColor || "#3563E0";
   const agencyName =
     profile.agencyName || details.agencyName || "Agency Property";
   const agentName = profile.agentName || details.agentName || "Agent name";
@@ -880,7 +880,7 @@ export function SocialPreview({
       : profile.agencyFacebookUrl;
   const agentHandle = socialHandle(agentSocial, agentName);
   const agencyHandle = socialHandle(agencySocial, agencyName);
-  const brandColor = profile.brandColor || "#123f53";
+  const brandColor = profile.brandColor || "#3563E0";
   const propertyPhoto = getPrimaryPropertyPhoto(listing);
   const instagramName = agentHandle.replace("@", "");
   const agencyNameForCaption = agencyHandle.replace("@", "");

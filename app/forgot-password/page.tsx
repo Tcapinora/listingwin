@@ -128,7 +128,7 @@ export default function ForgotPasswordPage() {
           <div className="w-full max-w-md rounded-[2rem] bg-white p-7 shadow-soft ring-1 ring-blue-100">
             <Link
               href="/sign-in"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-[#008AD8]"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-[#3563E0]"
             >
               <ArrowLeft className="h-4 w-4" />
               Back to sign in
@@ -150,7 +150,7 @@ export default function ForgotPasswordPage() {
             ) : step === "email" ? (
               <form onSubmit={sendCode} className="mt-8 space-y-5">
                 <div>
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-[#008AD8]">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-[#3563E0]">
                     <Mail className="h-5 w-5" />
                   </div>
                   <h1 className="mt-5 text-3xl font-semibold tracking-tight text-slate-950">
@@ -171,7 +171,7 @@ export default function ForgotPasswordPage() {
                     onChange={(event) => setEmail(event.target.value)}
                     required
                     autoComplete="email"
-                    className="mt-2 w-full rounded-2xl border border-blue-100 bg-[#F8FAFC] px-4 py-3 text-base text-slate-950 outline-none transition focus:border-[#008AD8] focus:bg-white focus:ring-4 focus:ring-blue-100"
+                    className="mt-2 w-full rounded-2xl border border-blue-100 bg-[#F8FAFC] px-4 py-3 text-base text-slate-950 outline-none transition focus:border-[#3563E0] focus:bg-white focus:ring-4 focus:ring-blue-100"
                     placeholder="agent@email.com"
                   />
                 </label>
@@ -185,7 +185,7 @@ export default function ForgotPasswordPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[#008AD8] px-5 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0069a6] disabled:cursor-not-allowed disabled:opacity-60"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[#3563E0] px-5 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#2848B8] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {isSubmitting ? "Sending code..." : "Send reset code"}
                   <ArrowRight className="h-4 w-4" />
@@ -194,7 +194,7 @@ export default function ForgotPasswordPage() {
             ) : step === "code" ? (
               <form onSubmit={resetPassword} className="mt-8 space-y-5">
                 <div>
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-[#008AD8]">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-[#3563E0]">
                     <ShieldCheck className="h-5 w-5" />
                   </div>
                   <h1 className="mt-5 text-3xl font-semibold tracking-tight text-slate-950">
@@ -206,7 +206,7 @@ export default function ForgotPasswordPage() {
                 </div>
 
                 {status ? (
-                  <p className="rounded-2xl bg-blue-50 px-4 py-3 text-sm font-medium text-[#0069a6]">
+                  <p className="rounded-2xl bg-blue-50 px-4 py-3 text-sm font-medium text-[#2848B8]">
                     {status}
                   </p>
                 ) : null}
@@ -222,7 +222,7 @@ export default function ForgotPasswordPage() {
                     required
                     inputMode="numeric"
                     autoComplete="one-time-code"
-                    className="mt-2 w-full rounded-2xl border border-blue-100 bg-[#F8FAFC] px-4 py-3 text-base text-slate-950 outline-none transition focus:border-[#008AD8] focus:bg-white focus:ring-4 focus:ring-blue-100"
+                    className="mt-2 w-full rounded-2xl border border-blue-100 bg-[#F8FAFC] px-4 py-3 text-base text-slate-950 outline-none transition focus:border-[#3563E0] focus:bg-white focus:ring-4 focus:ring-blue-100"
                     placeholder="Enter code"
                   />
                 </label>
@@ -237,7 +237,7 @@ export default function ForgotPasswordPage() {
                     onChange={(event) => setPassword(event.target.value)}
                     required
                     autoComplete="new-password"
-                    className="mt-2 w-full rounded-2xl border border-blue-100 bg-[#F8FAFC] px-4 py-3 text-base text-slate-950 outline-none transition focus:border-[#008AD8] focus:bg-white focus:ring-4 focus:ring-blue-100"
+                    className="mt-2 w-full rounded-2xl border border-blue-100 bg-[#F8FAFC] px-4 py-3 text-base text-slate-950 outline-none transition focus:border-[#3563E0] focus:bg-white focus:ring-4 focus:ring-blue-100"
                     placeholder="Create a new password"
                   />
                 </label>
@@ -251,7 +251,7 @@ export default function ForgotPasswordPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[#008AD8] px-5 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0069a6] disabled:cursor-not-allowed disabled:opacity-60"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[#3563E0] px-5 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#2848B8] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {isSubmitting ? "Resetting password..." : "Reset password"}
                   <ArrowRight className="h-4 w-4" />
@@ -259,7 +259,7 @@ export default function ForgotPasswordPage() {
               </form>
             ) : (
               <div className="mt-8">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-[#008AD8]">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-[#3563E0]">
                   <ShieldCheck className="h-5 w-5" />
                 </div>
                 <h1 className="mt-5 text-3xl font-semibold tracking-tight text-slate-950">
@@ -270,7 +270,7 @@ export default function ForgotPasswordPage() {
                 </p>
                 <Link
                   href="/sign-in"
-                  className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[#008AD8] px-5 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0069a6]"
+                  className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[#3563E0] px-5 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#2848B8]"
                 >
                   Return to sign in
                   <ArrowRight className="h-4 w-4" />

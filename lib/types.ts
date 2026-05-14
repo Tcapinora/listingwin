@@ -191,7 +191,7 @@ export const emptyAgentProfile: AgentProfile = {
   agentTeamPhotos: [],
   agencyLogo: "",
   agencyLogos: [],
-  brandColor: "#123f53",
+  brandColor: "#3563E0",
   instagramTemplate: "",
   facebookTemplate: "",
   photographyMorning: [],

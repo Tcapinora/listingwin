@@ -225,7 +225,7 @@ export function AgentProfileModal({
             <label className="flex items-center gap-3 rounded-2xl bg-white p-3 shadow-sm">
               <input
                 type="color"
-                value={profile.brandColor || "#123f53"}
+                value={profile.brandColor || "#3563E0"}
                 onChange={(event) =>
                   updateProfile({ brandColor: event.target.value })
                 }
@@ -234,7 +234,7 @@ export function AgentProfileModal({
                 title="Marketing brand colour"
               />
               <input
-                value={profile.brandColor || "#123f53"}
+                value={profile.brandColor || "#3563E0"}
                 onChange={(event) =>
                   updateProfile({ brandColor: event.target.value })
                 }

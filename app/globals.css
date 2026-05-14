@@ -4,6 +4,12 @@
 
 :root {
   color-scheme: light;
+  --lw-navy: #1f2a4a;
+  --lw-blue: #3563e0;
+  --lw-blue-deep: #2848b8;
+  --lw-paper: #fbfbfd;
+  --lw-paper-2: #f2f4f8;
+  --lw-line: #dee0e5;
 }
 
 * {
@@ -19,13 +25,23 @@ body {
   background:
     radial-gradient(circle at top left, rgba(53, 99, 224, 0.07), transparent 34rem),
     linear-gradient(180deg, #f2f4f8 0%, #ffffff 48%, #f2f4f8 100%);
-  color: #0f172a;
+  color: var(--lw-navy);
 }
 
 button,
 input,
-textarea {
+textarea,
+select {
   font: inherit;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--lw-blue);
+  outline-offset: 3px;
 }
 
 ::selection {

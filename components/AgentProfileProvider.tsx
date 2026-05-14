@@ -14,6 +14,8 @@ import { AgentProfile, emptyAgentProfile } from "@/lib/types";
 
 const STORAGE_KEY = "listingwin-agent-profile";
 const LEGACY_STORAGE_KEY = "listingmockup-agent-profile";
+const DEFAULT_BRAND_COLOR = "#3563E0";
+const OLD_DEFAULT_BRAND_COLOR = "#123f53";
 
 type AgentProfileContextValue = {
   profile: AgentProfile;
@@ -74,12 +76,8 @@ function writeProfile(profile: AgentProfile) {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
   } catch {
     // Production should store uploaded logos in object storage and keep URLs.
-    try {
-      window.localStorage.clear();
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
-    } catch {
-      // If local storage is unavailable, keep the profile in memory.
-    }
+    // If local storage is unavailable or full, keep the profile in memory
+    // instead of clearing unrelated app/auth data.
   }
 }
 
@@ -95,6 +93,10 @@ function normalizeProfile(profile: AgentProfile): AgentProfile {
     ...profile,
     agencyLogos,
     agencyLogo: profile.agencyLogo || agencyLogos[0] || "",
+    brandColor:
+      !profile.brandColor || profile.brandColor === OLD_DEFAULT_BRAND_COLOR
+        ? DEFAULT_BRAND_COLOR
+        : profile.brandColor,
     agentTeamPhotos: (profile.agentTeamPhotos || []).slice(0, 2),
     photographyMorning: profile.photographyMorning || [],
     photographyAfternoon: profile.photographyAfternoon || [],
