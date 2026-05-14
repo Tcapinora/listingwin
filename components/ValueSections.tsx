@@ -29,6 +29,7 @@ import {
   Trophy,
   Trash2,
   Users,
+  X,
 } from "lucide-react";
 import { useAgentProfile } from "@/components/AgentProfileProvider";
 import { EmailCalendarPdfButton } from "@/components/EmailCalendarPdfButton";
@@ -826,7 +827,11 @@ export function CampaignTimelineSection({ listing }: { listing: ListingState }) 
     }),
     "",
     "Notes:",
-    "Dates are proposed and subject to change.",
+    listing.saleCalendarNotes || "Dates are proposed and subject to change.",
+    "",
+    "Trades & Contacts:",
+    listing.saleCalendarTrades || "No trades or contacts added yet.",
+    "",
     "ListingWin calendar prepared for vendor discussion.",
     `Prepared by ${agentName}.`,
   ].join("\n");
@@ -2110,41 +2115,93 @@ export function FollowUpAutomationSection({
   );
 }
 
-export function VendorReportSection({ listing }: { listing: ListingState }) {
+export function VendorReportSection({
+  listing,
+  onUpdate,
+}: {
+  listing: ListingState;
+  onUpdate?: (updater: (current: ListingState) => ListingState) => void;
+}) {
   const { profile } = useAgentProfile();
   const brandColor = profile.brandColor || "#3563E0";
   const address = listing.details.address || "this property";
   const metrics = [
-    ["Buyer enquiries", "84", "+18% vs local average"],
-    ["Private inspections", "11", "5 high-intent buyers"],
-    ["Open-home attendees", "47", "Across two opens"],
-    ["Digital views", "6,420", "Portal and social reach"],
+    ["metric-buyer-enquiries", "Buyer enquiries", "84", "+18% vs local average"],
+    ["metric-private-inspections", "Private inspections", "11", "5 high-intent buyers"],
+    ["metric-open-home-attendees", "Open-home attendees", "47", "Across two opens"],
+    ["metric-digital-views", "Digital views", "6,420", "Portal and social reach"],
   ];
   const feedback = [
     {
+      id: "feedback-presentation",
       theme: "Presentation",
       count: "18 buyers",
       quote: "Loved the street appeal and the way the home felt ready to move into.",
     },
     {
+      id: "feedback-price",
       theme: "Price feedback",
       count: "9 buyers",
       quote: "Most active buyers indicated comfort around the current guide range.",
     },
     {
+      id: "feedback-objections",
       theme: "Buyer objections",
       count: "6 buyers",
       quote: "Main hesitation was timing, not the home itself.",
     },
   ];
+  const hiddenSections = listing.hiddenVendorReportSections || [];
+  const isVisible = (id: string) => !hiddenSections.includes(id);
+  const hideSection = (id: string) => {
+    if (!onUpdate) return;
+
+    onUpdate((current) => ({
+      ...current,
+      hiddenVendorReportSections: Array.from(
+        new Set([...(current.hiddenVendorReportSections || []), id]),
+      ),
+    }));
+  };
+  const restoreSections = () => {
+    if (!onUpdate) return;
+
+    onUpdate((current) => ({
+      ...current,
+      hiddenVendorReportSections: [],
+    }));
+  };
+  const RemoveButton = ({ id }: { id: string }) =>
+    onUpdate ? (
+      <button
+        type="button"
+        onClick={() => hideSection(id)}
+        className="no-print absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full bg-white/90 text-slate-400 shadow-sm ring-1 ring-slate-200 transition hover:bg-slate-950 hover:text-white"
+        aria-label="Remove section from vendor report"
+        title="Remove from report"
+      >
+        <X size={14} />
+      </button>
+    ) : null;
 
   return (
     <section className="mt-10 overflow-hidden rounded-3xl border border-blue-100 bg-white shadow-card">
       <div className="p-7 text-white lg:p-8" style={{ backgroundColor: brandColor }}>
-        <p className="inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-semibold">
-          <Users size={16} />
-          Future vendor report
-        </p>
+        <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+          <p className="inline-flex w-fit items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-semibold">
+            <Users size={16} />
+            Future vendor report
+          </p>
+          {hiddenSections.length && onUpdate ? (
+            <button
+              type="button"
+              onClick={restoreSections}
+              className="no-print inline-flex w-fit items-center rounded-full bg-white/12 px-4 py-2 text-xs font-semibold text-white ring-1 ring-white/20 transition hover:bg-white/20"
+            >
+              Restore hidden sections
+            </button>
+          ) : null}
+        </div>
         <h2 className="mt-5 max-w-3xl text-4xl font-semibold tracking-tight">
           Show the seller how engaged they will feel after launch.
         </h2>
@@ -2157,8 +2214,9 @@ export function VendorReportSection({ listing }: { listing: ListingState }) {
 
       <div className="grid gap-6 p-7 lg:p-8">
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {metrics.map(([label, value, detail]) => (
-            <div key={label} className="rounded-2xl bg-blue-50/70 p-5">
+          {metrics.filter(([id]) => isVisible(id)).map(([id, label, value, detail]) => (
+            <div key={id} className="relative rounded-2xl bg-blue-50/70 p-5">
+              <RemoveButton id={id} />
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
                 {label}
               </p>
@@ -2171,8 +2229,9 @@ export function VendorReportSection({ listing }: { listing: ListingState }) {
         </div>
 
         <div className="grid gap-4 lg:grid-cols-3">
-          {feedback.map((item) => (
-            <article key={item.theme} className="rounded-2xl border border-slate-200 p-5">
+          {feedback.filter((item) => isVisible(item.id)).map((item) => (
+            <article key={item.theme} className="relative rounded-2xl border border-slate-200 p-5">
+              <RemoveButton id={item.id} />
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
                 {item.theme}
               </p>
@@ -2186,16 +2245,19 @@ export function VendorReportSection({ listing }: { listing: ListingState }) {
           ))}
         </div>
 
-        <div className="rounded-2xl bg-slate-950 p-5 text-white">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-200">
-            Recommended next move
-          </p>
-          <p className="mt-3 text-sm leading-7 text-slate-200">
-            Keep the campaign live, follow up the strongest buyers within 24
-            hours, and use price feedback from qualified inspections to guide
-            the next seller conversation.
-          </p>
-        </div>
+        {isVisible("recommended-next-move") ? (
+          <div className="relative rounded-2xl bg-slate-950 p-5 text-white">
+            <RemoveButton id="recommended-next-move" />
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-200">
+              Recommended next move
+            </p>
+            <p className="mt-3 text-sm leading-7 text-slate-200">
+              Keep the campaign live, follow up the strongest buyers within 24
+              hours, and use price feedback from qualified inspections to guide
+              the next seller conversation.
+            </p>
+          </div>
+        ) : null}
       </div>
     </section>
   );

@@ -247,9 +247,11 @@ export function HeroPresentation({
 export function PresentationGrid({
   listing,
   editable = true,
+  onUpdate,
 }: {
   listing: ListingState;
   editable?: boolean;
+  onUpdate?: (updater: (current: ListingState) => ListingState) => void;
 }) {
   const visualScenes = [
     {
@@ -408,7 +410,7 @@ export function PresentationGrid({
         editHref={editable ? "/presentation" : undefined}
         editLabel="Review report"
       >
-        <VendorReportSection listing={listing} />
+        <VendorReportSection listing={listing} onUpdate={onUpdate} />
       </PresentationChapter>
     </>
   );

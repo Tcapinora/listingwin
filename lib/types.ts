@@ -125,10 +125,13 @@ export type ListingState = {
   assets: ListingAssets;
   comparableProperties: ComparableProperty[];
   saleCalendarEvents: SaleCalendarEvent[];
+  saleCalendarNotes: string;
+  saleCalendarTrades: string;
   buyerLeads: BuyerLead[];
   followUpReminders: FollowUpReminder[];
   agentPitchContent: AgentPitchContent;
   workspaceChecklist: Record<string, WorkspaceChecklistItem>;
+  hiddenVendorReportSections: string[];
   propertyPhotos: string[];
   activeSignboard: SignboardKey;
   signboardCrops: Record<SignboardKey, SignboardCrop>;
@@ -290,6 +293,8 @@ export const emptyListingState: ListingState = {
     },
   ],
   saleCalendarEvents: [],
+  saleCalendarNotes: "",
+  saleCalendarTrades: "",
   agentPitchContent: {
     ourDifference: "",
     teamExperience: "",
@@ -299,6 +304,7 @@ export const emptyListingState: ListingState = {
     ourApproach: "",
   },
   workspaceChecklist: {},
+  hiddenVendorReportSections: [],
   buyerLeads: [
     {
       id: "buyer-1",

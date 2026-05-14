@@ -7,6 +7,16 @@ type CalendarPdfInput = {
   month: number;
   year: number;
   events: SaleCalendarEvent[];
+  notes?: string;
+  trades?: string;
+  monthCount?: number;
+  customStartDate?: string;
+  customEndDate?: string;
+};
+
+type CalendarMonth = {
+  month: number;
+  year: number;
 };
 
 const monthNames = [
@@ -84,6 +94,41 @@ function filledRect(x: number, y: number, width: number, height: number, fill: s
   return `q ${fill} rg ${x} ${y} ${width} ${height} re f Q\n`;
 }
 
+function wrapText(value: string, maxLength: number, maxLines: number) {
+  const words = cleanText(value).split(/\s+/).filter(Boolean);
+  const lines: string[] = [];
+  let line = "";
+
+  words.forEach((word) => {
+    const nextLine = line ? `${line} ${word}` : word;
+
+    if (nextLine.length > maxLength) {
+      if (line) lines.push(line);
+      line = word;
+    } else {
+      line = nextLine;
+    }
+  });
+
+  if (line) lines.push(line);
+
+  return lines.slice(0, maxLines);
+}
+
+function paragraph(
+  value: string,
+  x: number,
+  y: number,
+  maxLength: number,
+  maxLines: number,
+  size = 8,
+  color = "0.42 0.50 0.62",
+) {
+  return wrapText(value, maxLength, maxLines)
+    .map((line, index) => text(line, x, y - index * (size + 4), size, color))
+    .join("");
+}
+
 function makePdf(objects: string[]) {
   const header = "%PDF-1.4\n";
   let body = "";
@@ -112,13 +157,57 @@ function makePdf(objects: string[]) {
   return Buffer.from(`${header}${body}${xref}`, "binary");
 }
 
-export function createCalendarPdf(input: CalendarPdfInput) {
+function getCalendarMonths(input: CalendarPdfInput): CalendarMonth[] {
+  const customStart = input.customStartDate
+    ? new Date(`${input.customStartDate}T00:00:00`)
+    : null;
+  const customEnd = input.customEndDate
+    ? new Date(`${input.customEndDate}T00:00:00`)
+    : null;
+
+  if (
+    customStart &&
+    customEnd &&
+    Number.isFinite(customStart.getTime()) &&
+    Number.isFinite(customEnd.getTime()) &&
+    customStart <= customEnd
+  ) {
+    const months: CalendarMonth[] = [];
+    let cursor = new Date(customStart.getFullYear(), customStart.getMonth(), 1);
+    const end = new Date(customEnd.getFullYear(), customEnd.getMonth(), 1);
+
+    while (cursor <= end && months.length < 12) {
+      months.push({ month: cursor.getMonth(), year: cursor.getFullYear() });
+      cursor = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1);
+    }
+
+    return months.length ? months : [{ month: input.month, year: input.year }];
+  }
+
+  const monthCount = Math.min(Math.max(input.monthCount || 1, 1), 3);
+
+  return Array.from({ length: monthCount }, (_, index) => {
+    const date = new Date(input.year, input.month + index, 1);
+    return { month: date.getMonth(), year: date.getFullYear() };
+  });
+}
+
+function drawCalendarPage(
+  input: CalendarPdfInput,
+  calendarMonth: CalendarMonth,
+  pageNumber: number,
+  pageCount: number,
+) {
   const width = 842;
   const height = 595;
-  const monthLabel = `${monthNames[input.month]} ${input.year}`;
-  const daysInMonth = new Date(input.year, input.month + 1, 0).getDate();
+  const monthLabel = `${monthNames[calendarMonth.month]} ${calendarMonth.year}`;
+  const daysInMonth = new Date(
+    calendarMonth.year,
+    calendarMonth.month + 1,
+    0,
+  ).getDate();
   const leadingEmptyDays =
-    (new Date(input.year, input.month, 1).getDay() + 6) % 7;
+    (new Date(calendarMonth.year, calendarMonth.month, 1).getDay() + 6) % 7;
   const calendarDays = [
     ...Array.from({ length: leadingEmptyDays }, () => null),
     ...Array.from({ length: daysInMonth }, (_, index) => index + 1),
@@ -134,7 +223,9 @@ export function createCalendarPdf(input: CalendarPdfInput) {
     },
     {},
   );
-  const monthPrefix = `${input.year}-${String(input.month + 1).padStart(2, "0")}`;
+  const monthPrefix = `${calendarMonth.year}-${String(
+    calendarMonth.month + 1,
+  ).padStart(2, "0")}`;
   const monthEvents = input.events
     .filter((event) => event.date.startsWith(monthPrefix))
     .sort((a, b) =>
@@ -148,9 +239,17 @@ export function createCalendarPdf(input: CalendarPdfInput) {
   content += rect(30, 35, 782, 525, "1 1 1", "0.84 0.88 0.94");
   content += text("PROPOSED CALENDAR OF SALE", 56, 520, 9, "0.21 0.39 0.88");
   content += text(monthLabel, 56, 492, 28, "0.04 0.16 0.29");
-  content += text(truncate(input.address || "Property address", 56), 56, 470, 11, "0.36 0.44 0.56");
   content += text(
-    `Prepared by ${truncate(input.agentName || "Agent", 24)}${input.agencyName ? ` | ${truncate(input.agencyName, 28)}` : ""}`,
+    truncate(input.address || "Property address", 56),
+    56,
+    470,
+    11,
+    "0.36 0.44 0.56",
+  );
+  content += text(
+    `Prepared by ${truncate(input.agentName || "Agent", 24)}${
+      input.agencyName ? ` | ${truncate(input.agencyName, 28)}` : ""
+    }`,
     56,
     452,
     9,
@@ -163,7 +262,13 @@ export function createCalendarPdf(input: CalendarPdfInput) {
   const cellHeight = 50;
 
   weekDays.forEach((day, index) => {
-    content += text(day, gridX + index * cellWidth + 5, gridTop + 12, 8, "0.42 0.50 0.62");
+    content += text(
+      day,
+      gridX + index * cellWidth + 5,
+      gridTop + 12,
+      8,
+      "0.42 0.50 0.62",
+    );
   });
 
   calendarDays.forEach((day, index) => {
@@ -172,11 +277,17 @@ export function createCalendarPdf(input: CalendarPdfInput) {
     const x = gridX + col * cellWidth;
     const y = gridTop - 8 - (row + 1) * cellHeight;
 
-    content += rect(x, y, cellWidth - 4, cellHeight - 4, day ? "0.98 0.99 1" : "0.95 0.96 0.98");
+    content += rect(
+      x,
+      y,
+      cellWidth - 4,
+      cellHeight - 4,
+      day ? "0.98 0.99 1" : "0.95 0.96 0.98",
+    );
     if (!day) return;
 
     content += text(String(day), x + 6, y + cellHeight - 18, 9, "0.04 0.16 0.29");
-    const dayEvents = eventMap[dateKey(input.year, input.month, day)] || [];
+    const dayEvents = eventMap[dateKey(calendarMonth.year, calendarMonth.month, day)] || [];
     dayEvents.slice(0, 2).forEach((event, eventIndex) => {
       const eventY = y + cellHeight - 32 - eventIndex * 12;
       content += filledRect(x + 6, eventY - 2, cellWidth - 16, 10, "0.86 0.92 1");
@@ -199,13 +310,13 @@ export function createCalendarPdf(input: CalendarPdfInput) {
   content += text(`${monthEvents.length} planned milestones`, sideX + 22, 366, 18, "1 1 1");
   content += text("The campaign plan is visible before launch.", sideX + 22, 344, 9, "0.84 0.90 1");
 
-  monthEvents.slice(0, 9).forEach((event, index) => {
+  monthEvents.slice(0, 6).forEach((event, index) => {
     const eventDate = new Date(`${event.date}T00:00:00`);
     const dateLabel = eventDate.toLocaleDateString("en-AU", {
       day: "numeric",
       month: "short",
     });
-    const y = 310 - index * 26;
+    const y = 312 - index * 27;
     content += text(`${dateLabel}  ${formatTime(event.time)}`, sideX + 22, y, 8, "0.72 0.83 1");
     content += text(truncate(`${event.type}: ${event.title}`, 34), sideX + 22, y - 12, 8, "1 1 1");
   });
@@ -214,14 +325,40 @@ export function createCalendarPdf(input: CalendarPdfInput) {
     content += text("No dates have been added yet.", sideX + 22, 310, 10, "1 1 1");
   }
 
-  content += text("ListingWin | Show the campaign before the campaign.", 56, 58, 8, "0.42 0.50 0.62");
+  content += text("AGENT NOTES", sideX + 22, 128, 8, "0.72 0.83 1");
+  content += paragraph(input.notes || "No agent notes added.", sideX + 22, 112, 36, 3, 7, "0.84 0.90 1");
+  content += text("TRADES & CONTACTS", sideX + 22, 68, 8, "0.72 0.83 1");
+  content += paragraph(input.trades || "No trades or contacts added.", sideX + 22, 52, 36, 2, 7, "0.84 0.90 1");
 
-  const contentBuffer = Buffer.from(content, "binary");
+  content += text("ListingWin | Show the campaign before the campaign.", 56, 58, 8, "0.42 0.50 0.62");
+  content += text(`Page ${pageNumber} of ${pageCount}`, 742, 58, 8, "0.42 0.50 0.62");
+
+  return content;
+}
+
+export function createCalendarPdf(input: CalendarPdfInput) {
+  const width = 842;
+  const height = 595;
+  const months = getCalendarMonths(input);
+  const pageObjects = months.flatMap((calendarMonth, index) => {
+    const content = drawCalendarPage(input, calendarMonth, index + 1, months.length);
+    const contentBuffer = Buffer.from(content, "binary");
+    const pageObjectId = 4 + index * 2;
+    const contentObjectId = pageObjectId + 1;
+
+    return [
+      `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${width} ${height}] /Resources << /Font << /F1 3 0 R >> >> /Contents ${contentObjectId} 0 R >>`,
+      `<< /Length ${contentBuffer.length} >>\nstream\n${content}\nendstream`,
+    ];
+  });
+  const pageKids = months
+    .map((_, index) => `${4 + index * 2} 0 R`)
+    .join(" ");
+
   return makePdf([
     "<< /Type /Catalog /Pages 2 0 R >>",
-    "<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
-    `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${width} ${height}] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>`,
+    `<< /Type /Pages /Kids [${pageKids}] /Count ${months.length} >>`,
     "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>",
-    `<< /Length ${contentBuffer.length} >>\nstream\n${content}\nendstream`,
+    ...pageObjects,
   ]);
 }

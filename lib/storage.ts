@@ -56,6 +56,8 @@ export function readListingState(): ListingState {
       saleCalendarEvents: Array.isArray(parsed.saleCalendarEvents)
         ? parsed.saleCalendarEvents.map(normalizeSaleCalendarEvent)
         : emptyListingState.saleCalendarEvents,
+      saleCalendarNotes: normalizeString(parsed.saleCalendarNotes),
+      saleCalendarTrades: normalizeString(parsed.saleCalendarTrades),
       agentPitchContent: {
         ...emptyListingState.agentPitchContent,
         ...parsed.agentPitchContent,
@@ -64,6 +66,13 @@ export function readListingState(): ListingState {
         parsed.workspaceChecklist && typeof parsed.workspaceChecklist === "object"
           ? parsed.workspaceChecklist
           : emptyListingState.workspaceChecklist,
+      hiddenVendorReportSections: Array.isArray(
+        parsed.hiddenVendorReportSections,
+      )
+        ? parsed.hiddenVendorReportSections.filter(
+            (section): section is string => typeof section === "string",
+          )
+        : emptyListingState.hiddenVendorReportSections,
       buyerLeads: Array.isArray(parsed.buyerLeads)
         ? parsed.buyerLeads.map(normalizeBuyerLead)
         : emptyListingState.buyerLeads,

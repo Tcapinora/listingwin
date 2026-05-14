@@ -1,6 +1,5 @@
 const resendApiKey = process.env.RESEND_API_KEY;
-const resendFromEmail =
-  process.env.RESEND_FROM_EMAIL || "ListingWin <onboarding@resend.dev>";
+const resendFromEmail = process.env.RESEND_FROM_EMAIL;
 const resendReplyTo = process.env.RESEND_REPLY_TO;
 
 export function isEmail(value: unknown) {
@@ -32,10 +31,8 @@ export async function sendResendEmail({
     content: string;
   }>;
 }) {
-  if (!resendApiKey) {
-    throw new Error(
-      "Resend is not configured yet. Add RESEND_API_KEY and RESEND_FROM_EMAIL.",
-    );
+  if (!resendApiKey || !resendFromEmail) {
+    throw new Error("Email sending is not configured yet.");
   }
 
   if (!isEmail(to)) {
@@ -74,6 +71,10 @@ export async function sendResendEmail({
         result?.error ||
         "Resend could not send the email. Check your domain and API key.",
     );
+  }
+
+  if (!result?.id) {
+    throw new Error("Email provider did not confirm the message was sent.");
   }
 
   return result as { id?: string };

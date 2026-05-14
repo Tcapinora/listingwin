@@ -219,7 +219,10 @@ export default function PresentationPage() {
         </section>
 
         <HeroPresentation listing={presentationListing} />
-        <PresentationGrid listing={presentationListing} />
+        <PresentationGrid
+          listing={presentationListing}
+          onUpdate={demoMode ? undefined : setListing}
+        />
 
         <section className="presentation-slide mt-20 overflow-hidden rounded-[2.75rem] bg-white shadow-soft ring-1 ring-blue-100">
           <div className="no-print flex justify-end px-6 pt-6 lg:px-8">

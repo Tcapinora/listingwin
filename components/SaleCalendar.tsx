@@ -210,6 +210,16 @@ export function SaleCalendar({
     }
   };
 
+  const updateCalendarText = (
+    field: "saleCalendarNotes" | "saleCalendarTrades",
+    value: string,
+  ) => {
+    setListing((current) => ({
+      ...current,
+      [field]: value,
+    }));
+  };
+
   return (
     <section
       className={`rounded-[2rem] border border-blue-100 bg-white p-4 shadow-card sm:p-6 lg:p-8 ${
@@ -614,6 +624,46 @@ export function SaleCalendar({
             </div>
           ) : null}
         </aside>
+      </div>
+
+      <div className="mt-6 grid gap-4 lg:grid-cols-2">
+        <label className="rounded-[1.5rem] border border-blue-100 bg-blue-50/45 p-5">
+          <span className="text-sm font-semibold text-blue-950">
+            Agent Notes
+          </span>
+          <span className="mt-1 block text-xs leading-5 text-slate-500">
+            Styling notes, seller instructions, reminders, campaign details, or
+            appraisal conversations.
+          </span>
+          <textarea
+            value={listing.saleCalendarNotes}
+            onChange={(event) =>
+              updateCalendarText("saleCalendarNotes", event.target.value)
+            }
+            placeholder="Example: Seller prefers twilight photography. Confirm cleaner before photography. Follow up styling quote..."
+            rows={6}
+            className="mt-4 w-full resize-none rounded-2xl border-0 bg-white px-4 py-3 text-sm leading-6 text-slate-950 outline-none ring-1 ring-blue-100 transition focus:ring-2 focus:ring-blue-500"
+          />
+        </label>
+
+        <label className="rounded-[1.5rem] border border-blue-100 bg-white p-5">
+          <span className="text-sm font-semibold text-blue-950">
+            Trades & Contacts
+          </span>
+          <span className="mt-1 block text-xs leading-5 text-slate-500">
+            Free text for painters, building and pest, carpenters, plumbers,
+            electricians, stylists, cleaners, handymen, pricing, and reminders.
+          </span>
+          <textarea
+            value={listing.saleCalendarTrades}
+            onChange={(event) =>
+              updateCalendarText("saleCalendarTrades", event.target.value)
+            }
+            placeholder="Example: Painter - Alex 0400 000 000, quote needed. Stylist - confirm availability. Cleaner - book before photos..."
+            rows={6}
+            className="mt-4 w-full resize-none rounded-2xl border-0 bg-blue-50/70 px-4 py-3 text-sm leading-6 text-slate-950 outline-none ring-1 ring-blue-100 transition focus:bg-white focus:ring-2 focus:ring-blue-500"
+          />
+        </label>
       </div>
     </section>
   );
