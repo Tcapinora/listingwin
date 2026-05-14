@@ -392,7 +392,7 @@ export function PresentationGrid({
         eyebrow="Campaign method"
         title="Show the seller there is a plan from day one."
         description="The calendar turns the campaign into something real: photography, launch, inspections, buyer follow-up, vendor reporting, and auction momentum."
-        editHref={editable ? "/details" : undefined}
+        editHref={editable ? "/calendar" : undefined}
         editLabel="Edit calendar"
       >
         <CampaignTimelineSection listing={listing} />
@@ -406,8 +406,6 @@ export function PresentationGrid({
           listing.agentPitchContent.buyerDemand ||
           "When the seller sees real buyers, names, budgets, and next calls, their behaviour changes instantly. The campaign feels active before it even launches."
         }
-        editHref={editable ? "/details" : undefined}
-        editLabel="Edit buyers"
       >
         <BuyerMatchEngineSection listing={listing} />
       </PresentationChapter>

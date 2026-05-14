@@ -1,10 +1,10 @@
 import Link from "next/link";
 
 const flowSteps = [
-  { href: "/create", label: "Start Presentation" },
-  { href: "/details", label: "Pricing & Method" },
-  { href: "/upload", label: "Marketing" },
-  { href: "/mockups", label: "Agency Marketing" },
+  { href: "/create", label: "Start Appraisal" },
+  { href: "/details", label: "Auto Appraisal" },
+  { href: "/upload", label: "Property Media" },
+  { href: "/mockups", label: "Campaign Preview" },
 ];
 
 export function FlowProgress({ currentStep }: { currentStep: number }) {

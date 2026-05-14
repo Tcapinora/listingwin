@@ -3,8 +3,8 @@ import { ArrowRight } from "lucide-react";
 const stages = [
   {
     id: "builder",
-    label: "Builder",
-    description: "Prepare before the appraisal",
+    label: "Appraisal Builder",
+    description: "Paste, generate, review",
   },
   {
     id: "presentation",

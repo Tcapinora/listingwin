@@ -82,6 +82,11 @@ export function readListingState(): ListingState {
             (section): section is string => typeof section === "string",
           )
         : emptyListingState.hiddenVendorReportSections,
+      appraisalSourceUrls: Array.isArray(parsed.appraisalSourceUrls)
+        ? parsed.appraisalSourceUrls.filter(
+            (url): url is string => typeof url === "string" && Boolean(url),
+          )
+        : emptyListingState.appraisalSourceUrls,
       buyerLeads: Array.isArray(parsed.buyerLeads)
         ? parsed.buyerLeads.map(normalizeBuyerLead)
         : emptyListingState.buyerLeads,

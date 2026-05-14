@@ -30,7 +30,7 @@ export default function DashboardPage() {
   const workflow = [
     {
       title: "Prepare in the office",
-      text: "Set the property, brand, campaign style, buyer proof, and calendar before you arrive.",
+      text: "Paste the property notes, review the facts, add comparable evidence, and prepare the appraisal story.",
     },
     {
       title: "Present in the room",
@@ -45,7 +45,7 @@ export default function DashboardPage() {
     {
       title: "1. Build",
       subtitle: "Prepare before the appraisal",
-      text: "Add the property, photos, signboards, buyers, sale calendar, and marketing previews in the Builder.",
+      text: "Paste messy appraisal notes, generate the property profile, review comparable sales, and add property photos.",
     },
     {
       title: "2. Present",
@@ -224,7 +224,7 @@ export default function DashboardPage() {
             className="inline-flex items-center justify-center rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card transition hover:-translate-y-0.5 hover:bg-blue-800"
           >
             <span className="inline-flex items-center gap-2">
-              Start Builder
+              Start Appraisal Builder
               <ArrowRight size={16} />
             </span>
           </Link>

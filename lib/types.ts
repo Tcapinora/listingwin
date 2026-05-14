@@ -132,6 +132,7 @@ export type ListingState = {
   agentPitchContent: AgentPitchContent;
   workspaceChecklist: Record<string, WorkspaceChecklistItem>;
   hiddenVendorReportSections: string[];
+  appraisalSourceUrls: string[];
   propertyPhotos: string[];
   activeSignboard: SignboardKey;
   signboardCrops: Record<SignboardKey, SignboardCrop>;
@@ -305,6 +306,7 @@ export const emptyListingState: ListingState = {
   },
   workspaceChecklist: {},
   hiddenVendorReportSections: [],
+  appraisalSourceUrls: [],
   buyerLeads: [
     {
       id: "buyer-1",

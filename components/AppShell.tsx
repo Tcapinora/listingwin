@@ -24,7 +24,7 @@ import { WorkflowPath } from "@/components/WorkflowPath";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/mockups", label: "Campaign Builder", icon: Sparkles },
+  { href: "/mockups", label: "Campaign Preview", icon: Sparkles },
   { href: "/calendar", label: "Calendar", icon: CalendarDays },
   { href: "/draft", label: "Agent Workspace", icon: MonitorPlay },
   { href: "/account", label: "Settings", icon: UserCog },
@@ -32,7 +32,7 @@ const navItems = [
 
 const workflowItems = [
   { href: "/create", label: "1. Start" },
-  { href: "/details", label: "2. Evidence" },
+  { href: "/details", label: "2. Appraisal" },
   { href: "/upload", label: "3. Media" },
   { href: "/mockups", label: "4. Create" },
 ];
@@ -111,7 +111,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <div className="hidden border-t border-blue-50/70 lg:block">
               <div className="mx-auto flex max-w-7xl items-center gap-2 px-8 py-2.5">
                 <span className="mr-2 text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
-                  Builder
+                  Appraisal Builder
                 </span>
                 {workflowItems.map((item) => {
                   const active = pathname === item.href;

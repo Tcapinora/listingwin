@@ -6,16 +6,15 @@ import {
   ArrowRight,
   ChevronDown,
   ExternalLink,
+  Link as LinkIcon,
   Plus,
   Sparkles,
+  Trash2,
   Wand2,
 } from "lucide-react";
 import { FlowProgress } from "@/components/FlowProgress";
 import { useListing } from "@/components/ListingProvider";
-import { BuyerMatchEngineSection } from "@/components/ValueSections";
-import { SaleCalendar } from "@/components/SaleCalendar";
 import type {
-  AgentPitchContent,
   ComparableProperty,
   ListingDetails,
 } from "@/lib/types";
@@ -32,6 +31,10 @@ const propertyTypes = [
 export default function PropertyDetailsPage() {
   const router = useRouter();
   const { listing, setListing } = useListing();
+  const [appraisalPasteText, setAppraisalPasteText] = useState("");
+  const [appraisalReview, setAppraisalReview] =
+    useState<AppraisalGeneration | null>(null);
+  const [appraisalNotice, setAppraisalNotice] = useState("");
   const [showComparableOptions, setShowComparableOptions] = useState(false);
   const [comparableMode, setComparableMode] = useState<"smart" | "manual" | null>(
     null,
@@ -73,17 +76,69 @@ export default function PropertyDetailsPage() {
     }));
   };
 
-  const updatePitchContent = (
-    fieldId: keyof typeof listing.agentPitchContent,
-    value: string,
-  ) => {
-    setListing((current) => ({
-      ...current,
-      agentPitchContent: {
-        ...current.agentPitchContent,
-        [fieldId]: value,
-      },
-    }));
+  const removeComparable = (indexToRemove: number) => {
+    setListing((current) => {
+      const remainingComparables = current.comparableProperties.filter(
+        (_, index) => index !== indexToRemove,
+      );
+
+      return {
+        ...current,
+        comparableProperties: remainingComparables.length
+          ? remainingComparables
+          : [createBlankComparable()],
+      };
+    });
+  };
+
+  const generateAppraisal = () => {
+    if (!appraisalPasteText.trim()) {
+      setAppraisalNotice(
+        "Paste property information, comparable sales text, URLs, or appraisal notes first.",
+      );
+      return;
+    }
+
+    const generation = parseAppraisalText(appraisalPasteText, listing.details);
+
+    if (
+      !generation.summary.length &&
+      !generation.comparableProperties.length &&
+      !generation.sourceUrls.length
+    ) {
+      setAppraisalNotice(
+        "We could not detect enough property details. Keep the pasted text in place and add the missing fields manually below.",
+      );
+      return;
+    }
+
+    setListing((current) => {
+      const existingComparables = current.comparableProperties.filter(
+        hasComparableContent,
+      );
+      const nextComparables = [
+        ...existingComparables,
+        ...generation.comparableProperties,
+      ];
+
+      return {
+        ...current,
+        details: {
+          ...current.details,
+          ...removeEmptyDetailValues(generation.details),
+        },
+        comparableProperties: nextComparables.length
+          ? nextComparables
+          : current.comparableProperties,
+        appraisalSourceUrls: uniqueValues([
+          ...current.appraisalSourceUrls,
+          ...generation.sourceUrls,
+        ]),
+      };
+    });
+
+    setAppraisalReview(generation);
+    setAppraisalNotice("");
   };
 
   const saveSmartComparable = (property: ComparableProperty) => {
@@ -147,17 +202,18 @@ export default function PropertyDetailsPage() {
       >
         <section className="rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-slate-200/70 sm:p-8 lg:p-10">
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
-            Vendor presentation builder
+            Auto appraisal builder
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-            Shape the listing story
+            Paste messy appraisal info. Generate the property profile.
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-            Add the details that help the vendor understand the property,
-            pricing strategy, market position, and campaign plan.
+            Keep this section focused on the property being appraised: address,
+            facts, key selling points, pricing evidence, comparable sales, and
+            appraisal notes.
           </p>
           <div className="mt-6 grid gap-3 rounded-[1.5rem] bg-slate-50 p-4 ring-1 ring-slate-200 sm:grid-cols-3">
-            {["Property details", "Market positioning", "Agent notes"].map((item) => (
+            {["Smart Paste", "Review details", "Comparable evidence"].map((item) => (
               <div
                 key={item}
                 className="flex items-center gap-2 text-sm font-semibold text-blue-950"
@@ -167,6 +223,103 @@ export default function PropertyDetailsPage() {
               </div>
             ))}
           </div>
+
+          <section className="mt-8 rounded-[1.75rem] bg-blue-50/70 p-5 ring-1 ring-blue-100 sm:p-6">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+              <div>
+                <p className="flex items-center gap-2 text-sm font-semibold text-blue-950">
+                  <Wand2 size={16} />
+                  Smart Paste Appraisal
+                </p>
+                <p className="mt-2 max-w-2xl text-sm leading-6 text-blue-900/75">
+                  Paste Realestate.com.au or Domain links, property text,
+                  comparable sale notes, RP Data snippets, or messy appraisal
+                  notes. ListingWin will organise what it can, then you review
+                  everything before continuing.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={generateAppraisal}
+                className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card transition hover:bg-blue-800"
+              >
+                <Wand2 size={16} />
+                Generate Appraisal
+              </button>
+            </div>
+            <textarea
+              value={appraisalPasteText}
+              onChange={(event) => {
+                setAppraisalPasteText(event.target.value);
+                setAppraisalNotice("");
+              }}
+              placeholder={`Paste anything useful here...\n\nExamples:\n41 Highland Terrace, St Lucia, QLD 4067\n5 bed | 1 bath | 2 car | 653m² | House\nOffer over $1,750,000\nComparable sales notes, RP Data snippets, agency notes, buyer feedback, property description, and source URLs.`}
+              rows={10}
+              className="mt-5 w-full resize-none rounded-[1.5rem] border-0 bg-white px-5 py-4 text-sm leading-6 text-slate-950 shadow-inner outline-none ring-1 ring-blue-100 transition focus:ring-2 focus:ring-blue-500"
+            />
+            {appraisalNotice ? (
+              <p className="mt-4 rounded-2xl bg-white px-4 py-3 text-sm leading-6 text-amber-900 ring-1 ring-amber-200">
+                {appraisalNotice}
+              </p>
+            ) : null}
+            {appraisalReview ? (
+              <div className="mt-5 rounded-[1.5rem] bg-white p-5 shadow-sm ring-1 ring-blue-100">
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">
+                      Review before continuing
+                    </p>
+                    <h3 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">
+                      Appraisal profile generated.
+                    </h3>
+                    <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+                      Please review the fields and comparable cards below before
+                      creating the Vendor Presentation.
+                    </p>
+                  </div>
+                  <div className="grid gap-2 text-sm font-semibold text-blue-950 sm:grid-cols-3 lg:min-w-[24rem]">
+                    <span className="rounded-2xl bg-blue-50 px-4 py-3 text-center">
+                      {Object.keys(removeEmptyDetailValues(appraisalReview.details)).length} fields
+                    </span>
+                    <span className="rounded-2xl bg-blue-50 px-4 py-3 text-center">
+                      {appraisalReview.comparableProperties.length} comps
+                    </span>
+                    <span className="rounded-2xl bg-blue-50 px-4 py-3 text-center">
+                      {appraisalReview.sourceUrls.length} links
+                    </span>
+                  </div>
+                </div>
+                {appraisalReview.summary.length ? (
+                  <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    {appraisalReview.summary.map((item) => (
+                      <div
+                        key={item}
+                        className="rounded-2xl bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700 ring-1 ring-slate-100"
+                      >
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
+            {listing.appraisalSourceUrls.length ? (
+              <div className="mt-4 flex flex-wrap gap-2">
+                {listing.appraisalSourceUrls.map((url) => (
+                  <a
+                    key={url}
+                    href={normalizeUrl(url)}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-blue-800 ring-1 ring-blue-100 transition hover:bg-blue-100"
+                  >
+                    <LinkIcon size={12} />
+                    Saved source
+                  </a>
+                ))}
+              </div>
+            ) : null}
+          </section>
 
           <div className="mt-8 grid gap-6">
             <label>
@@ -533,6 +686,15 @@ export default function PropertyDetailsPage() {
                       </p>
                     </summary>
 
+                    <button
+                      type="button"
+                      onClick={() => removeComparable(index)}
+                      className="mt-4 inline-flex items-center gap-2 rounded-full bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-500 transition hover:bg-red-50 hover:text-red-700"
+                    >
+                      <Trash2 size={12} />
+                      Remove comparable
+                    </button>
+
                     {property.sourceUrl || property.url ? (
                       <div className="mt-4">
                         <a
@@ -623,71 +785,6 @@ export default function PropertyDetailsPage() {
 
         </section>
 
-        <section className="mt-8 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-blue-50 sm:p-8 lg:p-10">
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
-            Agent pitch text
-          </p>
-          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
-            Personalise the “Our Approach” section.
-          </h2>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
-            These lines appear in the vendor presentation so each agent can
-            match the pitch to their own agency style, process, and buyer
-            database.
-          </p>
-          <div className="mt-6 grid gap-4 lg:grid-cols-2">
-            {agentPitchFields.map((field) => (
-              <label key={field.id} className="block">
-                <span className="text-sm font-semibold text-slate-800">
-                  {field.label}
-                </span>
-                <textarea
-                  value={listing.agentPitchContent[field.id]}
-                  onChange={(event) =>
-                    updatePitchContent(field.id, event.target.value)
-                  }
-                  placeholder={field.placeholder}
-                  rows={field.large ? 5 : 3}
-                  className="mt-2 w-full resize-none rounded-2xl border-0 bg-slate-50 px-5 py-4 text-sm leading-6 text-slate-950 shadow-inner outline-none ring-1 ring-slate-200 transition focus:bg-white focus:ring-2 focus:ring-blue-500"
-                />
-              </label>
-            ))}
-          </div>
-        </section>
-
-        <section className="mt-8 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-blue-50 sm:p-8 lg:p-10">
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
-            Database / buyer demand
-          </p>
-          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
-            Add buyers you can show the vendor.
-          </h2>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
-            Add buyer names, notes, preferred suburbs, and price range. These
-            appear in the presentation so the vendor can see who you could call
-            straight away for this property.
-          </p>
-          <div className="mt-6">
-            <BuyerMatchEngineSection listing={listing} onUpdate={setListing} />
-          </div>
-        </section>
-
-        <section className="mt-8 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-blue-50 sm:p-8 lg:p-10">
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
-            Campaign method
-          </p>
-          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
-            Add timing, launch, and auction dates.
-          </h2>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
-            Add photography, launch, open home, auction, and follow-up dates.
-            These become the seller-facing calendar in presentation mode.
-          </p>
-          <div className="mt-6">
-            <SaleCalendar />
-          </div>
-        </section>
-
         <button
           type="submit"
           className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-700 px-6 py-4 text-base font-semibold text-white shadow-card transition hover:bg-blue-800 sm:w-auto"
@@ -760,6 +857,308 @@ function ManualComparableForm({
   );
 }
 
+type AppraisalGeneration = {
+  details: Partial<ListingDetails>;
+  comparableProperties: ComparableProperty[];
+  sourceUrls: string[];
+  summary: string[];
+};
+
+function parseAppraisalText(
+  text: string,
+  currentDetails: ListingDetails,
+): AppraisalGeneration {
+  const lines = normaliseComparableLines(text);
+  const joined = lines.join(" ");
+  const sourceUrls = extractAllSourceUrls(joined);
+  const addressCandidates = extractAddressCandidates(lines, joined);
+  const primaryAddress =
+    currentDetails.address.trim() ||
+    addressCandidates[0] ||
+    extractAddress(lines, joined);
+  const addressParts = parseAddressParts(primaryAddress);
+  const compactFeatures = extractCompactFeatureRow(lines);
+  const bedrooms =
+    extractLabelledNumber(joined, ["bed(?:room)?s?", "beds?"]) ||
+    compactFeatures.beds;
+  const bathrooms =
+    extractLabelledNumber(joined, ["bath(?:room)?s?", "baths?"]) ||
+    compactFeatures.baths;
+  const carSpaces =
+    extractLabelledNumber(joined, [
+      "car(?:space)?s?",
+      "parking",
+      "garage(?:s)?",
+    ]) ||
+    (compactFeatures.cars === "-" ? "" : compactFeatures.cars);
+  const landSize =
+    extractLabelledArea(joined, ["land(?: size)?", "block(?: size)?"]) ||
+    compactFeatures.landSize ||
+    extractFirstArea(lines);
+  const propertyType =
+    extractPropertyType(joined) ||
+    compactFeatures.propertyType ||
+    currentDetails.propertyType;
+  const description = extractDescription(lines) || extractAppraisalDescription(lines);
+  const keyFeatures = extractKeySellingPoints(lines, joined, description);
+  const extractedPrice = extractPrice(joined);
+  const comparableProperties = extractComparableBlocks(
+    text,
+    primaryAddress,
+    currentDetails.address,
+  );
+
+  const details: Partial<ListingDetails> = {
+    address: primaryAddress,
+    propertyType,
+    bedrooms,
+    bathrooms,
+    carSpaces,
+    keyFeatures,
+    notes: description || keyFeatures,
+    headline:
+      currentDetails.headline || createListingHeadline(primaryAddress, propertyType),
+    agentPriceGuide: currentDetails.agentPriceGuide || extractedPrice,
+    brochurePrice: currentDetails.brochurePrice || extractedPrice,
+  };
+
+  return {
+    details,
+    comparableProperties,
+    sourceUrls,
+    summary: createAppraisalSummary({
+      address: primaryAddress,
+      suburb: addressParts.suburb,
+      propertyType,
+      bedrooms,
+      bathrooms,
+      carSpaces,
+      landSize,
+      keyFeatures,
+      comparableCount: comparableProperties.length,
+      sourceCount: sourceUrls.length,
+    }),
+  };
+}
+
+function removeEmptyDetailValues(details: Partial<ListingDetails>) {
+  return Object.fromEntries(
+    Object.entries(details).filter(([, value]) => Boolean(value)),
+  ) as Partial<ListingDetails>;
+}
+
+function hasComparableContent(property: ComparableProperty) {
+  return Boolean(
+    property.address ||
+      property.soldPrice ||
+      property.saleDate ||
+      property.sourceUrl ||
+      property.url ||
+      property.notes,
+  );
+}
+
+function uniqueValues(values: string[]) {
+  return Array.from(
+    new Set(values.map((value) => value.trim()).filter(Boolean)),
+  );
+}
+
+function extractAllSourceUrls(text: string) {
+  return uniqueValues(
+    text.match(/https?:\/\/[^\s)]+/gi)?.map((url) => url.replace(/[.,]+$/, "")) ||
+      [],
+  );
+}
+
+function extractAddressCandidates(lines: string[], joined: string) {
+  const addressRegex = new RegExp(
+    `\\b\\d{1,5}[A-Za-z]?\\s+[A-Za-z0-9'&./\\-\\s]+?\\b(?:${streetTypePattern})\\b(?:,?\\s+[A-Za-z][A-Za-z'\\-\\s]+){0,3}(?:,?\\s+(?:${statePattern})\\s*\\d{4})?\\b`,
+    "gi",
+  );
+  const candidates = [...lines.join("\n").matchAll(addressRegex), ...joined.matchAll(addressRegex)]
+    .map((match) => cleanAddress(match[0]))
+    .filter((address) => address.length >= 8 && /\d/.test(address));
+  const seen = new Set<string>();
+
+  return candidates.filter((address) => {
+    const key = normaliseAddressKey(address);
+
+    if (seen.has(key)) {
+      return false;
+    }
+
+    seen.add(key);
+    return true;
+  });
+}
+
+function extractComparableBlocks(
+  text: string,
+  primaryAddress: string,
+  currentAddress: string,
+) {
+  const lines = normaliseComparableLines(text);
+  const addressLineRegex = new RegExp(
+    `\\b\\d{1,5}[A-Za-z]?\\s+[A-Za-z0-9'&./\\-\\s]+?\\b(?:${streetTypePattern})\\b`,
+    "i",
+  );
+  const blocks: string[][] = [];
+  let currentBlock: string[] = [];
+
+  lines.forEach((line) => {
+    if (addressLineRegex.test(line) && currentBlock.length) {
+      blocks.push(currentBlock);
+      currentBlock = [line];
+      return;
+    }
+
+    currentBlock.push(line);
+  });
+
+  if (currentBlock.length) {
+    blocks.push(currentBlock);
+  }
+
+  return blocks
+    .map((block) => parseComparableText(block.join("\n")))
+    .filter(hasEnoughComparableEvidence)
+    .filter((property) => {
+      if (!property.address) {
+        return false;
+      }
+
+      const propertyKey = normaliseAddressKey(property.address);
+      const primaryKey = normaliseAddressKey(primaryAddress);
+      const currentKey = normaliseAddressKey(currentAddress);
+
+      if (primaryKey && propertyKey === primaryKey) {
+        return false;
+      }
+
+      if (currentKey && propertyKey === currentKey) {
+        return false;
+      }
+
+      return true;
+    });
+}
+
+function normaliseAddressKey(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/\b(qld|nsw|vic|sa|wa|tas|act|nt)\b/g, "")
+    .replace(/\b\d{4}\b/g, "")
+    .replace(/[^a-z0-9]/g, "");
+}
+
+function extractAppraisalDescription(lines: string[]) {
+  const noteLines = lines.filter(
+    (line) =>
+      line.length > 45 &&
+      !/realestate\.com\.au|domain\.com\.au|rpp\.corelogic|rp data|menu|sign in|join|copy|update data|view all|property history|keyboard shortcuts/i.test(
+        line,
+      ),
+  );
+
+  return noteLines.slice(0, 3).join(" ").slice(0, 520);
+}
+
+function extractKeySellingPoints(
+  lines: string[],
+  joined: string,
+  description: string,
+) {
+  const featureWords = [
+    "pool",
+    "renovated kitchen",
+    "large backyard",
+    "quiet street",
+    "corner block",
+    "river views",
+    "city views",
+    "deck",
+    "garage",
+    "character home",
+    "development potential",
+    "walk to cafes",
+    "school catchment",
+    "north facing",
+    "flat backyard",
+    "open plan",
+    "high ceilings",
+    "timber floors",
+    "storage",
+  ];
+  const detectedFeatures = featureWords.filter((feature) =>
+    joined.toLowerCase().includes(feature),
+  );
+  const bulletFeatures = lines
+    .filter((line) => /^[-•*]\s+/.test(line) || line.split(",").length >= 3)
+    .flatMap((line) =>
+      line
+        .replace(/^[-•*]\s+/, "")
+        .split(",")
+        .map((item) => item.trim()),
+    )
+    .filter((item) => item.length >= 4 && item.length <= 48);
+
+  return uniqueValues([...detectedFeatures, ...bulletFeatures])
+    .slice(0, 8)
+    .join(", ") || description.split(".")[0] || "";
+}
+
+function createListingHeadline(address: string, propertyType: string) {
+  const suburb = parseAddressParts(address).suburb;
+
+  if (propertyType && suburb) {
+    return `${propertyType} opportunity in ${suburb}`;
+  }
+
+  if (suburb) {
+    return `A strong appraisal opportunity in ${suburb}`;
+  }
+
+  return "";
+}
+
+function createAppraisalSummary({
+  address,
+  suburb,
+  propertyType,
+  bedrooms,
+  bathrooms,
+  carSpaces,
+  landSize,
+  keyFeatures,
+  comparableCount,
+  sourceCount,
+}: {
+  address: string;
+  suburb: string;
+  propertyType: string;
+  bedrooms: string;
+  bathrooms: string;
+  carSpaces: string;
+  landSize: string;
+  keyFeatures: string;
+  comparableCount: number;
+  sourceCount: number;
+}) {
+  return [
+    address ? `Address: ${address}` : "",
+    suburb ? `Suburb: ${suburb}` : "",
+    propertyType ? `Type: ${propertyType}` : "",
+    bedrooms || bathrooms || carSpaces
+      ? `${bedrooms || "-"} bed / ${bathrooms || "-"} bath / ${carSpaces || "-"} car`
+      : "",
+    landSize ? `Land: ${landSize}` : "",
+    keyFeatures ? `Highlights: ${keyFeatures}` : "",
+    comparableCount ? `${comparableCount} comparable sale cards created` : "",
+    sourceCount ? `${sourceCount} source link${sourceCount === 1 ? "" : "s"} saved` : "",
+  ].filter(Boolean);
+}
+
 const manualComparableFields: Array<{
   id: keyof ComparableProperty;
   label: string;
@@ -780,49 +1179,6 @@ const manualComparableFields: Array<{
   { id: "sourceUrl", label: "Source Listing URL", large: true },
   { id: "description", label: "Property description", large: true },
   { id: "notes", label: "Notes / reason comparable", large: true },
-];
-
-const agentPitchFields: Array<{
-  id: keyof AgentPitchContent;
-  label: string;
-  placeholder: string;
-  large?: boolean;
-}> = [
-  {
-    id: "ourDifference",
-    label: "Our difference",
-    placeholder:
-      "Explain what makes your campaign stronger than a standard appraisal.",
-    large: true,
-  },
-  {
-    id: "teamExperience",
-    label: "Team experience",
-    placeholder: "Describe your team, track record, local knowledge, and support.",
-  },
-  {
-    id: "communicationProcess",
-    label: "Communication process",
-    placeholder:
-      "Explain how you keep owners informed before, during, and after launch.",
-  },
-  {
-    id: "buyerDemand",
-    label: "Buyer database / buyer demand",
-    placeholder:
-      "Explain who is already in your database and why you are not starting from zero.",
-  },
-  {
-    id: "aboutAgent",
-    label: "About the agent",
-    placeholder: "Add a short bio or appraisal-room positioning statement.",
-  },
-  {
-    id: "ourApproach",
-    label: "Our approach",
-    placeholder: "Summarise your full campaign approach in plain language.",
-    large: true,
-  },
 ];
 
 function parseComparableText(text: string): ComparableProperty {
