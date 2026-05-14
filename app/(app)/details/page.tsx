@@ -488,33 +488,66 @@ export default function PropertyDetailsPage() {
                       property.notes,
                   )
                   .map(({ property, index }) => (
-                  <div
+                  <details
                     key={index}
-                    className="rounded-2xl bg-white p-4 ring-1 ring-slate-100"
+                    className="group rounded-[1.5rem] bg-white p-5 shadow-sm ring-1 ring-slate-100 transition open:shadow-card"
                   >
-                    <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <p className="text-sm font-semibold text-slate-950">
-                          Comparable sale {index + 1}
-                        </p>
-                        <p className="mt-1 text-xs leading-5 text-slate-500">
-                          Review generated details before using them in the
-                          vendor presentation.
-                        </p>
+                    <summary className="cursor-pointer list-none">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="min-w-0">
+                          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
+                            Comparable sale {index + 1}
+                          </p>
+                          <h4 className="mt-2 line-clamp-2 text-lg font-semibold tracking-tight text-slate-950">
+                            {property.address || "Address to review"}
+                          </h4>
+                          <p className="mt-2 text-sm font-semibold text-blue-900">
+                            {property.soldPrice || "Price to confirm"}
+                          </p>
+                        </div>
+                        <span className="shrink-0 rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-800 group-open:bg-blue-700 group-open:text-white">
+                          Review
+                        </span>
                       </div>
-                      {property.sourceUrl || property.url ? (
+                      <div className="mt-4 flex flex-wrap gap-2 text-xs font-semibold text-slate-600">
+                        {[
+                          property.beds ? `${property.beds} bed` : "",
+                          property.baths ? `${property.baths} bath` : "",
+                          property.cars ? `${property.cars} car` : "",
+                          property.landSize || property.blockSize,
+                          property.propertyType,
+                        ]
+                          .filter(Boolean)
+                          .map((detail) => (
+                            <span
+                              key={detail}
+                              className="rounded-full bg-slate-50 px-3 py-1.5 ring-1 ring-slate-200"
+                            >
+                              {detail}
+                            </span>
+                          ))}
+                      </div>
+                      <p className="mt-4 text-xs leading-5 text-slate-500">
+                        Please review all generated details before saving them
+                        into the vendor presentation.
+                      </p>
+                    </summary>
+
+                    {property.sourceUrl || property.url ? (
+                      <div className="mt-4">
                         <a
                           href={normalizeUrl(property.sourceUrl || property.url)}
                           target="_blank"
                           rel="noreferrer"
-                          className="inline-flex shrink-0 items-center gap-1 rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-800"
+                          className="inline-flex shrink-0 items-center gap-1 rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-800 transition hover:bg-blue-100"
                         >
                           View Original Listing
                           <ExternalLink size={12} />
                         </a>
-                      ) : null}
-                    </div>
-                    <div className="mt-3 grid gap-3 sm:grid-cols-4 xl:grid-cols-2">
+                      </div>
+                    ) : null}
+
+                    <div className="mt-5 grid gap-3 sm:grid-cols-4 xl:grid-cols-2">
                       <input
                         value={property.address}
                         onChange={(event) =>
@@ -582,7 +615,7 @@ export default function PropertyDetailsPage() {
                         className="resize-none rounded-xl border-0 bg-slate-50 px-4 py-3 text-sm ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:col-span-4 xl:col-span-2"
                       />
                     </div>
-                  </div>
+                  </details>
                 ))}
               </div>
             </div>
