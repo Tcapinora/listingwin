@@ -20,12 +20,21 @@ export default function SignUpPage() {
             />
           </Link>
           <p className="mt-8 max-w-xl text-4xl font-light leading-tight tracking-[-0.02em] sm:text-5xl">
-            Create your ListingWin account.
+            Start your 14-day ListingWin trial.
           </p>
           <p className="mt-5 max-w-lg text-base leading-7 text-slate-600">
-            Set up a secure workspace for vendor presentations, live campaign
-            mockups, calendars, and agent closing tools.
+            Build your first vendor presentation, add your agency branding, and
+            see how ListingWin helps you show the campaign before the campaign.
           </p>
+          <div className="mt-7 grid max-w-lg gap-3 rounded-[1.75rem] bg-white/80 p-5 text-sm text-slate-600 shadow-card ring-1 ring-white">
+            <p className="font-semibold text-[#1F2A4A]">
+              Trial includes the full appraisal flow.
+            </p>
+            <p>
+              $39/month for one agent after the trial. Contact us for full
+              agency subscriptions.
+            </p>
+          </div>
         </div>
 
         <div className="flex justify-center lg:justify-end">

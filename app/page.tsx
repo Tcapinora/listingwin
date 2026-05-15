@@ -25,6 +25,27 @@ const workflow = [
   },
 ];
 
+const pricing = [
+  {
+    name: "Solo agent",
+    price: "$39/mo",
+    note: "14-day free trial",
+    copy: "For agents who want sharper appraisal presentations and a cleaner way to win listings.",
+    cta: "Start free trial",
+    href: "/start",
+    featured: true,
+  },
+  {
+    name: "Agency",
+    price: "Contact us",
+    note: "For teams and offices",
+    copy: "For agencies that want consistent branded presentations, shared templates, and team rollout.",
+    cta: "Talk to us",
+    href: "mailto:hello@listingwin.com.au?subject=ListingWin agency subscription",
+    featured: false,
+  },
+];
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#FBFBFD] text-[#1F2A4A]">
@@ -69,7 +90,7 @@ export default function Home() {
                 href="/start"
                 className="inline-flex items-center justify-center gap-3 rounded-full bg-[#3563E0] px-7 py-4 text-base font-semibold text-white shadow-card transition hover:bg-[#2848B8]"
               >
-                Create account
+                Start 14-day free trial
                 <ArrowRight size={18} />
               </Link>
               <Link
@@ -82,8 +103,8 @@ export default function Home() {
             </div>
 
             <p className="mt-5 text-sm font-medium text-[#64748B]">
-              One flow: prepare the appraisal, present the campaign, then close
-              in the agent workspace.
+              Then $39/month for one agent. Agency subscriptions available on
+              request.
             </p>
           </section>
 
@@ -139,6 +160,59 @@ export default function Home() {
               ))}
               </div>
             </div>
+          </section>
+
+          <section className="mx-auto mt-6 grid w-full max-w-6xl gap-4 lg:grid-cols-2">
+            {pricing.map((plan) => (
+              <article
+                key={plan.name}
+                className={`rounded-[2rem] p-6 shadow-card ${
+                  plan.featured
+                    ? "bg-[#1F2A4A] text-white"
+                    : "border border-[#DEE0E5] bg-white text-[#1F2A4A]"
+                }`}
+              >
+                <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                    <p
+                      className={`text-sm font-bold uppercase tracking-[0.18em] ${
+                        plan.featured ? "text-white/60" : "text-[#3563E0]"
+                      }`}
+                    >
+                      {plan.name}
+                    </p>
+                    <h2 className="mt-3 text-4xl font-extrabold tracking-tight">
+                      {plan.price}
+                    </h2>
+                    <p
+                      className={`mt-2 text-sm font-semibold ${
+                        plan.featured ? "text-white/70" : "text-[#64748B]"
+                      }`}
+                    >
+                      {plan.note}
+                    </p>
+                  </div>
+                  <Link
+                    href={plan.href}
+                    className={`inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition ${
+                      plan.featured
+                        ? "bg-white text-[#1F2A4A] hover:bg-[#F2F4F8]"
+                        : "border border-[#D0D7E2] bg-white text-[#1F2A4A] hover:border-[#3563E0] hover:text-[#3563E0]"
+                    }`}
+                  >
+                    {plan.cta}
+                    <ArrowRight size={15} />
+                  </Link>
+                </div>
+                <p
+                  className={`mt-5 max-w-xl text-sm leading-6 ${
+                    plan.featured ? "text-white/72" : "text-[#40516B]"
+                  }`}
+                >
+                  {plan.copy}
+                </p>
+              </article>
+            ))}
           </section>
         </div>
       </section>
