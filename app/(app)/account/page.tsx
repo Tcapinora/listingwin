@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { PageHeader } from "@/components/PageHeader";
+import { ApiKeyPanel } from "@/components/ApiKeyPanel";
 import { AgentProfileModal } from "@/components/AgentProfileModal";
 import { useAgentProfile } from "@/components/AgentProfileProvider";
 import { useListing } from "@/components/ListingProvider";
@@ -208,6 +209,8 @@ export default function AccountPage() {
             <ArrowRight size={16} />
           </Link>
         </section>
+
+        <ApiKeyPanel />
 
         <section className="rounded-3xl border border-blue-100 bg-white p-6 shadow-card lg:col-span-2">
           <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">

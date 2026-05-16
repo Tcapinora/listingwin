@@ -1,9 +1,13 @@
 import { NextResponse, type NextRequest } from "next/server";
+import {
+  isAccountApiKeyConfigured,
+  isValidAccountApiKey,
+} from "@/lib/accountApiKey";
 
 const listingWinApiKey = process.env.LISTINGWIN_API_KEY;
 
 export function isListingWinApiConfigured() {
-  return Boolean(listingWinApiKey);
+  return Boolean(listingWinApiKey || isAccountApiKeyConfigured());
 }
 
 export function getListingWinApiKey(request: NextRequest) {
@@ -26,7 +30,10 @@ export function requireListingWinApiKey(request: NextRequest) {
 
   const providedKey = getListingWinApiKey(request);
 
-  if (!providedKey || providedKey !== listingWinApiKey) {
+  const isMasterKey = listingWinApiKey && providedKey === listingWinApiKey;
+  const isAccountKey = isValidAccountApiKey(providedKey);
+
+  if (!providedKey || (!isMasterKey && !isAccountKey)) {
     return NextResponse.json(
       { error: "Invalid or missing ListingWin API key." },
       { status: 401 },
