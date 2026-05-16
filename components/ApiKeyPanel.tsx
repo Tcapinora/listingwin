@@ -16,7 +16,11 @@ function maskApiKey(apiKey: string) {
   return `${apiKey.slice(0, 12)}••••••••••••••••${apiKey.slice(-8)}`;
 }
 
-export function ApiKeyPanel() {
+export function ApiKeyPanel({
+  compact = false,
+}: {
+  compact?: boolean;
+}) {
   const [apiKey, setApiKey] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -70,14 +74,26 @@ export function ApiKeyPanel() {
   }
 
   return (
-    <section className="rounded-3xl border border-blue-100 bg-white p-6 shadow-card lg:col-span-2">
-      <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+    <section
+      className={`rounded-3xl border border-blue-100 bg-white shadow-card ${
+        compact ? "p-5" : "p-6 lg:col-span-2"
+      }`}
+    >
+      <div
+        className={`grid gap-6 ${
+          compact ? "" : "lg:grid-cols-[0.9fr_1.1fr] lg:items-center"
+        }`}
+      >
         <div>
           <div className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
             <KeyRound size={14} />
             API access
           </div>
-          <h2 className="mt-4 text-3xl font-semibold tracking-tight">
+          <h2
+            className={`mt-4 font-semibold tracking-tight ${
+              compact ? "text-2xl" : "text-3xl"
+            }`}
+          >
             Manage account API key
           </h2>
           <p className="mt-3 max-w-xl text-sm leading-6 text-slate-600">

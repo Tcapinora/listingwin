@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { X } from "lucide-react";
+import { ApiKeyPanel } from "@/components/ApiKeyPanel";
 import { UploadCard } from "@/components/UploadCard";
 import { useAgentProfile } from "@/components/AgentProfileProvider";
 import type { AgentProfile } from "@/lib/types";
@@ -150,6 +151,8 @@ export function AgentProfileModal({
         </div>
 
         <div className="overflow-y-auto p-5 sm:p-6 lg:p-7">
+        <ApiKeyPanel compact />
+
         <div className="grid gap-5 sm:grid-cols-2">
           {profileFields.map((field) => (
             <label
