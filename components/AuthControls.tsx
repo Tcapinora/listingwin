@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { KeyRound } from "lucide-react";
+import { KeyRound, Settings } from "lucide-react";
 import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import { ApiKeyPanel } from "@/components/ApiKeyPanel";
 
@@ -33,11 +33,17 @@ function ClerkAuthControls() {
 
   if (isSignedIn) {
     return (
-      <div className="grid h-11 w-11 place-items-center rounded-full border border-blue-100 bg-white shadow-sm">
+      <div
+        className="relative grid h-11 w-11 place-items-center rounded-full border border-blue-100 bg-white text-slate-700 shadow-sm transition hover:border-blue-300 hover:text-blue-800"
+        title="Manage account"
+        aria-label="Manage account"
+      >
+        <Settings size={18} />
         <UserButton
           appearance={{
             elements: {
-              avatarBox: "h-8 w-8",
+              userButtonTrigger: "absolute inset-0 h-11 w-11 opacity-0",
+              avatarBox: "h-11 w-11 opacity-0",
             },
           }}
         >
