@@ -20,7 +20,11 @@ import {
 } from "@/components/ProposalDocument";
 import {
   getProposalShareUrl,
+  findSavedProposal,
+  markProposalSent,
   saveProposalSnapshot,
+  type ProposalStatus,
+  type SellerProposalAction,
 } from "@/lib/proposalHistory";
 
 export default function ProposalPage() {
@@ -32,6 +36,14 @@ export default function ProposalPage() {
   const [emailCopied, setEmailCopied] = useState(false);
   const [shareError, setShareError] = useState("");
   const [proposalGenerated, setProposalGenerated] = useState(false);
+  const [currentProposalId, setCurrentProposalId] = useState("");
+  const [proposalStatus, setProposalStatus] =
+    useState<ProposalStatus>("Draft");
+  const [viewedAt, setViewedAt] = useState("");
+  const [sellerAction, setSellerAction] = useState<SellerProposalAction | "">(
+    "",
+  );
+  const [sellerActionAt, setSellerActionAt] = useState("");
   const [hiddenSections, setHiddenSections] = useState<string[]>([]);
   const [textSections, setTextSections] = useState(() =>
     createDefaultProposalText(listing, profile),
@@ -42,8 +54,12 @@ export default function ProposalPage() {
 
   const generateProposal = () => {
     setProposalGenerated(true);
+    setProposalStatus("Generated");
     setShareUrl("");
     setShareError("");
+    setViewedAt("");
+    setSellerAction("");
+    setSellerActionAt("");
     window.requestAnimationFrame(() => {
       document
         .getElementById("proposal-preview")
@@ -69,6 +85,11 @@ export default function ProposalPage() {
     }
 
     const url = getProposalShareUrl(proposal.id);
+    setCurrentProposalId(proposal.id);
+    setProposalStatus(proposal.proposalStatus || "Generated");
+    setViewedAt(proposal.viewedAt || "");
+    setSellerAction(proposal.sellerAction || "");
+    setSellerActionAt(proposal.sellerActionAt || "");
     setShareError("");
     setShareUrl(url);
     setSaved(true);
@@ -82,6 +103,12 @@ export default function ProposalPage() {
 
     try {
       await navigator.clipboard.writeText(url);
+      const proposalId = currentProposalId || url.split("/").pop() || "";
+      if (proposalId) {
+        markProposalSent(proposalId);
+        setCurrentProposalId(proposalId);
+        setProposalStatus("Sent");
+      }
       setCopied(true);
       window.setTimeout(() => setCopied(false), 2200);
     } catch {
@@ -99,6 +126,12 @@ export default function ProposalPage() {
 
     try {
       await navigator.clipboard.writeText(draft);
+      const proposalId = currentProposalId || url.split("/").pop() || "";
+      if (proposalId) {
+        markProposalSent(proposalId);
+        setCurrentProposalId(proposalId);
+        setProposalStatus("Sent");
+      }
       setEmailCopied(true);
       window.setTimeout(() => setEmailCopied(false), 2200);
     } catch {
@@ -119,6 +152,11 @@ export default function ProposalPage() {
     setShareUrl("");
     setShareError("");
     setProposalGenerated(false);
+    setProposalStatus("Draft");
+    setCurrentProposalId("");
+    setViewedAt("");
+    setSellerAction("");
+    setSellerActionAt("");
   };
 
   const hideProposalSection = (section: ProposalSectionId) => {
@@ -128,6 +166,21 @@ export default function ProposalPage() {
     setShareUrl("");
     setShareError("");
     setProposalGenerated(false);
+    setProposalStatus("Draft");
+    setCurrentProposalId("");
+    setViewedAt("");
+    setSellerAction("");
+    setSellerActionAt("");
+  };
+
+  const refreshProposalStatus = () => {
+    if (!currentProposalId) return;
+    const proposal = findSavedProposal(currentProposalId);
+    if (!proposal) return;
+    setProposalStatus(proposal.proposalStatus || "Generated");
+    setViewedAt(proposal.viewedAt || "");
+    setSellerAction(proposal.sellerAction || "");
+    setSellerActionAt(proposal.sellerActionAt || "");
   };
 
   return (
@@ -227,6 +280,64 @@ export default function ProposalPage() {
               {emailCopied ? <Check size={16} /> : <Copy size={16} />}
               {emailCopied ? "Email copied" : "Copy email with link"}
             </button>
+            <div className="mt-4 rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200">
+              <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">
+                    Proposal status
+                  </p>
+                  <p className="mt-1 text-sm font-semibold text-slate-950">
+                    {proposalStatus}
+                    {viewedAt
+                      ? ` by seller on ${new Intl.DateTimeFormat("en-AU", {
+                          day: "numeric",
+                          month: "short",
+                          hour: "numeric",
+                          minute: "2-digit",
+                        }).format(new Date(viewedAt))}`
+                      : ""}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={refreshProposalStatus}
+                  disabled={!currentProposalId}
+                  className="inline-flex items-center justify-center rounded-full bg-white px-4 py-2 text-xs font-semibold text-blue-800 ring-1 ring-blue-100 transition hover:bg-blue-50 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  Refresh
+                </button>
+              </div>
+              <div className="mt-3 grid gap-2 sm:grid-cols-4">
+                {["Generated", "Sent", "Viewed", "Response"].map((item) => {
+                  const active =
+                    (item === "Generated" && proposalGenerated) ||
+                    (item === "Sent" &&
+                      ["Sent", "Viewed"].includes(proposalStatus)) ||
+                    (item === "Viewed" && Boolean(viewedAt)) ||
+                    (item === "Response" && Boolean(sellerAction));
+
+                  return (
+                    <div
+                      key={item}
+                      className={`rounded-xl px-3 py-2 text-xs font-semibold ${
+                        active
+                          ? "bg-blue-700 text-white"
+                          : "bg-white text-slate-500 ring-1 ring-slate-200"
+                      }`}
+                    >
+                      {item}
+                    </div>
+                  );
+                })}
+              </div>
+              <p className="mt-3 text-xs leading-5 text-slate-500">
+                {sellerAction
+                  ? `Seller selected "${sellerAction}"${sellerActionAt ? ` on ${new Intl.DateTimeFormat("en-AU", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" }).format(new Date(sellerActionAt))}` : ""}.`
+                  : viewedAt
+                    ? "The proposal has been opened. Follow up while the conversation is warm."
+                    : "Once the seller opens the proposal link, the viewed alert appears here in this MVP browser session."}
+              </p>
+            </div>
             <div className="mt-4 flex flex-wrap items-center gap-3 text-xs font-semibold text-slate-500">
               <span>{saved ? "Proposal saved" : hiddenSummary}</span>
               {shareUrl ? (
@@ -271,6 +382,11 @@ export default function ProposalPage() {
                 setShareUrl("");
                 setShareError("");
                 setProposalGenerated(false);
+                setProposalStatus("Draft");
+                setCurrentProposalId("");
+                setViewedAt("");
+                setSellerAction("");
+                setSellerActionAt("");
               }}
               className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700"
             >

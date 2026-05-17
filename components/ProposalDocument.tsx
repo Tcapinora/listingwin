@@ -334,10 +334,7 @@ export function ProposalDocument({
               value={copy.costs}
               onChange={(value) => updateText("costs", value)}
             />
-            <div className="mt-5 grid gap-4 sm:grid-cols-2">
-              <InfoBlock label="Commission" value="To be confirmed by agent" />
-              <InfoBlock label="Marketing" value="Campaign investment TBC" />
-            </div>
+            <ProposalCostTable />
           </ProposalCard>
         ) : null}
 
@@ -515,6 +512,51 @@ function EditableParagraph({
   }
 
   return <p className="text-base leading-8 text-slate-600">{value}</p>;
+}
+
+function ProposalCostTable() {
+  const rows = [
+    [
+      "Commission",
+      "Confirmed by agent",
+      "Success fee for strategy, negotiation, campaign management, and seller communication.",
+    ],
+    [
+      "Professional marketing",
+      "Quoted before launch",
+      "Photography, copy, floor plan, brochure, social content, and launch assets.",
+    ],
+    [
+      "Portal and social campaign",
+      "Selected campaign level",
+      "Recommended exposure across major portals, database, social channels, and buyer retargeting.",
+    ],
+    [
+      "Launch preparation",
+      "As required",
+      "Styling, trades, cleaning, gardening, or pre-market preparation where it improves buyer response.",
+    ],
+  ];
+
+  return (
+    <div className="mt-6 overflow-hidden rounded-[1.5rem] border border-blue-100 bg-white">
+      <div className="grid grid-cols-[1fr_0.75fr_1.4fr] gap-4 bg-blue-950 px-5 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-blue-100">
+        <span>Item</span>
+        <span>Amount</span>
+        <span>Why it matters</span>
+      </div>
+      {rows.map(([item, amount, note]) => (
+        <div
+          key={item}
+          className="grid grid-cols-1 gap-3 border-t border-blue-100 px-5 py-4 text-sm sm:grid-cols-[1fr_0.75fr_1.4fr]"
+        >
+          <p className="font-semibold text-slate-950">{item}</p>
+          <p className="font-semibold text-blue-800">{amount}</p>
+          <p className="leading-6 text-slate-600">{note}</p>
+        </div>
+      ))}
+    </div>
+  );
 }
 
 const proposalEventStyles: Record<string, string> = {

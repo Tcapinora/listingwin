@@ -13,9 +13,16 @@ export type SavedProposalText = {
   nextSteps: string;
 };
 
+export type ProposalStatus = "Draft" | "Generated" | "Sent" | "Viewed";
+export type SellerProposalAction = "Happy to proceed" | "Request a call";
+
 export type SavedProposal = SavedPresentation & {
   proposalTextSections?: SavedProposalText;
   hiddenProposalSections?: string[];
+  proposalStatus?: ProposalStatus;
+  viewedAt?: string;
+  sellerAction?: SellerProposalAction;
+  sellerActionAt?: string;
   persisted?: boolean;
 };
 
@@ -72,6 +79,7 @@ export function saveProposalSnapshot(
     profile,
     proposalTextSections: options.proposalTextSections,
     hiddenProposalSections: options.hiddenProposalSections,
+    proposalStatus: "Generated",
   };
 
   const persisted = writeSavedProposals([proposal, ...existing]);
@@ -80,6 +88,61 @@ export function saveProposalSnapshot(
 
 export function findSavedProposal(id: string) {
   return readSavedProposals().find((proposal) => proposal.id === id);
+}
+
+export function updateSavedProposal(
+  id: string,
+  patch: Partial<SavedProposal>,
+) {
+  const proposals = readSavedProposals();
+  const existing = proposals.find((proposal) => proposal.id === id);
+
+  if (!existing) {
+    return null;
+  }
+
+  const updated: SavedProposal = {
+    ...existing,
+    ...patch,
+    updatedAt: new Date().toISOString(),
+  };
+
+  writeSavedProposals(
+    proposals.map((proposal) => (proposal.id === id ? updated : proposal)),
+  );
+
+  return updated;
+}
+
+export function markProposalSent(id: string) {
+  const existing = findSavedProposal(id);
+  if (!existing) return null;
+
+  return updateSavedProposal(id, {
+    proposalStatus: existing.proposalStatus === "Viewed" ? "Viewed" : "Sent",
+  });
+}
+
+export function markProposalViewed(id: string) {
+  const existing = findSavedProposal(id);
+  if (!existing) return null;
+
+  return updateSavedProposal(id, {
+    proposalStatus: "Viewed",
+    viewedAt: existing.viewedAt || new Date().toISOString(),
+  });
+}
+
+export function recordSellerProposalAction(
+  id: string,
+  action: SellerProposalAction,
+) {
+  return updateSavedProposal(id, {
+    proposalStatus: "Viewed",
+    sellerAction: action,
+    sellerActionAt: new Date().toISOString(),
+    viewedAt: findSavedProposal(id)?.viewedAt || new Date().toISOString(),
+  });
 }
 
 export function getProposalShareUrl(id: string) {
