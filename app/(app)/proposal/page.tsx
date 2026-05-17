@@ -31,6 +31,7 @@ export default function ProposalPage() {
   const [saved, setSaved] = useState(false);
   const [emailCopied, setEmailCopied] = useState(false);
   const [shareError, setShareError] = useState("");
+  const [proposalGenerated, setProposalGenerated] = useState(false);
   const [hiddenSections, setHiddenSections] = useState<string[]>([]);
   const [textSections, setTextSections] = useState(() =>
     createDefaultProposalText(listing, profile),
@@ -39,7 +40,22 @@ export default function ProposalPage() {
   const address = listing.details.address || "this property";
   const emailDraft = `Hi there,\n\nThanks again for your time at the appraisal. I have put together the proposal we discussed for ${address}.\n\nYou can view it here:\n${shareUrl || "[generate proposal link first]"}\n\nPlease let me know if you have any questions.\n\n${profile.agentName || listing.details.agentName || "ListingWin"}`;
 
+  const generateProposal = () => {
+    setProposalGenerated(true);
+    setShareUrl("");
+    setShareError("");
+    window.requestAnimationFrame(() => {
+      document
+        .getElementById("proposal-preview")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  };
+
   const createOrRefreshProposal = () => {
+    if (!proposalGenerated) {
+      setProposalGenerated(true);
+    }
+
     const proposal = saveProposalSnapshot(listing, profile, {
       proposalTextSections: textSections,
       hiddenProposalSections: hiddenSections,
@@ -102,6 +118,7 @@ export default function ProposalPage() {
     setTextSections(next);
     setShareUrl("");
     setShareError("");
+    setProposalGenerated(false);
   };
 
   const hideProposalSection = (section: ProposalSectionId) => {
@@ -110,6 +127,7 @@ export default function ProposalPage() {
     );
     setShareUrl("");
     setShareError("");
+    setProposalGenerated(false);
   };
 
   return (
@@ -130,9 +148,9 @@ export default function ProposalPage() {
             </p>
             <div className="mt-7 grid gap-3 sm:grid-cols-3">
               {[
-                ["1", "Review", "Check the proposal."],
-                ["2", "Generate", "Create the seller link."],
-                ["3", "Send", "Paste it into your email."],
+                ["1", "Review", "Check the selling plan."],
+                ["2", "Generate", "Create the proposal preview."],
+                ["3", "Send", "Copy the seller link."],
               ].map(([step, title, text]) => (
                 <div
                   key={step}
@@ -150,18 +168,29 @@ export default function ProposalPage() {
 
           <div className="rounded-[1.75rem] bg-white p-5 text-slate-950 shadow-card">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
-              Share Proposal
+              Generate Proposal
             </p>
             <h2 className="mt-2 text-2xl font-semibold tracking-tight">
-              Copy the seller link.
+              Preview it before sending.
             </h2>
             <p className="mt-2 text-sm leading-6 text-slate-500">
-              Generate one clean proposal link, copy it, then send the proposal
-              while the appraisal conversation is still fresh.
+              Generate the proposal preview first. Once it looks right, create
+              the seller link and paste it into your own email.
             </p>
+            <button
+              type="button"
+              onClick={generateProposal}
+              className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card transition hover:bg-blue-800"
+            >
+              <FileText size={16} />
+              {proposalGenerated ? "Proposal preview generated" : "Generate Proposal"}
+            </button>
             <div className="mt-5 rounded-2xl bg-slate-50 p-3 text-sm text-slate-500 ring-1 ring-slate-200">
               <p className="truncate">
-                {shareUrl || "Generate a proposal link first"}
+                {shareUrl ||
+                  (proposalGenerated
+                    ? "Create a proposal link when ready"
+                    : "Generate the proposal preview first")}
               </p>
             </div>
             {shareError ? (
@@ -173,14 +202,16 @@ export default function ProposalPage() {
               <button
                 type="button"
                 onClick={createOrRefreshProposal}
+                disabled={!proposalGenerated}
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card transition hover:bg-blue-800"
               >
                 <Save size={16} />
-                {proposalReady ? "Update link" : "Generate link"}
+                {proposalReady ? "Update link" : "Create link"}
               </button>
               <button
                 type="button"
                 onClick={copyProposalLink}
+                disabled={!proposalGenerated}
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-blue-100 bg-white px-5 py-3 text-sm font-semibold text-blue-900 shadow-sm transition hover:bg-blue-50"
               >
                 {copied ? <Check size={16} /> : <Copy size={16} />}
@@ -190,6 +221,7 @@ export default function ProposalPage() {
             <button
               type="button"
               onClick={copyEmailDraft}
+              disabled={!proposalGenerated}
               className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-50 px-5 py-3 text-sm font-semibold text-blue-900 transition hover:bg-blue-100"
             >
               {emailCopied ? <Check size={16} /> : <Copy size={16} />}
@@ -238,6 +270,7 @@ export default function ProposalPage() {
                 setHiddenSections([]);
                 setShareUrl("");
                 setShareError("");
+                setProposalGenerated(false);
               }}
               className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700"
             >
@@ -255,7 +288,7 @@ export default function ProposalPage() {
         </div>
       </section>
 
-      <div className="mt-10">
+      <div id="proposal-preview" className="mt-10 scroll-mt-24">
         <ProposalDocument
           listing={listing}
           profile={profile}

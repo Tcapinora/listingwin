@@ -10,6 +10,7 @@ export type ProposalTextSections = {
   intro: string;
   sellerGoals: string;
   strategy: string;
+  costs: string;
   nextSteps: string;
 };
 
@@ -20,6 +21,7 @@ export const defaultProposalSections = [
   "strategy",
   "comparables",
   "pricing",
+  "costs",
   "calendar",
   "visuals",
   "whyUs",
@@ -56,6 +58,8 @@ export function createDefaultProposalText(
     strategy:
       profile.defaultMarketingText ||
       "The recommended campaign combines premium presentation, clear price positioning, social and portal visibility, buyer database activation, and a structured launch calendar.",
+    costs:
+      "Commission and marketing investment are proposed as part of a complete campaign strategy. The focus is to create stronger buyer competition, better presentation, and clear seller confidence from launch to negotiation.",
     nextSteps: `${agentName} will confirm the preferred campaign pathway, finalise launch timing, prepare marketing assets, and keep the seller updated before the property goes live.`,
   };
 }
@@ -69,7 +73,10 @@ export function ProposalDocument({
   onTextChange,
   onHideSection,
 }: ProposalDocumentProps) {
-  const copy = textSections || createDefaultProposalText(listing, profile);
+  const copy = {
+    ...createDefaultProposalText(listing, profile),
+    ...(textSections || {}),
+  };
   const address = listing.details.address || "Property address";
   const agentName = profile.agentName || listing.details.agentName || "Agent name";
   const agencyName =
@@ -315,32 +322,33 @@ export function ProposalDocument({
           </ProposalCard>
         ) : null}
 
+        {visible("costs") ? (
+          <ProposalCard
+            title="Commission and marketing investment"
+            eyebrow="Investment"
+            editable={editable}
+            onHide={() => onHideSection?.("costs")}
+          >
+            <EditableParagraph
+              editable={editable}
+              value={copy.costs}
+              onChange={(value) => updateText("costs", value)}
+            />
+            <div className="mt-5 grid gap-4 sm:grid-cols-2">
+              <InfoBlock label="Commission" value="To be confirmed by agent" />
+              <InfoBlock label="Marketing" value="Campaign investment TBC" />
+            </div>
+          </ProposalCard>
+        ) : null}
+
         {visible("calendar") ? (
           <ProposalCard
-            title="Marketing calendar"
+            title="Calendar of sale"
             eyebrow="Launch timing"
             editable={editable}
             onHide={() => onHideSection?.("calendar")}
           >
-            <div className="grid gap-3 md:grid-cols-2">
-              {listing.saleCalendarEvents.slice(0, 6).map((event) => (
-                <div
-                  key={event.id}
-                  className="rounded-2xl bg-blue-50 p-4 text-sm ring-1 ring-blue-100"
-                >
-                  <p className="font-semibold text-blue-950">{event.title}</p>
-                  <p className="mt-1 text-blue-800">
-                    {event.date}
-                    {event.time ? ` at ${event.time}` : ""}
-                  </p>
-                </div>
-              ))}
-              {!listing.saleCalendarEvents.length ? (
-                <p className="text-base leading-8 text-slate-600">
-                  Campaign dates can be added in the calendar and reused here.
-                </p>
-              ) : null}
-            </div>
+            <ProposalSaleCalendar listing={listing} />
           </ProposalCard>
         ) : null}
 
@@ -507,6 +515,159 @@ function EditableParagraph({
   }
 
   return <p className="text-base leading-8 text-slate-600">{value}</p>;
+}
+
+const proposalEventStyles: Record<string, string> = {
+  Photography: "bg-violet-50 text-violet-800 ring-violet-100",
+  Styling: "bg-blue-50 text-blue-800 ring-blue-100",
+  Trades: "bg-slate-100 text-slate-700 ring-slate-200",
+  Marketing: "bg-cyan-50 text-cyan-800 ring-cyan-100",
+  Documents: "bg-indigo-50 text-indigo-800 ring-indigo-100",
+  "Open home": "bg-emerald-50 text-emerald-800 ring-emerald-100",
+  Launch: "bg-blue-50 text-blue-800 ring-blue-100",
+  Auction: "bg-rose-50 text-rose-800 ring-rose-100",
+  "Buyer call backs": "bg-amber-50 text-amber-800 ring-amber-100",
+  Communication: "bg-teal-50 text-teal-800 ring-teal-100",
+  "Follow-up": "bg-orange-50 text-orange-800 ring-orange-100",
+  Other: "bg-slate-100 text-slate-700 ring-slate-200",
+};
+
+function ProposalSaleCalendar({ listing }: { listing: ListingState }) {
+  const events = [...listing.saleCalendarEvents].sort((a, b) =>
+    a.date.localeCompare(b.date),
+  );
+  const firstEventDate = events[0]?.date
+    ? new Date(`${events[0].date}T00:00:00`)
+    : new Date();
+  const year = firstEventDate.getFullYear();
+  const month = firstEventDate.getMonth();
+  const monthLabel = new Intl.DateTimeFormat("en-AU", {
+    month: "long",
+    year: "numeric",
+  }).format(firstEventDate);
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const leadingEmptyDays = new Date(year, month, 1).getDay();
+  const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const cells = [
+    ...Array.from({ length: leadingEmptyDays }, () => null),
+    ...Array.from({ length: daysInMonth }, (_, index) => index + 1),
+  ];
+  const eventMap = events.reduce<Record<string, typeof events>>((map, event) => {
+    map[event.date] = [...(map[event.date] || []), event];
+    return map;
+  }, {});
+
+  if (!events.length) {
+    return (
+      <p className="text-base leading-8 text-slate-600">
+        Campaign dates can be added in the calendar and reused here as the
+        proposed calendar of sale.
+      </p>
+    );
+  }
+
+  return (
+    <div className="overflow-hidden rounded-[1.75rem] border border-blue-100 bg-white">
+      <div className="flex flex-col justify-between gap-3 border-b border-slate-200 bg-slate-50 p-5 sm:flex-row sm:items-end">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
+            Proposed calendar of sale
+          </p>
+          <h3 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">
+            {monthLabel}
+          </h3>
+        </div>
+        <p className="text-sm font-semibold text-slate-500">
+          {events.length} planned milestone{events.length === 1 ? "" : "s"}
+        </p>
+      </div>
+
+      <div className="overflow-x-auto p-4">
+        <div className="min-w-[720px]">
+          <div className="grid grid-cols-7 gap-2">
+            {weekDays.map((day) => (
+              <div
+                key={day}
+                className="px-3 py-2 text-center text-xs font-semibold uppercase tracking-[0.14em] text-slate-500"
+              >
+                {day}
+              </div>
+            ))}
+            {cells.map((day, index) => {
+              if (!day) {
+                return (
+                  <div
+                    key={`empty-${index}`}
+                    className="min-h-24 rounded-2xl bg-slate-50"
+                  />
+                );
+              }
+
+              const dateKey = `${year}-${String(month + 1).padStart(
+                2,
+                "0",
+              )}-${String(day).padStart(2, "0")}`;
+              const dayEvents = eventMap[dateKey] || [];
+
+              return (
+                <div
+                  key={dateKey}
+                  className="min-h-24 rounded-2xl border border-blue-100 bg-blue-50/40 p-2"
+                >
+                  <p className="text-sm font-semibold text-slate-900">{day}</p>
+                  <div className="mt-2 space-y-1">
+                    {dayEvents.slice(0, 3).map((event) => (
+                      <div
+                        key={event.id}
+                        className={`truncate rounded-full px-2 py-1 text-[11px] font-semibold ring-1 ${
+                          proposalEventStyles[event.type] ||
+                          proposalEventStyles.Other
+                        }`}
+                        title={`${event.type}: ${event.title}`}
+                      >
+                        {event.time ? `${event.time} ` : ""}
+                        {event.type}
+                      </div>
+                    ))}
+                    {dayEvents.length > 3 ? (
+                      <p className="text-[11px] font-semibold text-slate-500">
+                        +{dayEvents.length - 3} more
+                      </p>
+                    ) : null}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {(listing.saleCalendarNotes || listing.saleCalendarTrades) ? (
+        <div className="grid gap-4 border-t border-slate-200 bg-slate-50 p-5 md:grid-cols-2">
+          {listing.saleCalendarNotes ? (
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
+                Agent notes
+              </p>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                {listing.saleCalendarNotes}
+              </p>
+            </div>
+          ) : null}
+          {listing.saleCalendarTrades ? (
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
+                Trades and contacts
+              </p>
+              <p className="mt-2 whitespace-pre-line text-sm leading-6 text-slate-600">
+                {listing.saleCalendarTrades}
+              </p>
+            </div>
+          ) : null}
+        </div>
+      ) : null}
+    </div>
+  );
 }
 
 function InfoBlock({ label, value }: { label: string; value: string }) {

@@ -9,6 +9,7 @@ export type SavedProposalText = {
   intro: string;
   sellerGoals: string;
   strategy: string;
+  costs: string;
   nextSteps: string;
 };
 
