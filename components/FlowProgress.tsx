@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 const flowSteps = [
-  { href: "/create", label: "Start Appraisal" },
-  { href: "/details", label: "Auto Appraisal" },
+  { href: "/create", label: "Start Preparation" },
+  { href: "/details", label: "Property Details" },
   { href: "/upload", label: "Property Media" },
   { href: "/mockups", label: "Campaign Preview" },
 ];

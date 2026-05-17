@@ -24,25 +24,27 @@ import { WorkflowPath } from "@/components/WorkflowPath";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/create", label: "Appraisal Builder", icon: Sparkles },
-  { href: "/presentation", label: "Vendor Presentation", icon: MonitorPlay },
-  { href: "/draft", label: "Agent Workspace", icon: FileCheck2 },
+  { href: "/create", label: "Preparation", icon: Sparkles },
+  { href: "/presentation", label: "Appraisal", icon: MonitorPlay },
+  { href: "/proposal", label: "Proposal", icon: FileCheck2 },
   { href: "/calendar", label: "Calendar", icon: CalendarDays },
   { href: "/account", label: "Settings", icon: UserCog },
 ];
 
 const workflowItems = [
   { href: "/create", label: "1. Start" },
-  { href: "/details", label: "2. Appraisal" },
+  { href: "/details", label: "2. Details" },
   { href: "/upload", label: "3. Media" },
   { href: "/mockups", label: "4. Create" },
 ];
+const builderPaths = workflowItems.map((item) => item.href);
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [profileOpen, setProfileOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const isPresentationMode = pathname === "/presentation";
+  const showBuilderProgress = builderPaths.includes(pathname);
 
   return (
     <AgentProfileProvider>
@@ -91,11 +93,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   <UserCog size={17} />
                 </button>
                 <Link
-                  href="/draft"
+                  href="/proposal"
                   className="hidden items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:border-blue-300 hover:bg-white hover:text-blue-900 sm:flex"
                 >
                   <FileCheck2 size={16} />
-                  Workspace
+                  Proposal
                 </Link>
                 <Link
                   href="/create"
@@ -103,16 +105,17 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   aria-label="Start New Listing"
                 >
                   <Plus size={16} />
-                  <span className="hidden sm:inline">New presentation</span>
+                  <span className="hidden sm:inline">New appraisal</span>
                   <ArrowRight className="hidden sm:block" size={15} />
                 </Link>
                 <AuthControls />
               </div>
             </div>
+            {showBuilderProgress ? (
             <div className="hidden border-t border-blue-50/70 lg:block">
               <div className="mx-auto flex max-w-7xl items-center gap-2 px-8 py-2.5">
                 <span className="mr-2 text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
-                  Appraisal Builder
+                  Preparation
                 </span>
                 {workflowItems.map((item) => {
                   const active = pathname === item.href;
@@ -132,6 +135,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 })}
               </div>
             </div>
+            ) : null}
           </header>
           ) : null}
 
@@ -143,16 +147,25 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             }
           >
             {!isPresentationMode &&
-            ["/create", "/details", "/upload", "/mockups", "/finish"].includes(
-              pathname,
-            ) ? (
+            [
+              "/create",
+              "/details",
+              "/upload",
+              "/mockups",
+              "/finish",
+              "/draft",
+              "/proposal",
+            ].includes(pathname) ? (
               <div className="mb-7">
-                <WorkflowPath active="builder" />
-              </div>
-            ) : null}
-            {!isPresentationMode && pathname === "/draft" ? (
-              <div className="mb-7">
-                <WorkflowPath active="workspace" />
+                <WorkflowPath
+                  active={
+                    pathname === "/proposal"
+                      ? "proposal"
+                      : pathname === "/draft" || pathname === "/finish"
+                        ? "presentation"
+                        : "builder"
+                  }
+                />
               </div>
             ) : null}
             {children}
@@ -227,15 +240,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 <div className="absolute inset-x-5 bottom-5 rounded-3xl bg-blue-950 p-5 text-white">
                   <p className="text-sm font-semibold">Listing workflow</p>
                   <p className="mt-2 text-xs leading-5 text-gray-300">
-                    Build the seller-facing campaign first. Use the workspace
-                    after the presentation to close.
+                    Prepare the appraisal, present the campaign, then send the
+                    proposal while the conversation is fresh.
                   </p>
                   <Link
-                    href="/draft"
+                    href="/finish"
                     onClick={() => setMenuOpen(false)}
                     className="mt-4 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-gray-950"
                   >
-                    Open Agent Workspace
+                    Continue appraisal
                     <ArrowRight size={15} />
                   </Link>
                 </div>

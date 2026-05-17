@@ -3,12 +3,10 @@
 import Link from "next/link";
 import {
   ArrowRight,
-  CheckCircle2,
   Copy,
   FileText,
   Handshake,
   MessageCircleQuestion,
-  MonitorPlay,
   Share2,
   Target,
   type LucideIcon,
@@ -61,20 +59,6 @@ export default function DraftPage() {
     ["Follow-up checklist", "#workspace-checklist", Target],
     ["Client message", "#client-message", MessageCircleQuestion],
     ["Form 6 notes", "#form-6", FileText],
-  ];
-  const workspaceSteps = [
-    {
-      title: "1. Confirm",
-      text: "Tick off what the seller has understood: price, campaign, buyers, timing, and next steps.",
-    },
-    {
-      title: "2. Handle",
-      text: "Use the objection prompts only when the seller hesitates or needs more confidence.",
-    },
-    {
-      title: "3. Follow up",
-      text: "Copy the client message, save your notes, and lock in the next decision date.",
-    },
   ];
   const updateChecklistTopic = (
     topicId: string,
@@ -169,30 +153,29 @@ export default function DraftPage() {
         <div className="grid gap-8 lg:grid-cols-[1fr_0.6fr] lg:items-end">
           <div>
             <div className="inline-flex rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
-              Agent Workspace · private
+              Appraisal workspace · private
             </div>
             <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-              Close the listing after the seller sees the campaign.
+              Capture the appraisal conversation after the seller sees the campaign.
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-              This is not another presentation. It is the private agent screen
-              for the closing conversation: confirm what landed, handle what is
-              still uncertain, then leave with a clear next step.
+              This is not another seller deck. It is the private agent screen
+              for the appraisal conversation: confirm what landed, handle what
+              is still uncertain, then leave with a clear next step.
             </p>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <a
                 href="#workspace-checklist"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card transition hover:bg-blue-800"
               >
-                Start closing checklist
+                Start appraisal checklist
                 <ArrowRight size={17} />
               </a>
               <Link
-                href="/presentation"
+                href="/details"
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-blue-100 bg-white px-5 py-3 text-sm font-semibold text-blue-900 shadow-sm transition hover:bg-blue-50"
               >
-                <MonitorPlay size={17} />
-                Back to presentation
+                Edit preparation details
               </Link>
             </div>
           </div>
@@ -219,28 +202,16 @@ export default function DraftPage() {
           </div>
         </div>
 
-        <div className="mt-8 grid gap-3 lg:grid-cols-3">
-          {workspaceSteps.map((step) => (
-            <article
-              key={step.title}
-              className="rounded-[1.5rem] bg-white p-5 shadow-sm ring-1 ring-slate-200/70"
-            >
-              <div className="flex items-center gap-3">
-                <span className="grid h-9 w-9 place-items-center rounded-full bg-blue-50 text-blue-700">
-                  <CheckCircle2 size={17} />
-                </span>
-                <h2 className="text-lg font-semibold tracking-tight text-slate-950">
-                  {step.title}
-                </h2>
-              </div>
-              <p className="mt-3 text-sm leading-6 text-slate-600">
-                {step.text}
-              </p>
-            </article>
-          ))}
+        <div className="mt-10 border-t border-slate-200/80 pt-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
+            Private agent tools
+          </p>
+          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
+            Work through the close without showing another deck.
+          </h2>
         </div>
 
-        <div className="mt-8 grid gap-4 lg:grid-cols-[0.95fr_1.05fr]">
+        <div className="mt-6 grid gap-4 lg:grid-cols-[0.95fr_1.05fr]">
           <div className="rounded-[1.5rem] bg-slate-50 p-5 ring-1 ring-slate-200/70">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">
               Private closing checklist
@@ -291,6 +262,15 @@ export default function DraftPage() {
               })}
             </div>
           </div>
+        </div>
+
+        <div className="mt-12 border-t border-slate-200/80 pt-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
+            Closing checklist
+          </p>
+          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
+            Tick off the conversation as it happens.
+          </h2>
         </div>
 
         <div id="workspace-checklist" className="mt-6 grid gap-4 lg:grid-cols-2">
@@ -373,6 +353,15 @@ export default function DraftPage() {
               </article>
             );
           })}
+        </div>
+
+        <div className="mt-12 border-t border-slate-200/80 pt-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
+            Follow-up and documents
+          </p>
+          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
+            Leave the appraisal with a next step ready.
+          </h2>
         </div>
 
         <section
@@ -519,35 +508,39 @@ export default function DraftPage() {
       <section className="mt-10 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-slate-200/70 sm:p-8">
         <p className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
           <Handshake size={16} />
-          Vendor confidence tools
+          Private closing tools
         </p>
         <h2 className="mt-5 text-3xl font-semibold tracking-tight text-slate-950">
-          Go deeper into the seller’s emotional decision.
+          Open only what you need to close the seller.
         </h2>
         <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
-          Use these tools after the marketing presentation to talk through
-          trust, fear, price, campaign confidence, fee value, and what the owner
-          needs to feel before saying yes.
+          The checklist stays first. These deeper tools sit below it so the
+          agent can handle hesitation without turning the workspace into a
+          second presentation.
         </p>
       </section>
 
-      <section className="mt-8 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-slate-200/70 sm:p-8">
-        <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
-          <div>
-            <p className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
-              <MessageCircleQuestion size={16} />
-              Closing tool
-            </p>
-            <h2 className="mt-5 text-3xl font-semibold tracking-tight text-slate-950">
-              Handle seller objections calmly.
-            </h2>
-            <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
-              Use this only inside the Agent Workspace. It gives the agent a
-              clean response, a better question, and a simple close when the
-              seller hesitates after the presentation.
-            </p>
+      <details className="group mt-6 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-slate-200/70 sm:p-8">
+        <summary className="cursor-pointer list-none">
+          <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
+            <div>
+              <p className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
+                <MessageCircleQuestion size={16} />
+                Seller objection toolkit
+              </p>
+              <h2 className="mt-5 text-3xl font-semibold tracking-tight text-slate-950">
+                Handle seller objections calmly.
+              </h2>
+              <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
+                Open this only when the seller hesitates. Each prompt gives the
+                agent a clean response, a better question, and a simple close.
+              </p>
+            </div>
+            <span className="w-fit rounded-full bg-blue-950 px-4 py-2 text-sm font-semibold text-white group-open:bg-blue-700">
+              Open toolkit
+            </span>
           </div>
-        </div>
+        </summary>
 
         <div className="mt-6 grid gap-4 lg:grid-cols-2">
           {objectionTools.map((tool) => (
@@ -595,45 +588,114 @@ export default function DraftPage() {
             </details>
           ))}
         </div>
-      </section>
+      </details>
 
-      <CommissionDefenceSection />
-      <AppraisalScriptSection listing={listing} />
-      <AgentNotesSection listing={listing} />
+      <details className="group mt-6 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-slate-200/70 sm:p-8">
+        <summary className="cursor-pointer list-none">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-700">
+                Commission and value
+              </p>
+              <h2 className="mt-3 text-2xl font-semibold tracking-tight text-slate-950">
+                Defend the fee with confidence.
+              </h2>
+            </div>
+            <span className="rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-900 group-open:bg-blue-700 group-open:text-white">
+              Open
+            </span>
+          </div>
+        </summary>
+        <CommissionDefenceSection />
+      </details>
 
-      <section className="mt-10 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-slate-200/70 sm:p-8">
-        <p className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
-          <FileText size={16} />
-          Form 6 and agreement explanation
-        </p>
-        <h2 className="mt-5 text-3xl font-semibold tracking-tight text-slate-950">
-          Explain the paperwork without making it feel heavy.
-        </h2>
-        <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
-          Walk through the appointment documents in plain language so the
-          vendor feels informed before they proceed through the agency’s normal
-          signing process.
-        </p>
-      </section>
+      <details className="group mt-6 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-slate-200/70 sm:p-8">
+        <summary className="cursor-pointer list-none">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-700">
+                Conversation guide
+              </p>
+              <h2 className="mt-3 text-2xl font-semibold tracking-tight text-slate-950">
+                Keep the appraisal conversation controlled.
+              </h2>
+            </div>
+            <span className="rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-900 group-open:bg-blue-700 group-open:text-white">
+              Open
+            </span>
+          </div>
+        </summary>
+        <AppraisalScriptSection listing={listing} />
+      </details>
 
-      <div id="form-6">
+      <details className="group mt-6 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-slate-200/70 sm:p-8">
+        <summary className="cursor-pointer list-none">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-700">
+                Private notes
+              </p>
+              <h2 className="mt-3 text-2xl font-semibold tracking-tight text-slate-950">
+                Capture what matters after the meeting.
+              </h2>
+            </div>
+            <span className="rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-900 group-open:bg-blue-700 group-open:text-white">
+              Open
+            </span>
+          </div>
+        </summary>
+        <AgentNotesSection listing={listing} />
+      </details>
+
+      <details
+        id="form-6"
+        className="group mt-6 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-slate-200/70 sm:p-8"
+      >
+        <summary className="cursor-pointer list-none">
+          <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
+            <div>
+              <p className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
+                <FileText size={16} />
+                Form 6 and agreement notes
+              </p>
+              <h2 className="mt-5 text-3xl font-semibold tracking-tight text-slate-950">
+                Explain the paperwork without making it feel heavy.
+              </h2>
+              <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
+                Use this when the seller asks about the appointment documents.
+                Keep notes simple and agency-specific.
+              </p>
+            </div>
+            <span className="w-fit rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-900 group-open:bg-blue-700 group-open:text-white">
+              Open
+            </span>
+          </div>
+        </summary>
         <Form6PrototypeSection />
-      </div>
+      </details>
 
       <section className="mt-10 rounded-[2rem] bg-blue-950 p-6 text-white shadow-soft sm:p-8">
         <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-200">
-          Finish
+          Proposal
         </p>
         <h2 className="mt-3 text-3xl font-semibold tracking-tight">
-          Finish the appraisal and return to the dashboard.
+          Generate the proposal while the appraisal is still fresh.
         </h2>
-        <Link
-          href="/dashboard"
-          className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-6 py-4 text-sm font-semibold text-blue-950 shadow-card"
-        >
-          Finish appraisal
-          <ArrowRight size={18} />
-        </Link>
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+          <Link
+            href="/proposal"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-4 text-sm font-semibold text-blue-950 shadow-card"
+          >
+            Generate Proposal
+            <ArrowRight size={18} />
+          </Link>
+          <Link
+            href="/dashboard"
+            className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/10 px-6 py-4 text-sm font-semibold text-white"
+          >
+            Return to dashboard
+          </Link>
+        </div>
       </section>
     </>
   );

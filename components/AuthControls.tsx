@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { KeyRound } from "lucide-react";
 import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
+import { ApiKeyPanel } from "@/components/ApiKeyPanel";
 
 const clerkEnabled = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
 
@@ -38,7 +40,17 @@ function ClerkAuthControls() {
               avatarBox: "h-8 w-8",
             },
           }}
-        />
+        >
+          <UserButton.UserProfilePage
+            label="ListingWin API"
+            url="listingwin-api"
+            labelIcon={<KeyRound size={16} />}
+          >
+            <div className="p-2">
+              <ApiKeyPanel compact />
+            </div>
+          </UserButton.UserProfilePage>
+        </UserButton>
       </div>
     );
   }

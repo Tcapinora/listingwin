@@ -6,6 +6,7 @@ import {
   BadgeCheck,
   Link2,
   Mail,
+  MoreHorizontal,
   Pencil,
   Phone,
   Save,
@@ -74,18 +75,18 @@ export default function PresentationPage() {
 
   return (
     <>
-      <section className="no-print sticky top-0 z-40 border-b border-white/70 bg-[#F2F4F8]/86 px-4 py-3 shadow-sm backdrop-blur-xl">
+      <section className="no-print sticky top-0 z-40 border-b border-white/80 bg-white/90 px-4 py-3 shadow-sm backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex flex-wrap items-center gap-3">
             <a
               href="#presentation-start"
-              className="inline-flex items-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card transition hover:-translate-y-0.5 hover:bg-blue-800"
+              className="inline-flex items-center gap-2 rounded-full bg-blue-950 px-5 py-3 text-sm font-semibold text-white shadow-card transition hover:-translate-y-0.5 hover:bg-blue-900"
             >
-              Vendor Presentation
+              Vendor Appraisal
             </a>
-            <p className="text-sm font-medium text-slate-500">
-              Client-facing view. Add photos live if the seller wants to see
-              their home in the campaign.
+            <p className="max-w-xl text-sm font-medium text-slate-500">
+              Seller-facing. Add live photos, talk through the campaign, then
+              finish into the private workspace.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
@@ -97,51 +98,68 @@ export default function PresentationPage() {
               />
             ) : null}
             <Link
-              href="/details"
-              className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/92 px-4 py-2.5 text-sm font-semibold text-blue-900 shadow-sm transition hover:-translate-y-0.5 hover:bg-white"
+              href="/finish"
+              className="inline-flex items-center justify-center rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card transition hover:-translate-y-0.5 hover:bg-blue-800"
             >
-              <Pencil size={16} />
-              Edit Builder
+              Finish appraisal
             </Link>
-            <button
-              type="button"
-              className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/92 px-4 py-2.5 text-sm font-semibold text-blue-900 shadow-sm transition hover:-translate-y-0.5 hover:bg-white"
-              onClick={() => {
-                savePresentationSnapshot(presentationListing, presentationProfile);
-                setSaved(true);
-                window.setTimeout(() => setSaved(false), 2200);
-              }}
-            >
-              <Save size={16} />
-              {saved ? "Saved" : "Save"}
-            </button>
-            <button
-              type="button"
-              className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/92 px-4 py-2.5 text-sm font-semibold text-blue-900 shadow-sm transition hover:-translate-y-0.5 hover:bg-white"
-              onClick={async () => {
-                const presentation = savePresentationSnapshot(
-                  presentationListing,
-                  presentationProfile,
-                );
-                const shareUrl = getShareUrl(presentation.id);
+            <details className="group relative">
+              <summary className="inline-flex cursor-pointer list-none items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-3 text-sm font-semibold text-blue-900 shadow-sm transition hover:-translate-y-0.5 hover:bg-blue-50">
+                <MoreHorizontal size={16} />
+                Actions
+              </summary>
+              <div className="absolute right-0 top-14 z-50 grid w-[min(20rem,calc(100vw-2rem))] gap-2 rounded-[1.5rem] bg-white p-3 shadow-soft ring-1 ring-blue-100">
+                <Link
+                  href="/details"
+                  className="inline-flex items-center gap-2 rounded-2xl px-4 py-3 text-sm font-semibold text-blue-900 transition hover:bg-blue-50"
+                >
+                  <Pencil size={16} />
+                  Edit Preparation
+                </Link>
+                <button
+                  type="button"
+                  className="inline-flex items-center gap-2 rounded-2xl px-4 py-3 text-left text-sm font-semibold text-blue-900 transition hover:bg-blue-50"
+                  onClick={() => {
+                    savePresentationSnapshot(
+                      presentationListing,
+                      presentationProfile,
+                    );
+                    setSaved(true);
+                    window.setTimeout(() => setSaved(false), 2200);
+                  }}
+                >
+                  <Save size={16} />
+                  {saved ? "Saved" : "Save appraisal"}
+                </button>
+                <button
+                  type="button"
+                  className="inline-flex items-center gap-2 rounded-2xl px-4 py-3 text-left text-sm font-semibold text-blue-900 transition hover:bg-blue-50"
+                  onClick={async () => {
+                    const presentation = savePresentationSnapshot(
+                      presentationListing,
+                      presentationProfile,
+                    );
+                    const shareUrl = getShareUrl(presentation.id);
 
-                try {
-                  await navigator.clipboard.writeText(shareUrl);
-                  setShareStatus("Link copied");
-                } catch {
-                  setShareStatus(shareUrl);
-                }
+                    try {
+                      await navigator.clipboard.writeText(shareUrl);
+                      setShareStatus("Link copied");
+                    } catch {
+                      setShareStatus(shareUrl);
+                    }
 
-                window.setTimeout(() => setShareStatus(""), 3000);
-              }}
-            >
-              <Link2 size={16} />
-              {shareStatus || "Share"}
-            </button>
-            <EmailPresentationButton
-              listing={presentationListing}
-              profile={presentationProfile}
-            />
+                    window.setTimeout(() => setShareStatus(""), 3000);
+                  }}
+                >
+                  <Link2 size={16} />
+                  {shareStatus || "Copy appraisal link"}
+                </button>
+                <EmailPresentationButton
+                  listing={presentationListing}
+                  profile={presentationProfile}
+                />
+              </div>
+            </details>
           </div>
         </div>
       </section>
@@ -155,7 +173,7 @@ export default function PresentationPage() {
                 Presentation opened
               </p>
               <p className="mt-3 text-sm leading-6 text-slate-600">
-                A few setup items are still light, but the Vendor Presentation
+                A few setup items are still light, but the Appraisal
                 is open. Use the edit links if you want to strengthen any
                 section before showing the seller.
               </p>
@@ -187,7 +205,7 @@ export default function PresentationPage() {
 
       <div
         id="presentation-start"
-        className="page-enter mx-auto max-w-6xl bg-white px-4 py-10 sm:px-6 lg:px-8 lg:py-14"
+        className="page-enter mx-auto max-w-6xl bg-white px-4 py-10 shadow-soft ring-1 ring-white/80 sm:px-6 lg:px-8 lg:py-14"
       >
         <HeroPresentation listing={presentationListing} />
 
@@ -289,7 +307,7 @@ export default function PresentationPage() {
                 "Our difference",
                 presentationListing.agentPitchContent.ourDifference ||
                   presentationProfile.defaultMarketingText ||
-                  "The seller can see the campaign before it exists: portals, social, brochures, flyers, signboards, open homes, timing, and buyer demand.",
+                  "The seller can see the campaign before it exists: portals, social, brochures, signboards, timing, and buyer demand.",
               ],
               [
                 "Team and experience",
@@ -317,8 +335,8 @@ export default function PresentationPage() {
           </div>
         </section>
 
-        <section className="presentation-slide mt-12 overflow-hidden rounded-[2.5rem] bg-blue-950 text-white shadow-soft">
-          <div className="no-print flex justify-end px-6 pt-6 lg:px-8">
+        <section className="presentation-slide mt-12 overflow-hidden rounded-[2.5rem] bg-blue-950 p-7 text-white shadow-soft lg:p-10">
+          <div className="no-print mb-6 flex justify-end">
             <Link
               href="/account"
               className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-blue-950 shadow-card transition hover:-translate-y-0.5 hover:bg-blue-50"
@@ -327,24 +345,8 @@ export default function PresentationPage() {
               Edit contact details
             </Link>
           </div>
-          <div className="grid gap-0 lg:grid-cols-[0.8fr_1.2fr]">
-            <div className="flex min-h-56 items-center justify-center bg-blue-950 p-8 ring-1 ring-inset ring-white/10">
-              {logo ? (
-                <Image
-                  src={logo}
-                  alt={`${agencyName || "Agency"} logo`}
-                  width={260}
-                  height={120}
-                  className="max-h-28 w-auto object-contain"
-                  unoptimized
-                />
-              ) : (
-                <div className="rounded-3xl border border-white/20 bg-white/5 px-8 py-5 text-center text-2xl font-semibold text-white">
-                  {agencyName || "Agency"}
-                </div>
-              )}
-            </div>
-            <div className="p-8 lg:p-10">
+          <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+            <div>
               <p className="text-sm font-semibold uppercase tracking-[0.25em] text-blue-200">
                 Presented by
               </p>
@@ -375,6 +377,22 @@ export default function PresentationPage() {
                 </div>
               </div>
             </div>
+            <div className="flex min-h-56 items-center justify-center rounded-[2rem] bg-white/5 p-8 ring-1 ring-inset ring-white/10">
+              {logo ? (
+                <Image
+                  src={logo}
+                  alt={`${agencyName || "Agency"} logo`}
+                  width={260}
+                  height={120}
+                  className="max-h-28 w-auto object-contain"
+                  unoptimized
+                />
+              ) : (
+                <div className="rounded-3xl border border-white/20 bg-white/5 px-8 py-5 text-center text-2xl font-semibold text-white">
+                  {agencyName || "Agency"}
+                </div>
+              )}
+            </div>
           </div>
         </section>
 
@@ -382,29 +400,29 @@ export default function PresentationPage() {
           <div className="grid gap-6 lg:grid-cols-[1fr_0.55fr] lg:items-center">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
-                Close the appointment
+                Next step
               </p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
-                Ready to move into the Agent Workspace?
+                Ready to generate the proposal?
               </h2>
               <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
-                The seller has now seen the campaign. Finish the presentation,
-                then use the private workspace to confirm motivation, handle
-                objections, send the follow-up, and agree the next step.
+                The seller has now seen the campaign. Use the private workspace
+                if you need to capture notes, then generate the proposal while
+                the appraisal is still fresh.
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
               <Link
-                href="/finish"
+                href="/proposal"
                 className="inline-flex items-center justify-center rounded-full bg-blue-700 px-6 py-4 text-sm font-semibold text-white shadow-card transition hover:-translate-y-0.5 hover:bg-blue-800"
               >
-                Finish presentation
+                Generate Proposal
               </Link>
               <Link
                 href="/details"
                 className="inline-flex items-center justify-center rounded-full border border-blue-200 bg-white px-6 py-4 text-sm font-semibold text-blue-900 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300"
               >
-                Edit setup
+                Edit preparation
               </Link>
             </div>
           </div>

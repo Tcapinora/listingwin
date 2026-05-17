@@ -16,7 +16,6 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { PageHeader } from "@/components/PageHeader";
-import { ApiKeyPanel } from "@/components/ApiKeyPanel";
 import { AgentProfileModal } from "@/components/AgentProfileModal";
 import { useAgentProfile } from "@/components/AgentProfileProvider";
 import { useListing } from "@/components/ListingProvider";
@@ -176,7 +175,7 @@ export default function AccountPage() {
             </p>
             <p className="mt-3 text-sm leading-6 text-gray-300">
               Your agent profile, brand assets, and saved presentations live
-              here so each new vendor presentation starts with the essentials
+              here so each new appraisal starts with the essentials
               already in place.
             </p>
           </div>
@@ -209,8 +208,6 @@ export default function AccountPage() {
             <ArrowRight size={16} />
           </Link>
         </section>
-
-        <ApiKeyPanel />
 
         <section className="rounded-3xl border border-blue-100 bg-white p-6 shadow-card lg:col-span-2">
           <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">

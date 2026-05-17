@@ -3,18 +3,18 @@ import { ArrowRight } from "lucide-react";
 const stages = [
   {
     id: "builder",
-    label: "Appraisal Builder",
-    description: "Paste, generate, review",
+    label: "Preparation",
+    description: "Set up before the appraisal",
   },
   {
     id: "presentation",
-    label: "Vendor Presentation",
-    description: "Show the seller the campaign",
+    label: "Appraisal",
+    description: "Present, discuss, capture notes",
   },
   {
-    id: "workspace",
-    label: "Agent Workspace",
-    description: "Close with momentum",
+    id: "proposal",
+    label: "Proposal",
+    description: "Send the follow-up link",
   },
 ] as const;
 
