@@ -2,14 +2,11 @@
 
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, FileText, MonitorPlay, Target } from "lucide-react";
-import { WorkflowPath } from "@/components/WorkflowPath";
 
 export default function FinishPage() {
   return (
     <section className="mx-auto max-w-5xl">
-      <WorkflowPath active="presentation" />
-
-      <div className="mt-7 rounded-[2rem] bg-white p-7 shadow-card ring-1 ring-slate-200/70 sm:p-10">
+      <div className="rounded-[2rem] bg-white p-7 shadow-card ring-1 ring-slate-200/70 sm:p-10">
         <p className="inline-flex rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800">
           Appraisal ready
         </p>
