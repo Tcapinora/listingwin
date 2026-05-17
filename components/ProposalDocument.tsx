@@ -471,7 +471,7 @@ function ProposalCard({
             className="no-print inline-flex w-fit items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-800"
           >
             <EyeOff size={15} />
-            Hide
+            Remove
           </button>
         ) : null}
       </div>
@@ -494,7 +494,7 @@ function EditableParagraph({
       <label className="block">
         <span className="mb-2 inline-flex items-center gap-2 text-sm font-semibold text-blue-800">
           <Pencil size={15} />
-          Edit text
+          Personalise text
         </span>
         <textarea
           value={value}

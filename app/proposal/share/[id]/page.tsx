@@ -53,7 +53,12 @@ export default function SharedProposalPage({
   return (
     <AgentProfileProvider initialProfile={proposal.profile}>
       <main className="min-h-screen bg-[#F2F4F8] px-5 py-10 lg:px-8">
-        <ProposalDocument listing={proposal.listing} profile={proposal.profile} />
+        <ProposalDocument
+          listing={proposal.listing}
+          profile={proposal.profile}
+          hiddenSections={proposal.hiddenProposalSections}
+          textSections={proposal.proposalTextSections}
+        />
       </main>
     </AgentProfileProvider>
   );

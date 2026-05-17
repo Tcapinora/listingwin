@@ -5,7 +5,18 @@ import type { AgentProfile, ListingState, SavedPresentation } from "@/lib/types"
 const STORAGE_KEY = "listingwin-saved-proposals";
 const MAX_PROPOSALS = 24;
 
-export type SavedProposal = SavedPresentation;
+export type SavedProposalText = {
+  intro: string;
+  sellerGoals: string;
+  strategy: string;
+  nextSteps: string;
+};
+
+export type SavedProposal = SavedPresentation & {
+  proposalTextSections?: SavedProposalText;
+  hiddenProposalSections?: string[];
+  persisted?: boolean;
+};
 
 export function readSavedProposals(): SavedProposal[] {
   if (typeof window === "undefined") {
@@ -22,7 +33,7 @@ export function readSavedProposals(): SavedProposal[] {
 
 export function writeSavedProposals(proposals: SavedProposal[]) {
   if (typeof window === "undefined") {
-    return;
+    return false;
   }
 
   // MVP persistence is localStorage. In production this should become a
@@ -32,14 +43,20 @@ export function writeSavedProposals(proposals: SavedProposal[]) {
       STORAGE_KEY,
       JSON.stringify(proposals.slice(0, MAX_PROPOSALS)),
     );
+    return true;
   } catch {
     // Image-heavy localStorage can fill up. Production should store image URLs.
+    return false;
   }
 }
 
 export function saveProposalSnapshot(
   listing: ListingState,
   profile: AgentProfile,
+  options: {
+    proposalTextSections?: SavedProposalText;
+    hiddenProposalSections?: string[];
+  } = {},
 ) {
   const now = new Date().toISOString();
   const address = listing.details.address || "Untitled proposal";
@@ -52,10 +69,12 @@ export function saveProposalSnapshot(
     updatedAt: now,
     listing,
     profile,
+    proposalTextSections: options.proposalTextSections,
+    hiddenProposalSections: options.hiddenProposalSections,
   };
 
-  writeSavedProposals([proposal, ...existing]);
-  return proposal;
+  const persisted = writeSavedProposals([proposal, ...existing]);
+  return { ...proposal, persisted };
 }
 
 export function findSavedProposal(id: string) {

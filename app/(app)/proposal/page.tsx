@@ -29,16 +29,31 @@ export default function ProposalPage() {
   const [shareUrl, setShareUrl] = useState("");
   const [copied, setCopied] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [emailCopied, setEmailCopied] = useState(false);
+  const [shareError, setShareError] = useState("");
   const [hiddenSections, setHiddenSections] = useState<string[]>([]);
   const [textSections, setTextSections] = useState(() =>
     createDefaultProposalText(listing, profile),
   );
   const proposalReady = Boolean(shareUrl);
   const address = listing.details.address || "this property";
+  const emailDraft = `Hi there,\n\nThanks again for your time at the appraisal. I have put together the proposal we discussed for ${address}.\n\nYou can view it here:\n${shareUrl || "[generate proposal link first]"}\n\nPlease let me know if you have any questions.\n\n${profile.agentName || listing.details.agentName || "ListingWin"}`;
 
   const createOrRefreshProposal = () => {
-    const proposal = saveProposalSnapshot(listing, profile);
+    const proposal = saveProposalSnapshot(listing, profile, {
+      proposalTextSections: textSections,
+      hiddenProposalSections: hiddenSections,
+    });
+    if (!proposal.persisted) {
+      setShareError(
+        "This proposal is too image-heavy to save in the browser. Remove a few large images or print the proposal for now.",
+      );
+      setShareUrl("");
+      return "";
+    }
+
     const url = getProposalShareUrl(proposal.id);
+    setShareError("");
     setShareUrl(url);
     setSaved(true);
     window.setTimeout(() => setSaved(false), 2200);
@@ -47,11 +62,29 @@ export default function ProposalPage() {
 
   const copyProposalLink = async () => {
     const url = shareUrl || createOrRefreshProposal();
+    if (!url) return;
 
     try {
       await navigator.clipboard.writeText(url);
       setCopied(true);
       window.setTimeout(() => setCopied(false), 2200);
+    } catch {
+      setShareUrl(url);
+    }
+  };
+
+  const copyEmailDraft = async () => {
+    const url = shareUrl || createOrRefreshProposal();
+    if (!url) return;
+    const draft = emailDraft.replace(
+      "[generate proposal link first]",
+      url,
+    );
+
+    try {
+      await navigator.clipboard.writeText(draft);
+      setEmailCopied(true);
+      window.setTimeout(() => setEmailCopied(false), 2200);
     } catch {
       setShareUrl(url);
     }
@@ -64,6 +97,20 @@ export default function ProposalPage() {
         : "All proposal sections included",
     [hiddenSections.length],
   );
+
+  const updateTextSections = (next: typeof textSections) => {
+    setTextSections(next);
+    setShareUrl("");
+    setShareError("");
+  };
+
+  const hideProposalSection = (section: ProposalSectionId) => {
+    setHiddenSections((current) =>
+      current.includes(section) ? current : [...current, section],
+    );
+    setShareUrl("");
+    setShareError("");
+  };
 
   return (
     <>
@@ -109,14 +156,19 @@ export default function ProposalPage() {
               Copy the seller link.
             </h2>
             <p className="mt-2 text-sm leading-6 text-slate-500">
-              Generate one clean proposal link, copy it, and paste it into your
-              own email to the seller.
+              Generate one clean proposal link, copy it, then send the proposal
+              while the appraisal conversation is still fresh.
             </p>
             <div className="mt-5 rounded-2xl bg-slate-50 p-3 text-sm text-slate-500 ring-1 ring-slate-200">
               <p className="truncate">
                 {shareUrl || "Generate a proposal link first"}
               </p>
             </div>
+            {shareError ? (
+              <p className="mt-3 rounded-2xl bg-amber-50 px-4 py-3 text-sm font-medium leading-6 text-amber-800 ring-1 ring-amber-100">
+                {shareError}
+              </p>
+            ) : null}
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <button
                 type="button"
@@ -135,6 +187,14 @@ export default function ProposalPage() {
                 {copied ? "Copied" : "Copy link"}
               </button>
             </div>
+            <button
+              type="button"
+              onClick={copyEmailDraft}
+              className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-50 px-5 py-3 text-sm font-semibold text-blue-900 transition hover:bg-blue-100"
+            >
+              {emailCopied ? <Check size={16} /> : <Copy size={16} />}
+              {emailCopied ? "Email copied" : "Copy email with link"}
+            </button>
             <div className="mt-4 flex flex-wrap items-center gap-3 text-xs font-semibold text-slate-500">
               <span>{saved ? "Proposal saved" : hiddenSummary}</span>
               {shareUrl ? (
@@ -174,7 +234,11 @@ export default function ProposalPage() {
           {hiddenSections.length ? (
             <button
               type="button"
-              onClick={() => setHiddenSections([])}
+              onClick={() => {
+                setHiddenSections([]);
+                setShareUrl("");
+                setShareError("");
+              }}
               className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700"
             >
               <RotateCcw size={16} />
@@ -198,12 +262,8 @@ export default function ProposalPage() {
           editable
           hiddenSections={hiddenSections}
           textSections={textSections}
-          onTextChange={setTextSections}
-          onHideSection={(section: ProposalSectionId) =>
-            setHiddenSections((current) =>
-              current.includes(section) ? current : [...current, section],
-            )
-          }
+          onTextChange={updateTextSections}
+          onHideSection={hideProposalSection}
         />
       </div>
     </>
