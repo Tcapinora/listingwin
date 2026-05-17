@@ -87,6 +87,9 @@ export function readListingState(): ListingState {
             (url): url is string => typeof url === "string" && Boolean(url),
           )
         : emptyListingState.appraisalSourceUrls,
+      campaignVideoUrls: Array.from({ length: 4 }, (_, index) =>
+        normalizeString(parsed.campaignVideoUrls?.[index]),
+      ),
       buyerLeads: Array.isArray(parsed.buyerLeads)
         ? parsed.buyerLeads.map(normalizeBuyerLead)
         : emptyListingState.buyerLeads,

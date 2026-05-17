@@ -6,7 +6,6 @@ import {
   ArrowRight,
   ChevronDown,
   ExternalLink,
-  Link as LinkIcon,
   Plus,
   Sparkles,
   Trash2,
@@ -31,10 +30,6 @@ const propertyTypes = [
 export default function PropertyDetailsPage() {
   const router = useRouter();
   const { listing, setListing } = useListing();
-  const [appraisalPasteText, setAppraisalPasteText] = useState("");
-  const [appraisalReview, setAppraisalReview] =
-    useState<AppraisalGeneration | null>(null);
-  const [appraisalNotice, setAppraisalNotice] = useState("");
   const [showComparableOptions, setShowComparableOptions] = useState(false);
   const [comparableMode, setComparableMode] = useState<"smart" | "manual" | null>(
     null,
@@ -89,56 +84,6 @@ export default function PropertyDetailsPage() {
           : [createBlankComparable()],
       };
     });
-  };
-
-  const generateAppraisal = () => {
-    if (!appraisalPasteText.trim()) {
-      setAppraisalNotice(
-        "Paste property information, comparable sales text, URLs, or appraisal notes first.",
-      );
-      return;
-    }
-
-    const generation = parseAppraisalText(appraisalPasteText, listing.details);
-
-    if (
-      !generation.summary.length &&
-      !generation.comparableProperties.length &&
-      !generation.sourceUrls.length
-    ) {
-      setAppraisalNotice(
-        "We could not detect enough property details. Keep the pasted text in place and add the missing fields manually below.",
-      );
-      return;
-    }
-
-    setListing((current) => {
-      const existingComparables = current.comparableProperties.filter(
-        hasComparableContent,
-      );
-      const nextComparables = [
-        ...existingComparables,
-        ...generation.comparableProperties,
-      ];
-
-      return {
-        ...current,
-        details: {
-          ...current.details,
-          ...removeEmptyDetailValues(generation.details),
-        },
-        comparableProperties: nextComparables.length
-          ? nextComparables
-          : current.comparableProperties,
-        appraisalSourceUrls: uniqueValues([
-          ...current.appraisalSourceUrls,
-          ...generation.sourceUrls,
-        ]),
-      };
-    });
-
-    setAppraisalReview(generation);
-    setAppraisalNotice("");
   };
 
   const saveSmartComparable = (property: ComparableProperty) => {
@@ -202,18 +147,23 @@ export default function PropertyDetailsPage() {
       >
         <section className="rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-slate-200/70 sm:p-8 lg:p-10">
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
-            Auto appraisal builder
+            Preparation · property being appraised
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-            Paste once. Review the property profile.
+            Add the property you are about to appraise.
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-            This builder is only for the property being appraised: address,
-            facts, selling points, pricing notes, comparable sales, and source
-            links. Campaign tools live after the presentation is created.
+            This step is only for the seller&apos;s property. Add or paste what
+            you know before the appraisal: property facts, selling points,
+            price notes, and comparable sales evidence. ListingWin will reuse
+            it across the Appraisal and Proposal.
           </p>
           <div className="mt-6 grid gap-3 rounded-[1.5rem] bg-slate-50 p-4 ring-1 ring-slate-200 sm:grid-cols-3">
-            {["Smart Paste", "Review details", "Comparable evidence"].map((item) => (
+            {[
+              "Property being appraised",
+              "Comparable sales evidence",
+              "Review before presenting",
+            ].map((item) => (
               <div
                 key={item}
                 className="flex items-center gap-2 text-sm font-semibold text-blue-950"
@@ -224,117 +174,24 @@ export default function PropertyDetailsPage() {
             ))}
           </div>
 
-          <section className="mt-8 rounded-[1.75rem] bg-blue-50/70 p-5 ring-1 ring-blue-100 sm:p-6">
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-              <div>
-                <p className="flex items-center gap-2 text-sm font-semibold text-blue-950">
-                  <Wand2 size={16} />
-                  Smart Paste Appraisal
-                </p>
-                <p className="mt-2 max-w-2xl text-sm leading-6 text-blue-900/75">
-                  Paste Realestate.com.au or Domain links, property text,
-                  comparable sale notes, RP Data snippets, or messy appraisal
-                  notes. ListingWin will organise what it can, then you review
-                  everything before continuing.
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={generateAppraisal}
-                className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card transition hover:bg-blue-800"
-              >
-                <Wand2 size={16} />
-                Generate Property Profile
-              </button>
+          <section className="mt-8 rounded-[1.75rem] bg-white p-5 ring-1 ring-slate-200">
+            <div className="flex items-center justify-between gap-4">
+              <span>
+                <span className="block text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">
+                  01 · Property profile
+                </span>
+                <span className="mt-2 block text-2xl font-semibold tracking-tight text-slate-950">
+                  What do you know about this property?
+                </span>
+                <span className="mt-2 block max-w-2xl text-sm font-normal leading-6 text-slate-600">
+                  Fill only what you know now. These details should describe
+                  the home you are appraising, then flow into the Vendor
+                  Appraisal, campaign previews, brochure, and Proposal.
+                </span>
+              </span>
             </div>
-            <textarea
-              value={appraisalPasteText}
-              onChange={(event) => {
-                setAppraisalPasteText(event.target.value);
-                setAppraisalNotice("");
-              }}
-              placeholder={`Paste anything useful here...\n\nExamples:\n41 Highland Terrace, St Lucia, QLD 4067\n5 bed | 1 bath | 2 car | 653m² | House\nOffer over $1,750,000\nComparable sales notes, RP Data snippets, agency notes, buyer feedback, property description, and source URLs.`}
-              rows={10}
-              className="mt-5 w-full resize-none rounded-[1.5rem] border-0 bg-white px-5 py-4 text-sm leading-6 text-slate-950 shadow-inner outline-none ring-1 ring-blue-100 transition focus:ring-2 focus:ring-blue-500"
-            />
-            {appraisalNotice ? (
-              <p className="mt-4 rounded-2xl bg-white px-4 py-3 text-sm leading-6 text-amber-900 ring-1 ring-amber-200">
-                {appraisalNotice}
-              </p>
-            ) : null}
-            {appraisalReview ? (
-              <div className="mt-5 rounded-[1.5rem] bg-white p-5 shadow-sm ring-1 ring-blue-100">
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">
-                      Review before continuing
-                    </p>
-                    <h3 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">
-                      Appraisal profile generated.
-                    </h3>
-                    <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
-                      Generated information is never final until you check it.
-                      Review the property fields and comparable cards below.
-                    </p>
-                  </div>
-                  <div className="grid gap-2 text-sm font-semibold text-blue-950 sm:grid-cols-3 lg:min-w-[24rem]">
-                    <span className="rounded-2xl bg-blue-50 px-4 py-3 text-center">
-                      {Object.keys(removeEmptyDetailValues(appraisalReview.details)).length} fields
-                    </span>
-                    <span className="rounded-2xl bg-blue-50 px-4 py-3 text-center">
-                      {appraisalReview.comparableProperties.length} comps
-                    </span>
-                    <span className="rounded-2xl bg-blue-50 px-4 py-3 text-center">
-                      {appraisalReview.sourceUrls.length} links
-                    </span>
-                  </div>
-                </div>
-                {appraisalReview.summary.length ? (
-                  <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                    {appraisalReview.summary.map((item) => (
-                      <div
-                        key={item}
-                        className="rounded-2xl bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700 ring-1 ring-slate-100"
-                      >
-                        {item}
-                      </div>
-                    ))}
-                  </div>
-                ) : null}
-              </div>
-            ) : null}
-            {listing.appraisalSourceUrls.length ? (
-              <div className="mt-4 flex flex-wrap gap-2">
-                {listing.appraisalSourceUrls.map((url) => (
-                  <a
-                    key={url}
-                    href={normalizeUrl(url)}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-blue-800 ring-1 ring-blue-100 transition hover:bg-blue-100"
-                  >
-                    <LinkIcon size={12} />
-                    Saved source
-                  </a>
-                ))}
-              </div>
-            ) : null}
-          </section>
 
-          <div className="mt-8 grid gap-6">
-            <div className="rounded-[1.5rem] bg-white p-5 ring-1 ring-slate-200">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">
-                02 · Review property profile
-              </p>
-              <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">
-                Make the generated details appraisal-ready.
-              </h2>
-              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
-                Adjust only what matters. These details flow straight into the
-                Vendor Presentation, social mockups, brochure, flyer, and
-                Agent Workspace.
-              </p>
-            </div>
+            <div className="mt-6 grid gap-6">
 
             <label>
               <span className="text-sm font-semibold text-slate-800">
@@ -349,7 +206,8 @@ export default function PropertyDetailsPage() {
                 className="mt-2 w-full rounded-2xl border-0 bg-slate-50 px-5 py-4 text-base text-slate-950 shadow-inner outline-none ring-1 ring-slate-200 transition focus:bg-white focus:ring-2 focus:ring-blue-500"
               />
               <span className="mt-2 block text-sm text-slate-500">
-                Write a headline buyers will love.
+                Write the headline you would use if this property launched
+                today.
               </span>
             </label>
 
@@ -403,7 +261,7 @@ export default function PropertyDetailsPage() {
 
             <label>
               <span className="text-sm font-semibold text-slate-800">
-                Key features
+                Key features for this property
               </span>
               <textarea
                 value={listing.details.keyFeatures}
@@ -415,21 +273,27 @@ export default function PropertyDetailsPage() {
                 className="mt-2 w-full resize-none rounded-2xl border-0 bg-slate-50 px-5 py-4 text-base text-slate-950 shadow-inner outline-none ring-1 ring-slate-200 transition focus:bg-white focus:ring-2 focus:ring-blue-500"
               />
               <span className="mt-2 block text-sm text-slate-500">
-                What makes this property stand out?
+                Paste or type the features you want to speak about with the
+                seller.
               </span>
             </label>
-          </div>
+            </div>
+          </section>
 
           <details
-            open
+            open={Boolean(
+              listing.details.sellerExpectedPrice ||
+                listing.details.agentPriceGuide ||
+                listing.comparableProperties.some(hasComparableContent),
+            )}
             className="group mt-8 rounded-[1.5rem] bg-slate-50 p-5 ring-1 ring-slate-200"
           >
             <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-semibold text-blue-900">
               <span>
-                03 · Comparable sales and pricing evidence
+                02 · Comparable sales and pricing evidence
                 <span className="mt-1 block text-xs font-medium leading-5 text-blue-800/70">
-                  Paste, generate, review, and save the evidence the agent will
-                  talk through with the seller.
+                  Paste or add the market evidence you will use to appraise this
+                  property with the seller.
                 </span>
               </span>
               <ChevronDown
@@ -469,7 +333,7 @@ export default function PropertyDetailsPage() {
 
               <label>
                 <span className="text-sm font-semibold text-slate-800">
-                  Agent notes
+                  Property appraisal notes
                 </span>
                 <textarea
                   value={listing.details.notes}
@@ -478,6 +342,10 @@ export default function PropertyDetailsPage() {
                   rows={4}
                   className="mt-2 w-full resize-none rounded-2xl border-0 bg-white px-5 py-4 text-base text-slate-950 shadow-inner outline-none ring-1 ring-blue-100 transition focus:ring-2 focus:ring-blue-500"
                 />
+                <span className="mt-2 block text-sm text-slate-500">
+                  Paste messy notes from your inspection, phone call, CRM, or
+                  pre-appraisal research. Keep it focused on this property.
+                </span>
               </label>
 
               <div className="rounded-[1.5rem] bg-white p-5 ring-1 ring-blue-100">
@@ -697,7 +565,7 @@ export default function PropertyDetailsPage() {
                       </div>
                       <p className="mt-4 text-xs leading-5 text-slate-500">
                         Please review all generated details before saving them
-                        into the vendor presentation.
+                        into the appraisal.
                       </p>
                     </summary>
 
@@ -872,96 +740,6 @@ function ManualComparableForm({
   );
 }
 
-type AppraisalGeneration = {
-  details: Partial<ListingDetails>;
-  comparableProperties: ComparableProperty[];
-  sourceUrls: string[];
-  summary: string[];
-};
-
-function parseAppraisalText(
-  text: string,
-  currentDetails: ListingDetails,
-): AppraisalGeneration {
-  const lines = normaliseComparableLines(text);
-  const joined = lines.join(" ");
-  const sourceUrls = extractAllSourceUrls(joined);
-  const addressCandidates = extractAddressCandidates(lines, joined);
-  const primaryAddress =
-    currentDetails.address.trim() ||
-    addressCandidates[0] ||
-    extractAddress(lines, joined);
-  const addressParts = parseAddressParts(primaryAddress);
-  const compactFeatures = extractCompactFeatureRow(lines);
-  const bedrooms =
-    extractLabelledNumber(joined, ["bed(?:room)?s?", "beds?"]) ||
-    compactFeatures.beds;
-  const bathrooms =
-    extractLabelledNumber(joined, ["bath(?:room)?s?", "baths?"]) ||
-    compactFeatures.baths;
-  const carSpaces =
-    extractLabelledNumber(joined, [
-      "car(?:space)?s?",
-      "parking",
-      "garage(?:s)?",
-    ]) ||
-    (compactFeatures.cars === "-" ? "" : compactFeatures.cars);
-  const landSize =
-    extractLabelledArea(joined, ["land(?: size)?", "block(?: size)?"]) ||
-    compactFeatures.landSize ||
-    extractFirstArea(lines);
-  const propertyType =
-    extractPropertyType(joined) ||
-    compactFeatures.propertyType ||
-    currentDetails.propertyType;
-  const description = extractDescription(lines) || extractAppraisalDescription(lines);
-  const keyFeatures = extractKeySellingPoints(lines, joined, description);
-  const extractedPrice = extractPrice(joined);
-  const comparableProperties = extractComparableBlocks(
-    text,
-    primaryAddress,
-    currentDetails.address,
-  );
-
-  const details: Partial<ListingDetails> = {
-    address: primaryAddress,
-    propertyType,
-    bedrooms,
-    bathrooms,
-    carSpaces,
-    keyFeatures,
-    notes: description || keyFeatures,
-    headline:
-      currentDetails.headline || createListingHeadline(primaryAddress, propertyType),
-    agentPriceGuide: currentDetails.agentPriceGuide || extractedPrice,
-    brochurePrice: currentDetails.brochurePrice || extractedPrice,
-  };
-
-  return {
-    details,
-    comparableProperties,
-    sourceUrls,
-    summary: createAppraisalSummary({
-      address: primaryAddress,
-      suburb: addressParts.suburb,
-      propertyType,
-      bedrooms,
-      bathrooms,
-      carSpaces,
-      landSize,
-      keyFeatures,
-      comparableCount: comparableProperties.length,
-      sourceCount: sourceUrls.length,
-    }),
-  };
-}
-
-function removeEmptyDetailValues(details: Partial<ListingDetails>) {
-  return Object.fromEntries(
-    Object.entries(details).filter(([, value]) => Boolean(value)),
-  ) as Partial<ListingDetails>;
-}
-
 function hasComparableContent(property: ComparableProperty) {
   return Boolean(
     property.address ||
@@ -977,201 +755,6 @@ function uniqueValues(values: string[]) {
   return Array.from(
     new Set(values.map((value) => value.trim()).filter(Boolean)),
   );
-}
-
-function extractAllSourceUrls(text: string) {
-  return uniqueValues(
-    text.match(/https?:\/\/[^\s)]+/gi)?.map((url) => url.replace(/[.,]+$/, "")) ||
-      [],
-  );
-}
-
-function extractAddressCandidates(lines: string[], joined: string) {
-  const addressRegex = new RegExp(
-    `\\b\\d{1,5}[A-Za-z]?\\s+[A-Za-z0-9'&./\\-\\s]+?\\b(?:${streetTypePattern})\\b(?:,?\\s+[A-Za-z][A-Za-z'\\-\\s]+){0,3}(?:,?\\s+(?:${statePattern})\\s*\\d{4})?\\b`,
-    "gi",
-  );
-  const candidates = [...lines.join("\n").matchAll(addressRegex), ...joined.matchAll(addressRegex)]
-    .map((match) => cleanAddress(match[0]))
-    .filter((address) => address.length >= 8 && /\d/.test(address));
-  const seen = new Set<string>();
-
-  return candidates.filter((address) => {
-    const key = normaliseAddressKey(address);
-
-    if (seen.has(key)) {
-      return false;
-    }
-
-    seen.add(key);
-    return true;
-  });
-}
-
-function extractComparableBlocks(
-  text: string,
-  primaryAddress: string,
-  currentAddress: string,
-) {
-  const lines = normaliseComparableLines(text);
-  const addressLineRegex = new RegExp(
-    `\\b\\d{1,5}[A-Za-z]?\\s+[A-Za-z0-9'&./\\-\\s]+?\\b(?:${streetTypePattern})\\b`,
-    "i",
-  );
-  const blocks: string[][] = [];
-  let currentBlock: string[] = [];
-
-  lines.forEach((line) => {
-    if (addressLineRegex.test(line) && currentBlock.length) {
-      blocks.push(currentBlock);
-      currentBlock = [line];
-      return;
-    }
-
-    currentBlock.push(line);
-  });
-
-  if (currentBlock.length) {
-    blocks.push(currentBlock);
-  }
-
-  return blocks
-    .map((block) => parseComparableText(block.join("\n")))
-    .filter(hasEnoughComparableEvidence)
-    .filter((property) => {
-      if (!property.address) {
-        return false;
-      }
-
-      const propertyKey = normaliseAddressKey(property.address);
-      const primaryKey = normaliseAddressKey(primaryAddress);
-      const currentKey = normaliseAddressKey(currentAddress);
-
-      if (primaryKey && propertyKey === primaryKey) {
-        return false;
-      }
-
-      if (currentKey && propertyKey === currentKey) {
-        return false;
-      }
-
-      return true;
-    });
-}
-
-function normaliseAddressKey(value: string) {
-  return value
-    .toLowerCase()
-    .replace(/\b(qld|nsw|vic|sa|wa|tas|act|nt)\b/g, "")
-    .replace(/\b\d{4}\b/g, "")
-    .replace(/[^a-z0-9]/g, "");
-}
-
-function extractAppraisalDescription(lines: string[]) {
-  const noteLines = lines.filter(
-    (line) =>
-      line.length > 45 &&
-      !/realestate\.com\.au|domain\.com\.au|rpp\.corelogic|rp data|menu|sign in|join|copy|update data|view all|property history|keyboard shortcuts/i.test(
-        line,
-      ),
-  );
-
-  return noteLines.slice(0, 3).join(" ").slice(0, 520);
-}
-
-function extractKeySellingPoints(
-  lines: string[],
-  joined: string,
-  description: string,
-) {
-  const featureWords = [
-    "pool",
-    "renovated kitchen",
-    "large backyard",
-    "quiet street",
-    "corner block",
-    "river views",
-    "city views",
-    "deck",
-    "garage",
-    "character home",
-    "development potential",
-    "walk to cafes",
-    "school catchment",
-    "north facing",
-    "flat backyard",
-    "open plan",
-    "high ceilings",
-    "timber floors",
-    "storage",
-  ];
-  const detectedFeatures = featureWords.filter((feature) =>
-    joined.toLowerCase().includes(feature),
-  );
-  const bulletFeatures = lines
-    .filter((line) => /^[-•*]\s+/.test(line) || line.split(",").length >= 3)
-    .flatMap((line) =>
-      line
-        .replace(/^[-•*]\s+/, "")
-        .split(",")
-        .map((item) => item.trim()),
-    )
-    .filter((item) => item.length >= 4 && item.length <= 48);
-
-  return uniqueValues([...detectedFeatures, ...bulletFeatures])
-    .slice(0, 8)
-    .join(", ") || description.split(".")[0] || "";
-}
-
-function createListingHeadline(address: string, propertyType: string) {
-  const suburb = parseAddressParts(address).suburb;
-
-  if (propertyType && suburb) {
-    return `${propertyType} opportunity in ${suburb}`;
-  }
-
-  if (suburb) {
-    return `A strong appraisal opportunity in ${suburb}`;
-  }
-
-  return "";
-}
-
-function createAppraisalSummary({
-  address,
-  suburb,
-  propertyType,
-  bedrooms,
-  bathrooms,
-  carSpaces,
-  landSize,
-  keyFeatures,
-  comparableCount,
-  sourceCount,
-}: {
-  address: string;
-  suburb: string;
-  propertyType: string;
-  bedrooms: string;
-  bathrooms: string;
-  carSpaces: string;
-  landSize: string;
-  keyFeatures: string;
-  comparableCount: number;
-  sourceCount: number;
-}) {
-  return [
-    address ? `Address: ${address}` : "",
-    suburb ? `Suburb: ${suburb}` : "",
-    propertyType ? `Type: ${propertyType}` : "",
-    bedrooms || bathrooms || carSpaces
-      ? `${bedrooms || "-"} bed / ${bathrooms || "-"} bath / ${carSpaces || "-"} car`
-      : "",
-    landSize ? `Land: ${landSize}` : "",
-    keyFeatures ? `Highlights: ${keyFeatures}` : "",
-    comparableCount ? `${comparableCount} comparable sale cards created` : "",
-    sourceCount ? `${sourceCount} source link${sourceCount === 1 ? "" : "s"} saved` : "",
-  ].filter(Boolean);
 }
 
 const manualComparableFields: Array<{

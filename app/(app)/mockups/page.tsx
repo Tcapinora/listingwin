@@ -6,8 +6,9 @@ import { useRouter } from "next/navigation";
 import {
   ArrowRight,
   ChevronDown,
+  ExternalLink,
   Loader2,
-  Trash2,
+  PlayCircle,
   WandSparkles,
 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -18,8 +19,6 @@ import { AutoCutoutPreview } from "@/components/AutoCutoutPreview";
 import { UploadCard } from "@/components/UploadCard";
 import {
   BrochurePreview,
-  BrochureBookPreview,
-  FlyerPreview,
   MockupCard,
   PropertyPortalPreview,
   SocialPreview,
@@ -28,7 +27,6 @@ import {
 import { useListing } from "@/components/ListingProvider";
 import { useAgentProfile } from "@/components/AgentProfileProvider";
 import { ListingWinScoreCard } from "@/components/ValueSections";
-import { fileToOptimizedDataUrl } from "@/lib/imageFiles";
 import { autoCutoutImage } from "@/lib/imageProcessing";
 import { getPrimaryPropertyPhoto, getPropertyPhotos } from "@/lib/listingImages";
 import type {
@@ -46,127 +44,12 @@ const brochureStatusOptions = [
 const builderSteps = [
   { id: "signboards", label: "Signboards" },
   { id: "street", label: "Signboard preview" },
-  { id: "photography", label: "Photography" },
-  { id: "brochurePortal", label: "Brochure and portal" },
+  { id: "brochurePortal", label: "Brochure" },
   { id: "social", label: "Social media" },
-  { id: "all", label: "Show all" },
+  { id: "video", label: "Video" },
 ] as const;
 
 type BuilderStepId = (typeof builderSteps)[number]["id"];
-
-function PhotographyUploadGroup({
-  label,
-  description,
-  value,
-  onChange,
-}: {
-  label: string;
-  description: string;
-  value: string[];
-  onChange: (photos: string[]) => void;
-}) {
-  const remainingSlots = Math.max(0, 5 - value.length);
-
-  return (
-    <div className="rounded-3xl border border-blue-100 bg-white p-5 shadow-sm">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <div className="flex flex-wrap items-center gap-2">
-            <h3 className="text-lg font-semibold text-slate-950">{label}</h3>
-            <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-800">
-              {value.length}/5 saved
-            </span>
-          </div>
-          <p className="mt-2 text-sm leading-6 text-slate-600">
-            {description}
-          </p>
-          <p className="mt-2 text-xs font-semibold uppercase tracking-[0.16em] text-blue-700">
-            Saved to Agent Profile for future listings
-          </p>
-        </div>
-        <label
-          className={`shrink-0 rounded-full px-4 py-2 text-xs font-semibold shadow-sm ${
-            remainingSlots
-              ? "cursor-pointer bg-blue-700 text-white"
-              : "cursor-not-allowed bg-slate-100 text-slate-400"
-          }`}
-        >
-          {remainingSlots ? "Add photos" : "Full"}
-          <input
-            type="file"
-            multiple
-            accept="image/*"
-            className="sr-only"
-            disabled={!remainingSlots}
-            onChange={(event) => {
-              const files = Array.from(event.target.files || []).slice(
-                0,
-                remainingSlots,
-              );
-
-              void Promise.all(
-                files.map((file) => fileToOptimizedDataUrl(file, 1200, 0.84)),
-              ).then((photos) => onChange([...value, ...photos].slice(0, 5)));
-              event.currentTarget.value = "";
-            }}
-          />
-        </label>
-      </div>
-
-      <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-5">
-        {Array.from({ length: 5 }).map((_, index) => (
-          <div
-            key={index}
-            className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-slate-50 ring-1 ring-slate-200"
-          >
-            {value[index] ? (
-              <>
-                <Image
-                  src={value[index]}
-                  alt={`${label} ${index + 1}`}
-                  fill
-                  className="object-cover"
-                  unoptimized
-                />
-                <button
-                  type="button"
-                  onClick={() =>
-                    onChange(value.filter((_, photoIndex) => photoIndex !== index))
-                  }
-                  className="absolute right-2 top-2 grid h-8 w-8 place-items-center rounded-full bg-white/92 text-slate-700 shadow-card backdrop-blur transition hover:text-red-600"
-                  aria-label={`Remove ${label} photo ${index + 1}`}
-                  title={`Remove ${label} photo ${index + 1}`}
-                >
-                  <Trash2 size={14} />
-                </button>
-              </>
-            ) : (
-              <div className="grid h-full place-items-center px-3 text-center text-xs font-semibold text-slate-400">
-                Example {index + 1}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-
-      {value.length ? (
-        <div className="mt-4 flex flex-col justify-between gap-3 rounded-2xl bg-blue-50 p-4 text-sm text-blue-900 sm:flex-row sm:items-center">
-          <span>
-            These examples are saved and will appear automatically in future
-            Vendor Presentations.
-          </span>
-          <button
-            type="button"
-            onClick={() => onChange([])}
-            className="w-fit rounded-full bg-white px-4 py-2 text-xs font-semibold text-blue-900 shadow-sm"
-          >
-            Clear {label.toLowerCase()}
-          </button>
-        </div>
-      ) : null}
-    </div>
-  );
-}
 
 function StepHeader({
   step,
@@ -194,6 +77,43 @@ function StepHeader({
   );
 }
 
+function getVideoEmbedUrl(rawUrl: string) {
+  const value = rawUrl.trim();
+
+  if (!value) {
+    return "";
+  }
+
+  try {
+    const url = new URL(value);
+    const host = url.hostname.replace(/^www\./, "");
+
+    if (host === "youtu.be") {
+      const videoId = url.pathname.split("/").filter(Boolean)[0];
+      return videoId ? `https://www.youtube.com/embed/${videoId}` : "";
+    }
+
+    if (host.endsWith("youtube.com")) {
+      const videoId =
+        url.searchParams.get("v") ||
+        url.pathname.match(/\/(?:shorts|embed)\/([^/?#]+)/)?.[1];
+
+      return videoId ? `https://www.youtube.com/embed/${videoId}` : "";
+    }
+  } catch {
+    return "";
+  }
+
+  return "";
+}
+
+const videoSlots = [
+  "Property walkthrough",
+  "Agent introduction",
+  "Social teaser",
+  "Campaign update",
+];
+
 export default function MockupsPage() {
   const router = useRouter();
   const { listing, setListing } = useListing();
@@ -211,8 +131,7 @@ export default function MockupsPage() {
   const hasAnySignboard = Boolean(
     listing.assets.signboard1 || listing.assets.signboard2,
   );
-  const showStep = (step: BuilderStepId) =>
-    activeStep === "all" || activeStep === step;
+  const showStep = (step: BuilderStepId) => activeStep === step;
   const detailsReady = Boolean(
     listing.details.address || listing.details.headline || listing.details.keyFeatures,
   );
@@ -315,6 +234,20 @@ export default function MockupsPage() {
     }));
   };
 
+  const updateCampaignVideoUrl = (index: number, value: string) => {
+    setListing((current) => {
+      const nextUrls = Array.from({ length: 4 }, (_, urlIndex) =>
+        current.campaignVideoUrls?.[urlIndex] || "",
+      );
+      nextUrls[index] = value;
+
+      return {
+        ...current,
+        campaignVideoUrls: nextUrls,
+      };
+    });
+  };
+
   return (
     <>
       <FlowProgress currentStep={4} />
@@ -329,14 +262,15 @@ export default function MockupsPage() {
               Build the campaign in front of the seller
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-              Fine-tune the agency marketing before the appointment, then add
-              real property photos live and watch every mockup update instantly.
+              Work through one campaign preview at a time. Add real property
+              photos live, then choose the visual that helps the seller picture
+              the campaign.
             </p>
             <div className="mt-6 grid gap-3 sm:grid-cols-3">
               {[
-                detailsReady ? "Pricing context ready" : "Pricing context missing",
-                primaryPropertyPhoto ? "Marketing media ready" : "Marketing media optional",
-                "Agency marketing included",
+                detailsReady ? "Property story ready" : "Property story optional",
+                primaryPropertyPhoto ? "Photos ready" : "Photos can be added live",
+                hasAnySignboard ? "Signboards ready" : "Signboards optional",
               ].map((item, index) => (
                 <div
                   key={item}
@@ -371,7 +305,7 @@ export default function MockupsPage() {
               {generationState === "loading" ? (
                 <>
                   <Loader2 className="animate-spin" size={18} />
-                  Creating your vendor presentation...
+                  Creating your appraisal...
                 </>
               ) : generationState === "success" ? (
                 <>
@@ -381,7 +315,7 @@ export default function MockupsPage() {
               ) : (
                 <>
                   <WandSparkles size={18} />
-                  Create Presentation
+                  Create Appraisal
                 </>
               )}
             </button>
@@ -396,11 +330,11 @@ export default function MockupsPage() {
         <summary className="flex cursor-pointer list-none items-center justify-between gap-4 rounded-[1.5rem] bg-blue-50 px-4 py-4">
         <span>
           <span className="block text-sm font-semibold text-blue-950">
-              Fine-tune the live campaign visuals
+              Choose one campaign preview
           </span>
           <span className="mt-1 block text-xs leading-5 text-blue-800/70">
-              Adjust signboards, brochures, portal, and social media previews.
-              If you add new property photos, the previews update immediately.
+              Move through the previews in order. Keep this screen calm during
+              the appraisal and only open the section you need.
           </span>
         </span>
           <ChevronDown
@@ -660,51 +594,6 @@ export default function MockupsPage() {
 
       <section
         className={`mt-6 rounded-3xl border border-blue-100 bg-white p-6 shadow-card lg:p-8 ${
-          showStep("photography") ? "" : "hidden"
-        }`}
-      >
-        <StepHeader
-          step="Photography direction"
-          title="Save your photography examples once"
-          description="These are not listing-specific photos. Upload your agency examples for morning, afternoon, and twilight shoots once, and ListingWin will reuse them for every future Vendor Presentation."
-        />
-        <div className="mb-5 rounded-3xl bg-blue-50 p-5 ring-1 ring-blue-100">
-          <p className="text-sm font-semibold text-blue-950">
-            This section is saved for every listing.
-          </p>
-          <p className="mt-2 max-w-3xl text-sm leading-6 text-blue-900/75">
-            Use this as your permanent photography style library. When an
-            agent presents to a seller, they can show what a property looks
-            like in morning light, afternoon light, and twilight without
-            uploading these examples again.
-          </p>
-        </div>
-        <div className="grid gap-5 lg:grid-cols-3">
-          <PhotographyUploadGroup
-            label="Morning"
-            description="Show crisp daylight examples that feel fresh, bright, and clean."
-            value={profile.photographyMorning}
-            onChange={(photos) => updateProfile({ photographyMorning: photos })}
-          />
-          <PhotographyUploadGroup
-            label="Afternoon"
-            description="Show warmer lifestyle examples with stronger depth and atmosphere."
-            value={profile.photographyAfternoon}
-            onChange={(photos) =>
-              updateProfile({ photographyAfternoon: photos })
-            }
-          />
-          <PhotographyUploadGroup
-            label="Twilight"
-            description="Show premium evening examples that make the campaign feel elevated."
-            value={profile.photographyTwilight}
-            onChange={(photos) => updateProfile({ photographyTwilight: photos })}
-          />
-        </div>
-      </section>
-
-      <section
-        className={`mt-6 rounded-3xl border border-blue-100 bg-white p-6 shadow-card lg:p-8 ${
           showStep("brochurePortal") ? "" : "hidden"
         }`}
       >
@@ -813,7 +702,7 @@ export default function MockupsPage() {
         <StepHeader
           step="Social media preview"
           title="Instagram and Facebook phone previews"
-          description="Review only the social media screens here. Brochure, flyer, and portal previews stay in their own campaign sections."
+          description="Review only the social media screens here. Brochure and portal previews stay in their own campaign sections."
         />
         <div className="grid gap-6 lg:grid-cols-2">
           <MockupCard title="Instagram post">
@@ -822,6 +711,81 @@ export default function MockupsPage() {
           <MockupCard title="Facebook ad">
             <SocialPreview listing={listing} type="Facebook" />
           </MockupCard>
+        </div>
+      </section>
+
+      <section
+        className={`mt-6 rounded-3xl border border-blue-100 bg-white p-6 shadow-card lg:p-8 ${
+          showStep("video") ? "" : "hidden"
+        }`}
+      >
+        <StepHeader
+          step="Video marketing"
+          title="Add video campaign examples"
+          description="Paste up to four YouTube or video links. These appear in the Appraisal so the seller can see how video can support the campaign."
+        />
+        <div className="grid gap-5 md:grid-cols-2">
+          {videoSlots.map((label, index) => {
+            const url = listing.campaignVideoUrls?.[index] || "";
+            const embedUrl = getVideoEmbedUrl(url);
+
+            return (
+              <article
+                key={label}
+                className="overflow-hidden rounded-[1.75rem] bg-slate-50 ring-1 ring-slate-200"
+              >
+                <div className="relative aspect-video bg-blue-950">
+                  {embedUrl ? (
+                    <iframe
+                      src={embedUrl}
+                      title={label}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                      className="h-full w-full"
+                    />
+                  ) : (
+                    <div className="grid h-full place-items-center p-6 text-center text-white">
+                      <div>
+                        <span className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-white/10">
+                          <PlayCircle size={22} />
+                        </span>
+                        <p className="mt-4 text-lg font-semibold">{label}</p>
+                        <p className="mt-2 text-sm text-blue-100">
+                          Paste a video URL below
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                <div className="p-5">
+                  <div className="flex items-center justify-between gap-3">
+                    <h3 className="text-base font-semibold tracking-tight text-slate-950">
+                      {label}
+                    </h3>
+                    {url ? (
+                      <a
+                        href={url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-blue-900 ring-1 ring-blue-100"
+                      >
+                        Open
+                        <ExternalLink size={13} />
+                      </a>
+                    ) : null}
+                  </div>
+                  <input
+                    value={url}
+                    onChange={(event) =>
+                      updateCampaignVideoUrl(index, event.target.value)
+                    }
+                    placeholder="Paste YouTube or video URL"
+                    className="mt-4 w-full rounded-2xl border-0 bg-white px-4 py-3 text-sm text-slate-950 outline-none ring-1 ring-slate-200 transition focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </article>
+            );
+          })}
         </div>
       </section>
       </details>
@@ -837,7 +801,7 @@ export default function MockupsPage() {
           href="/finish"
           className="inline-flex items-center gap-2 rounded-full bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-card"
         >
-          Create Presentation
+          Create Appraisal
           <ArrowRight size={16} />
         </Link>
       </div>

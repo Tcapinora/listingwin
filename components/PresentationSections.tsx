@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Pencil, Smartphone } from "lucide-react";
+import { ExternalLink, Pencil, PlayCircle } from "lucide-react";
 import { useState } from "react";
 import { useAgentProfile } from "@/components/AgentProfileProvider";
 import { generatePropertyWriteup } from "@/lib/copy";
@@ -10,7 +10,6 @@ import { getPrimaryPropertyPhoto } from "@/lib/listingImages";
 import type { ListingState } from "@/lib/types";
 import {
   BrochureBookPreview,
-  FlyerPreview,
   PhotographyStylePreview,
   PropertyPortalPreview,
   SocialPreview,
@@ -33,6 +32,36 @@ function limitWords(value: string, maxWords: number) {
   return `${words.slice(0, maxWords).join(" ")}...`;
 }
 
+function getVideoEmbedUrl(rawUrl: string) {
+  const value = rawUrl.trim();
+
+  if (!value) {
+    return "";
+  }
+
+  try {
+    const url = new URL(value);
+    const host = url.hostname.replace(/^www\./, "");
+
+    if (host === "youtu.be") {
+      const videoId = url.pathname.split("/").filter(Boolean)[0];
+      return videoId ? `https://www.youtube.com/embed/${videoId}` : "";
+    }
+
+    if (host.endsWith("youtube.com")) {
+      const videoId =
+        url.searchParams.get("v") ||
+        url.pathname.match(/\/(?:shorts|embed)\/([^/?#]+)/)?.[1];
+
+      return videoId ? `https://www.youtube.com/embed/${videoId}` : "";
+    }
+  } catch {
+    return "";
+  }
+
+  return "";
+}
+
 function PresentationChapter({
   number,
   eyebrow,
@@ -51,7 +80,7 @@ function PresentationChapter({
   children: React.ReactNode;
 }) {
   return (
-    <section className="presentation-slide mt-24 border-t border-slate-200/80 pt-20">
+    <section className="presentation-slide mt-28 border-t border-slate-200/80 pt-24">
       <div className="mb-12 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
         <div className="max-w-3xl">
           <p className="inline-flex items-center gap-4 text-xs font-semibold uppercase tracking-[0.24em] text-blue-700">
@@ -86,28 +115,28 @@ function PresentationChapter({
 
 export function PresentationFlowNav() {
   const items = [
-    "Pricing of property",
-    "Comparable sales",
-    "Marketing vision",
+    "Price story",
+    "Market evidence",
+    "Campaign visuals",
+    "Calendar",
     "Buyer demand",
-    "Future vendor report",
-    "Campaign momentum",
+    "Vendor report",
   ];
 
   return (
-    <section className="no-print mt-20 border-y border-slate-200/80 py-12">
+    <section className="no-print mt-24 rounded-[2.25rem] bg-[#F8FAFC] p-7 ring-1 ring-slate-200/70 sm:p-8">
       <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
-            Vendor room flow
+            Seller presentation flow
           </p>
           <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
-            The appraisal conversation in order.
+            A calm path through the decision.
           </h2>
         </div>
         <p className="max-w-md text-sm leading-6 text-slate-500">
-          This follows the appraisal run sheet: price, competition, marketing,
-          campaign method, database, then the agent’s closing conversation.
+          The vendor sees the price story first, then the proof, then what their
+          campaign will look like if they choose you.
         </p>
       </div>
       <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -124,76 +153,6 @@ export function PresentationFlowNav() {
   );
 }
 
-export function SellerMobilePreview({ listing }: { listing: ListingState }) {
-  const { profile } = useAgentProfile();
-  const propertyPhoto = getPrimaryPropertyPhoto(listing);
-  const agentName = profile.agentName || listing.details.agentName || "Agent name";
-  const agencyName =
-    profile.agencyName || listing.details.agencyName || "Harbour & Co Estate Agents";
-
-  return (
-    <section className="presentation-slide mt-16 grid gap-10 rounded-[2.5rem] bg-gray-950 p-7 text-white shadow-soft lg:grid-cols-[0.9fr_1.1fr] lg:p-12">
-      <div className="flex flex-col justify-center">
-        <p className="inline-flex w-fit items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-gray-200">
-          <Smartphone size={16} />
-          Mobile vendor view
-        </p>
-        <h2 className="mt-5 text-4xl font-semibold tracking-tight">
-          Show the vendor the campaign in the format buyers will actually see.
-        </h2>
-        <p className="mt-5 max-w-xl text-base leading-8 text-gray-300">
-          Use this phone preview during the appraisal to make the campaign feel
-          tangible: property creative, agent brand, social context, and direct
-          contact details in one clean view.
-        </p>
-      </div>
-
-      <div className="mx-auto w-full max-w-[360px] rounded-[2.5rem] border border-white/15 bg-black p-3 shadow-2xl">
-        <div className="overflow-hidden rounded-[2rem] bg-white text-gray-950">
-          <div className="flex items-center justify-between bg-gray-950 px-5 py-3 text-xs font-semibold text-white">
-            <span>9:41</span>
-            <span>ListingWin</span>
-            <span>5G</span>
-          </div>
-          <div className="p-4">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-gray-100">
-              {propertyPhoto ? (
-                <Image
-                  src={propertyPhoto}
-                  alt="Seller mobile campaign preview"
-                  fill
-                  className="object-cover"
-                  unoptimized
-                />
-              ) : null}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/65 to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4 text-white">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em]">
-                  Just Listed
-                </p>
-                <h3 className="mt-2 text-2xl font-semibold leading-tight">
-                  {listing.details.address || "Property address"}
-                </h3>
-              </div>
-            </div>
-            <div className="mt-4 rounded-2xl bg-gray-50 p-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">
-                Presented by
-              </p>
-              <p className="mt-2 text-lg font-semibold">{agentName}</p>
-              <p className="text-sm text-gray-600">{agencyName}</p>
-              <p className="mt-3 text-sm text-gray-500">
-                {profile.phone || listing.details.phone || "Phone"} ·{" "}
-                {profile.email || listing.details.email || "Email"}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 export function HeroPresentation({
   listing,
   editable = true,
@@ -204,13 +163,16 @@ export function HeroPresentation({
   const { details } = listing;
   const { profile } = useAgentProfile();
   const propertyPhoto = getPrimaryPropertyPhoto(listing);
-  const heroWriteup = limitWords(generatePropertyWriteup(details), 72);
+  const heroWriteup = limitWords(generatePropertyWriteup(details), 54);
   const agentName = profile.agentName || details.agentName || "Agent name";
   const agencyName = profile.agencyName || details.agencyName || "Agency";
 
   return (
     <section className="presentation-slide overflow-hidden bg-white">
       <div className="mx-auto max-w-5xl px-6 py-24 text-center sm:py-28 lg:py-32">
+        <p className="mx-auto mb-8 w-fit rounded-full bg-blue-50 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-blue-700 ring-1 ring-blue-100">
+          Show the campaign before the campaign
+        </p>
         <h1 className="mx-auto max-w-4xl text-5xl font-semibold leading-tight tracking-tight text-slate-950 sm:text-6xl lg:text-7xl">
           {details.address || "Property address"}
         </h1>
@@ -249,8 +211,135 @@ export function HeroPresentation({
         <p className="text-xl font-light leading-9 text-slate-700 sm:text-2xl sm:leading-10">
           {heroWriteup}
         </p>
+        <p className="mx-auto mt-8 max-w-2xl text-sm leading-6 text-slate-500">
+          Prepared to make the first buyer impression clear, confident, and
+          emotionally memorable.
+        </p>
       </div>
     </section>
+  );
+}
+
+function CampaignVideoPreview({
+  listing,
+  editable,
+  onUpdate,
+}: {
+  listing: ListingState;
+  editable?: boolean;
+  onUpdate?: (updater: (current: ListingState) => ListingState) => void;
+}) {
+  const videoSlots = [
+    "Property walkthrough",
+    "Agent introduction",
+    "Social teaser",
+    "Campaign update",
+  ];
+  const urls = Array.from({ length: 4 }, (_, index) =>
+    listing.campaignVideoUrls?.[index] || "",
+  );
+
+  const updateUrl = (index: number, value: string) => {
+    if (!onUpdate) {
+      return;
+    }
+
+    onUpdate((current) => {
+      const nextUrls = Array.from({ length: 4 }, (_, urlIndex) =>
+        current.campaignVideoUrls?.[urlIndex] || "",
+      );
+      nextUrls[index] = value;
+
+      return {
+        ...current,
+        campaignVideoUrls: nextUrls,
+      };
+    });
+  };
+
+  return (
+    <div className="rounded-[2.25rem] border border-blue-100 bg-white p-7 shadow-card">
+      <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
+            Video campaign
+          </p>
+          <h3 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
+            Add four video examples or campaign links.
+          </h3>
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
+            Paste YouTube or streaming URLs here. These blocks give the seller a
+            clear feel for how video can support the launch.
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-7 grid gap-5 md:grid-cols-2">
+        {videoSlots.map((label, index) => {
+          const url = urls[index];
+          const embedUrl = getVideoEmbedUrl(url);
+
+          return (
+            <article
+              key={label}
+              className="overflow-hidden rounded-[1.5rem] bg-slate-50 ring-1 ring-slate-200/80"
+            >
+              <div className="relative aspect-video bg-blue-950">
+                {embedUrl ? (
+                  <iframe
+                    src={embedUrl}
+                    title={label}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    className="h-full w-full"
+                  />
+                ) : (
+                  <div className="grid h-full place-items-center p-6 text-center text-white">
+                    <div>
+                      <span className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-white/10">
+                        <PlayCircle size={22} />
+                      </span>
+                      <p className="mt-4 text-lg font-semibold">{label}</p>
+                      <p className="mt-2 text-sm text-blue-100">
+                        {url ? "Video link saved" : "Paste a video URL below"}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div className="p-5">
+                <div className="flex items-center justify-between gap-3">
+                  <h4 className="text-base font-semibold tracking-tight text-slate-950">
+                    {label}
+                  </h4>
+                  {url ? (
+                    <a
+                      href={url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-blue-900 ring-1 ring-blue-100"
+                    >
+                      Open
+                      <ExternalLink size={13} />
+                    </a>
+                  ) : null}
+                </div>
+                {editable && onUpdate ? (
+                  <input
+                    value={url}
+                    onChange={(event) => updateUrl(index, event.target.value)}
+                    placeholder="Paste YouTube or video URL"
+                    className="mt-4 w-full rounded-2xl border-0 bg-white px-4 py-3 text-sm text-slate-950 outline-none ring-1 ring-slate-200 transition focus:ring-2 focus:ring-blue-500"
+                  />
+                ) : url ? (
+                  <p className="mt-3 truncate text-xs text-slate-500">{url}</p>
+                ) : null}
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
@@ -273,14 +362,8 @@ export function PresentationGrid({
     {
       id: "brochure",
       label: "Brochure",
-      title: "4-page brochure",
+      title: "Brochure",
       component: <BrochureBookPreview listing={listing} />,
-    },
-    {
-      id: "flyer",
-      label: "Flyer",
-      title: "Campaign flyer",
-      component: <FlyerPreview listing={listing} />,
     },
     {
       id: "social",
@@ -313,6 +396,18 @@ export function PresentationGrid({
       label: "Photography",
       title: "Photography direction",
       component: <PhotographyStylePreview />,
+    },
+    {
+      id: "video",
+      label: "Video",
+      title: "Video campaign",
+      component: (
+        <CampaignVideoPreview
+          listing={listing}
+          editable={editable}
+          onUpdate={onUpdate}
+        />
+      ),
     },
   ];
   const [activeVisualId, setActiveVisualId] = useState(visualScenes[0].id);
@@ -348,8 +443,8 @@ export function PresentationGrid({
       <PresentationChapter
         number="03"
         eyebrow="Marketing"
-        title="Let the seller watch their campaign come to life."
-        description="This is the emotional shift: the seller can see their actual home inside your marketing while the appraisal is still happening."
+        title="Let the seller see their home as the campaign."
+        description="This is the emotional shift: the seller is no longer imagining your marketing. They are seeing their property inside it."
         editHref={editable ? "/mockups" : undefined}
         editLabel="Edit marketing"
       >
@@ -384,7 +479,6 @@ export function PresentationGrid({
             {activeVisual.component}
           </div>
         </section>
-        <SellerMobilePreview listing={listing} />
       </PresentationChapter>
 
       <PresentationChapter
