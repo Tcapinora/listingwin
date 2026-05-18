@@ -456,6 +456,7 @@ export function PresentationGrid({
   editable?: boolean;
   onUpdate?: (updater: (current: ListingState) => ListingState) => void;
 }) {
+  const hasVideoLinks = listing.campaignVideoUrls?.some((url) => url.trim());
   const visualScenes = [
     {
       id: "portal",
@@ -512,12 +513,18 @@ export function PresentationGrid({
           onUpdate={onUpdate}
         />
       ),
+      hidden: !hasVideoLinks,
     },
-  ];
+  ].filter((scene) => !scene.hidden);
   const [activeVisualId, setActiveVisualId] = useState(visualScenes[0].id);
   const activeVisual =
     visualScenes.find((scene) => scene.id === activeVisualId) || visualScenes[0];
   const isLiveVision = listing.campaignVisionMode !== "professional";
+  const hasComparables = listing.comparableProperties.some(
+    (property) => property.address || property.soldPrice,
+  );
+  const hasCalendarEvents = listing.saleCalendarEvents.length > 0;
+  const hasBuyerDemand = listing.buyerLeads.length > 0;
 
   return (
     <>
@@ -534,16 +541,18 @@ export function PresentationGrid({
         <PriceConfidenceSection listing={listing} />
       </PresentationChapter>
 
-      <PresentationChapter
-        number="02"
-        eyebrow="Comparable sales / area history"
-        title="Show the seller the market you are protecting them from."
-        description="When the seller sees the competing homes clearly, they stop guessing and start trusting the strategy."
-        editHref={editable ? "/details" : undefined}
-        editLabel="Edit comparables"
-      >
-        <MarketExpertSection listing={listing} />
-      </PresentationChapter>
+      {hasComparables ? (
+        <PresentationChapter
+          number="02"
+          eyebrow="Comparable sales / area history"
+          title="Show the seller the market you are protecting them from."
+          description="When the seller sees the competing homes clearly, they stop guessing and start trusting the strategy."
+          editHref={editable ? "/details" : undefined}
+          editLabel="Edit comparables"
+        >
+          <MarketExpertSection listing={listing} />
+        </PresentationChapter>
+      ) : null}
 
       <PresentationChapter
         number="03"
@@ -603,28 +612,32 @@ export function PresentationGrid({
         </section>
       </PresentationChapter>
 
-      <PresentationChapter
-        number="04"
-        eyebrow="Campaign method"
-        title="Show the seller there is a plan from day one."
-        description="The calendar turns the campaign into something real: photography, launch, inspections, buyer follow-up, vendor reporting, and auction momentum."
-        editHref={editable ? "/calendar" : undefined}
-        editLabel="Edit calendar"
-      >
-        <CampaignTimelineSection listing={listing} />
-      </PresentationChapter>
+      {hasCalendarEvents ? (
+        <PresentationChapter
+          number="04"
+          eyebrow="Campaign method"
+          title="Show the seller there is a plan from day one."
+          description="The calendar turns the campaign into something real: photography, launch, inspections, buyer follow-up, vendor reporting, and auction momentum."
+          editHref={editable ? "/calendar" : undefined}
+          editLabel="Edit calendar"
+        >
+          <CampaignTimelineSection listing={listing} />
+        </PresentationChapter>
+      ) : null}
 
-      <PresentationChapter
-        number="05"
-        eyebrow="Database / buyer demand"
-        title="Show the seller that you are not starting from zero."
-        description={
-          listing.agentPitchContent.buyerDemand ||
-          "When the seller sees real buyers, names, budgets, and next calls, their behaviour changes instantly. The campaign feels active before it even launches."
-        }
-      >
-        <BuyerMatchEngineSection listing={listing} />
-      </PresentationChapter>
+      {hasBuyerDemand ? (
+        <PresentationChapter
+          number="05"
+          eyebrow="Database / buyer demand"
+          title="Show the seller that you are not starting from zero."
+          description={
+            listing.agentPitchContent.buyerDemand ||
+            "When the seller sees real buyers, names, budgets, and next calls, their behaviour changes instantly. The campaign feels active before it even launches."
+          }
+        >
+          <BuyerMatchEngineSection listing={listing} />
+        </PresentationChapter>
+      ) : null}
 
       <PresentationChapter
         number="06"

@@ -253,7 +253,7 @@ export default function ProposalPage() {
             ) : null}
             <div className="mt-4 rounded-2xl bg-blue-50 p-4 ring-1 ring-blue-100">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">
-                Test before sending
+                Share safety check
               </p>
               <div className="mt-3 grid gap-2 text-xs leading-5 text-blue-950">
                 {[
@@ -274,9 +274,10 @@ export default function ProposalPage() {
                 ))}
               </div>
               <p className="mt-3 text-xs leading-5 text-blue-900/70">
-                Beta note: this prototype stores proposal links in the browser.
-                For full cross-device seller links, the next production step is
-                database-backed proposal sharing.
+                Production guardrail: before sending to a seller, send the link
+                to yourself and open it on the device you expect the seller to
+                use. Database-backed proposal sharing is the next infrastructure
+                upgrade for true cross-device reliability.
               </p>
             </div>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">

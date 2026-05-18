@@ -51,9 +51,9 @@ export default function SharedProposalPage({
             Proposal not available
           </h1>
           <p className="mt-3 text-sm leading-6 text-slate-500">
-            This MVP proposal link is saved in the browser that created it. In
-            production, proposals should be stored in the ListingWin database so
-            sellers can open them on any device.
+            This proposal link is not available from this browser. For live
+            seller use, proposal links should be saved in the ListingWin
+            database so they can open reliably on any device.
           </p>
           <Link
             href="/dashboard"

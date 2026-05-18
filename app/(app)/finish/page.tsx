@@ -1,9 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, FileText, MonitorPlay, Target } from "lucide-react";
+import {
+  ArrowRight,
+  CheckCircle2,
+  FileText,
+  MonitorPlay,
+  ShieldCheck,
+  Target,
+} from "lucide-react";
+import { useAgentProfile } from "@/components/AgentProfileProvider";
+import { useListing } from "@/components/ListingProvider";
+import { presentationReadiness } from "@/lib/readiness";
 
 export default function FinishPage() {
+  const { listing } = useListing();
+  const { profile } = useAgentProfile();
+  const readiness = presentationReadiness(listing, profile);
+
   return (
     <section className="mx-auto max-w-5xl">
       <div className="rounded-[2rem] bg-white p-7 shadow-card ring-1 ring-slate-200/70 sm:p-10">
@@ -40,6 +54,51 @@ export default function FinishPage() {
               </span>
             </div>
           ))}
+        </div>
+
+        <div className="mt-8 rounded-[2rem] bg-blue-950 p-6 text-white shadow-soft">
+          <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+            <div>
+              <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-blue-100 ring-1 ring-white/15">
+                <ShieldCheck size={15} />
+                Ready to show seller
+              </p>
+              <h2 className="mt-4 text-3xl font-semibold tracking-tight">
+                Brand-safe appraisal check.
+              </h2>
+              <p className="mt-3 text-sm leading-6 text-blue-100/80">
+                ListingWin keeps the seller-facing view clean. Empty optional
+                sections are hidden, quick photos are marked as concept
+                previews, and final campaign assets can be updated later.
+              </p>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {readiness.checks.map((check) => (
+                <Link
+                  key={check.label}
+                  href={check.href}
+                  className={`rounded-[1.25rem] p-4 ring-1 transition ${
+                    check.ready
+                      ? "bg-white/10 text-white ring-white/15"
+                      : "bg-white text-blue-950 ring-white"
+                  }`}
+                >
+                  <span className="flex items-center justify-between gap-3">
+                    <span className="text-sm font-semibold">{check.label}</span>
+                    <span
+                      className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${
+                        check.ready
+                          ? "bg-blue-400/20 text-blue-100"
+                          : "bg-blue-50 text-blue-800"
+                      }`}
+                    >
+                      {check.ready ? "Ready" : "Review"}
+                    </span>
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
 
         <div className="mt-8 grid gap-4 lg:grid-cols-3">

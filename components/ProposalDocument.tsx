@@ -96,14 +96,31 @@ export function ProposalDocument({
     month: "long",
     year: "numeric",
   }).format(new Date());
-  const visible = (section: ProposalSectionId) =>
-    !hiddenSections.includes(section);
   const updateText = (key: keyof ProposalTextSections, value: string) => {
     onTextChange?.({ ...copy, [key]: value });
   };
   const recentSales = listing.recentSoldProperties?.length
     ? listing.recentSoldProperties
     : [];
+  const hasComparables = listing.comparableProperties.some(
+    (property) => property.address || property.soldPrice,
+  );
+  const hasPhotos = photos.length > 0;
+  const hasCalendar = listing.saleCalendarEvents.length > 0;
+  const hasRecentSales = recentSales.some(
+    (sale) => sale.address || sale.result || sale.image || sale.notes,
+  );
+  const visible = (section: ProposalSectionId) => {
+    if (hiddenSections.includes(section)) return false;
+    if (!editable) {
+      if (section === "comparables" && !hasComparables) return false;
+      if (section === "visuals" && !hasPhotos) return false;
+      if (section === "calendar" && !hasCalendar) return false;
+      if (section === "recentSales" && !hasRecentSales) return false;
+    }
+
+    return true;
+  };
   const updateRecentSale = (
     index: number,
     field: keyof (typeof recentSales)[number],
