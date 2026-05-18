@@ -116,11 +116,9 @@ function PresentationChapter({
 export function PresentationFlowNav() {
   const items = [
     "Price story",
-    "Market evidence",
-    "Campaign visuals",
-    "Calendar",
-    "Buyer demand",
-    "Vendor report",
+    "Market proof",
+    "Campaign vision",
+    "Next move",
   ];
 
   return (
@@ -131,12 +129,12 @@ export function PresentationFlowNav() {
             Seller presentation flow
           </p>
           <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
-            A calm path through the decision.
+            The seller sees what choosing you looks like.
           </h2>
         </div>
         <p className="max-w-md text-sm leading-6 text-slate-500">
-          The vendor sees the price story first, then the proof, then what their
-          campaign could look and feel like if they choose you.
+          Start with price, prove the market, then show the campaign. The goal
+          is simple: reduce uncertainty and build confidence in the agent.
         </p>
       </div>
       <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">

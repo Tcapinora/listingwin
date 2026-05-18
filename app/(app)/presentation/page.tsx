@@ -4,12 +4,15 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   BadgeCheck,
+  Eye,
   Link2,
   Mail,
   MoreHorizontal,
   Pencil,
   Phone,
   Save,
+  Settings2,
+  ShieldCheck,
   Sparkles,
 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -35,6 +38,7 @@ export default function PresentationPage() {
   const [saved, setSaved] = useState(false);
   const [shareStatus, setShareStatus] = useState("");
   const [demoMode, setDemoMode] = useState(false);
+  const [presentMode, setPresentMode] = useState(true);
 
   useEffect(() => {
     setDemoMode(new URLSearchParams(window.location.search).get("demo") === "1");
@@ -100,12 +104,27 @@ export default function PresentationPage() {
               Campaign Vision Preview
             </a>
             <p className="max-w-xl text-sm font-medium text-slate-500">
-              Seller-facing. Show the campaign before the campaign, then move
-              into the private workspace and proposal.
+              {presentMode
+                ? "Seller-facing mode. Scroll through the campaign cleanly, then finish the appraisal."
+                : "Control mode. Edit live photos, mode settings, and appraisal actions before presenting."}
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            {!demoMode && presentationListing.useLiveCampaignPreview ? (
+            <button
+              type="button"
+              onClick={() => setPresentMode((value) => !value)}
+              className={`inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold shadow-sm transition hover:-translate-y-0.5 ${
+                presentMode
+                  ? "bg-blue-50 text-blue-900 ring-1 ring-blue-100"
+                  : "bg-slate-950 text-white"
+              }`}
+            >
+              {presentMode ? <Settings2 size={16} /> : <Eye size={16} />}
+              {presentMode ? "Show controls" : "Present mode"}
+            </button>
+            {!presentMode &&
+            !demoMode &&
+            presentationListing.useLiveCampaignPreview ? (
               <LiveCampaignPhotoButton
                 photos={propertyPhotos}
                 onChange={updatePropertyPhotos}
@@ -118,6 +137,7 @@ export default function PresentationPage() {
             >
               Finish appraisal
             </Link>
+            {!presentMode ? (
             <details className="group relative">
               <summary className="inline-flex cursor-pointer list-none items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-3 text-sm font-semibold text-blue-900 shadow-sm transition hover:-translate-y-0.5 hover:bg-blue-50">
                 <MoreHorizontal size={16} />
@@ -175,11 +195,12 @@ export default function PresentationPage() {
                 />
               </div>
             </details>
+            ) : null}
           </div>
         </div>
       </section>
 
-      {!readiness.isReady ? (
+      {!presentMode && !readiness.isReady ? (
         <section className="no-print mx-auto my-6 max-w-6xl rounded-[1.5rem] border border-blue-100 bg-white/90 p-5 shadow-card">
           <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
             <div className="max-w-2xl">
@@ -218,6 +239,7 @@ export default function PresentationPage() {
         </section>
       ) : null}
 
+      {!presentMode ? (
       <section className="no-print mx-auto my-6 max-w-6xl rounded-[2rem] bg-gradient-to-br from-blue-950 via-slate-950 to-blue-900 p-5 text-white shadow-soft">
         <div className="grid gap-5 lg:grid-cols-[1fr_1fr] lg:items-center">
           <div>
@@ -282,19 +304,45 @@ export default function PresentationPage() {
           </div>
         </div>
       </section>
+      ) : null}
+
+      {presentMode ? (
+        <section className="no-print mx-auto my-6 max-w-6xl rounded-[1.5rem] bg-white/90 p-4 shadow-sm ring-1 ring-blue-100">
+          <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+            <p className="inline-flex items-center gap-2 text-sm font-semibold text-blue-950">
+              <ShieldCheck size={17} className="text-blue-700" />
+              Present mode is on. Edit buttons and setup controls are hidden so
+              the seller only sees the campaign story.
+            </p>
+            <button
+              type="button"
+              onClick={() => setPresentMode(false)}
+              className="inline-flex w-fit items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-900 ring-1 ring-blue-100"
+            >
+              <Settings2 size={15} />
+              Edit live
+            </button>
+          </div>
+        </section>
+      ) : null}
 
       <div
         id="presentation-start"
         className="page-enter mx-auto max-w-6xl bg-white px-4 py-10 shadow-soft ring-1 ring-white/80 sm:px-6 lg:px-8 lg:py-14"
       >
-        <HeroPresentation listing={presentationListing} />
+        <HeroPresentation
+          listing={presentationListing}
+          editable={!presentMode}
+        />
 
         <PresentationGrid
           listing={presentationListing}
+          editable={!presentMode}
           onUpdate={demoMode ? undefined : setListing}
         />
 
         <section className="presentation-slide mt-24 border-t border-slate-200/80 py-20 sm:py-24">
+          {!presentMode ? (
           <div className="no-print mb-8 flex justify-end">
             <Link
               href="/account"
@@ -304,6 +352,7 @@ export default function PresentationPage() {
               Edit agency section
             </Link>
           </div>
+          ) : null}
           <div className="mx-auto max-w-4xl text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-blue-700">
               Our approach
@@ -371,6 +420,7 @@ export default function PresentationPage() {
         </section>
 
         <section className="presentation-slide mt-12 overflow-hidden rounded-[2.5rem] bg-blue-950 p-7 text-white shadow-soft lg:p-10">
+          {!presentMode ? (
           <div className="no-print mb-6 flex justify-end">
             <Link
               href="/account"
@@ -380,6 +430,7 @@ export default function PresentationPage() {
               Edit contact details
             </Link>
           </div>
+          ) : null}
           <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.25em] text-blue-200">
@@ -443,7 +494,8 @@ export default function PresentationPage() {
               <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
                 The seller has now seen the campaign. Use the private workspace
                 if you need to capture notes, then generate the proposal while
-                the appraisal is still fresh.
+                the appraisal is still fresh. This keeps the momentum from the
+                presentation moving straight into the follow-up.
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
