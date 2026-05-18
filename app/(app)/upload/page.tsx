@@ -23,14 +23,14 @@ export default function UploadPage() {
           Upload once. Use everywhere.
         </h1>
         <p className="mt-4 max-w-xl text-base leading-7 text-slate-600">
-          Add up to five property photos. ListingWin uses them across the
-          Vendor Presentation, social previews, brochure, flyer, signboard
-          mockups, and Agent Workspace.
+          Add up to five optional photos. Use quick appraisal photos for a
+          conceptual Campaign Vision Preview, then replace them later with
+          professional campaign photography.
         </p>
         <div className="mt-6 grid gap-3 rounded-[1.5rem] bg-slate-50 p-4 ring-1 ring-slate-200 sm:grid-cols-3">
           {[
             `${propertyPhotos.length}/5 photos added`,
-            "Live upload ready",
+            "Vision preview optional",
             "Mockups update instantly",
           ].map((item) => (
             <div
@@ -60,12 +60,12 @@ export default function UploadPage() {
 
       <section className="mx-auto mt-6 max-w-3xl rounded-3xl bg-blue-50/70 p-5 ring-1 ring-blue-100">
         <p className="text-sm font-semibold text-blue-950">
-          This is the live campaign moment.
+          This is the Campaign Vision moment.
         </p>
         <p className="mt-2 text-sm leading-6 text-blue-900/70">
-          If the agent is in front of the seller, this still needs to feel calm:
-          upload the photos, keep talking, and the mockups update without
-          rebuilding the presentation.
+          If the seller wants to picture the campaign, take or upload quick
+          photos and ListingWin will place them into premium conceptual
+          previews. Final marketing should still use professional photography.
         </p>
       </section>
 

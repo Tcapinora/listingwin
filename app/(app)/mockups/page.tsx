@@ -254,17 +254,17 @@ export default function MockupsPage() {
 
       <section className="mb-8 rounded-[2rem] bg-white p-6 shadow-card ring-1 ring-blue-50 sm:p-8 lg:p-10">
         <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
-          Live campaign creation
+          Campaign Vision Preview
         </p>
         <div className="mt-4 grid gap-6 lg:grid-cols-[1fr_0.55fr] lg:items-end">
           <div>
             <h1 className="text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-              Build the campaign in front of the seller
+              Preview the campaign before it exists
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-              Work through one campaign preview at a time. Add real property
-              photos live, then choose the visual that helps the seller picture
-              the campaign.
+              Work through one premium preview at a time. Use quick appraisal
+              photos if helpful, or skip them and show the seller the campaign
+              direction with polished examples.
             </p>
             <div className="mt-6 grid gap-3 sm:grid-cols-3">
               {[
@@ -287,7 +287,7 @@ export default function MockupsPage() {
               <LiveCampaignPhotoButton
                 photos={propertyPhotos}
                 onChange={updatePropertyPhotos}
-                label="Add property photos"
+                label="Add vision photos"
               />
             </div>
             <button
@@ -342,6 +342,80 @@ export default function MockupsPage() {
             size={19}
           />
         </summary>
+
+        <section className="mt-5 rounded-[2rem] bg-gradient-to-br from-blue-950 via-slate-950 to-blue-900 p-5 text-white shadow-soft">
+          <div className="grid gap-5 lg:grid-cols-[1fr_0.9fr] lg:items-center">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-200">
+                Two campaign modes
+              </p>
+              <h2 className="mt-3 text-2xl font-semibold tracking-tight">
+                Live vision now. Professional campaign later.
+              </h2>
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-blue-100/80">
+                Live Vision Mode creates conceptual previews from quick
+                appraisal photos. Professional Campaign Mode is for polished
+                assets once the final photography is ready.
+              </p>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {[
+                ["live", "Live Vision Mode", "Conceptual seller preview"],
+                ["professional", "Professional Campaign Mode", "Final campaign assets"],
+              ].map(([mode, title, detail]) => (
+                <button
+                  key={mode}
+                  type="button"
+                  onClick={() =>
+                    setListing((current) => ({
+                      ...current,
+                      campaignVisionMode: mode as "live" | "professional",
+                    }))
+                  }
+                  className={`rounded-[1.25rem] p-4 text-left transition ${
+                    listing.campaignVisionMode === mode
+                      ? "bg-white text-blue-950"
+                      : "bg-white/10 text-white ring-1 ring-white/10 hover:bg-white/15"
+                  }`}
+                >
+                  <span className="block text-sm font-semibold">{title}</span>
+                  <span className="mt-1 block text-xs leading-5 opacity-75">
+                    {detail}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="mt-5 flex flex-col gap-3 rounded-[1.5rem] bg-white/10 p-4 ring-1 ring-white/10 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-sm font-semibold">Use Live Campaign Preview</p>
+              <p className="mt-1 text-xs leading-5 text-blue-100/80">
+                Optional. Turn this off if the agent wants to use examples only
+                until professional photography is uploaded.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() =>
+                setListing((current) => ({
+                  ...current,
+                  useLiveCampaignPreview: !current.useLiveCampaignPreview,
+                }))
+              }
+              className={`relative h-9 w-16 rounded-full transition ${
+                listing.useLiveCampaignPreview ? "bg-blue-500" : "bg-white/20"
+              }`}
+              aria-pressed={listing.useLiveCampaignPreview}
+              aria-label="Toggle live campaign preview"
+            >
+              <span
+                className={`absolute top-1 grid h-7 w-7 place-items-center rounded-full bg-white shadow-sm transition ${
+                  listing.useLiveCampaignPreview ? "left-8" : "left-1"
+                }`}
+              />
+            </button>
+          </div>
+        </section>
 
         <section className="sticky top-[73px] z-20 my-5 rounded-3xl border border-blue-100 bg-blue-50/90 p-4 shadow-sm backdrop-blur">
           <div className="flex flex-wrap gap-2">

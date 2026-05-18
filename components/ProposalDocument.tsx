@@ -87,6 +87,7 @@ export function ProposalDocument({
   const hero = getPrimaryPropertyPhoto(listing);
   const photos = getPropertyPhotos(listing);
   const writeup = generatePropertyWriteup(listing.details);
+  const isProfessionalMode = listing.campaignVisionMode === "professional";
   const proposalDate = new Intl.DateTimeFormat("en-AU", {
     day: "numeric",
     month: "long",
@@ -104,7 +105,9 @@ export function ProposalDocument({
         <div className="grid gap-0 lg:grid-cols-[0.95fr_1.05fr]">
           <div className="p-8 sm:p-12">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-blue-700">
-              Listing proposal
+              {isProfessionalMode
+                ? "Professional campaign proposal"
+                : "Campaign Vision proposal"}
             </p>
             <h1 className="mt-5 text-4xl font-semibold tracking-tight text-slate-950 sm:text-6xl">
               {address}
@@ -154,16 +157,27 @@ export function ProposalDocument({
             )}
             <div className="absolute inset-x-6 bottom-6 rounded-2xl bg-white/90 p-4 shadow-card backdrop-blur">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
-                Ready to launch
+                {isProfessionalMode ? "Ready to launch" : "Vision preview"}
               </p>
               <p className="mt-1 text-sm font-semibold text-slate-950">
-                This proposal turns the appraisal conversation into the campaign
-                plan.
+                {isProfessionalMode
+                  ? "This proposal turns the appraisal conversation into the campaign plan."
+                  : "Conceptual campaign visuals help the seller picture the launch before final photography."}
               </p>
             </div>
           </div>
         </div>
       </section>
+
+      {!isProfessionalMode ? (
+        <section className="mt-6 rounded-[2rem] bg-slate-50 p-5 text-sm leading-7 text-slate-600 ring-1 ring-slate-200">
+          <span className="font-semibold text-slate-950">
+            Campaign Vision Preview:
+          </span>{" "}
+          visuals are conceptual only. Final proposal assets should be updated
+          with professional photography before print-ready export or launch.
+        </section>
+      ) : null}
 
       <section className="mt-8 grid gap-4 rounded-[2rem] bg-white p-5 shadow-card ring-1 ring-slate-200/70 sm:grid-cols-4 sm:p-6">
         <InfoBlock

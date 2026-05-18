@@ -58,6 +58,7 @@ export default function PresentationPage() {
     "This is the seller-facing emotional moment: show how their property will look, how buyers will experience it, and why momentum starts with this agent.";
   const propertyPhotos = getPropertyPhotos(presentationListing);
   const letterPhoto = propertyPhotos[1] || propertyPhotos[0] || "";
+  const isLiveVision = presentationListing.campaignVisionMode !== "professional";
   const updatePropertyPhotos = (photos: string[]) => {
     if (demoMode) {
       return;
@@ -73,6 +74,24 @@ export default function PresentationPage() {
     }));
   };
 
+  const updateVisionSettings = (
+    patch: Partial<
+      Pick<
+        typeof listing,
+        "useLiveCampaignPreview" | "campaignVisionMode"
+      >
+    >,
+  ) => {
+    if (demoMode) {
+      return;
+    }
+
+    setListing((current) => ({
+      ...current,
+      ...patch,
+    }));
+  };
+
   return (
     <>
       <section className="no-print sticky top-0 z-40 border-b border-white/80 bg-white/90 px-4 py-3 shadow-sm backdrop-blur-xl">
@@ -82,19 +101,19 @@ export default function PresentationPage() {
               href="#presentation-start"
               className="inline-flex items-center gap-2 rounded-full bg-blue-950 px-5 py-3 text-sm font-semibold text-white shadow-card transition hover:-translate-y-0.5 hover:bg-blue-900"
             >
-              Vendor Appraisal
+              Campaign Vision Preview
             </a>
             <p className="max-w-xl text-sm font-medium text-slate-500">
-              Seller-facing. Add live photos, talk through the campaign, then
-              finish into the private workspace.
+              Seller-facing. Show the campaign before the campaign, then move
+              into the private workspace and proposal.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            {!demoMode ? (
+            {!demoMode && presentationListing.useLiveCampaignPreview ? (
               <LiveCampaignPhotoButton
                 photos={propertyPhotos}
                 onChange={updatePropertyPhotos}
-                label="Add photos live"
+                label="Add vision photos"
               />
             ) : null}
             <Link
@@ -203,6 +222,66 @@ export default function PresentationPage() {
         </section>
       ) : null}
 
+      <section className="no-print mx-auto my-6 max-w-6xl rounded-[2rem] bg-gradient-to-br from-blue-950 via-slate-950 to-blue-900 p-5 text-white shadow-soft">
+        <div className="grid gap-5 lg:grid-cols-[1fr_1fr] lg:items-center">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-200">
+              Presentation mode
+            </p>
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight">
+              {isLiveVision
+                ? "Live Vision Mode is active"
+                : "Professional Campaign Mode is active"}
+            </h2>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-blue-100/80">
+              {isLiveVision
+                ? "Use quick appraisal photos as premium conceptual previews. They are designed to help the seller picture the future campaign, not replace professional photography."
+                : "Use this mode once professional campaign photography is ready. The presentation can show sharper, final campaign assets for proposal and sharing."}
+            </p>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-[1fr_1fr_auto] sm:items-center">
+            {[
+              ["live", "Live Vision", "Conceptual"],
+              ["professional", "Professional", "Final assets"],
+            ].map(([mode, label, sub]) => (
+              <button
+                key={mode}
+                type="button"
+                onClick={() =>
+                  updateVisionSettings({
+                    campaignVisionMode: mode as "live" | "professional",
+                  })
+                }
+                className={`rounded-[1.25rem] px-4 py-3 text-left transition ${
+                  presentationListing.campaignVisionMode === mode
+                    ? "bg-white text-blue-950"
+                    : "bg-white/10 text-white ring-1 ring-white/10 hover:bg-white/15"
+                }`}
+              >
+                <span className="block text-sm font-semibold">{label}</span>
+                <span className="mt-1 block text-xs opacity-70">{sub}</span>
+              </button>
+            ))}
+            <button
+              type="button"
+              onClick={() =>
+                updateVisionSettings({
+                  useLiveCampaignPreview:
+                    !presentationListing.useLiveCampaignPreview,
+                })
+              }
+              className={`rounded-[1.25rem] px-4 py-3 text-sm font-semibold transition ${
+                presentationListing.useLiveCampaignPreview
+                  ? "bg-blue-500 text-white"
+                  : "bg-white/10 text-blue-100 ring-1 ring-white/10"
+              }`}
+            >
+              Live Preview {presentationListing.useLiveCampaignPreview ? "On" : "Off"}
+            </button>
+          </div>
+        </div>
+      </section>
+
       <div
         id="presentation-start"
         className="page-enter mx-auto max-w-6xl bg-white px-4 py-10 shadow-soft ring-1 ring-white/80 sm:px-6 lg:px-8 lg:py-14"
@@ -246,10 +325,16 @@ export default function PresentationPage() {
                 {presentationIntro}
               </p>
               <p className="mt-6 rounded-[1.5rem] bg-blue-50/80 p-5 text-sm leading-7 text-blue-900 ring-1 ring-blue-100">
-                Build the campaign live in front of the seller. Add photos
-                during the appraisal and they flow straight into the hero,
-                social, brochure, portal, and campaign previews.
+                {isLiveVision
+                  ? "Build the campaign vision live in front of the seller. Add optional appraisal photos and they flow into conceptual previews designed to feel premium, not final."
+                  : "Professional Campaign Mode uses polished photography and final campaign assets for a sharper proposal-ready experience."}
               </p>
+              {isLiveVision ? (
+                <p className="mt-4 rounded-full bg-slate-50 px-5 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500 ring-1 ring-slate-200">
+                  Campaign visuals shown are conceptual previews only. Final
+                  marketing will use professional photography.
+                </p>
+              ) : null}
             </div>
           </div>
         </section>

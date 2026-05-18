@@ -10,7 +10,7 @@ export function LiveCampaignPhotoButton({
   photos,
   onChange,
   tone = "dark",
-  label = "Add live photos",
+  label = "Add vision photos",
 }: {
   photos: string[];
   onChange: (photos: string[]) => void;
@@ -44,7 +44,7 @@ export function LiveCampaignPhotoButton({
             ? "Photos added"
             : remaining
               ? label
-              : "5 photos added"}
+              : "5 vision photos added"}
       </label>
       <input
         id={inputId}
@@ -80,7 +80,7 @@ export function LiveCampaignPhotoButton({
         }`}
       >
         <ImagePlus size={14} />
-        {photos.length}/5 live campaign images
+        {photos.length}/5 vision images
       </span>
     </div>
   );

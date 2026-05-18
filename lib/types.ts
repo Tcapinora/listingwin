@@ -134,6 +134,8 @@ export type ListingState = {
   hiddenVendorReportSections: string[];
   appraisalSourceUrls: string[];
   campaignVideoUrls: string[];
+  useLiveCampaignPreview: boolean;
+  campaignVisionMode: "live" | "professional";
   propertyPhotos: string[];
   activeSignboard: SignboardKey;
   signboardCrops: Record<SignboardKey, SignboardCrop>;
@@ -309,6 +311,8 @@ export const emptyListingState: ListingState = {
   hiddenVendorReportSections: [],
   appraisalSourceUrls: [],
   campaignVideoUrls: ["", "", "", ""],
+  useLiveCampaignPreview: true,
+  campaignVisionMode: "live",
   buyerLeads: [
     {
       id: "buyer-1",

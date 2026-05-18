@@ -20,12 +20,12 @@ export function PropertyPhotoUploader({
       <div className="mb-4 flex items-start justify-between gap-4">
         <div>
           <h3 className="text-lg font-semibold text-gray-950">
-            Live campaign photos
+            Campaign Vision photos
           </h3>
           <p className="mt-2 max-w-xl text-sm leading-6 text-gray-500">
-            Upload up to 5 photos before the appraisal, or add them live in
-            front of the seller. The first image becomes the hero image across
-            signboards, portals, social previews, brochures, and the presentation.
+            Upload up to 5 quick appraisal photos if you want to create a
+            conceptual Campaign Vision Preview. These are not treated as final
+            marketing photography.
           </p>
         </div>
         <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-800 ring-1 ring-blue-100">
@@ -42,11 +42,11 @@ export function PropertyPhotoUploader({
         </span>
         <span className="mt-3 text-sm font-semibold text-gray-800">
           {remaining > 0
-            ? "Take photos or click to upload"
+            ? "Take quick appraisal photos or upload"
             : "Maximum images added"}
         </span>
         <span className="mt-1 text-xs text-gray-500">
-          Fast enough to use during the appraisal · max 5
+          Optional during appraisal · max 5
         </span>
       </label>
       <input
@@ -109,14 +109,14 @@ export function PropertyPhotoUploader({
 
       {photos.length ? (
         <p className="mt-4 rounded-2xl bg-blue-50 px-4 py-3 text-sm leading-6 text-blue-900">
-          These images now flow through the live campaign previews. Open the
-          Vendor Presentation and the seller will see their property inside the
-          campaign instantly.
+          These images now flow through Campaign Vision previews. Open the
+          Appraisal and the seller will see their property inside a conceptual
+          campaign direction instantly.
         </p>
       ) : (
         <p className="mt-4 rounded-2xl bg-slate-50 px-4 py-3 text-sm leading-6 text-slate-600">
-          You can prepare the campaign first, then add real photos live when you
-          arrive at the property.
+          Campaign Vision photos are optional. You can skip them and use examples,
+          then replace them with professional photography later.
         </p>
       )}
     </div>

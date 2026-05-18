@@ -166,12 +166,15 @@ export function HeroPresentation({
   const heroWriteup = limitWords(generatePropertyWriteup(details), 54);
   const agentName = profile.agentName || details.agentName || "Agent name";
   const agencyName = profile.agencyName || details.agencyName || "Agency";
+  const isLiveVision = listing.campaignVisionMode !== "professional";
 
   return (
     <section className="presentation-slide overflow-hidden bg-white">
       <div className="mx-auto max-w-5xl px-6 py-24 text-center sm:py-28 lg:py-32">
         <p className="mx-auto mb-8 w-fit rounded-full bg-blue-50 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-blue-700 ring-1 ring-blue-100">
-          Show the campaign before the campaign
+          {isLiveVision
+            ? "Campaign Vision Preview"
+            : "Professional Campaign Mode"}
         </p>
         <h1 className="mx-auto max-w-4xl text-5xl font-semibold leading-tight tracking-tight text-slate-950 sm:text-6xl lg:text-7xl">
           {details.address || "Property address"}
@@ -185,8 +188,52 @@ export function HeroPresentation({
         </p>
       </div>
 
-      <div className="relative min-h-[380px] overflow-hidden bg-slate-100 sm:min-h-[460px] lg:min-h-[520px]">
-        {propertyPhoto ? (
+      <div
+        className={`relative overflow-hidden ${
+          isLiveVision
+            ? "mx-auto max-w-6xl rounded-[3rem] bg-blue-950 p-6 shadow-soft sm:p-8"
+            : "min-h-[380px] bg-slate-100 sm:min-h-[460px] lg:min-h-[520px]"
+        }`}
+      >
+        {propertyPhoto && isLiveVision ? (
+          <>
+            <Image
+              src={propertyPhoto}
+              alt="Blurred campaign vision background"
+              fill
+              className="scale-110 object-cover opacity-35 blur-xl"
+              priority
+              unoptimized
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-950/80 via-slate-950/65 to-blue-900/70" />
+            <div className="relative grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+              <div className="p-3 text-white sm:p-8">
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-blue-200">
+                  Live Vision Mode
+                </p>
+                <h2 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
+                  See the future campaign, before launch day.
+                </h2>
+                <p className="mt-5 max-w-xl text-base leading-8 text-blue-100/80">
+                  Quick appraisal photos are softened into a premium conceptual
+                  preview, helping the seller picture the campaign without
+                  treating the image as final marketing.
+                </p>
+              </div>
+              <div className="relative aspect-[4/3] overflow-hidden rounded-[2.25rem] bg-white/10 shadow-soft ring-1 ring-white/15">
+                <Image
+                  src={propertyPhoto}
+                  alt="Campaign vision property preview"
+                  fill
+                  className="object-cover"
+                  priority
+                  unoptimized
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/35 via-transparent to-transparent" />
+              </div>
+            </div>
+          </>
+        ) : propertyPhoto ? (
           <Image
             src={propertyPhoto}
             alt="Presentation hero property"
@@ -195,7 +242,19 @@ export function HeroPresentation({
             priority
             unoptimized
           />
-        ) : null}
+        ) : (
+          <div className="grid min-h-[360px] place-items-center bg-gradient-to-br from-slate-100 to-blue-50 p-10 text-center">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-700">
+                Campaign Vision Preview
+              </p>
+              <p className="mt-4 text-2xl font-semibold text-slate-950">
+                Add Campaign Vision photos, use campaign examples, or continue
+                without images.
+              </p>
+            </div>
+          </div>
+        )}
         {editable ? (
           <Link
             href="/details"
@@ -208,6 +267,12 @@ export function HeroPresentation({
       </div>
 
       <div className="mx-auto max-w-4xl px-6 py-16 text-center sm:py-20">
+        {isLiveVision ? (
+          <p className="mx-auto mb-8 max-w-2xl rounded-full bg-slate-50 px-5 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-slate-500 ring-1 ring-slate-200">
+            Campaign visuals shown are conceptual previews only. Final
+            marketing will use professional photography.
+          </p>
+        ) : null}
         <p className="text-xl font-light leading-9 text-slate-700 sm:text-2xl sm:leading-10">
           {heroWriteup}
         </p>
@@ -413,6 +478,7 @@ export function PresentationGrid({
   const [activeVisualId, setActiveVisualId] = useState(visualScenes[0].id);
   const activeVisual =
     visualScenes.find((scene) => scene.id === activeVisualId) || visualScenes[0];
+  const isLiveVision = listing.campaignVisionMode !== "professional";
 
   return (
     <>
@@ -443,11 +509,28 @@ export function PresentationGrid({
       <PresentationChapter
         number="03"
         eyebrow="Marketing"
-        title="Let the seller see their home as the campaign."
-        description="This is the emotional shift: the seller is no longer imagining your marketing. They are seeing their property inside it."
+        title={
+          isLiveVision
+            ? "Let the seller see the campaign vision."
+            : "Let the seller see the professional campaign."
+        }
+        description={
+          isLiveVision
+            ? "This is the emotional shift: quick appraisal photos become premium conceptual previews so the seller can picture what their campaign could look like."
+            : "Professional Campaign Mode uses sharper photography and polished assets for a final, proposal-ready campaign view."
+        }
         editHref={editable ? "/mockups" : undefined}
         editLabel="Edit marketing"
       >
+        {isLiveVision ? (
+          <div className="mb-10 rounded-[2rem] bg-slate-50 p-5 text-sm leading-7 text-slate-600 ring-1 ring-slate-200">
+            <span className="font-semibold text-slate-950">
+              Conceptual preview:
+            </span>{" "}
+            Campaign visuals shown are conceptual previews only. Final marketing
+            will use professional photography.
+          </div>
+        ) : null}
         <section className="bg-white py-2">
           <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
             <div>

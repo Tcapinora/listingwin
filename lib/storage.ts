@@ -90,6 +90,14 @@ export function readListingState(): ListingState {
       campaignVideoUrls: Array.from({ length: 4 }, (_, index) =>
         normalizeString(parsed.campaignVideoUrls?.[index]),
       ),
+      useLiveCampaignPreview:
+        typeof parsed.useLiveCampaignPreview === "boolean"
+          ? parsed.useLiveCampaignPreview
+          : emptyListingState.useLiveCampaignPreview,
+      campaignVisionMode:
+        parsed.campaignVisionMode === "professional"
+          ? "professional"
+          : "live",
       buyerLeads: Array.isArray(parsed.buyerLeads)
         ? parsed.buyerLeads.map(normalizeBuyerLead)
         : emptyListingState.buyerLeads,
