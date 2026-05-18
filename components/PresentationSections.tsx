@@ -172,9 +172,7 @@ export function HeroPresentation({
     <section className="presentation-slide overflow-hidden bg-white">
       <div className="mx-auto max-w-5xl px-6 py-24 text-center sm:py-28 lg:py-32">
         <p className="mx-auto mb-8 w-fit rounded-full bg-blue-50 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-blue-700 ring-1 ring-blue-100">
-          {isLiveVision
-            ? "Campaign Vision Preview"
-            : "Professional Campaign Mode"}
+          {isLiveVision ? "During appraisal preview" : "After professional photos"}
         </p>
         <h1 className="mx-auto max-w-4xl text-5xl font-semibold leading-tight tracking-tight text-slate-950 sm:text-6xl lg:text-7xl">
           {details.address || "Property address"}
@@ -209,15 +207,15 @@ export function HeroPresentation({
             <div className="relative grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
               <div className="p-3 text-white sm:p-8">
                 <p className="text-xs font-semibold uppercase tracking-[0.24em] text-blue-200">
-                  Live Vision Mode
+                  During appraisal
                 </p>
                 <h2 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
                   See the future campaign, before launch day.
                 </h2>
                 <p className="mt-5 max-w-xl text-base leading-8 text-blue-100/80">
-                  Quick appraisal photos are softened into a premium conceptual
-                  preview, helping the seller picture the campaign without
-                  treating the image as final marketing.
+                  Quick photos become a polished preview so the seller can
+                  picture the campaign. Use this in the room, then replace it
+                  with professional photography later.
                 </p>
               </div>
               <div className="relative aspect-[4/3] overflow-hidden rounded-[2.25rem] bg-white/10 shadow-soft ring-1 ring-white/15">
@@ -303,6 +301,18 @@ function CampaignVideoPreview({
   const urls = Array.from({ length: 4 }, (_, index) =>
     listing.campaignVideoUrls?.[index] || "",
   );
+  const titles = Array.from({ length: 4 }, (_, index) =>
+    listing.campaignVideoTitles?.[index] || videoSlots[index],
+  );
+  const visibleVideoIndexes = editable
+    ? [0, 1, 2, 3]
+    : urls
+        .map((url, index) => (url ? index : -1))
+        .filter((index) => index >= 0);
+
+  if (!editable && !visibleVideoIndexes.length) {
+    return null;
+  }
 
   const updateUrl = (index: number, value: string) => {
     if (!onUpdate) {
@@ -322,6 +332,24 @@ function CampaignVideoPreview({
     });
   };
 
+  const updateTitle = (index: number, value: string) => {
+    if (!onUpdate) {
+      return;
+    }
+
+    onUpdate((current) => {
+      const nextTitles = Array.from({ length: 4 }, (_, titleIndex) =>
+        current.campaignVideoTitles?.[titleIndex] || videoSlots[titleIndex],
+      );
+      nextTitles[index] = value;
+
+      return {
+        ...current,
+        campaignVideoTitles: nextTitles,
+      };
+    });
+  };
+
   return (
     <div className="rounded-[2.25rem] border border-blue-100 bg-white p-7 shadow-card">
       <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
@@ -330,17 +358,18 @@ function CampaignVideoPreview({
             Video campaign
           </p>
           <h3 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
-            Add four video examples or campaign links.
+            Add up to four video examples.
           </h3>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
-            Paste YouTube or streaming URLs here. These blocks give the seller a
-            clear feel for how video can support the launch.
+            Paste only the videos you want to show. If there are two videos,
+            only two appear in the seller view.
           </p>
         </div>
       </div>
 
       <div className="mt-7 grid gap-5 md:grid-cols-2">
-        {videoSlots.map((label, index) => {
+        {visibleVideoIndexes.map((index) => {
+          const label = titles[index];
           const url = urls[index];
           const embedUrl = getVideoEmbedUrl(url);
 
@@ -390,12 +419,22 @@ function CampaignVideoPreview({
                   ) : null}
                 </div>
                 {editable && onUpdate ? (
-                  <input
-                    value={url}
-                    onChange={(event) => updateUrl(index, event.target.value)}
-                    placeholder="Paste YouTube or video URL"
-                    className="mt-4 w-full rounded-2xl border-0 bg-white px-4 py-3 text-sm text-slate-950 outline-none ring-1 ring-slate-200 transition focus:ring-2 focus:ring-blue-500"
-                  />
+                  <div className="mt-4 grid gap-3">
+                    <input
+                      value={label}
+                      onChange={(event) =>
+                        updateTitle(index, event.target.value)
+                      }
+                      placeholder="Video title"
+                      className="w-full rounded-2xl border-0 bg-white px-4 py-3 text-sm font-semibold text-slate-950 outline-none ring-1 ring-slate-200 transition focus:ring-2 focus:ring-blue-500"
+                    />
+                    <input
+                      value={url}
+                      onChange={(event) => updateUrl(index, event.target.value)}
+                      placeholder="Paste YouTube or video URL"
+                      className="w-full rounded-2xl border-0 bg-white px-4 py-3 text-sm text-slate-950 outline-none ring-1 ring-slate-200 transition focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
                 ) : url ? (
                   <p className="mt-3 truncate text-xs text-slate-500">{url}</p>
                 ) : null}
@@ -517,7 +556,7 @@ export function PresentationGrid({
         description={
           isLiveVision
             ? "This is the emotional shift: quick appraisal photos become premium conceptual previews so the seller can picture what their campaign could look like."
-            : "Professional Campaign Mode uses sharper photography and polished assets for a final, proposal-ready campaign view."
+            : "Professional photography is ready, so the campaign can look sharper and proposal-ready."
         }
         editHref={editable ? "/mockups" : undefined}
         editLabel="Edit marketing"

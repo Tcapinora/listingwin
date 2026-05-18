@@ -107,7 +107,7 @@ function getVideoEmbedUrl(rawUrl: string) {
   return "";
 }
 
-const videoSlots = [
+const defaultVideoSlots = [
   "Property walkthrough",
   "Agent introduction",
   "Social teaser",
@@ -248,6 +248,21 @@ export default function MockupsPage() {
     });
   };
 
+  const updateCampaignVideoTitle = (index: number, value: string) => {
+    setListing((current) => {
+      const nextTitles = Array.from({ length: 4 }, (_, titleIndex) =>
+        current.campaignVideoTitles?.[titleIndex] ||
+        defaultVideoSlots[titleIndex],
+      );
+      nextTitles[index] = value;
+
+      return {
+        ...current,
+        campaignVideoTitles: nextTitles,
+      };
+    });
+  };
+
   return (
     <>
       <FlowProgress currentStep={4} />
@@ -370,18 +385,19 @@ export default function MockupsPage() {
                 Two campaign modes
               </p>
               <h2 className="mt-3 text-2xl font-semibold tracking-tight">
-                Live vision now. Professional campaign later.
+                Use live photos now. Use pro photos later.
               </h2>
               <p className="mt-3 max-w-2xl text-sm leading-6 text-blue-100/80">
-                Live Vision Mode creates conceptual previews from quick
-                appraisal photos. Professional Campaign Mode is for polished
-                assets once the final photography is ready.
+                Recommended: use live preview during the appraisal if the
+                seller wants to see their own home in the campaign. Switch to
+                professional mode after the photographer has delivered final
+                images.
               </p>
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
               {[
-                ["live", "Live Vision Mode", "Conceptual seller preview"],
-                ["professional", "Professional Campaign Mode", "Final campaign assets"],
+                ["live", "During appraisal", "Quick photos, concept preview"],
+                ["professional", "After pro photos", "Final photos, proposal ready"],
               ].map(([mode, title, detail]) => (
                 <button
                   key={mode}
@@ -408,10 +424,11 @@ export default function MockupsPage() {
           </div>
           <div className="mt-5 flex flex-col gap-3 rounded-[1.5rem] bg-white/10 p-4 ring-1 ring-white/10 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="text-sm font-semibold">Use Live Campaign Preview</p>
+              <p className="text-sm font-semibold">Use quick appraisal photos</p>
               <p className="mt-1 text-xs leading-5 text-blue-100/80">
-                Optional. Turn this off if the agent wants to use examples only
-                until professional photography is uploaded.
+                This controls whether phone/laptop photos taken during the
+                appraisal appear inside the mockups. Turn it off to use example
+                marketing only.
               </p>
             </div>
             <button
@@ -819,7 +836,9 @@ export default function MockupsPage() {
           description="Paste up to four YouTube or video links. These appear in the Appraisal so the seller can see how video can support the campaign."
         />
         <div className="grid gap-5 md:grid-cols-2">
-          {videoSlots.map((label, index) => {
+          {defaultVideoSlots.map((fallbackLabel, index) => {
+            const label =
+              listing.campaignVideoTitles?.[index] || fallbackLabel;
             const url = listing.campaignVideoUrls?.[index] || "";
             const embedUrl = getVideoEmbedUrl(url);
 
@@ -868,6 +887,14 @@ export default function MockupsPage() {
                       </a>
                     ) : null}
                   </div>
+                  <input
+                    value={label}
+                    onChange={(event) =>
+                      updateCampaignVideoTitle(index, event.target.value)
+                    }
+                    placeholder="Video title"
+                    className="mt-4 w-full rounded-2xl border-0 bg-white px-4 py-3 text-sm font-semibold text-slate-950 outline-none ring-1 ring-slate-200 transition focus:ring-2 focus:ring-blue-500"
+                  />
                   <input
                     value={url}
                     onChange={(event) =>

@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import {
   ArrowRight,
   CalendarDays,
+  FileText,
   LayoutDashboard,
   Menu,
   MonitorPlay,
@@ -26,15 +27,16 @@ const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/create", label: "Preparation", icon: Sparkles },
   { href: "/presentation", label: "Appraisal", icon: MonitorPlay },
-  { href: "/calendar", label: "Calendar", icon: CalendarDays },
+  { href: "/proposal", label: "Proposal", icon: FileText },
+  { href: "/calendar", label: "Calendar only", icon: CalendarDays },
   { href: "/account", label: "Settings", icon: UserCog },
 ];
 
 const workflowItems = [
-  { href: "/create", label: "1. Start" },
-  { href: "/details", label: "2. Details" },
-  { href: "/upload", label: "3. Media" },
-  { href: "/mockups", label: "4. Create" },
+  { href: "/create", label: "1. Address" },
+  { href: "/details", label: "2. Property" },
+  { href: "/upload", label: "3. Photos" },
+  { href: "/mockups", label: "4. Vision" },
 ];
 const builderPaths = workflowItems.map((item) => item.href);
 
@@ -78,7 +80,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   onClick={() => setMenuOpen(true)}
                   className="grid h-11 w-11 place-items-center rounded-full border border-blue-100 bg-white text-slate-700 shadow-sm transition hover:border-blue-300 hover:text-blue-800"
                   aria-label="Open menu"
-                  title="Open menu"
+                  title="Open workflow menu"
                 >
                   <Menu size={18} />
                 </button>
@@ -97,7 +99,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   aria-label="Start New Listing"
                 >
                   <Plus size={16} />
-                  <span className="hidden sm:inline">New appraisal</span>
+                  <span className="hidden sm:inline">New preparation</span>
                   <ArrowRight className="hidden sm:block" size={15} />
                 </Link>
                 <AuthControls />

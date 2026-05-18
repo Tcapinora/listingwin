@@ -53,12 +53,8 @@ export default function PresentationPage() {
     presentationListing,
     presentationProfile,
   );
-  const presentationIntro =
-    presentationProfile.defaultPresentationIntro ||
-    "This is the seller-facing emotional moment: show the campaign direction, how buyers could experience it, and why momentum starts with this agent.";
-  const propertyPhotos = getPropertyPhotos(presentationListing);
-  const letterPhoto = propertyPhotos[1] || propertyPhotos[0] || "";
   const isLiveVision = presentationListing.campaignVisionMode !== "professional";
+  const propertyPhotos = getPropertyPhotos(presentationListing);
   const updatePropertyPhotos = (photos: string[]) => {
     if (demoMode) {
       return;
@@ -226,23 +222,23 @@ export default function PresentationPage() {
         <div className="grid gap-5 lg:grid-cols-[1fr_1fr] lg:items-center">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-200">
-              Presentation mode
+              Photo mode
             </p>
             <h2 className="mt-3 text-2xl font-semibold tracking-tight">
               {isLiveVision
-                ? "Live Vision Mode is active"
-                : "Professional Campaign Mode is active"}
+                ? "Use this during the appraisal"
+                : "Use this after professional photos"}
             </h2>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-blue-100/80">
               {isLiveVision
-                ? "Use quick appraisal photos as premium conceptual previews. They are designed to help the seller picture the future campaign, not replace professional photography."
-                : "Use this mode once professional campaign photography is ready. The presentation can show sharper, final campaign assets for proposal and sharing."}
+                ? "Recommended while you are sitting with the seller. Quick photos become polished concept previews so the seller can picture the campaign."
+                : "Switch to this later when professional photography is ready and you want the proposal to feel final."}
             </p>
           </div>
           <div className="grid gap-3 sm:grid-cols-[1fr_1fr_auto] sm:items-center">
             {[
-              ["live", "Live Vision", "Conceptual"],
-              ["professional", "Professional", "Final assets"],
+              ["live", "During appraisal", "Best for live photos"],
+              ["professional", "After pro photos", "Best for final proposal"],
             ].map(([mode, label, sub]) => (
               <button
                 key={mode}
@@ -276,8 +272,13 @@ export default function PresentationPage() {
                   : "bg-white/10 text-blue-100 ring-1 ring-white/10"
               }`}
             >
-              Live Preview {presentationListing.useLiveCampaignPreview ? "On" : "Off"}
+              Quick photo preview {presentationListing.useLiveCampaignPreview ? "On" : "Off"}
             </button>
+            <p className="text-xs leading-5 text-blue-100/75 sm:col-span-3">
+              Quick photo preview means optional appraisal photos flow into the
+              mockups. Turn it off when you only want to show example marketing
+              until professional photography is ready.
+            </p>
           </div>
         </div>
       </section>
@@ -287,57 +288,6 @@ export default function PresentationPage() {
         className="page-enter mx-auto max-w-6xl bg-white px-4 py-10 shadow-soft ring-1 ring-white/80 sm:px-6 lg:px-8 lg:py-14"
       >
         <HeroPresentation listing={presentationListing} />
-
-        <section className="presentation-slide mx-auto max-w-5xl border-t border-slate-200/80 py-20 sm:py-24">
-          <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem] bg-slate-100">
-              {letterPhoto ? (
-                <Image
-                  src={letterPhoto}
-                  alt="Property campaign preview"
-                  fill
-                  className="object-cover"
-                  unoptimized
-                />
-              ) : (
-                <div className="grid h-full place-items-center text-sm font-semibold text-slate-400">
-                  Add property photos
-                </div>
-              )}
-            </div>
-            <div>
-              <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-blue-700">
-                  Prepared for the appraisal
-                </p>
-                <Link
-                  href="/details"
-                  className="no-print inline-flex w-fit items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2.5 text-sm font-semibold text-blue-900 shadow-sm transition hover:bg-blue-50"
-                >
-                  <Pencil size={15} />
-                  Edit overview
-                </Link>
-              </div>
-              <h2 className="mt-6 text-4xl font-semibold tracking-tight text-slate-950">
-                Make the seller picture choosing this campaign.
-              </h2>
-              <p className="mt-6 text-base leading-8 text-slate-600">
-                {presentationIntro}
-              </p>
-              <p className="mt-6 rounded-[1.5rem] bg-blue-50/80 p-5 text-sm leading-7 text-blue-900 ring-1 ring-blue-100">
-                {isLiveVision
-                  ? "Build the campaign vision live in front of the seller. Add optional appraisal photos and they flow into conceptual previews designed to feel premium, not final."
-                  : "Professional Campaign Mode uses polished photography and final campaign assets for a sharper proposal-ready experience."}
-              </p>
-              {isLiveVision ? (
-                <p className="mt-4 rounded-full bg-slate-50 px-5 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500 ring-1 ring-slate-200">
-                  Campaign visuals shown are conceptual previews only. Final
-                  marketing will use professional photography.
-                </p>
-              ) : null}
-            </div>
-          </div>
-        </section>
 
         <PresentationGrid
           listing={presentationListing}

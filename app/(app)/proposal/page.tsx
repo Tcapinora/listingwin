@@ -28,7 +28,7 @@ import {
 } from "@/lib/proposalHistory";
 
 export default function ProposalPage() {
-  const { listing } = useListing();
+  const { listing, setListing } = useListing();
   const { profile } = useAgentProfile();
   const [shareUrl, setShareUrl] = useState("");
   const [copied, setCopied] = useState(false);
@@ -440,6 +440,7 @@ export default function ProposalPage() {
           hiddenSections={hiddenSections}
           textSections={textSections}
           onTextChange={updateTextSections}
+          onListingChange={setListing}
           onHideSection={hideProposalSection}
         />
       </div>

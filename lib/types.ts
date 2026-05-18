@@ -120,6 +120,15 @@ export type FollowUpReminder = {
   done: boolean;
 };
 
+export type RecentSoldProperty = {
+  id: string;
+  image: string;
+  address: string;
+  result: string;
+  details: string;
+  notes: string;
+};
+
 export type ListingState = {
   details: ListingDetails;
   assets: ListingAssets;
@@ -134,6 +143,8 @@ export type ListingState = {
   hiddenVendorReportSections: string[];
   appraisalSourceUrls: string[];
   campaignVideoUrls: string[];
+  campaignVideoTitles: string[];
+  recentSoldProperties: RecentSoldProperty[];
   useLiveCampaignPreview: boolean;
   campaignVisionMode: "live" | "professional";
   propertyPhotos: string[];
@@ -311,6 +322,22 @@ export const emptyListingState: ListingState = {
   hiddenVendorReportSections: [],
   appraisalSourceUrls: [],
   campaignVideoUrls: ["", "", "", ""],
+  campaignVideoTitles: [
+    "Property walkthrough",
+    "Agent introduction",
+    "Social teaser",
+    "Campaign update",
+  ],
+  recentSoldProperties: [
+    {
+      id: "sold-1",
+      image: "",
+      address: "",
+      result: "",
+      details: "",
+      notes: "",
+    },
+  ],
   useLiveCampaignPreview: true,
   campaignVisionMode: "live",
   buyerLeads: [

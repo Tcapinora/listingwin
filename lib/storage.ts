@@ -6,6 +6,7 @@ import {
   type ComparableProperty,
   type FollowUpReminder,
   type ListingState,
+  type RecentSoldProperty,
   type SaleCalendarEvent,
   type SignboardKey,
 } from "@/lib/types";
@@ -90,6 +91,15 @@ export function readListingState(): ListingState {
       campaignVideoUrls: Array.from({ length: 4 }, (_, index) =>
         normalizeString(parsed.campaignVideoUrls?.[index]),
       ),
+      campaignVideoTitles: Array.from({ length: 4 }, (_, index) =>
+        normalizeString(
+          parsed.campaignVideoTitles?.[index] ||
+            emptyListingState.campaignVideoTitles[index],
+        ),
+      ),
+      recentSoldProperties: Array.isArray(parsed.recentSoldProperties)
+        ? parsed.recentSoldProperties.map(normalizeRecentSoldProperty)
+        : emptyListingState.recentSoldProperties,
       useLiveCampaignPreview:
         typeof parsed.useLiveCampaignPreview === "boolean"
           ? parsed.useLiveCampaignPreview
@@ -254,5 +264,18 @@ function normalizeFollowUpReminder(
         : "Hot",
     suggestedMessage: normalizeString(value.suggestedMessage),
     done: Boolean(value.done),
+  };
+}
+
+function normalizeRecentSoldProperty(
+  value: Partial<RecentSoldProperty>,
+): RecentSoldProperty {
+  return {
+    id: normalizeString(value.id) || `sold-${Date.now()}-${Math.random()}`,
+    image: normalizeString(value.image),
+    address: normalizeString(value.address),
+    result: normalizeString(value.result),
+    details: normalizeString(value.details),
+    notes: normalizeString(value.notes),
   };
 }

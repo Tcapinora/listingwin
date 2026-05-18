@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { EyeOff, Pencil } from "lucide-react";
+import { EyeOff, Pencil, Plus, Trash2 } from "lucide-react";
 import type { AgentProfile, ListingState } from "@/lib/types";
 import { generatePropertyWriteup } from "@/lib/copy";
 import { getPrimaryPropertyPhoto, getPropertyPhotos } from "@/lib/listingImages";
@@ -25,6 +25,7 @@ export const defaultProposalSections = [
   "calendar",
   "visuals",
   "whyUs",
+  "recentSales",
   "nextSteps",
   "contact",
 ] as const;
@@ -38,6 +39,7 @@ type ProposalDocumentProps = {
   hiddenSections?: string[];
   textSections?: ProposalTextSections;
   onTextChange?: (next: ProposalTextSections) => void;
+  onListingChange?: (updater: (current: ListingState) => ListingState) => void;
   onHideSection?: (section: ProposalSectionId) => void;
 };
 
@@ -71,6 +73,7 @@ export function ProposalDocument({
   hiddenSections = [],
   textSections,
   onTextChange,
+  onListingChange,
   onHideSection,
 }: ProposalDocumentProps) {
   const copy = {
@@ -97,6 +100,60 @@ export function ProposalDocument({
     !hiddenSections.includes(section);
   const updateText = (key: keyof ProposalTextSections, value: string) => {
     onTextChange?.({ ...copy, [key]: value });
+  };
+  const recentSales = listing.recentSoldProperties?.length
+    ? listing.recentSoldProperties
+    : [];
+  const updateRecentSale = (
+    index: number,
+    field: keyof (typeof recentSales)[number],
+    value: string,
+  ) => {
+    onListingChange?.((current) => {
+      const sales = current.recentSoldProperties?.length
+        ? current.recentSoldProperties
+        : [];
+
+      return {
+        ...current,
+        recentSoldProperties: sales.map((sale, saleIndex) =>
+          saleIndex === index ? { ...sale, [field]: value } : sale,
+        ),
+      };
+    });
+  };
+  const addRecentSale = () => {
+    onListingChange?.((current) => ({
+      ...current,
+      recentSoldProperties: [
+        ...(current.recentSoldProperties || []),
+        {
+          id: `sold-${Date.now()}`,
+          image: "",
+          address: "",
+          result: "",
+          details: "",
+          notes: "",
+        },
+      ],
+    }));
+  };
+  const removeRecentSale = (index: number) => {
+    onListingChange?.((current) => ({
+      ...current,
+      recentSoldProperties: (current.recentSoldProperties || []).filter(
+        (_sale, saleIndex) => saleIndex !== index,
+      ),
+    }));
+  };
+  const uploadRecentSaleImage = (index: number, file: File | null) => {
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      updateRecentSale(index, "image", String(reader.result || ""));
+    };
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -419,6 +476,142 @@ export function ProposalDocument({
                   <p className="mt-3 text-sm leading-6 text-slate-600">
                     {text}
                   </p>
+                </article>
+              ))}
+            </div>
+          </ProposalCard>
+        ) : null}
+
+        {visible("recentSales") ? (
+          <ProposalCard
+            title="Recent results"
+            eyebrow="Proof of execution"
+            editable={editable}
+            onHide={() => onHideSection?.("recentSales")}
+          >
+            <p className="mb-6 max-w-3xl text-base leading-8 text-slate-600">
+              Show the seller what the agent has recently sold and make the
+              proposal feel backed by real market execution.
+            </p>
+            {editable ? (
+              <div className="mb-6 flex justify-end">
+                <button
+                  type="button"
+                  onClick={addRecentSale}
+                  className="inline-flex items-center gap-2 rounded-full bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-800"
+                >
+                  <Plus size={15} />
+                  Add sold property
+                </button>
+              </div>
+            ) : null}
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {(recentSales.length
+                ? recentSales
+                : [
+                    {
+                      id: "example-sale",
+                      image: "",
+                      address: "Recent sale address",
+                      result: "Sold result",
+                      details: "Beds / baths / land",
+                      notes: "Add a short result note.",
+                    },
+                  ]
+              ).map((sale, index) => (
+                <article
+                  key={sale.id || index}
+                  className="overflow-hidden rounded-[1.5rem] bg-slate-50 ring-1 ring-slate-200/80"
+                >
+                  <div className="relative aspect-[3/4] bg-slate-100">
+                    {sale.image ? (
+                      <Image
+                        src={sale.image}
+                        alt={sale.address || "Recently sold property"}
+                        fill
+                        className="object-cover"
+                        unoptimized
+                      />
+                    ) : (
+                      <div className="grid h-full place-items-center px-5 text-center text-sm font-semibold text-slate-400">
+                        Recently sold property
+                      </div>
+                    )}
+                  </div>
+                  <div className="grid gap-3 p-4">
+                    {editable ? (
+                      <>
+                        <label className="cursor-pointer rounded-xl bg-white px-3 py-2 text-center text-xs font-semibold text-blue-800 ring-1 ring-blue-100">
+                          Upload photo
+                          <input
+                            type="file"
+                            accept="image/*"
+                            className="sr-only"
+                            onChange={(event) =>
+                              uploadRecentSaleImage(
+                                index,
+                                event.target.files?.[0] || null,
+                              )
+                            }
+                          />
+                        </label>
+                        <input
+                          value={sale.address}
+                          onChange={(event) =>
+                            updateRecentSale(index, "address", event.target.value)
+                          }
+                          placeholder="Address"
+                          className="rounded-xl border-0 bg-white px-3 py-2 text-sm font-semibold text-slate-950 outline-none ring-1 ring-slate-200"
+                        />
+                        <input
+                          value={sale.result}
+                          onChange={(event) =>
+                            updateRecentSale(index, "result", event.target.value)
+                          }
+                          placeholder="Sold result"
+                          className="rounded-xl border-0 bg-white px-3 py-2 text-sm text-slate-700 outline-none ring-1 ring-slate-200"
+                        />
+                        <input
+                          value={sale.details}
+                          onChange={(event) =>
+                            updateRecentSale(index, "details", event.target.value)
+                          }
+                          placeholder="Beds / baths / land"
+                          className="rounded-xl border-0 bg-white px-3 py-2 text-sm text-slate-700 outline-none ring-1 ring-slate-200"
+                        />
+                        <textarea
+                          value={sale.notes}
+                          onChange={(event) =>
+                            updateRecentSale(index, "notes", event.target.value)
+                          }
+                          placeholder="Short result note"
+                          rows={3}
+                          className="resize-none rounded-xl border-0 bg-white px-3 py-2 text-sm text-slate-700 outline-none ring-1 ring-slate-200"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeRecentSale(index)}
+                          className="inline-flex items-center justify-center gap-2 rounded-full bg-red-50 px-3 py-2 text-xs font-semibold text-red-700 transition hover:bg-red-100"
+                        >
+                          <Trash2 size={13} />
+                          Delete
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <h3 className="text-base font-semibold tracking-tight text-slate-950">
+                          {sale.address}
+                        </h3>
+                        <p className="text-sm font-semibold text-blue-800">
+                          {sale.result}
+                        </p>
+                        <p className="text-sm text-slate-500">{sale.details}</p>
+                        <p className="text-sm leading-6 text-slate-600">
+                          {sale.notes}
+                        </p>
+                      </>
+                    )}
+                  </div>
                 </article>
               ))}
             </div>
