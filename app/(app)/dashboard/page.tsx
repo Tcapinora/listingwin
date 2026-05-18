@@ -9,6 +9,7 @@ import {
   Clock3,
   Plus,
   Sparkles,
+  UserCog,
 } from "lucide-react";
 import { PrimaryLink } from "@/components/Buttons";
 import { useListing } from "@/components/ListingProvider";
@@ -17,7 +18,7 @@ import { demoAgentProfile, demoListingState } from "@/lib/demoData";
 
 export default function DashboardPage() {
   const { listing, setListing } = useListing();
-  const { profile, replaceProfile } = useAgentProfile();
+  const { profile, isProfileComplete, replaceProfile } = useAgentProfile();
   const hasListing = Boolean(listing.details.address.trim());
   const hasImages = Boolean(
     listing.propertyPhotos.length || listing.assets.propertyPhoto,
@@ -135,6 +136,35 @@ export default function DashboardPage() {
           </div>
         </div>
       </section>
+
+      {!isProfileComplete ? (
+        <section className="mt-8 overflow-hidden rounded-[2.25rem] bg-gradient-to-br from-blue-950 via-slate-950 to-blue-900 p-7 text-white shadow-soft sm:p-9">
+          <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
+            <div>
+              <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-blue-100 ring-1 ring-white/15">
+                <UserCog size={14} />
+                First-time setup
+              </p>
+              <h2 className="mt-4 text-3xl font-semibold tracking-tight">
+                Set up the agent profile once.
+              </h2>
+              <p className="mt-3 max-w-3xl text-sm leading-6 text-blue-100/80">
+                Add the agent name, agency, phone, email, logo, colour, and
+                default copy before creating the first appraisal. ListingWin
+                then reuses it across every presentation, proposal, calendar,
+                and campaign preview.
+              </p>
+            </div>
+            <Link
+              href="/account"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-blue-950 shadow-card transition hover:-translate-y-0.5 hover:bg-blue-50"
+            >
+              Set up profile
+              <ArrowRight size={16} />
+            </Link>
+          </div>
+        </section>
+      ) : null}
 
       <section className="mt-8 rounded-[2.25rem] bg-white/90 p-7 shadow-card ring-1 ring-white/80 sm:p-9">
         <div className="grid gap-6 lg:grid-cols-[0.7fr_1.3fr] lg:items-start">

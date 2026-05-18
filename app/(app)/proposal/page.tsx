@@ -251,11 +251,34 @@ export default function ProposalPage() {
                 {shareError}
               </p>
             ) : null}
-            <p className="mt-3 rounded-2xl bg-blue-50 px-4 py-3 text-xs leading-5 text-blue-900 ring-1 ring-blue-100">
-              MVP note: proposal links are saved in this browser for now. The
-              next production step is database-backed proposal links so sellers
-              can open them reliably on any device.
-            </p>
+            <div className="mt-4 rounded-2xl bg-blue-50 p-4 ring-1 ring-blue-100">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">
+                Test before sending
+              </p>
+              <div className="mt-3 grid gap-2 text-xs leading-5 text-blue-950">
+                {[
+                  proposalGenerated
+                    ? "Proposal preview has been generated."
+                    : "Generate the proposal preview first.",
+                  shareUrl
+                    ? "Open the preview link and check the seller-facing page."
+                    : "Create the proposal link after reviewing the preview.",
+                  "Copy the email draft and send it to yourself before sending to a seller.",
+                ].map((item, index) => (
+                  <div key={item} className="flex gap-2">
+                    <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-white text-[10px] font-semibold text-blue-800">
+                      {index + 1}
+                    </span>
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-3 text-xs leading-5 text-blue-900/70">
+                Beta note: this prototype stores proposal links in the browser.
+                For full cross-device seller links, the next production step is
+                database-backed proposal sharing.
+              </p>
+            </div>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <button
                 type="button"
