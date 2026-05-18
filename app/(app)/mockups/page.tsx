@@ -774,14 +774,14 @@ export default function MockupsPage() {
       >
         <StepHeader
           step="Social media"
-          title="Add social media marketing style references"
-          description="Upload example Instagram and Facebook listing screenshots from the agent or agency. ListingWin uses them as style references and inserts the property photo into a seller preview."
+          title="Choose the images for each social preview"
+          description="Upload one image for Instagram and one image for Facebook. Each phone preview will use its own image, so you can show two different shots if you want."
         />
         <div className="grid gap-5 lg:grid-cols-2">
           <UploadCard
-            label="Instagram listing template"
-            hint="Saved to the Agent Profile and reused for future listings"
-            value={profile.instagramTemplate || listing.assets.instagramTemplate}
+            label="Instagram preview image"
+            hint="Used only for the Instagram phone preview"
+            value={listing.assets.instagramTemplate || profile.instagramTemplate}
             assetKey="instagramTemplate"
             onChange={(_, value) => {
               updateProfile({ instagramTemplate: value });
@@ -789,9 +789,9 @@ export default function MockupsPage() {
             }}
           />
           <UploadCard
-            label="Facebook listing template"
-            hint="Saved to the Agent Profile and reused for future listings"
-            value={profile.facebookTemplate || listing.assets.facebookTemplate}
+            label="Facebook preview image"
+            hint="Used only for the Facebook phone preview"
+            value={listing.assets.facebookTemplate || profile.facebookTemplate}
             assetKey="facebookTemplate"
             onChange={(_, value) => {
               updateProfile({ facebookTemplate: value });
@@ -800,8 +800,9 @@ export default function MockupsPage() {
           />
         </div>
         <p className="mt-5 rounded-2xl bg-blue-50 p-4 text-sm leading-6 text-blue-900">
-          Uploading style references keeps the social previews closer to the
-          agent’s real marketing without slowing down the preparation flow.
+          Tip: use different images to show the seller how the same campaign can
+          feel across Instagram and Facebook. If you leave one blank, ListingWin
+          uses the main property photo.
         </p>
       </section>
 

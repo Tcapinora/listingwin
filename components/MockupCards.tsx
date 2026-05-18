@@ -980,7 +980,11 @@ export function SocialPreview({
   const agentHandle = socialHandle(agentSocial, agentName);
   const agencyHandle = socialHandle(agencySocial, agencyName);
   const brandColor = profile.brandColor || "#3563E0";
-  const propertyPhoto = getPrimaryPropertyPhoto(listing);
+  const platformPhoto =
+    type === "Instagram"
+      ? assets.instagramTemplate || profile.instagramTemplate
+      : assets.facebookTemplate || profile.facebookTemplate;
+  const propertyPhoto = platformPhoto || getPrimaryPropertyPhoto(listing);
   const instagramName = agentHandle.replace("@", "");
   const agencyNameForCaption = agencyHandle.replace("@", "");
   const [addressLine, ...addressRest] = (details.address || "Property address").split(",");
