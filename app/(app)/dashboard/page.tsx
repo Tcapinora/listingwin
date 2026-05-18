@@ -62,16 +62,15 @@ export default function DashboardPage() {
         <div className="relative grid gap-12 p-7 sm:p-10 lg:grid-cols-[1.05fr_0.82fr] lg:items-center lg:p-14">
           <div>
             <p className="inline-flex rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-800 ring-1 ring-blue-100">
-              The appraisal room painkiller
+              Win the listing in the room
             </p>
             <h1 className="mt-7 max-w-3xl text-4xl font-semibold tracking-tight text-slate-950 sm:text-6xl">
-              Show the seller the campaign before the campaign.
+              Show the seller their campaign before they choose an agent.
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
               ListingWin helps agents walk into an appraisal with proof, not
-              promises. Enter the property details, build the appraisal, and
-              show the seller what their campaign could look like with your
-              marketing.
+              promises. Prepare the property once, present the campaign live,
+              then send a premium proposal without rebuilding the work.
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <PrimaryLink href="/create">
@@ -107,18 +106,18 @@ export default function DashboardPage() {
                   Why agents use ListingWin
                 </p>
                 <p className="text-xs text-blue-100">
-                  Show the campaign before launch.
+                  One flow from preparation to proposal.
                 </p>
               </div>
             </div>
             <div className="mt-7 rounded-[1.5rem] bg-white/10 p-6 ring-1 ring-white/10">
               <h2 className="text-3xl font-semibold tracking-tight">
-                Show the campaign before the campaign starts.
+                Prepare once. Present clearly. Follow up fast.
               </h2>
               <p className="mt-4 text-base leading-7 text-blue-100">
-                Turn appraisal notes, property photos, and comparable sales into
-                a live appraisal experience that helps the seller picture
-                choosing you.
+                Turn property details, photos, and comparable sales into a
+                seller-facing campaign vision, then reuse the same information
+                in the proposal.
               </p>
               <div className="mt-6 flex flex-wrap gap-2">
                 {["Build live", "Present clearly", "Win the listing"].map(

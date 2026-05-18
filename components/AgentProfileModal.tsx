@@ -4,7 +4,7 @@ import Image from "next/image";
 import { X } from "lucide-react";
 import { UploadCard } from "@/components/UploadCard";
 import { useAgentProfile } from "@/components/AgentProfileProvider";
-import type { AgentProfile } from "@/lib/types";
+import type { AgentProfile, RecentSoldProperty } from "@/lib/types";
 import { fileToOptimizedDataUrl } from "@/lib/imageFiles";
 import { socialHandle } from "@/lib/social";
 
@@ -24,6 +24,7 @@ const profileFields: Array<{
     | "defaultPresentationIntro"
     | "defaultAppraisalDisclaimer"
     | "defaultVendorFollowUpMessage"
+    | "recentSoldProperties"
   >;
   label: string;
   placeholder: string;
@@ -118,6 +119,39 @@ export function AgentProfileModal({
     "agencyInstagramUrl",
     "agencyFacebookUrl",
   ]);
+  const updateRecentSale = (
+    index: number,
+    field: keyof RecentSoldProperty,
+    value: string,
+  ) => {
+    updateProfile({
+      recentSoldProperties: profile.recentSoldProperties.map((sale, saleIndex) =>
+        saleIndex === index ? { ...sale, [field]: value } : sale,
+      ),
+    });
+  };
+  const addRecentSale = () => {
+    updateProfile({
+      recentSoldProperties: [
+        ...profile.recentSoldProperties,
+        {
+          id: `profile-sold-${Date.now()}`,
+          image: "",
+          address: "",
+          result: "",
+          details: "",
+          notes: "",
+        },
+      ].slice(0, 8),
+    });
+  };
+  const removeRecentSale = (index: number) => {
+    updateProfile({
+      recentSoldProperties: profile.recentSoldProperties.filter(
+        (_sale, saleIndex) => saleIndex !== index,
+      ),
+    });
+  };
 
   if (!open) {
     return null;
@@ -243,6 +277,120 @@ export function AgentProfileModal({
               />
             </label>
           </div>
+        </div>
+
+        <div className="mt-6 rounded-3xl border border-gray-200 bg-white p-5">
+          <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">
+                Recent results
+              </p>
+              <h3 className="mt-2 text-xl font-semibold tracking-tight">
+                Save proof once
+              </h3>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-600">
+                Add sold properties the agent wants to reuse in proposals. These
+                can still be edited per appraisal, but the agent does not start
+                from scratch each time.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={addRecentSale}
+              className="rounded-full bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white shadow-card transition hover:bg-blue-800"
+            >
+              Add result
+            </button>
+          </div>
+
+          {profile.recentSoldProperties.length ? (
+            <div className="grid gap-4 lg:grid-cols-2">
+              {profile.recentSoldProperties.map((sale, index) => (
+                <article
+                  key={sale.id || index}
+                  className="rounded-[1.5rem] bg-slate-50 p-4 ring-1 ring-slate-200/70"
+                >
+                  <div className="grid gap-4 sm:grid-cols-[10rem_1fr]">
+                    <label className="relative grid aspect-[3/4] cursor-pointer place-items-center overflow-hidden rounded-2xl bg-white text-center text-xs font-semibold text-slate-400 ring-1 ring-slate-200">
+                      {sale.image ? (
+                        <Image
+                          src={sale.image}
+                          alt={sale.address || "Recent sold property"}
+                          fill
+                          className="object-cover"
+                          unoptimized
+                        />
+                      ) : (
+                        <span className="px-4">Upload sold photo</span>
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="sr-only"
+                        onChange={(event) => {
+                          const file = event.target.files?.[0];
+                          if (!file) return;
+
+                          void fileToOptimizedDataUrl(file, 1000, 0.86).then(
+                            (image) => updateRecentSale(index, "image", image),
+                          );
+                          event.currentTarget.value = "";
+                        }}
+                      />
+                    </label>
+
+                    <div className="grid gap-3">
+                      <input
+                        value={sale.address}
+                        onChange={(event) =>
+                          updateRecentSale(index, "address", event.target.value)
+                        }
+                        placeholder="Address"
+                        className="rounded-xl border border-blue-100 bg-white px-3 py-2 text-sm font-semibold text-slate-950 outline-none focus:border-blue-400"
+                      />
+                      <input
+                        value={sale.result}
+                        onChange={(event) =>
+                          updateRecentSale(index, "result", event.target.value)
+                        }
+                        placeholder="Sold result"
+                        className="rounded-xl border border-blue-100 bg-white px-3 py-2 text-sm text-slate-700 outline-none focus:border-blue-400"
+                      />
+                      <input
+                        value={sale.details}
+                        onChange={(event) =>
+                          updateRecentSale(index, "details", event.target.value)
+                        }
+                        placeholder="Beds / baths / land"
+                        className="rounded-xl border border-blue-100 bg-white px-3 py-2 text-sm text-slate-700 outline-none focus:border-blue-400"
+                      />
+                      <textarea
+                        value={sale.notes}
+                        onChange={(event) =>
+                          updateRecentSale(index, "notes", event.target.value)
+                        }
+                        placeholder="Short proof note"
+                        rows={3}
+                        className="resize-none rounded-xl border border-blue-100 bg-white px-3 py-2 text-sm text-slate-700 outline-none focus:border-blue-400"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeRecentSale(index)}
+                        className="w-fit rounded-full bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-700 transition hover:bg-red-100"
+                      >
+                        Delete result
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-2xl bg-slate-50 p-5 text-sm leading-6 text-slate-500 ring-1 ring-slate-200">
+              No reusable sold results yet. Add two to four strong examples so
+              every proposal has proof ready to go.
+            </div>
+          )}
         </div>
 
         <div className="mt-6 rounded-3xl border border-gray-200 bg-white p-5">

@@ -99,9 +99,10 @@ export function ProposalDocument({
   const updateText = (key: keyof ProposalTextSections, value: string) => {
     onTextChange?.({ ...copy, [key]: value });
   };
+  const profileRecentSales = profile.recentSoldProperties || [];
   const recentSales = listing.recentSoldProperties?.length
     ? listing.recentSoldProperties
-    : [];
+    : profileRecentSales;
   const hasComparables = listing.comparableProperties.some(
     (property) => property.address || property.soldPrice,
   );
@@ -129,7 +130,7 @@ export function ProposalDocument({
     onListingChange?.((current) => {
       const sales = current.recentSoldProperties?.length
         ? current.recentSoldProperties
-        : [];
+        : profileRecentSales;
 
       return {
         ...current,
@@ -143,7 +144,9 @@ export function ProposalDocument({
     onListingChange?.((current) => ({
       ...current,
       recentSoldProperties: [
-        ...(current.recentSoldProperties || []),
+        ...(current.recentSoldProperties?.length
+          ? current.recentSoldProperties
+          : profileRecentSales),
         {
           id: `sold-${Date.now()}`,
           image: "",
@@ -158,9 +161,10 @@ export function ProposalDocument({
   const removeRecentSale = (index: number) => {
     onListingChange?.((current) => ({
       ...current,
-      recentSoldProperties: (current.recentSoldProperties || []).filter(
-        (_sale, saleIndex) => saleIndex !== index,
-      ),
+      recentSoldProperties: (current.recentSoldProperties?.length
+        ? current.recentSoldProperties
+        : profileRecentSales
+      ).filter((_sale, saleIndex) => saleIndex !== index),
     }));
   };
   const uploadRecentSaleImage = (index: number, file: File | null) => {

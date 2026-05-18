@@ -179,6 +179,7 @@ export type AgentProfile = {
   defaultPresentationIntro: string;
   defaultAppraisalDisclaimer: string;
   defaultVendorFollowUpMessage: string;
+  recentSoldProperties: RecentSoldProperty[];
 };
 
 export type SavedPresentation = {
@@ -216,6 +217,7 @@ export const emptyAgentProfile: AgentProfile = {
   defaultPresentationIntro: "",
   defaultAppraisalDisclaimer: "",
   defaultVendorFollowUpMessage: "",
+  recentSoldProperties: [],
 };
 
 export const emptyListingState: ListingState = {

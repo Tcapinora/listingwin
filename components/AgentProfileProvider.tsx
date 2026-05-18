@@ -101,6 +101,19 @@ function normalizeProfile(profile: AgentProfile): AgentProfile {
     photographyMorning: profile.photographyMorning || [],
     photographyAfternoon: profile.photographyAfternoon || [],
     photographyTwilight: profile.photographyTwilight || [],
+    recentSoldProperties: Array.isArray(profile.recentSoldProperties)
+      ? profile.recentSoldProperties.map((sale) => ({
+          id:
+            typeof sale.id === "string" && sale.id
+              ? sale.id
+              : `profile-sold-${Date.now()}-${Math.random()}`,
+          image: typeof sale.image === "string" ? sale.image : "",
+          address: typeof sale.address === "string" ? sale.address : "",
+          result: typeof sale.result === "string" ? sale.result : "",
+          details: typeof sale.details === "string" ? sale.details : "",
+          notes: typeof sale.notes === "string" ? sale.notes : "",
+        }))
+      : [],
   };
 }
 

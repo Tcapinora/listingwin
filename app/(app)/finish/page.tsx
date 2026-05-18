@@ -61,16 +61,25 @@ export default function FinishPage() {
             <div>
               <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-blue-100 ring-1 ring-white/15">
                 <ShieldCheck size={15} />
-                Ready to show seller
+                Launch confidence
               </p>
               <h2 className="mt-4 text-3xl font-semibold tracking-tight">
-                Brand-safe appraisal check.
+                A quick check before you open the room.
               </h2>
               <p className="mt-3 text-sm leading-6 text-blue-100/80">
                 ListingWin keeps the seller-facing view clean. Empty optional
                 sections are hidden, quick photos are marked as concept
                 previews, and final campaign assets can be updated later.
               </p>
+              <div className="mt-5 rounded-2xl bg-white/10 p-4 ring-1 ring-white/15">
+                <p className="text-4xl font-semibold">
+                  {readiness.checks.filter((check) => check.ready).length}/
+                  {readiness.checks.length}
+                </p>
+                <p className="mt-1 text-sm font-medium text-blue-100">
+                  seller-facing essentials ready
+                </p>
+              </div>
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
               {readiness.checks.map((check) => (

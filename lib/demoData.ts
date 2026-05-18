@@ -34,6 +34,26 @@ export const demoAgentProfile: AgentProfile = {
     "All pricing guidance is appraisal opinion only and should be reviewed against current market feedback.",
   defaultVendorFollowUpMessage:
     "Thanks again for your time today. Here is the campaign plan we discussed and the next step to bring the listing to market.",
+  recentSoldProperties: [
+    {
+      id: "demo-profile-sold-1",
+      image: housePhoto,
+      address: "16 Garden Street, Bardon",
+      result: "Sold after strong first-week interest",
+      details: "4 bed / 2 bath / 2 car",
+      notes:
+        "A clear campaign story and polished buyer follow-up created urgency before negotiation.",
+    },
+    {
+      id: "demo-profile-sold-2",
+      image: interiorPhoto,
+      address: "8 Ridge Road, Paddington",
+      result: "Premium result through competitive interest",
+      details: "3 bed / 2 bath / 1 car",
+      notes:
+        "The seller could see the launch plan early, which made the pricing and marketing conversation easier.",
+    },
+  ],
 };
 
 export const demoListingState: ListingState = {

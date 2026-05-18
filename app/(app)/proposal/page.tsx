@@ -253,7 +253,7 @@ export default function ProposalPage() {
             ) : null}
             <div className="mt-4 rounded-2xl bg-blue-50 p-4 ring-1 ring-blue-100">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">
-                Share safety check
+                Seller-ready check
               </p>
               <div className="mt-3 grid gap-2 text-xs leading-5 text-blue-950">
                 {[
@@ -263,7 +263,7 @@ export default function ProposalPage() {
                   shareUrl
                     ? "Open the preview link and check the seller-facing page."
                     : "Create the proposal link after reviewing the preview.",
-                  "Copy the email draft and send it to yourself before sending to a seller.",
+                  "Send the link to yourself first, then forward it to the seller when it feels right.",
                 ].map((item, index) => (
                   <div key={item} className="flex gap-2">
                     <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-white text-[10px] font-semibold text-blue-800">
@@ -274,10 +274,9 @@ export default function ProposalPage() {
                 ))}
               </div>
               <p className="mt-3 text-xs leading-5 text-blue-900/70">
-                Production guardrail: before sending to a seller, send the link
-                to yourself and open it on the device you expect the seller to
-                use. Database-backed proposal sharing is the next infrastructure
-                upgrade for true cross-device reliability.
+                Keep the proposal seller-safe: hide empty sections, check the
+                wording, and make sure the visuals match the campaign you want
+                to recommend.
               </p>
             </div>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
