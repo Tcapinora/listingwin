@@ -55,7 +55,7 @@ export default function PresentationPage() {
   );
   const presentationIntro =
     presentationProfile.defaultPresentationIntro ||
-    "This is the seller-facing emotional moment: show how their property will look, how buyers will experience it, and why momentum starts with this agent.";
+    "This is the seller-facing emotional moment: show the campaign direction, how buyers could experience it, and why momentum starts with this agent.";
   const propertyPhotos = getPropertyPhotos(presentationListing);
   const letterPhoto = propertyPhotos[1] || propertyPhotos[0] || "";
   const isLiveVision = presentationListing.campaignVisionMode !== "professional";

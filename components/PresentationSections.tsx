@@ -136,7 +136,7 @@ export function PresentationFlowNav() {
         </div>
         <p className="max-w-md text-sm leading-6 text-slate-500">
           The vendor sees the price story first, then the proof, then what their
-          campaign will look like if they choose you.
+          campaign could look and feel like if they choose you.
         </p>
       </div>
       <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">

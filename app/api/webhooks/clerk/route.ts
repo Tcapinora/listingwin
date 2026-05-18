@@ -57,9 +57,9 @@ export async function POST(request: NextRequest) {
         "",
         "Welcome to ListingWin.",
         "",
-        "ListingWin helps you show the seller the campaign before the campaign begins. Build the vendor presentation, show their property inside your marketing, then move into the Agent Workspace to close with confidence.",
+        "ListingWin helps you show the seller the campaign before the campaign begins. Prepare the appraisal, show their property inside your marketing, then generate the proposal without rebuilding the follow-up.",
         "",
-        "Start by setting up your agent profile, agency branding, and first vendor presentation.",
+        "Start by setting up your agent profile, agency branding, and first appraisal.",
         "",
         "Open ListingWin: https://www.listingwin.com.au/dashboard",
         "",
@@ -71,13 +71,13 @@ export async function POST(request: NextRequest) {
           <p>${escapeHtml(greeting)},</p>
           <h1 style="font-size:28px;line-height:1.2;margin:0 0 16px">Welcome to ListingWin.</h1>
           <p>ListingWin helps you show the seller the campaign before the campaign begins.</p>
-          <p>Build the vendor presentation, show their property inside your marketing, then move into the Agent Workspace to close with confidence.</p>
+          <p>Prepare the appraisal, show their property inside your marketing, then generate the proposal without rebuilding the follow-up.</p>
           <p>
             <a href="https://www.listingwin.com.au/dashboard" style="display:inline-block;background:#3563E0;color:#ffffff;text-decoration:none;border-radius:999px;padding:12px 18px;font-weight:700">
               Open ListingWin
             </a>
           </p>
-          <p style="color:#64748b;font-size:14px">Start by setting up your agent profile, agency branding, and first vendor presentation.</p>
+          <p style="color:#64748b;font-size:14px">Start by setting up your agent profile, agency branding, and first appraisal.</p>
           <p>Welcome aboard,<br />ListingWin</p>
         </div>
       `,

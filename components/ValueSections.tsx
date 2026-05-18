@@ -399,7 +399,7 @@ export function AppraisalCommandCentre({ listing }: { listing: ListingState }) {
             href="/presentation"
             className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-blue-950"
           >
-            Open Vendor Presentation
+            Open Appraisal
             <ArrowRight size={16} />
           </Link>
         </div>
@@ -1651,7 +1651,7 @@ export function SellerFollowUpSection({ listing }: { listing: ListingState }) {
           {[
             "Confirm price strategy and campaign method",
             "Book photography and signboard install",
-            "Approve social, brochure, flyer, and launch copy",
+            "Approve social, brochure, portal, and launch copy",
             "Send seller the shared ListingWin presentation link",
           ].map((step) => (
             <div key={step} className="rounded-2xl bg-white/12 p-4">

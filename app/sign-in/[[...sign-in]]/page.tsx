@@ -24,7 +24,7 @@ export default function SignInPage() {
           </p>
           <p className="mt-5 max-w-lg text-base leading-7 text-slate-600">
             ListingWin keeps the appraisal workflow private to the agent, so
-            every live vendor presentation starts from a secure workspace.
+            every live appraisal starts from a secure workspace.
           </p>
         </div>
 

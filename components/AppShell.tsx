@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import {
   ArrowRight,
   CalendarDays,
-  FileCheck2,
   LayoutDashboard,
   Menu,
   MonitorPlay,
@@ -26,7 +25,6 @@ const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/create", label: "Preparation", icon: Sparkles },
   { href: "/presentation", label: "Appraisal", icon: MonitorPlay },
-  { href: "/proposal", label: "Proposal", icon: FileCheck2 },
   { href: "/calendar", label: "Calendar", icon: CalendarDays },
   { href: "/account", label: "Settings", icon: UserCog },
 ];
@@ -92,13 +90,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 >
                   <UserCog size={17} />
                 </button>
-                <Link
-                  href="/proposal"
-                  className="hidden items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:border-blue-300 hover:bg-white hover:text-blue-900 sm:flex"
-                >
-                  <FileCheck2 size={16} />
-                  Proposal
-                </Link>
                 <Link
                   href="/create"
                   className="inline-flex min-h-11 items-center gap-2 rounded-full bg-blue-700 px-3 py-2 text-sm font-semibold text-white shadow-card transition hover:-translate-y-0.5 hover:bg-blue-800 sm:px-4"

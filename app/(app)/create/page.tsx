@@ -64,15 +64,15 @@ export default function CreatePage() {
         <section className="grid overflow-hidden rounded-[2rem] bg-white shadow-card ring-1 ring-slate-200/70 lg:grid-cols-[1fr_0.82fr]">
           <div className="p-6 sm:p-8 lg:p-10">
             <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-700">
-              Appraisal builder
+              Preparation
             </p>
             <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
               Start with one address.
             </h1>
             <p className="mt-4 max-w-xl text-base leading-7 text-slate-600">
-              This screen has one job: start the appraisal file. ListingWin
+              This screen has one job: start the appraisal preparation. ListingWin
               reuses your saved profile and brand details, then the next screen
-              builds the property story from Smart Paste.
+              keeps the property details simple and easy to review.
             </p>
 
             <div className="mt-6 rounded-[1.5rem] bg-blue-50 p-4 ring-1 ring-blue-100">
@@ -132,7 +132,7 @@ export default function CreatePage() {
               type="submit"
               className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-700 px-6 py-4 text-base font-semibold text-white shadow-card transition hover:bg-blue-800 sm:w-auto"
             >
-              Continue to Smart Paste
+              Continue to Property Details
               <ArrowRight size={18} />
             </button>
           </div>
@@ -143,9 +143,9 @@ export default function CreatePage() {
             </p>
             <div className="mt-5 grid gap-4">
               {[
-                "Paste messy appraisal notes and comparable sales.",
-                "Review the generated property profile.",
-                "Add photos, create the presentation, then use the workspace.",
+                "Enter the key property details.",
+                "Use Smart Paste only for comparable sales.",
+                "Add photos, create the appraisal, then generate the proposal.",
               ].map((item) => (
                 <div key={item} className="flex gap-3">
                   <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-white text-blue-700 shadow-sm">
@@ -160,9 +160,8 @@ export default function CreatePage() {
                 Simple flow
               </p>
               <p className="mt-3 text-sm leading-6 text-slate-600">
-                The agent should never wonder what to do next: build the
-                appraisal, show the campaign, then use the private workspace to
-                close.
+                The agent should never wonder what to do next: prepare the
+                appraisal, show the campaign, then send the proposal.
               </p>
             </div>
           </aside>

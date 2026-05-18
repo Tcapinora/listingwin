@@ -27,9 +27,9 @@ export const demoAgentProfile: AgentProfile = {
   photographyAfternoon: [],
   photographyTwilight: [],
   defaultMarketingText:
-    "The seller can see the campaign before it exists: portals, social, brochures, flyers, signboards, timing, and buyer demand.",
+    "The seller can see the campaign before it exists: portals, social, brochures, signboards, timing, and buyer demand.",
   defaultPresentationIntro:
-    "This is the seller-facing emotional moment: show how their property will look, how buyers will experience it, and why momentum starts with this agent.",
+    "This is the seller-facing emotional moment: show the campaign direction, how buyers could experience it, and why momentum starts with this agent.",
   defaultAppraisalDisclaimer:
     "All pricing guidance is appraisal opinion only and should be reviewed against current market feedback.",
   defaultVendorFollowUpMessage:

@@ -23,7 +23,7 @@ export default function SignUpPage() {
             Start your 14-day ListingWin trial.
           </p>
           <p className="mt-5 max-w-lg text-base leading-7 text-slate-600">
-            Build your first vendor presentation, add your agency branding, and
+            Build your first appraisal, add your agency branding, and
             see how ListingWin helps you show the campaign before the campaign.
           </p>
           <div className="mt-7 grid max-w-lg gap-3 rounded-[1.75rem] bg-white/80 p-5 text-sm text-slate-600 shadow-card ring-1 ring-white">

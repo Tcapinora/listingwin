@@ -4,13 +4,13 @@ import Image from "next/image";
 import { useState } from "react";
 import {
   Bookmark,
-  Download,
   Heart,
   MessageCircle,
   MonitorPlay,
   MoreHorizontal,
   Send,
   Share2,
+  ShieldCheck,
   ThumbsUp,
 } from "lucide-react";
 import { useAgentProfile } from "@/components/AgentProfileProvider";
@@ -39,6 +39,53 @@ function Logo({ src, agencyName }: { src: string; agencyName: string }) {
     <div className="rounded-full border border-gray-300 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em]">
       {displayName}
     </div>
+  );
+}
+
+function ConceptualPreviewNote() {
+  return (
+    <div className="mt-4 flex items-start gap-3 rounded-2xl bg-slate-50 px-4 py-3 text-xs leading-5 text-slate-500 ring-1 ring-slate-200">
+      <ShieldCheck className="mt-0.5 shrink-0 text-blue-700" size={15} />
+      <p>
+        <span className="font-semibold text-slate-800">Concept only.</span>{" "}
+        Final campaign creative should be refreshed with professional
+        photography and agency-approved artwork.
+      </p>
+    </div>
+  );
+}
+
+function VisionImage({
+  src,
+  alt,
+  className = "",
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+}) {
+  if (!src) {
+    return null;
+  }
+
+  return (
+    <>
+      <Image
+        src={src}
+        alt=""
+        fill
+        className="scale-110 object-cover opacity-25 blur-lg"
+        unoptimized
+      />
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        className={`object-cover ${className}`}
+        unoptimized
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/25 via-transparent to-transparent" />
+    </>
   );
 }
 
@@ -279,17 +326,12 @@ export function MockupCard({
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-2xl border border-gray-200 bg-white p-4 shadow-card">
+    <section className="rounded-[1.75rem] border border-slate-200/80 bg-white p-5 shadow-card">
       <div className="mb-4 flex items-center justify-between gap-4">
         <h3 className="text-sm font-semibold text-gray-950">{title}</h3>
-        <button
-          type="button"
-          className="grid h-9 w-9 place-items-center rounded-full border border-gray-200 text-gray-500"
-          title="Export placeholder"
-          aria-label="Export placeholder"
-        >
-          <Download size={15} />
-        </button>
+        <span className="rounded-full bg-slate-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500 ring-1 ring-slate-200">
+          Preview
+        </span>
       </div>
       {children}
     </section>
@@ -315,13 +357,17 @@ export function BrochurePreview({ listing }: { listing: ListingState }) {
     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
       <div className="relative h-80 bg-gray-100">
         {selectedPhoto ? (
-          <Image
-            src={selectedPhoto}
-            alt="Brochure property"
-            fill
-            className="object-cover"
-            unoptimized
-          />
+          listing.campaignVisionMode === "professional" ? (
+            <Image
+              src={selectedPhoto}
+              alt="Brochure property"
+              fill
+              className="object-cover"
+              unoptimized
+            />
+          ) : (
+            <VisionImage src={selectedPhoto} alt="Brochure property" />
+          )
         ) : null}
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
         <div className="absolute bottom-5 left-5 right-5 text-white">
@@ -360,6 +406,9 @@ export function BrochurePreview({ listing }: { listing: ListingState }) {
           <p className="break-words text-gray-500">{email || "Email"}</p>
           <p className="break-words text-gray-500">{website || agencyName}</p>
         </div>
+        {listing.campaignVisionMode !== "professional" ? (
+          <ConceptualPreviewNote />
+        ) : null}
       </div>
     </div>
   );
@@ -399,21 +448,29 @@ export function BrochureBookPreview({ listing }: { listing: ListingState }) {
       image: photos[2] || photos[0],
     },
     {
+      title: "Details",
+      eyebrow: "Property highlights",
+      heading: "The details that make buyers pause",
+      body: details.keyFeatures || "Show the standout spaces, materials, outdoor areas, and lifestyle details buyers should remember after the inspection.",
+      image: photos[3] || photos[0],
+    },
+    {
       title: "Agent",
       eyebrow: "Presented by",
       heading: agentName,
       body: `${agencyName} · ${phone} · ${email}`,
-      image: photos[3] || photos[0],
+      image: photos[4] || photos[0],
     },
   ];
   const currentPage = pages[page];
+  const lastPageIndex = pages.length - 1;
 
   return (
     <div className="overflow-hidden rounded-xl border border-blue-100 bg-blue-50/60 p-4">
       <div className="mb-4 flex items-center justify-between gap-3">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">
-            4-page brochure
+            5-image brochure
           </p>
           <h3 className="mt-1 text-lg font-semibold tracking-tight">
             {currentPage.title}
@@ -431,13 +488,13 @@ export function BrochureBookPreview({ listing }: { listing: ListingState }) {
             ‹
           </button>
           <span className="min-w-14 text-center text-sm font-semibold text-blue-950">
-            {page + 1}/4
+            {page + 1}/{pages.length}
           </span>
           <button
             type="button"
-            onClick={() => setPage((value) => Math.min(3, value + 1))}
+            onClick={() => setPage((value) => Math.min(lastPageIndex, value + 1))}
             className="grid h-9 w-9 place-items-center rounded-full bg-white text-sm font-bold shadow-sm disabled:opacity-40"
-            disabled={page === 3}
+            disabled={page === lastPageIndex}
             aria-label="Next brochure page"
             title="Next brochure page"
           >
@@ -445,17 +502,42 @@ export function BrochureBookPreview({ listing }: { listing: ListingState }) {
           </button>
         </div>
       </div>
+      <div className="mb-4 grid grid-cols-5 gap-2">
+        {pages.map((brochurePage, index) => (
+          <button
+            key={brochurePage.title}
+            type="button"
+            onClick={() => setPage(index)}
+            className={`truncate rounded-full px-3 py-2 text-[11px] font-semibold transition ${
+              page === index
+                ? "bg-blue-700 text-white shadow-card"
+                : "bg-white text-blue-900 ring-1 ring-blue-100 hover:bg-blue-50"
+            }`}
+            aria-label={`Show brochure page ${index + 1}`}
+            title={brochurePage.title}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
 
       <div className="relative mx-auto max-w-xl overflow-hidden rounded-2xl bg-white shadow-soft">
         <div className="relative h-80 bg-gray-100">
           {currentPage.image ? (
-            <Image
-              src={currentPage.image}
-              alt={`${currentPage.title} brochure page`}
-              fill
-              className="object-cover"
-              unoptimized
-            />
+            listing.campaignVisionMode === "professional" ? (
+              <Image
+                src={currentPage.image}
+                alt={`${currentPage.title} brochure page`}
+                fill
+                className="object-cover"
+                unoptimized
+              />
+            ) : (
+              <VisionImage
+                src={currentPage.image}
+                alt={`${currentPage.title} brochure page`}
+              />
+            )
           ) : null}
           <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent" />
           {page === 0 ? (
@@ -480,6 +562,9 @@ export function BrochureBookPreview({ listing }: { listing: ListingState }) {
             <p className="mt-1 text-gray-500">{phone}</p>
             <p className="break-words text-gray-500">{email}</p>
           </div>
+          {listing.campaignVisionMode !== "professional" ? (
+            <ConceptualPreviewNote />
+          ) : null}
         </div>
       </div>
     </div>
@@ -772,13 +857,17 @@ export function PropertyPortalPreview({ listing }: { listing: ListingState }) {
         <div className="grid gap-1 border-b border-white bg-white">
           <div className="relative aspect-[16/9] bg-gray-100">
             {gallery[0] ? (
-              <Image
-                src={gallery[0]}
-                alt="Portal hero property"
-                fill
-                className="object-cover"
-                unoptimized
-              />
+              listing.campaignVisionMode === "professional" ? (
+                <Image
+                  src={gallery[0]}
+                  alt="Portal hero property"
+                  fill
+                  className="object-cover"
+                  unoptimized
+                />
+              ) : (
+                <VisionImage src={gallery[0]} alt="Portal hero property" />
+              )
             ) : (
               <div className="grid h-full place-items-center text-sm font-semibold text-gray-500">
                 Main property image
@@ -796,13 +885,20 @@ export function PropertyPortalPreview({ listing }: { listing: ListingState }) {
             {gallery.slice(1).map((photo, index) => (
               <div key={index} className="relative aspect-[4/3] bg-gray-100">
                 {photo ? (
-                  <Image
-                    src={photo}
-                    alt={`Portal supporting property ${index + 1}`}
-                    fill
-                    className="object-cover"
-                    unoptimized
-                  />
+                  listing.campaignVisionMode === "professional" ? (
+                    <Image
+                      src={photo}
+                      alt={`Portal supporting property ${index + 1}`}
+                      fill
+                      className="object-cover"
+                      unoptimized
+                    />
+                  ) : (
+                    <VisionImage
+                      src={photo}
+                      alt={`Portal supporting property ${index + 1}`}
+                    />
+                  )
                 ) : (
                   <div className="grid h-full place-items-center text-xs font-semibold text-gray-400">
                     Image {index + 2}
@@ -848,11 +944,14 @@ export function PropertyPortalPreview({ listing }: { listing: ListingState }) {
               Portal preview
             </p>
             <p className="mt-2 text-sm leading-6 text-gray-600">
-              Shows sellers how their home could appear on a major property
-              portal, using the first 4 uploaded listing photos and the
-              agent’s saved brand colour.
+              Shows sellers the campaign direction their property could take on
+              a major portal. Final launch creative should be checked against
+              agency standards before publishing.
             </p>
           </div>
+          {listing.campaignVisionMode !== "professional" ? (
+            <ConceptualPreviewNote />
+          ) : null}
         </div>
       </div>
     </div>
@@ -954,13 +1053,17 @@ export function SocialPreview({
           <div className="relative shrink-0 bg-black">
             <div className="relative aspect-[4/3] w-full bg-slate-900">
               {propertyPhoto ? (
-                <Image
-                  src={propertyPhoto}
-                  alt="Instagram property post"
-                  fill
-                  className="object-cover"
-                  unoptimized
-                />
+                listing.campaignVisionMode === "professional" ? (
+                  <Image
+                    src={propertyPhoto}
+                    alt="Instagram property post"
+                    fill
+                    className="object-cover"
+                    unoptimized
+                  />
+                ) : (
+                  <VisionImage src={propertyPhoto} alt="Instagram property post" />
+                )
               ) : (
                 <div className="grid h-full place-items-center px-8 text-center text-sm font-semibold text-slate-400">
                   Upload a property photo to preview the Instagram post.
@@ -997,7 +1100,7 @@ export function SocialPreview({
               {listingSummary}
             </p>
             <p className="text-xs text-gray-500">
-              Marketing preview for seller discussion.
+              Campaign vision preview only. Final post uses professional creative.
             </p>
           </div>
         </div>
@@ -1056,13 +1159,17 @@ export function SocialPreview({
         <div className="relative shrink-0 border-y border-gray-100 bg-gray-100">
           <div className="relative aspect-[4/3] w-full">
             {propertyPhoto ? (
-              <Image
-                src={propertyPhoto}
-                alt="Facebook property post"
-                fill
-                className="object-cover"
-                unoptimized
-              />
+              listing.campaignVisionMode === "professional" ? (
+                <Image
+                  src={propertyPhoto}
+                  alt="Facebook property post"
+                  fill
+                  className="object-cover"
+                  unoptimized
+                />
+              ) : (
+                <VisionImage src={propertyPhoto} alt="Facebook property post" />
+              )
             ) : (
               <div className="grid h-full place-items-center px-8 text-center text-sm font-semibold text-gray-500">
                 Upload a property photo to preview the Facebook post.
@@ -1122,7 +1229,7 @@ export function SocialPreview({
             </div>
           </div>
           <p className="mt-4 text-xs text-gray-400">
-            Marketing preview for seller discussion.
+            Campaign vision preview only. Final post uses professional creative.
           </p>
         </div>
         <div className="mt-auto flex shrink-0 items-center gap-2 border-t border-gray-200 bg-white px-4 py-3">

@@ -39,11 +39,11 @@ export function EmailPresentationButton({
     const agencyName =
       profile.agencyName || listing.details.agencyName || "ListingWin";
     const address = listing.details.address || "your property";
-    const subject = `${address} vendor presentation`;
+    const subject = `${address} appraisal`;
     const text = [
       `Hi,`,
       "",
-      `${agentName} has shared the vendor presentation for ${address}.`,
+      `${agentName} has shared the appraisal for ${address}.`,
       "",
       `Open it here: ${shareUrl}`,
       "",
@@ -53,13 +53,13 @@ export function EmailPresentationButton({
     const html = `
       <div style="font-family:Arial,sans-serif;color:#1F2A4A;line-height:1.6">
         <p>Hi,</p>
-        <p><strong>${escapeHtml(agentName)}</strong> has shared the vendor presentation for <strong>${escapeHtml(address)}</strong>.</p>
+        <p><strong>${escapeHtml(agentName)}</strong> has shared the appraisal for <strong>${escapeHtml(address)}</strong>.</p>
         <p>
           <a href="${escapeHtml(shareUrl)}" style="display:inline-block;background:#3563E0;color:#ffffff;text-decoration:none;border-radius:999px;padding:12px 18px;font-weight:700">
-            Open Vendor Presentation
+            Open Appraisal
           </a>
         </p>
-        <p style="color:#64748b;font-size:14px">This presentation shows the campaign before the campaign begins.</p>
+        <p style="color:#64748b;font-size:14px">This appraisal shows the campaign before the campaign begins.</p>
         <p>Kind regards,<br />${escapeHtml(agencyName)}</p>
       </div>
     `;
@@ -108,9 +108,9 @@ export function EmailPresentationButton({
 
       {isOpen ? (
         <div className="absolute right-0 top-12 z-50 w-[min(22rem,calc(100vw-2rem))] rounded-[1.5rem] bg-white p-4 text-slate-950 shadow-soft ring-1 ring-blue-100">
-          <p className="text-sm font-semibold">Email presentation link</p>
+          <p className="text-sm font-semibold">Email appraisal link</p>
           <p className="mt-1 text-xs leading-5 text-slate-500">
-            Send the saved vendor presentation to the seller using Resend.
+            Send the saved appraisal to the seller using Resend.
           </p>
           <input
             type="email"

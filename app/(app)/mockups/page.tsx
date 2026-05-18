@@ -658,7 +658,7 @@ export default function MockupsPage() {
             </h2>
             <p className="mt-4 leading-7 text-gray-300">
               Keep the creative fast and controllable. Adjust the board, then
-              show the vendor a clear preview of how the campaign will look.
+              show the vendor a clear preview of how the campaign could look.
             </p>
           </div>
           <WriteupPanel listing={listing} />

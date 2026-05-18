@@ -34,7 +34,7 @@ export default function DashboardPage() {
     {
       title: "2. Appraisal",
       subtitle: "Build the campaign live",
-      text: "Show the seller your agency marketing, then optionally add real photos so their property appears inside the campaign immediately.",
+      text: "Show the seller your agency marketing, then optionally add live vision photos so their property appears inside a conceptual campaign preview.",
     },
     {
       title: "3. Proposal",
@@ -69,7 +69,8 @@ export default function DashboardPage() {
             <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600">
               ListingWin helps agents walk into an appraisal with proof, not
               promises. Enter the property details, build the appraisal, and
-              show the seller what their home looks like with your marketing.
+              show the seller what their campaign could look like with your
+              marketing.
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <PrimaryLink href="/create">

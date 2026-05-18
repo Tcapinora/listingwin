@@ -62,7 +62,7 @@ export default function SharedPresentationPage({
           <div className="mb-6 flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-gray-500">
-                Shared Vendor Presentation
+                Shared Appraisal
               </p>
               <h1 className="mt-2 text-4xl font-semibold tracking-tight">
                 {presentation.address}

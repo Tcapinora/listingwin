@@ -5,7 +5,7 @@ import { ArrowRight, CheckCircle2, MonitorPlay, UserPlus } from "lucide-react";
 const trialSteps = [
   "Create your account",
   "Set your agent profile once",
-  "Build your first vendor presentation",
+  "Build your first appraisal",
 ];
 
 export default function StartPage() {
@@ -37,11 +37,12 @@ export default function StartPage() {
               14-day free trial
             </p>
             <h1 className="mt-7 max-w-3xl text-5xl font-extrabold leading-[0.95] tracking-tight text-[#1F2A4A] sm:text-6xl">
-              Build your first winning presentation.
+              Build your first winning appraisal.
             </h1>
             <p className="mt-6 max-w-2xl text-xl font-light leading-8 text-[#40516B]">
               Start with one listing. Add the property, show the seller the
-              campaign, then move into the workspace to close with confidence.
+              campaign, then generate the proposal without rebuilding the
+              follow-up.
             </p>
 
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">

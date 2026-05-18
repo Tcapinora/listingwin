@@ -10,18 +10,18 @@ import {
 const workflow = [
   {
     step: "01",
-    title: "Build the appraisal",
+    title: "Prepare the appraisal",
     copy: "Add the property, photos, comparable sales, and key notes once.",
   },
   {
     step: "02",
     title: "Show the campaign",
-    copy: "Turn the seller's home into a premium vendor presentation live.",
+    copy: "Turn the seller's home into a premium live appraisal experience.",
   },
   {
     step: "03",
-    title: "Close with confidence",
-    copy: "Move from presentation into the private agent workspace.",
+    title: "Send the proposal",
+    copy: "Generate the follow-up link without rebuilding the document.",
   },
 ];
 
@@ -30,7 +30,7 @@ const pricing = [
     name: "Solo agent",
     price: "$39/mo",
     note: "14-day free trial",
-    copy: "For agents who want sharper appraisal presentations and a cleaner way to win listings.",
+    copy: "For agents who want sharper appraisals and a cleaner way to win listings.",
     cta: "Start free trial",
     href: "/start",
     featured: true,
@@ -73,7 +73,7 @@ export default function Home() {
           <section className="mx-auto max-w-5xl text-center">
             <div className="inline-flex items-center gap-2 rounded-full border border-[#D0D7E2] bg-white/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#3563E0] shadow-sm">
               <Sparkles size={15} />
-              Built for listing presentations
+              Built for listing appraisals
             </div>
 
             <h1 className="mx-auto mt-8 max-w-5xl text-5xl font-extrabold leading-[0.95] tracking-tight text-[#1F2A4A] sm:text-6xl lg:text-7xl">
@@ -82,7 +82,7 @@ export default function Home() {
 
             <p className="mx-auto mt-7 max-w-3xl text-xl font-light leading-8 text-[#40516B] sm:text-2xl sm:leading-9">
               ListingWin helps real estate agents turn appraisal notes, photos,
-              and comparable sales into a live vendor presentation in minutes.
+              and comparable sales into a live appraisal and proposal in minutes.
             </p>
 
             <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">

@@ -251,6 +251,11 @@ export default function ProposalPage() {
                 {shareError}
               </p>
             ) : null}
+            <p className="mt-3 rounded-2xl bg-blue-50 px-4 py-3 text-xs leading-5 text-blue-900 ring-1 ring-blue-100">
+              MVP note: proposal links are saved in this browser for now. The
+              next production step is database-backed proposal links so sellers
+              can open them reliably on any device.
+            </p>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <button
                 type="button"
