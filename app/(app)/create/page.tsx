@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { FlowProgress } from "@/components/FlowProgress";
@@ -109,23 +110,33 @@ export default function CreatePage() {
                 />
               </label>
 
-              <label>
-                <span className="text-sm font-semibold text-slate-800">
-                  Agency name
-                </span>
-                <input
-                  value={listing.details.agencyName || profile.agencyName}
-                  onChange={(event) =>
-                    updateDetail("agencyName", event.target.value)
-                  }
-                  placeholder="Harbour & Co Estate Agents"
-                  className="mt-2 w-full rounded-2xl border-0 bg-slate-50 px-5 py-4 text-base text-slate-950 shadow-inner outline-none ring-1 ring-slate-200 transition focus:bg-white focus:ring-2 focus:ring-blue-500"
-                />
-                <span className="mt-2 block text-sm text-slate-500">
-                  Auto-filled from your Agent Profile. Edit only if this listing
-                  needs a different agency name.
-                </span>
-              </label>
+              <div className="rounded-[1.5rem] bg-slate-50 p-5 ring-1 ring-slate-200">
+                <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">
+                      Reused from Agent Profile
+                    </p>
+                    <p className="mt-2 text-lg font-semibold text-slate-950">
+                      {profile.agencyName || "Agency name not set"}
+                    </p>
+                    <p className="mt-1 text-sm leading-6 text-slate-500">
+                      {profile.agentName || "Agent name"} ·{" "}
+                      {profile.phone || "Phone"} · {profile.email || "Email"}
+                    </p>
+                  </div>
+                  <Link
+                    href="/account"
+                    className="inline-flex items-center justify-center rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-blue-900 shadow-sm ring-1 ring-blue-100 transition hover:bg-blue-50"
+                  >
+                    Edit profile
+                  </Link>
+                </div>
+                <p className="mt-4 text-sm leading-6 text-slate-500">
+                  ListingWin uses this profile everywhere: appraisal,
+                  campaign previews, proposal, calendar, social mockups, and
+                  follow-up copy.
+                </p>
+              </div>
             </div>
 
             <button
