@@ -19,6 +19,7 @@ import { ListingProvider } from "@/components/ListingProvider";
 import { AgentProfileProvider } from "@/components/AgentProfileProvider";
 import { AgentProfileModal } from "@/components/AgentProfileModal";
 import { AuthControls } from "@/components/AuthControls";
+import { NextActionGuide } from "@/components/NextActionGuide";
 import { WorkflowPath } from "@/components/WorkflowPath";
 
 const navItems = [
@@ -147,7 +148,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               "/draft",
               "/proposal",
             ].includes(pathname) ? (
-              <div className="mb-7">
+              <div className="mb-7 grid gap-4">
                 <WorkflowPath
                   active={
                     pathname === "/proposal"
@@ -157,6 +158,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                         : "builder"
                   }
                 />
+                <NextActionGuide pathname={pathname} />
               </div>
             ) : null}
             {children}

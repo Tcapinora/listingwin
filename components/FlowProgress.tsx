@@ -1,10 +1,26 @@
 import Link from "next/link";
 
 const flowSteps = [
-  { href: "/create", label: "Start Preparation" },
-  { href: "/details", label: "Property Details" },
-  { href: "/upload", label: "Property Media" },
-  { href: "/mockups", label: "Campaign Preview" },
+  {
+    href: "/create",
+    label: "Start Preparation",
+    decision: "Enter the address",
+  },
+  {
+    href: "/details",
+    label: "Property Details",
+    decision: "Add the property facts",
+  },
+  {
+    href: "/upload",
+    label: "Property Media",
+    decision: "Upload once, reuse everywhere",
+  },
+  {
+    href: "/mockups",
+    label: "Campaign Preview",
+    decision: "Create the appraisal",
+  },
 ];
 
 export function FlowProgress({ currentStep }: { currentStep: number }) {
@@ -19,6 +35,9 @@ export function FlowProgress({ currentStep }: { currentStep: number }) {
           </p>
           <p className="mt-1 text-sm font-semibold text-slate-950">
             {flowSteps[safeStep - 1]?.label}
+          </p>
+          <p className="mt-1 text-xs font-medium text-slate-500">
+            {flowSteps[safeStep - 1]?.decision}
           </p>
         </div>
         <div className="hidden min-w-0 flex-1 items-center gap-2 md:flex">

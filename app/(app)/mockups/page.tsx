@@ -281,6 +281,26 @@ export default function MockupsPage() {
                 </div>
               ))}
             </div>
+            <div className="mt-6 grid gap-3 rounded-[1.75rem] bg-gradient-to-br from-slate-950 via-blue-950 to-blue-900 p-4 text-white shadow-card sm:grid-cols-3">
+              {[
+                ["1", "Take or upload", "Add quick photos if the seller wants to see their own home."],
+                ["2", "Vision appears", "The same photos flow into portal, social, brochure, and signboard previews."],
+                ["3", "Protect the brand", "Every live visual is clearly marked as conceptual until professional photography is ready."],
+              ].map(([step, title, text]) => (
+                <div
+                  key={step}
+                  className="rounded-[1.25rem] bg-white/8 p-4 ring-1 ring-white/10"
+                >
+                  <span className="grid h-8 w-8 place-items-center rounded-full bg-white text-sm font-semibold text-blue-950">
+                    {step}
+                  </span>
+                  <p className="mt-3 text-sm font-semibold">{title}</p>
+                  <p className="mt-1 text-xs leading-5 text-blue-100/75">
+                    {text}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
           <div className="space-y-4 lg:text-right">
             <div className="flex justify-start lg:justify-end">
